@@ -61,10 +61,12 @@ export default defineConfig({
             if (!docType.includes(document.contentType)) {
               return;
             }
+
             if (typeof GM_addStyle == "function") {
               GM_addStyle(e);
               return;
             }
+
             const o = document.createElement("style");
             o.textContent = e;
             document.head.append(o);

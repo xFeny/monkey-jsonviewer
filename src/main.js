@@ -11,12 +11,12 @@ import Utils from "./core/Utils";
 
   unsafeWindow.GLOBAL_SOURCE_ELEMENT = $("pre").first();
   if (unsafeWindow.GLOBAL_SOURCE_ELEMENT.length === 0) {
-    let text = document.body.innerText;
+    const text = document.body.innerText;
     if (!Utils.isJSON(text)) {
       return;
     }
 
-    let pre = document.createElement("pre");
+    const pre = document.createElement("pre");
     pre.innerText = text;
     document.body.insertAdjacentHTML("afterbegin", pre);
     unsafeWindow.GLOBAL_SOURCE_ELEMENT = $(pre);
