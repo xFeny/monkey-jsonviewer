@@ -452,19 +452,19 @@ body.dark {
 .requestbox {
   height: 35px;
   margin-bottom: 15px;
+  input {
+    flex-grow: 1;
+  }
+  button {
+    cursor: pointer;
+    padding: 0 15px;
+    border: 1px solid $color-gray;
+    &:active {
+      background-color: #cfcfcf;
+    }
+  }
 }
 .textarea input {
   flex-grow: 1;
   height: 30px;
-}
-.requestbox input {
-  flex-grow: 1;
-}
-.requestbox button {
-  cursor: pointer;
-  padding: 0 15px;
-  border: 1px solid $color-gray;
-}
-.requestbox button:active {
-  background-color: #cfcfcf;
 }
