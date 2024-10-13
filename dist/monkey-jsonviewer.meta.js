@@ -22,8 +22,7 @@
 // @grant          GM_setClipboard
 // @grant          GM_setValue
 // @grant          unsafeWindow
-// @note           v0.6.4 使用vite-plugin-monkey构建脚本
-// @note         v0.6.3 修复暗黑主题，tab颜色问题
+// @note           v0.6.3 修复暗黑主题，tab颜色问题
 // @note         v0.6.2 脑图增加JSON Crack
 // @note         v0.6.1 增加多一种浅色主题
 // @note         v0.6.0 增加简单HTTP 请求功能，可请求GET/POST/PUT/DELETE的API接口，而不单单只能GET请求使用
