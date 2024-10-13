@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: 安装依赖
-        run: pnpm install
+        run: npm install
 
       - name: 构建
-        run: pnpm run build
+        run: npm run build
