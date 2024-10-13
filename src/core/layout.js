@@ -22,6 +22,7 @@ const UI = `
                                 <option value="default">默认</option>
                                 <option value="light">浅色</option>
                                 <option value="dark">暗黑</option>
+                                <option value="dark_IntelliJ">暗黑+</option>
                             </select>
                         </div>
                         <span class="inputJson">JSON 输入</span>

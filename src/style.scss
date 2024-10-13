@@ -186,24 +186,29 @@ html {
 
   .json-key {
     color: #910f93;
+    // color: #860FA8;
     cursor: pointer;
   }
 
   .json-string,
   .json-string a {
-    color: #4b8a4c;
+    // color: #4b8a4c;
+    color: #2e7c16;
   }
 
   .json-number {
-    color: #1a01cc;
+    // color: #1a01cc;
+    color: #164ff1;
   }
 
   .json-boolean {
     color: #905;
+    // color: #0033B3;
   }
 
   .json-null {
-    color: #0031bc;
+    // color: #0031bc;
+    color: #228fec;
   }
 
   a.json-toggle {
@@ -441,7 +446,8 @@ html {
 /**浅色主题 START **/
 .light {
   .json-key {
-    color: #0451a5;
+    // color: #0451a5;
+    color: #0040cf;
   }
 
   .json-string,
@@ -464,11 +470,8 @@ html {
 
 /**浅色主题 END **/
 /** 暗黑主题 START **/
-body.dark {
-  .tabs-container {
-    background-color: #333333;
-  }
-
+body.dark,
+body.dark_IntelliJ {
   li,
   pre {
     color: $color-gray;
@@ -480,10 +483,28 @@ body.dark {
 
   .json-toggle {
     opacity: 0.35;
+
+    &:hover {
+      opacity: 0.5;
+    }
   }
 
-  .json-toggle:hover {
+  jmnode {
+    filter: brightness(2);
+  }
+
+  table tr:hover {
+    background-color: #353b48;
+  }
+
+  .simple-tree-table-icon {
+    color: #fff;
     opacity: 0.5;
+  }
+}
+body.dark {
+  .tabs-container {
+    background-color: #333333;
   }
 
   .json-curly-brackets {
@@ -514,18 +535,41 @@ body.dark {
   .json-null {
     color: #569cd6;
   }
-
-  jmnode {
-    color: #7cdcfe !important;
-  }
-
-  table tr:hover {
-    background-color: #353b48;
-  }
-
-  .simple-tree-table-icon {
-    color: #fff;
-    opacity: 0.5;
-  }
 }
 /** 暗黑主题 END **/
+/** 第二个暗黑主题 START **/
+body.dark_IntelliJ {
+  .tabs-container {
+    background-color: #1e1f22;
+  }
+
+  .json-curly-brackets {
+    color: #bb9667;
+  }
+
+  .json-square-brackets {
+    color: #bbbda3;
+  }
+
+  .json-key {
+    color: #c77dbb;
+  }
+
+  .json-string,
+  .json-string a {
+    color: #499472;
+  }
+
+  .json-number {
+    color: #27abb7;
+  }
+
+  .json-boolean {
+    color: #ce8d66;
+  }
+
+  .json-null {
+    color: #c06235;
+  }
+}
+/** 第二个暗黑主题 END **/
