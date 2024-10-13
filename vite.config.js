@@ -48,6 +48,7 @@ export default defineConfig({
         externalResource: {
           "jsmind/style/jsmind.css": cdn.unpkg("jsmind", "style/jsmind.css"),
         },
+        systemjs: cdn.unpkg()[1],
         cssSideEffects: () => {
           return (e) => {
             const docType = [
