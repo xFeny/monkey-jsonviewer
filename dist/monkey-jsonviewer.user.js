@@ -51,7 +51,7 @@ System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);r
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind/screenshot", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-DHMfn834.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-DJjsLgK8.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -63,7 +63,7 @@ System.register("./__entry.js", ['./__monkey.entry-DHMfn834.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-DHMfn834.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-DJjsLgK8.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -213,11 +213,11 @@ System.register("./__monkey.entry-DHMfn834.js", ['jquery'], (function (exports, 
         }
         _unsafeWindow.GLOBAL_SOURCE_ELEMENT = $("pre").first();
         if (_unsafeWindow.GLOBAL_SOURCE_ELEMENT.length === 0) {
-          let text = document.body.innerText;
+          const text = document.body.innerText;
           if (!Utils.isJSON(text)) {
             return;
           }
-          let pre = document.createElement("pre");
+          const pre = document.createElement("pre");
           pre.innerText = text;
           document.body.insertAdjacentHTML("afterbegin", pre);
           _unsafeWindow.GLOBAL_SOURCE_ELEMENT = $(pre);
@@ -253,7 +253,7 @@ System.register("./__monkey.entry-DHMfn834.js", ['jquery'], (function (exports, 
     }
   `);
         __vitePreload(() => module.import('./layout-DTea31Wm-BaKXQvNI.js'), void 0 );
-        __vitePreload(() => module.import('./formatStyle-C44pY-ek-bxgXV8L9.js'), void 0 ).then((formatStyle) => {
+        __vitePreload(() => module.import('./formatStyle-G8UeWY1h-C6u4ZziO.js'), void 0 ).then((formatStyle) => {
           formatStyle.default.init();
         });
       })();
@@ -324,7 +324,7 @@ System.register("./layout-DTea31Wm-BaKXQvNI.js", ['jquery'], (function (exports,
         };
 }));
 
-System.register("./formatStyle-C44pY-ek-bxgXV8L9.js", ['jquery', './__monkey.entry-DHMfn834.js', 'jsmind', 'jsmind/screenshot'], (function (exports, module) {
+System.register("./formatStyle-G8UeWY1h-C6u4ZziO.js", ['jquery', './__monkey.entry-DJjsLgK8.js', 'jsmind', 'jsmind/screenshot'], (function (exports, module) {
   'use strict';
   var $, _GM_setClipboard, _unsafeWindow, _GM_setValue, _GM_getValue, Utils, jsMind;
   return {
