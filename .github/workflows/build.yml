@@ -19,3 +19,10 @@ jobs:
 
       - name: 构建
         run: npm run build
+      - name: Commit and push dist
+        run: |
+          git config --global user.email "1220301855@qq.com"
+          git config --global user.name "xFeny"
+          git add dist
+          git commit -m "Build and deploy"
+          git push origin main
