@@ -52,7 +52,17 @@ import Utils from "./core/Utils";
     .append(`<link href="${LAYUI_CSS}" rel="stylesheet">`)
     .append(`<script src="${LAYUI_JS}">`);
 
-  GM_addStyle("./style.scss");
+  GM_addStyle(`
+    jmnode.root::before{
+      background-color: ${Utils.randomColor(0.5)}
+    }
+
+    jmnode:not(.root)::before{
+      background-color: ${Utils.randomColor(0.5)}
+    }
+  `);
+  // 脑图节点随机颜色
+
   import("./core/layout");
   import("./core/formatStyle").then((formatStyle) => {
     formatStyle.default.init();
