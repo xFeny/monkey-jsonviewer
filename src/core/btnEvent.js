@@ -61,13 +61,13 @@ const btnEvent = {
   format: function () {},
   // 显示JSON脑图
   viewJsonMind: function () {
-    jsonMind.init(window.GLOBAL_JSON);
+    jsonMind.init(unsafeWindow.GLOBAL_JSON);
     jm.scroll_node_to_center(jm.get_root());
   },
   // 查看原始JSON内容
   viewRawText: function () {
     if (this.firstFormat) {
-      this.$rawText.html(window.GLOBAL_SOURCE_ELEMENT.clone());
+      this.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
       this.firstFormat = false;
     }
   },
@@ -75,16 +75,16 @@ const btnEvent = {
   beautify: function () {
     this.isBeautify = !this.isBeautify;
     if (this.isBeautify) {
-      let str = JSON.stringify(window.GLOBAL_JSON, null, 2);
+      let str = JSON.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
       if (
-        window.GLOBAL_JSONP_FUN !== undefined &&
-        window.GLOBAL_JSONP_FUN !== null
+        unsafeWindow.GLOBAL_JSONP_FUN !== undefined &&
+        unsafeWindow.GLOBAL_JSONP_FUN !== null
       ) {
-        str = `${window.GLOBAL_JSONP_FUN}(${str})`;
+        str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
       }
       this.$rawText.find("pre").text(str);
     } else {
-      this.$rawText.html(window.GLOBAL_SOURCE_ELEMENT.clone());
+      this.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
     }
   },
   jsoncrack: function () {
@@ -102,7 +102,7 @@ const btnEvent = {
         window?.addEventListener("message", () => {
           jsonCrackEmbed.contentWindow.postMessage(
             {
-              json: JSON.stringify(window.GLOBAL_JSON),
+              json: JSON.stringify(unsafeWindow.GLOBAL_JSON),
             },
             "*"
           );

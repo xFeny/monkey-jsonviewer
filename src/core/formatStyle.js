@@ -26,18 +26,18 @@ const formatStyle = {
     $("#formatContainer").html("");
     if (style === "default") {
       $("#formatContainer").jsonViewer(
-        window.GLOBAL_JSON,
-        window.GLOBAL_JSONP_FUN
+        unsafeWindow.GLOBAL_JSON,
+        unsafeWindow.GLOBAL_JSONP_FUN
       );
     } else {
       let appendHtml = `<table id="treeTable">${treeTableHtml(
-        window.GLOBAL_JSON
+        unsafeWindow.GLOBAL_JSON
       )}</table>`;
       if (
-        window.GLOBAL_JSONP_FUN !== undefined &&
-        window.GLOBAL_JSONP_FUN !== null
+        unsafeWindow.GLOBAL_JSONP_FUN !== undefined &&
+        unsafeWindow.GLOBAL_JSONP_FUN !== null
       ) {
-        appendHtml = `<div class="jsonp">${window.GLOBAL_JSONP_FUN}(</div>${appendHtml}<div class="jsonp">)</div>`;
+        appendHtml = `<div class="jsonp">${unsafeWindow.GLOBAL_JSONP_FUN}(</div>${appendHtml}<div class="jsonp">)</div>`;
       }
       $("#formatContainer").append(appendHtml);
       $("#treeTable").simpleTreeTable({

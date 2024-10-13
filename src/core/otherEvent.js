@@ -197,12 +197,12 @@ const otherEvent = {
             }
 
             const rawText = text,
-              oldJSONPFun = window.GLOBAL_JSONP_FUN;
+              oldJSONPFun = unsafeWindow.GLOBAL_JSONP_FUN;
 
             // 判断是否为jsonp格式
             const match = text.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
             if (match && match[1] && match[2]) {
-              window.GLOBAL_JSONP_FUN = match[1];
+              unsafeWindow.GLOBAL_JSONP_FUN = match[1];
               text = match[2];
             }
 
@@ -211,7 +211,7 @@ const otherEvent = {
               that.reload(json, rawText);
             } catch (e) {
               console.log(e);
-              window.GLOBAL_JSONP_FUN = oldJSONPFun;
+              unsafeWindow.GLOBAL_JSONP_FUN = oldJSONPFun;
               layer.msg("JSON不合法", { time: 1500 });
             }
           }
@@ -293,7 +293,7 @@ const otherEvent = {
             contentType: "application/json",
           }).then(
             (response) => {
-              window.GLOBAL_JSONP_FUN = null;
+              unsafeWindow.GLOBAL_JSONP_FUN = null;
               that.reload(response, JSON.stringify(response));
             },
             (error) => {
@@ -306,13 +306,13 @@ const otherEvent = {
     return this;
   },
   reload: function (json, rawText) {
-    window.GLOBAL_JSON = json;
-    window.GLOBAL_SOURCE_ELEMENT.text(rawText);
+    unsafeWindow.GLOBAL_JSON = json;
+    unsafeWindow.GLOBAL_SOURCE_ELEMENT.text(rawText);
     btnEvent.isBeautify = false;
-    btnEvent.$rawText.html(window.GLOBAL_SOURCE_ELEMENT.clone());
+    btnEvent.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
     formatStyle.setStyle();
     jsonMind.isFirst = true;
-    jsonMind.init(window.GLOBAL_JSON);
+    jsonMind.init(unsafeWindow.GLOBAL_JSON);
     layer.closeAll();
   },
   init: function () {
