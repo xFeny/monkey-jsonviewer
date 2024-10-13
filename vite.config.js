@@ -31,7 +31,6 @@ export default defineConfig({
           "格式化显示JSON使数据看起来更加漂亮，支持折叠/展开格式化后的数据，支持JSON脑图让调用层级看着更清晰，支持复制JSON脑图节点路径",
       },
       build: {
-        metaFileName: true,
         externalGlobals: {
           jquery: cdn
             .unpkg("jquery", "dist/jquery.min.js")
