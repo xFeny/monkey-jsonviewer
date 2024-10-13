@@ -12,8 +12,8 @@
 // @require        https://unpkg.com/jsmind@0.8.5/es6/jsmind.js
 // @require        data:application/javascript,%3Bwindow.jsMind%3DjsMind%3Bwindow.jsmind%3DjsMind%3B
 // @require        https://unpkg.com/jsmind@0.8.5/es6/jsmind.screenshot.js
-// @require        https://cdn.jsdelivr.net/npm/systemjs@6.15.1/dist/system.min.js
-// @require        https://cdn.jsdelivr.net/npm/systemjs@6.15.1/dist/extras/named-register.min.js
+// @require        https://unpkg.com/systemjs@6.15.1/dist/system.min.js
+// @require        https://unpkg.com/systemjs@6.15.1/dist/extras/named-register.min.js
 // @require        data:application/javascript,%3B(typeof%20System!%3D'undefined')%26%26(System%3Dnew%20System.constructor())%3B
 // @resource       jsmind  https://unpkg.com/jsmind@0.8.5/style/jsmind.css
 // @grant          GM_addStyle
