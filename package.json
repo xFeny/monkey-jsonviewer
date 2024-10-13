@@ -1,0 +1,28 @@
+{
+  "name": "monkey-jsonviewer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src && prettier --check src",
+    "lint:fix": "eslint --fix src & prettier --write src"
+  },
+  "devDependencies": {
+    "dom-to-image": "^2.6.0",
+    "eslint": "8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "jquery": "^3.7.1",
+    "jsmind": "^0.8.5",
+    "layui": "^2.9.17",
+    "prettier": "^3.3.3",
+    "sass": "^1.79.5",
+    "unplugin-auto-import": "^0.18.3",
+    "vite": "^5.2.12",
+    "vite-plugin-monkey": "^4.0.0"
+  }
+}
