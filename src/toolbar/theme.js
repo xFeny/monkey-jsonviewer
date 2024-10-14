@@ -4,7 +4,7 @@ const theme = {
   // 切换主题
   changeTheme: function () {
     const that = this;
-    $(".theme select").change(function (e) {
+    $(".theme select").on("change", function (e) {
       const val = $(e.target).val();
       GM_setValue("theme", val);
       that.setTheme();

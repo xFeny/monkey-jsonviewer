@@ -1,9 +1,8 @@
-import $ from "jquery";
+import "./layout.scss";
 
-const UI = `
-        <div class="scroll-top"></div>
-        <div class="flex-container">
-            <div class="panel">
+const layout = `
+        <div class="format-container">
+            <div>
                 <div class="tabs">
                     <div class="tabs-item btn active" id="format">JSON格式化</div>
                     <div class="tabs-item btn" id="viewJsonMind">JSON脑图</div>
@@ -49,4 +48,4 @@ const UI = `
             </div>
         </div>`;
 
-$("body").append(UI);
+document.body.insertAdjacentHTML("afterbegin", layout);

@@ -1,7 +1,7 @@
 import $ from "jquery";
-import jsonMind from "./jsonMind";
+import jsonMind from "../mind";
 
-const btnEvent = {
+const tabsEvent = {
   firstFormat: true,
   isBeautify: false,
   $rawText: $("#rawTextContainer"),
@@ -23,7 +23,7 @@ const btnEvent = {
       this.download(url, filename);
       URL.revokeObjectURL(url);
     },
-    savePNG: () => jm.shoot(),
+    savePNG: () => unsafeWindow.GLOBAL_JSMIND.shoot(),
   },
   saveJson: function () {
     if ($("#jmContainer").is(":visible")) {
@@ -44,7 +44,7 @@ const btnEvent = {
         $("a.json-toggle").not(".collapsed").click();
       } catch (e) {}
     } else {
-      jm.collapse_all();
+      unsafeWindow.GLOBAL_JSMIND.collapse_all();
     }
   },
   // 全部展开
@@ -54,15 +54,15 @@ const btnEvent = {
         $("a.json-placeholder").click().remove();
       } catch (e) {}
     } else {
-      jm.expand_all();
-      jm.scroll_node_to_center(jm.get_root());
+      unsafeWindow.GLOBAL_JSMIND.expand_all();
+      unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(unsafeWindow.GLOBAL_JSMIND.get_root());
     }
   },
   format: function () {},
   // 显示JSON脑图
   viewJsonMind: function () {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
-    jm.scroll_node_to_center(jm.get_root());
+    unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(unsafeWindow.GLOBAL_JSMIND.get_root());
   },
   // 查看原始JSON内容
   viewRawText: function () {
@@ -145,4 +145,15 @@ const btnEvent = {
   },
 };
 
-export default btnEvent;
+window.addEventListener("message", function (event) {
+  const { data } = event;
+  if (data && data.reload) {
+    jsonMind.isFirst = true;
+    jsonMind.init(unsafeWindow.GLOBAL_JSON);
+    tabsEvent.isBeautify = false;
+    tabsEvent.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
+    // console.log("JSON数据变更，更新原始数据");
+  }
+});
+
+export default tabsEvent;

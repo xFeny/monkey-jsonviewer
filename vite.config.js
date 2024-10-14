@@ -1,15 +1,9 @@
 import { defineConfig } from "vite";
 import monkey, { util, cdn } from "vite-plugin-monkey";
 import AutoImport from "unplugin-auto-import/vite";
-import userscript from "./src/userscript";
+import userscript from "./src/userscript.meta";
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  define: {
-    GLOBAL_JSON: {},
-    GLOBAL_JSONP_FUN: null,
-    GLOBAL_SOURCE_ELEMENT: null,
-  },
   plugins: [
     AutoImport({
       imports: [util.unimportPreset],

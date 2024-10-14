@@ -1,11 +1,10 @@
 import $ from "jquery";
-import Utils from "./Utils";
-// import domtoimage from "dom-to-image";
+import Utils from "../core/Utils";
 import jsMind from "jsmind";
 import "jsmind/screenshot";
 import "jsmind/style/jsmind.css";
 
-const jsonMind = {
+export default {
   isFirst: true,
   // JSON数据转换为jsMind所需要的数据结构
   convert: function (json) {
@@ -60,7 +59,7 @@ const jsonMind = {
       return this;
     }
 
-    jm.show({
+    unsafeWindow.GLOBAL_JSMIND.show({
       meta: {
         name: "JSON脑图",
         author: "1220301855@qq.com",
@@ -81,9 +80,10 @@ const jsonMind = {
   },
   // 脑图节点事件
   event: function () {
+    const jsonMind = this;
     $("jmnode").on("dblclick mouseover mouseout", function (event) {
       const that = $(this),
-        node = jm.get_node(that.attr("nodeid"));
+        node = unsafeWindow.GLOBAL_JSMIND.get_node(that.attr("nodeid"));
       if (!node.parent) {
         return;
       }
@@ -108,8 +108,8 @@ const jsonMind = {
     return this;
   },
   init: function (json) {
-    if (!window.jm) {
-      window.jm = new jsMind({
+    if (!unsafeWindow.GLOBAL_JSMIND) {
+      unsafeWindow.GLOBAL_JSMIND = new jsMind({
         mode: "side",
         editable: false,
         container: "jmContainer",
@@ -137,5 +137,3 @@ const jsonMind = {
     this.show(json).event();
   },
 };
-
-export default jsonMind;

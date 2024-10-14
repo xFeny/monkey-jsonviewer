@@ -1,4 +1,3 @@
-import "./style.scss";
 import $ from "jquery";
 import Utils from "./core/Utils";
 
@@ -46,11 +45,11 @@ import Utils from "./core/Utils";
     unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
   }
 
-  const LAYUI_JS = "//unpkg.com/layui@2.7.6/dist/layui.js";
-  const LAYUI_CSS = "//unpkg.com/layui@2.7.6/dist/css/layui.css";
+  const layuiJs = "//unpkg.com/layui@2.7.6/dist/layui.js";
+  const layuiCss = "//unpkg.com/layui@2.7.6/dist/css/layui.css";
   $("head")
-    .append(`<link href="${LAYUI_CSS}" rel="stylesheet">`)
-    .append(`<script src="${LAYUI_JS}">`);
+    .append(`<link href="${layuiCss}" rel="stylesheet">`)
+    .append(`<script src="${layuiJs}">`);
 
   GM_addStyle(`
     jmnode.root::before{
@@ -63,8 +62,9 @@ import Utils from "./core/Utils";
   `);
   // 脑图节点随机颜色
 
-  import("./core/layout");
-  import("./core/formatStyle").then((formatStyle) => {
-    formatStyle.default.init();
-  });
+  import("./layout");
+  import("./format")
+    .then((format) => format.default.init())
+    .then(() => import("./toolbar"))
+    .then(() => import("./scrollTop"));
 })();

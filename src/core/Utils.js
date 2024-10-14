@@ -1,4 +1,4 @@
-const Utils = {
+export default {
   // 检查字符串是否为URL
   isUrl: function (string) {
     const regexp =
@@ -69,5 +69,3 @@ const Utils = {
     return true;
   },
 };
-
-export default Utils;

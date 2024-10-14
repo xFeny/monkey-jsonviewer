@@ -1,8 +1,8 @@
-import Utils from "./Utils";
+import Utils from "../core/Utils";
 /**
  * 表格
  */
-function treeTableHtml(json, level = 0, pId = "", pChain = "") {
+function treeTableTrHTML(json, level = 0, pId = "", pChain = "") {
   let tr = "";
   for (const key in json) {
     let val = json[key],
@@ -12,7 +12,7 @@ function treeTableHtml(json, level = 0, pId = "", pChain = "") {
     if (["array", "object"].includes(type)) {
       let brackets = "",
         len = Object.keys(val).length,
-        res = treeTableHtml(val, level + 1, tId, chain);
+        res = treeTableTrHTML(val, level + 1, tId, chain);
 
       if (!res) {
         if (type === "array") {
@@ -62,4 +62,4 @@ function treeTableHtml(json, level = 0, pId = "", pChain = "") {
   return tr;
 }
 
-export default treeTableHtml;
+export default treeTableTrHTML;
