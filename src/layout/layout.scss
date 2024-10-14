@@ -275,8 +275,9 @@ html {
       }
 
       &::before {
-        top: 50% !important;
         content: "";
+        top: 50% !important;
+        margin-top: 1.5px;
         position: absolute;
         border-radius: 50%;
         transform: translateY(-50%);
@@ -306,9 +307,10 @@ html {
       background-color: #dfdfdf;
     }
 
-    .mind-array {
+    .datatype {
       opacity: 0.6;
       font-size: $fz12;
+      margin-top: 2px;
       padding-left: 5px;
     }
   }

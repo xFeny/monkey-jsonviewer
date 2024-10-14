@@ -23,7 +23,7 @@ export default {
           isArray,
           chain: key,
           id: key + "_" + Math.random(),
-          topic: `${key}<span class="mind-array">${type}</span>`,
+          topic: `${key}<span class="datatype">${type}</span>`,
           children: this.convert(val),
         });
       }
