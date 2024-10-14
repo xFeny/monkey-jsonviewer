@@ -47,22 +47,16 @@ import URL from "./common/URL";
     unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
   }
 
-  const layuiJs = "//unpkg.com/layui@2.7.6/dist/layui.js";
-  const layuiCss = "//unpkg.com/layui@2.7.6/dist/css/layui.css";
-  $("head")
-    .append(`<link href="${layuiCss}" rel="stylesheet">`)
-    .append(`<script src="${layuiJs}">`);
+  $(document.head)
+    .append(`<link href="${URL.LAYUI_CSS}" rel="stylesheet">`)
+    .append(`<script src="${URL.LAYUI_JS}">`);
 
   // 脑图节点随机颜色
-  GM_addStyle(`
-    jmnode.root::before{
-      background-color: ${Utils.randomColor(0.5)}
-    }
-
-    jmnode:not(.root)::before{
-      background-color: ${Utils.randomColor(0.5)}
-    }
-  `);
+  GM_addStyle(
+    `jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
+     jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
+    `
+  );
 
   import("./layout");
   import("./format")
