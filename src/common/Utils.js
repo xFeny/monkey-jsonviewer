@@ -19,7 +19,7 @@ export default {
       JSON.parse(str);
       return true;
     } catch (e) {
-      console.log("is not json", e);
+      console.log("is not json");
       return false;
     }
   },

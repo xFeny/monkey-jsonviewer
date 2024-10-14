@@ -42,15 +42,20 @@ export default defineConfig({
             if (!docType.includes(document.contentType)) {
               return;
             }
+            // 是否为JSON数据
+            window.addEventListener("message", function (event) {
+              const { data } = event;
+              if (data && data.isJSON) {
+                if (typeof GM_addStyle == "function") {
+                  GM_addStyle(e);
+                  return;
+                }
 
-            if (typeof GM_addStyle == "function") {
-              GM_addStyle(e);
-              return;
-            }
-
-            const o = document.createElement("style");
-            o.textContent = e;
-            document.head.append(o);
+                const o = document.createElement("style");
+                o.textContent = e;
+                document.head.append(o);
+              }
+            });
           };
         },
       },

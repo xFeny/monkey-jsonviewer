@@ -1,4 +1,5 @@
 import $ from "jquery";
+import URL from "../common/URL";
 /**
  * toolbar右侧JOSN输入和HTTP请求功能操作
  */
@@ -112,7 +113,7 @@ export default {
 
           layer.load(0, { shade: false });
           $.ajax({
-            url: "https://fetch-api.feny.ink/httpRequest",
+            url: URL.ONLINE_HTTP_REQUEST,
             type: "POST",
             data: JSON.stringify(form),
             contentType: "application/json",

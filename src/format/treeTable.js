@@ -1,4 +1,4 @@
-import Utils from "../core/Utils";
+import Utils from "../common/Utils";
 /**
  * 表格
  */

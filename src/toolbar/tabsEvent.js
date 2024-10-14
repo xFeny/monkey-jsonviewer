@@ -1,5 +1,6 @@
 import $ from "jquery";
 import jsonMind from "../mind";
+import URL from "../common/URL";
 
 const tabsEvent = {
   firstFormat: true,
@@ -55,14 +56,18 @@ const tabsEvent = {
       } catch (e) {}
     } else {
       unsafeWindow.GLOBAL_JSMIND.expand_all();
-      unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(unsafeWindow.GLOBAL_JSMIND.get_root());
+      unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(
+        unsafeWindow.GLOBAL_JSMIND.get_root()
+      );
     }
   },
   format: function () {},
   // 显示JSON脑图
   viewJsonMind: function () {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
-    unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(unsafeWindow.GLOBAL_JSMIND.get_root());
+    unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(
+      unsafeWindow.GLOBAL_JSMIND.get_root()
+    );
   },
   // 查看原始JSON内容
   viewRawText: function () {
@@ -95,8 +100,7 @@ const tabsEvent = {
       maxmin: true,
       shadeClose: true,
       area: ["900px", "600px"],
-      content:
-        '<iframe style="width: 100%;height: 100%;border: 0;" id="jsoncrackEmbed" src="https://jsoncrack.feny.ink/widget"></iframe>',
+      content: `<iframe style="width: 100%;height: 100%;border: 0;" id="jsoncrackEmbed" src="${URL.JSON_CRACK_WIDGET}"></iframe>`,
       success: function (layero) {
         const jsonCrackEmbed = layero.find("#jsoncrackEmbed")[0];
         window?.addEventListener("message", () => {

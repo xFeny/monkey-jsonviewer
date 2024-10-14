@@ -1,5 +1,5 @@
 import $ from "jquery";
-import Utils from "../core/Utils";
+import Utils from "../common/Utils";
 
 /**
  * JSON 格式化容器内事件

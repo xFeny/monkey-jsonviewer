@@ -1,5 +1,6 @@
 import $ from "jquery";
-import Utils from "./core/Utils";
+import Utils from "./common/Utils";
+import URL from "./common/URL";
 
 (function () {
   "use strict";
@@ -37,6 +38,7 @@ import Utils from "./core/Utils";
     return;
   }
 
+  window.postMessage({ isJSON: true });
   unsafeWindow.GLOBAL_SOURCE_ELEMENT.hide();
   // 将内容用eval函数处理下
   try {
@@ -51,6 +53,7 @@ import Utils from "./core/Utils";
     .append(`<link href="${layuiCss}" rel="stylesheet">`)
     .append(`<script src="${layuiJs}">`);
 
+  // 脑图节点随机颜色
   GM_addStyle(`
     jmnode.root::before{
       background-color: ${Utils.randomColor(0.5)}
@@ -60,11 +63,19 @@ import Utils from "./core/Utils";
       background-color: ${Utils.randomColor(0.5)}
     }
   `);
-  // 脑图节点随机颜色
 
   import("./layout");
   import("./format")
     .then((format) => format.default.init())
     .then(() => import("./toolbar"))
     .then(() => import("./scrollTop"));
+
+  // 新标签页打开测试JSON
+  const openInTab = () => GM_openInTab(URL.EXAMPLE_JSON);
+  GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
+  document.addEventListener("keydown", function (event) {
+    if (event.altKey && event.key === "j") {
+      openInTab();
+    }
+  });
 })();

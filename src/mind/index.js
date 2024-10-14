@@ -1,5 +1,5 @@
 import $ from "jquery";
-import Utils from "../core/Utils";
+import Utils from "../common/Utils";
 import jsMind from "jsmind";
 import "jsmind/screenshot";
 import "jsmind/style/jsmind.css";
