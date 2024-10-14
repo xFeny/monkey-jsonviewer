@@ -463,9 +463,11 @@ html {
 /** 暗黑主题 START **/
 body.dark,
 body.dark_IntelliJ {
-  $color: #454646;
+  $color: #464646;
   $color_333: #333333;
   $color_c4: #c4c4c4;
+  $bd_color: #64b7ff;
+
   .format-container {
     li,
     pre {
@@ -476,13 +478,14 @@ body.dark_IntelliJ {
     .toolbar {
       color: $color_c4;
       border-bottom-color: $color;
+      background-color: $color_333;
 
       .tabs-item {
         border-top-color: $color_333;
 
         &.active {
           color: $color_c4;
-          border-top-color: #64b7ff;
+          border-top-color: $bd_color;
           background-color: $color;
         }
       }
@@ -490,7 +493,7 @@ body.dark_IntelliJ {
       .tabs-item,
       .toolbar-item {
         &:hover {
-          border-top-color: #64b7ff;
+          border-top-color: $bd_color;
           background-color: $color;
         }
       }
@@ -499,7 +502,7 @@ body.dark_IntelliJ {
     .searchbox {
       input {
         color: $color-gray;
-        background-color: #464646;
+        background-color: $color;
       }
       .clear {
         filter: invert(0.8);
@@ -546,10 +549,8 @@ body.dark_IntelliJ {
 }
 body.dark {
   .format-container {
-    .tabs,
-    .toolbar,
     .tabs-container {
-      background-color: #333333;
+      background-color: #252526;
     }
 
     .json-curly-brackets {
@@ -586,8 +587,6 @@ body.dark {
 /** 第二个暗黑主题 START **/
 body.dark_IntelliJ {
   .format-container {
-    .tabs,
-    .toolbar,
     .tabs-container {
       background-color: #1e1f22;
     }
