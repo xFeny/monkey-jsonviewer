@@ -16,7 +16,6 @@ jobs:
           git config --local user.name github-actions[bot]
           git config --global core.autocrlf true
           git config --global core.safecrlf false
-          git config advice.addIgnoredFile false
       - name: Install dependencies
         uses: pnpm/action-setup@v4
         with:
@@ -27,7 +26,7 @@ jobs:
       - name: Git commit
         id: commit
         run: |
-          git add dist
+          git add --all
           git commit -m "CI build"
         continue-on-error: true
       - name: Git push
