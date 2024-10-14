@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-const theme = {
+export default {
   // 切换主题
   changeTheme: function () {
     const that = this;
@@ -22,5 +22,3 @@ const theme = {
     this.setTheme().changeTheme();
   },
 };
-
-export default theme;

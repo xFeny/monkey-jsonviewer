@@ -31,19 +31,8 @@ export default defineConfig({
         systemjs: cdn.unpkg()[1],
         cssSideEffects: () => {
           return (e) => {
-            const docType = [
-              "application/vnd.api+json",
-              "application/javascript",
-              "application/json",
-              "text/javascript",
-              "text/plain",
-              "text/json",
-            ];
-            if (!docType.includes(document.contentType)) {
-              return;
-            }
             // 是否为JSON数据
-            window.addEventListener("message", function (event) {
+            window.addEventListener("message", (event) => {
               const { data } = event;
               if (data && data.isJSON) {
                 if (typeof GM_addStyle == "function") {

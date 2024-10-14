@@ -2,7 +2,7 @@ import "./layout.scss";
 
 const layout = `
         <div class="format-container">
-            <div>
+            <div class="panel">
                 <div class="tabs">
                     <div class="tabs-item btn active" id="format">JSON格式化</div>
                     <div class="tabs-item btn" id="viewJsonMind">JSON脑图</div>

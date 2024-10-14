@@ -93,6 +93,8 @@ const tabsEvent = {
     }
   },
   jsoncrack: function () {
+    let theme = GM_getValue("theme") || "light";
+    theme = theme.replace(/_.*/, "");
     layer.closeAll();
     const index = layer.open({
       type: 1,
@@ -106,6 +108,7 @@ const tabsEvent = {
         window?.addEventListener("message", () => {
           jsonCrackEmbed.contentWindow.postMessage(
             {
+              options: { theme },
               json: JSON.stringify(unsafeWindow.GLOBAL_JSON),
             },
             "*"

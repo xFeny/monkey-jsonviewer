@@ -463,104 +463,163 @@ html {
 /** 暗黑主题 START **/
 body.dark,
 body.dark_IntelliJ {
-  li,
-  pre {
-    color: $color-gray;
-  }
+  $color: #454646;
+  $color_333: #333333;
+  $color_c4: #c4c4c4;
+  .format-container {
+    li,
+    pre {
+      color: $color-gray;
+    }
 
-  .jsonp {
-    color: #f1d700;
-  }
+    .tabs,
+    .toolbar {
+      color: $color_c4;
+      border-bottom-color: $color;
 
-  .json-toggle {
-    opacity: 0.35;
+      .tabs-item {
+        border-top-color: $color_333;
 
-    &:hover {
+        &.active {
+          color: $color_c4;
+          border-top-color: #64b7ff;
+          background-color: $color;
+        }
+      }
+
+      .tabs-item,
+      .toolbar-item {
+        &:hover {
+          border-top-color: #64b7ff;
+          background-color: $color;
+        }
+      }
+    }
+
+    .searchbox {
+      input {
+        color: $color-gray;
+        background-color: #464646;
+      }
+      .clear {
+        filter: invert(0.8);
+      }
+    }
+
+    .selectbox {
+      select {
+        border: 0;
+        color: $color_333;
+        background-color: $color-gray;
+      }
+      .inputJson,
+      .fetchApi {
+        color: #85c6ff;
+      }
+    }
+
+    .jsonp {
+      color: #f1d700;
+    }
+
+    .json-toggle {
+      opacity: 0.35;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
+    jmnode {
+      filter: brightness(2);
+    }
+
+    table tr:hover {
+      background-color: #353b48;
+    }
+
+    .simple-tree-table-icon {
+      color: #fff;
       opacity: 0.5;
     }
   }
-
-  jmnode {
-    filter: brightness(2);
-  }
-
-  table tr:hover {
-    background-color: #353b48;
-  }
-
-  .simple-tree-table-icon {
-    color: #fff;
-    opacity: 0.5;
-  }
 }
 body.dark {
-  .tabs-container {
-    background-color: #333333;
-  }
+  .format-container {
+    .tabs,
+    .toolbar,
+    .tabs-container {
+      background-color: #333333;
+    }
 
-  .json-curly-brackets {
-    color: #ce70d6;
-  }
+    .json-curly-brackets {
+      color: #ce70d6;
+    }
 
-  .json-square-brackets {
-    color: #f1d700;
-  }
+    .json-square-brackets {
+      color: #f1d700;
+    }
 
-  .json-key {
-    color: #9cdcfe;
-  }
+    .json-key {
+      color: #9cdcfe;
+    }
 
-  .json-string,
-  .json-string a {
-    color: #ce9178;
-  }
+    .json-string,
+    .json-string a {
+      color: #ce9178;
+    }
 
-  .json-number {
-    color: #b5cea8;
-  }
+    .json-number {
+      color: #b5cea8;
+    }
 
-  .json-boolean {
-    color: #358cd6;
-  }
+    .json-boolean {
+      color: #358cd6;
+    }
 
-  .json-null {
-    color: #569cd6;
+    .json-null {
+      color: #569cd6;
+    }
   }
 }
 /** 暗黑主题 END **/
 /** 第二个暗黑主题 START **/
 body.dark_IntelliJ {
-  .tabs-container {
-    background-color: #1e1f22;
-  }
+  .format-container {
+    .tabs,
+    .toolbar,
+    .tabs-container {
+      background-color: #1e1f22;
+    }
 
-  .json-curly-brackets {
-    color: #bb9667;
-  }
+    .json-curly-brackets {
+      color: #bb9667;
+    }
 
-  .json-square-brackets {
-    color: #bbbda3;
-  }
+    .json-square-brackets {
+      color: #bbbda3;
+    }
 
-  .json-key {
-    color: #c77dbb;
-  }
+    .json-key {
+      color: #c77dbb;
+    }
 
-  .json-string,
-  .json-string a {
-    color: #499472;
-  }
+    .json-string,
+    .json-string a {
+      color: #499472;
+    }
 
-  .json-number {
-    color: #27abb7;
-  }
+    .json-number {
+      color: #27abb7;
+    }
 
-  .json-boolean {
-    color: #ce8d66;
-  }
+    .json-boolean {
+      color: #ce8d66;
+    }
 
-  .json-null {
-    color: #c06235;
+    .json-null {
+      color: #c06235;
+    }
   }
 }
 /** 第二个暗黑主题 END **/

@@ -39,30 +39,32 @@ import URL from "./common/URL";
   }
 
   window.postMessage({ isJSON: true });
-  unsafeWindow.GLOBAL_SOURCE_ELEMENT.hide();
-  // 将内容用eval函数处理下
-  try {
-    unsafeWindow.GLOBAL_JSON = eval(`(${rawText})`);
-  } catch (e) {
-    unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
-  }
+  setTimeout(() => {
+    unsafeWindow.GLOBAL_SOURCE_ELEMENT.hide();
+    // 将内容用eval函数处理下
+    try {
+      unsafeWindow.GLOBAL_JSON = eval(`(${rawText})`);
+    } catch (e) {
+      unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
+    }
 
-  $(document.head)
-    .append(`<link href="${URL.LAYUI_CSS}" rel="stylesheet">`)
-    .append(`<script src="${URL.LAYUI_JS}">`);
+    $(document.head)
+      .append(`<link href="${URL.LAYUI_CSS}" rel="stylesheet">`)
+      .append(`<script src="${URL.LAYUI_JS}">`);
 
-  // 脑图节点随机颜色
-  GM_addStyle(
-    `jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
+    // 脑图节点随机颜色
+    GM_addStyle(
+      `jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
      jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
     `
-  );
+    );
 
-  import("./layout");
-  import("./format")
-    .then((format) => format.default.init())
-    .then(() => import("./toolbar"))
-    .then(() => import("./scrollTop"));
+    import("./layout");
+    import("./format")
+      .then((format) => format.default.init())
+      .then(() => import("./toolbar"))
+      .then(() => import("./scrollTop"));
+  });
 
   // 新标签页打开测试JSON
   const openInTab = () => GM_openInTab(URL.EXAMPLE_JSON);
