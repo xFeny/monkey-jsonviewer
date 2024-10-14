@@ -54,7 +54,7 @@ System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);r
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind/screenshot", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-CihzI8JV.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-D2N0u3WR.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -66,7 +66,7 @@ System.register("./__entry.js", ['./__monkey.entry-CihzI8JV.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-CihzI8JV.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-D2N0u3WR.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -206,9 +206,11 @@ System.register("./__monkey.entry-CihzI8JV.js", ['jquery'], (function (exports, 
         }
       });
       const URL = exports("d", {
-        EXAMPLE_JSON: "https://fetch-api.feny.ink/example.json",
-        ONLINE_HTTP_REQUEST: "https://fetch-api.feny.ink/httpRequest",
-        JSON_CRACK_WIDGET: "https://jsoncrack.feny.ink/widget"
+        LAYUI_JS: "//unpkg.com/layui@2.7.6/dist/layui.js",
+        LAYUI_CSS: "//unpkg.com/layui@2.7.6/dist/css/layui.css",
+        EXAMPLE_JSON: "//fetch-api.feny.ink/example.json",
+        ONLINE_HTTP_REQUEST: "//fetch-api.feny.ink/httpRequest",
+        JSON_CRACK_WIDGET: "//jsoncrack.feny.ink/widget"
       });
       var _GM_addStyle = /* @__PURE__ */ (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
       var _GM_getValue = exports("a", /* @__PURE__ */ (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)());
@@ -251,20 +253,14 @@ System.register("./__monkey.entry-CihzI8JV.js", ['jquery'], (function (exports, 
         } catch (e) {
           _unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
         }
-        const layuiJs = "//unpkg.com/layui@2.7.6/dist/layui.js";
-        const layuiCss = "//unpkg.com/layui@2.7.6/dist/css/layui.css";
-        $("head").append(`<link href="${layuiCss}" rel="stylesheet">`).append(`<script src="${layuiJs}">`);
-        _GM_addStyle(`
-    jmnode.root::before{
-      background-color: ${Utils.randomColor(0.5)}
-    }
-
-    jmnode:not(.root)::before{
-      background-color: ${Utils.randomColor(0.5)}
-    }
-  `);
+        $(document.head).append(`<link href="${URL.LAYUI_CSS}" rel="stylesheet">`).append(`<script src="${URL.LAYUI_JS}">`);
+        _GM_addStyle(
+          `jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
+     jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
+    `
+        );
         __vitePreload(() => module.import('./index-YA0dljc1-C2SpHS29.js'), void 0 );
-        __vitePreload(() => module.import('./index-DrBmyNF8-BvKnnuov.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BiwxA_Nw-Dg0aX6Z8.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
+        __vitePreload(() => module.import('./index-CvWqWHgd-0P_NjAYZ.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BiCJYyOJ-DvucPWNP.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
         const openInTab = () => _GM_openInTab(URL.EXAMPLE_JSON);
         _GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
         document.addEventListener("keydown", function(event) {
@@ -336,7 +332,7 @@ System.register("./index-YA0dljc1-C2SpHS29.js", [], (function (exports, module) 
         };
 }));
 
-System.register("./index-DrBmyNF8-BvKnnuov.js", ['jquery', './__monkey.entry-CihzI8JV.js'], (function (exports, module) {
+System.register("./index-CvWqWHgd-0P_NjAYZ.js", ['jquery', './__monkey.entry-D2N0u3WR.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
@@ -971,7 +967,7 @@ System.register("./index-DrBmyNF8-BvKnnuov.js", ['jquery', './__monkey.entry-Cih
   };
 }));
 
-System.register("./index-BiwxA_Nw-Dg0aX6Z8.js", ['jquery', './__monkey.entry-CihzI8JV.js', 'jsmind', 'jsmind/screenshot'], (function (exports, module) {
+System.register("./index-BiCJYyOJ-DvucPWNP.js", ['jquery', './__monkey.entry-D2N0u3WR.js', 'jsmind', 'jsmind/screenshot'], (function (exports, module) {
   'use strict';
   var $, URL, _unsafeWindow, _GM_setClipboard, Utils, _GM_getValue, _GM_setValue, jsMind;
   return {
