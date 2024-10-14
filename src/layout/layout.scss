@@ -503,6 +503,7 @@ body.dark_IntelliJ {
       input {
         color: $color-gray;
         background-color: $color;
+        border-left: 1.5px solid $color_333;
       }
       .clear {
         filter: invert(0.8);
