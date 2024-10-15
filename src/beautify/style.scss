@@ -1,0 +1,30 @@
+body {
+  padding-top: 20px;
+  padding-left: 5px;
+
+  .beautify_checkbox {
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100vw;
+    padding: 5px 10px;
+    position: fixed;
+    display: flex;
+
+    align-items: center;
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ccc;
+
+    label {
+      font-size: 13px;
+    }
+
+    input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      position: relative;
+      top: 1.5px;
+      margin-right: 5px;
+    }
+  }
+}

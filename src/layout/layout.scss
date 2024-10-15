@@ -7,14 +7,6 @@ $tab-color: #ececec;
 
 body,
 html {
-  margin: 0;
-  padding: 0;
-  font-size: $fz14;
-
-  td {
-    font-size: $fz14;
-  }
-
   li::marker {
     content: "";
   }
@@ -130,6 +122,7 @@ html {
     flex-grow: 1;
     overflow: auto;
     line-height: 1.4;
+    font-size: 13.5px;
     font-family: monospace;
 
     > div {

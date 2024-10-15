@@ -11,15 +11,12 @@
     "lint:fix": "eslint --fix src & prettier --write src"
   },
   "devDependencies": {
+    "beautifier": "^0.1.7",
     "dom-to-image": "^2.6.0",
-    "eslint": "8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-unused-imports": "^3.2.0",
+    "highlight.js": "^11.10.0",
     "jquery": "^3.7.1",
     "jsmind": "^0.8.5",
     "layui": "^2.9.17",
-    "prettier": "^3.3.3",
     "sass": "^1.79.5",
     "unplugin-auto-import": "^0.18.3",
     "vite": "^5.2.12",

@@ -62,6 +62,7 @@ export default {
       "text/javascript",
       "text/plain",
       "text/json",
+      "text/css",
     ];
     if (!docType.includes(contentType)) {
       return false;

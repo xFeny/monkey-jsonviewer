@@ -15,18 +15,31 @@ export default defineConfig({
         externalGlobals: {
           jquery: cdn
             .unpkg("jquery", "dist/jquery.min.js")
-            .concat(
-              util.dataUrl(";window.jQuery=jQuery;;window.jquery=jQuery;")
-            ),
+            .concat(util.dataUrl(";window.jquery=jQuery;")),
           jsmind: cdn
             .unpkg("jsmind", "es6/jsmind.js")
-            .concat(
-              util.dataUrl(";window.jsMind=jsMind;window.jsmind=jsMind;")
-            ),
+            .concat(util.dataUrl(";window.jsmind=jsMind;")),
           "jsmind/screenshot": cdn.unpkg("jsmind", "es6/jsmind.screenshot.js"),
+          beautifier: cdn
+            .unpkg("beautifier")
+            .concat(
+              util.dataUrl(
+                ";window.beautifier=js_beautify;window.js_beautify=js_beautify;window.css_beautify=css_beautify;"
+              )
+            ),
+          "highlight.js": [
+            "hljs",
+            (version) =>
+              `https://unpkg.com/@highlightjs/cdn-assets@${version}/highlight.min.js`,
+          ].concat(util.dataUrl(";window.hljs=hljs;")),
         },
         externalResource: {
-          "jsmind/style/jsmind.css": cdn.unpkg("jsmind", "style/jsmind.css"),
+          "jsmind/style/jsmind.css": cdn.unpkg("jsmind"),
+          "highlight.js/styles/xcode.min.css": [
+            "highlightjs",
+            (version) =>
+              `https://unpkg.com/@highlightjs/cdn-assets@${version}/styles/xcode.min.css`,
+          ],
         },
         systemjs: cdn.unpkg()[1],
         cssSideEffects: () => {

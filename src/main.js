@@ -35,6 +35,7 @@ import URL from "./common/URL";
   }
 
   if (!Utils.isJSON(rawText)) {
+    import("./beautify");
     return;
   }
 
