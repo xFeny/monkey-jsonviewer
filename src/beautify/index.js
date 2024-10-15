@@ -7,7 +7,12 @@ import hljs from "highlight.js";
 import { js_beautify, css_beautify } from "beautifier";
 import "highlight.js/styles/xcode.min.css";
 
-const docType = ["application/javascript", "text/javascript", "text/css"];
+const docType = [
+  "application/x-javascript",
+  "application/javascript",
+  "text/javascript",
+  "text/css",
+];
 const contentType = document.contentType;
 if (docType.includes(document.contentType)) {
   window.postMessage({ isJSON: true });
@@ -36,7 +41,7 @@ if (docType.includes(document.contentType)) {
 
 function beautifyCode(contentType, element, rawText) {
   const language = contentType.substring(contentType.indexOf("/") + 1);
-  if (!["css", "javascript"].includes(language)) {
+  if (!["css", "javascript", "x-javascript"].includes(language)) {
     return;
   }
 
@@ -44,16 +49,17 @@ function beautifyCode(contentType, element, rawText) {
   switch (language) {
     case "css":
       const cssBeautify = css_beautify ? css_beautify : window.css_beautify;
-      // beautifyCode = cssBeautify(rawText);
-      beautifyCode = hljs.highlight(cssBeautify(rawText), {
+      beautifyCode = cssBeautify(rawText);
+      beautifyCode = hljs.highlight(beautifyCode, {
         language,
       }).value;
       break;
     case "javascript":
+    case "x-javascript":
       const jsBeautify = js_beautify ? js_beautify : window.js_beautify;
-      // beautifyCode = jsBeautify(rawText);
-      beautifyCode = hljs.highlight(jsBeautify(rawText), {
-        language,
+      beautifyCode = jsBeautify(rawText);
+      beautifyCode = hljs.highlight(beautifyCode, {
+        language: "javascript",
       }).value;
       break;
     default:

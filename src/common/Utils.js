@@ -57,6 +57,7 @@ export default {
   isJSONDocument: function (contentType) {
     const docType = [
       "application/vnd.api+json",
+      "application/x-javascript",
       "application/javascript",
       "application/json",
       "text/javascript",
