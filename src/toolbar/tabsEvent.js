@@ -1,6 +1,6 @@
 import $ from "jquery";
 import jsonMind from "../mind";
-import URL from "../common/URL";
+import COMMON_URL from "../common/URL";
 
 const tabsEvent = {
   firstFormat: true,
@@ -102,7 +102,7 @@ const tabsEvent = {
       maxmin: true,
       shadeClose: true,
       area: ["900px", "600px"],
-      content: `<iframe style="width: 100%;height: 100%;border: 0;" id="jsoncrackEmbed" src="${URL.JSON_CRACK_WIDGET}"></iframe>`,
+      content: `<iframe style="width: 100%;height: 100%;border: 0;" id="jsoncrackEmbed" src="${COMMON_URL.JSON_CRACK_WIDGET}"></iframe>`,
       success: function (layero) {
         const jsonCrackEmbed = layero.find("#jsoncrackEmbed")[0];
         window?.addEventListener("message", () => {

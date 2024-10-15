@@ -304,7 +304,6 @@ html {
     jmexpander {
       margin-top: 1px;
       line-height: 9px;
-      background-color: #dfdfdf;
     }
 
     .datatype {
@@ -536,6 +535,10 @@ body.dark_IntelliJ {
 
     jmnode {
       filter: brightness(2);
+    }
+
+    jmexpander {
+      background-color: #dfdfdf;
     }
 
     table tr:hover {

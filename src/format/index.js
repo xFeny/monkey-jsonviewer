@@ -13,7 +13,6 @@ const formatStyle = {
       const val = $(e.target).val();
       GM_setValue("formatStyle", val);
       that.setStyle();
-      layer.closeAll();
     });
     return this;
   },
@@ -29,6 +28,7 @@ const formatStyle = {
         unsafeWindow.GLOBAL_JSON,
         unsafeWindow.GLOBAL_JSONP_FUN
       );
+      layer.closeAll();
     } else {
       const trHTML = treeTableTrHTML(unsafeWindow.GLOBAL_JSON);
       let appendHtml = `<table id="treeTable">${trHTML}</table>`;
@@ -39,9 +39,12 @@ const formatStyle = {
         appendHtml = `<div class="jsonp">${unsafeWindow.GLOBAL_JSONP_FUN}(</div>${appendHtml}<div class="jsonp">)</div>`;
       }
       $("#formatContainer").append(appendHtml);
-      $("#treeTable").simpleTreeTable({
-        expander: "#expandAll",
-        collapser: "#collapseAll",
+      setTimeout(() => {
+        $("#treeTable").simpleTreeTable({
+          expander: "#expandAll",
+          collapser: "#collapseAll",
+        });
+        layer.closeAll();
       });
 
       // Highlight selected row
