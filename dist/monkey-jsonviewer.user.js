@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.7.4
+// @version      v0.7.5
 // @author       Feny
 // @description  格式化显示JSON使数据看起来更加漂亮，支持折叠/展开格式化后的数据，支持JSON脑图让调用层级看着更清晰，支持复制JSON脑图节点路径
 // @icon         data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9wvjF8bLX4ZrHZx+XNqlwnmKjH5YUyRvb6kEAd8H058d1b47XV5Ir3eoN++bagaXYrN6KOBn2FfPPx5/aEutX8a+KNWhIubhruZLSNj8u1WMcIOP4QoXOOwNS/wDBM79lDTfjh8YNe+IXj63TxRdeHfKjsE1KMTxtdSbmMmxvlAiVV2IBsUybgAyKR9ZTy6lhsM69Xovm2+iPmKmOqYjEKjT6v5WXU9e8beKrjxZpp/s/xFrfhjWIwWs9X0q42z2kmPlZo2zDcxjqYZ0eNv7obDDf/YL/AG8L745eJNc+G3xCttP0n4qeEWZZ2sVZNP8AENsu0rd2ysS0ZKPG7RMSQsisCcukWd+3x4RtfhpqGk+JNPjS0g1mV7a8iT5UM4XesgHYsofdjglQepJPxwPE1x4V/au8LePtNkeK40ma0lmdDgyorvHMhPo9uxjP+y1bUcHRxmGbS1adn1TXT0/4fcipiqmExCi3pfVdGn19f+GLni/w7ceGf2wPFXga+Vo5rW/vDbI3WWI/v4HA/wBqBg3tk+lfWX7AXia1+F/iDV9B1CRbWHXjFLayyHannpuUxk+rqy4zxlMdWAPQft7fsL33x91nQfiD4DutP0r4oeDXVrT7cWWx1y3UsTZ3LKCyAh5FEigkLLIpHzBk5vwj4JuvE2kLJfeHdY8N6lGAl5pepwBZrOT+JRIuYp0ByBNCzxPg4bIICqYyljMKot62Sa6prr6P/gBDC1MLiHJLS90+jT6ev/Dnmn/BVP8Aaw0nxv4/8P8Aw18KXK69qmk3MlxqEdiRMwuivlpbrtPLopkMnZNy5IIYLyPwa/Z8vvEmv+HtHu4/Ovr+5iS6KDcqAtukwe6om7nuEJxX0XoH7PK/bJG0vRoY5rr/AFslvbLGZf8AfcAf+PGvafgv8CbX4byNqFyI5tWmXYCoytsh6qvqx7t+A4yWiWYUsLhlRpbr72318kVHA1MTiHVqbP7kl0P/2Q==
@@ -63,7 +63,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind/screenshot", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-Bl9ZzpsM.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-CxvJWx78.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -75,7 +75,7 @@ System.register("./__entry.js", ['./__monkey.entry-Bl9ZzpsM.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-Bl9ZzpsM.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-CxvJWx78.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -202,6 +202,7 @@ System.register("./__monkey.entry-Bl9ZzpsM.js", ['jquery'], (function (exports, 
         isJSONDocument: function(contentType) {
           const docType = [
             "application/vnd.api+json",
+            "application/x-javascript",
             "application/javascript",
             "application/json",
             "text/javascript",
@@ -254,7 +255,7 @@ System.register("./__monkey.entry-Bl9ZzpsM.js", ['jquery'], (function (exports, 
           rawText = tokens[2];
         }
         if (!Utils.isJSON(rawText)) {
-          __vitePreload(() => module.import('./index-YlJtjkg--CylewoXz.js'), void 0 );
+          __vitePreload(() => module.import('./index-C5a-a6xH-HuJjBh3Q.js'), void 0 );
           return;
         }
         window.postMessage({ isJSON: true });
@@ -272,7 +273,7 @@ System.register("./__monkey.entry-Bl9ZzpsM.js", ['jquery'], (function (exports, 
     `
           );
           __vitePreload(() => module.import('./index-B6iB3N_--CxgiotWU.js'), void 0 );
-          __vitePreload(() => module.import('./index-C1UCgioK-CNTL2Kjj.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-CtLWYbMr-ZpZh-RF-.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
+          __vitePreload(() => module.import('./index-uqF6Z8HY-B8gCy8n4.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BN5Ziz2P-DXwcBi8V.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
         });
         const openInTab = () => _GM_openInTab(URL.EXAMPLE_JSON);
         _GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
@@ -287,7 +288,7 @@ System.register("./__monkey.entry-Bl9ZzpsM.js", ['jquery'], (function (exports, 
   };
 }));
 
-System.register("./index-YlJtjkg--CylewoXz.js", ['jquery', 'highlight.js', 'beautifier', './_virtual_plugin-monkey-loader-sbGfF__7-Bf_IV2LY.js'], (function (exports, module) {
+System.register("./index-C5a-a6xH-HuJjBh3Q.js", ['jquery', 'highlight.js', 'beautifier', './_virtual_plugin-monkey-loader-sbGfF__7-Bf_IV2LY.js'], (function (exports, module) {
   'use strict';
   var $, hljs, js_beautify, css_beautify, cssLoader;
   return {
@@ -304,7 +305,12 @@ System.register("./index-YlJtjkg--CylewoXz.js", ['jquery', 'highlight.js', 'beau
     execute: (function () {
 
       cssLoader("highlightjs");
-      const docType = ["application/javascript", "text/javascript", "text/css"];
+      const docType = [
+        "application/x-javascript",
+        "application/javascript",
+        "text/javascript",
+        "text/css"
+      ];
       const contentType = document.contentType;
       if (docType.includes(document.contentType)) {
         window.postMessage({ isJSON: true });
@@ -328,21 +334,24 @@ System.register("./index-YlJtjkg--CylewoXz.js", ['jquery', 'highlight.js', 'beau
       }
       function beautifyCode(contentType2, element, rawText) {
         const language = contentType2.substring(contentType2.indexOf("/") + 1);
-        if (!["css", "javascript"].includes(language)) {
+        if (!["css", "javascript", "x-javascript"].includes(language)) {
           return;
         }
         let beautifyCode2;
         switch (language) {
           case "css":
             const cssBeautify = css_beautify ? css_beautify : window.css_beautify;
-            beautifyCode2 = hljs.highlight(cssBeautify(rawText), {
+            beautifyCode2 = cssBeautify(rawText);
+            beautifyCode2 = hljs.highlight(beautifyCode2, {
               language
             }).value;
             break;
           case "javascript":
+          case "x-javascript":
             const jsBeautify = js_beautify ? js_beautify : window.js_beautify;
-            beautifyCode2 = hljs.highlight(jsBeautify(rawText), {
-              language
+            beautifyCode2 = jsBeautify(rawText);
+            beautifyCode2 = hljs.highlight(beautifyCode2, {
+              language: "javascript"
             }).value;
             break;
         }
@@ -411,7 +420,7 @@ System.register("./index-B6iB3N_--CxgiotWU.js", [], (function (exports, module) 
     };
 }));
 
-System.register("./index-C1UCgioK-CNTL2Kjj.js", ['jquery', './__monkey.entry-Bl9ZzpsM.js'], (function (exports, module) {
+System.register("./index-uqF6Z8HY-B8gCy8n4.js", ['jquery', './__monkey.entry-CxvJWx78.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
@@ -1055,7 +1064,7 @@ System.register("./index-C1UCgioK-CNTL2Kjj.js", ['jquery', './__monkey.entry-Bl9
   };
 }));
 
-System.register("./index-CtLWYbMr-ZpZh-RF-.js", ['jquery', './__monkey.entry-Bl9ZzpsM.js', 'jsmind', 'jsmind/screenshot', './_virtual_plugin-monkey-loader-sbGfF__7-Bf_IV2LY.js'], (function (exports, module) {
+System.register("./index-BN5Ziz2P-DXwcBi8V.js", ['jquery', './__monkey.entry-CxvJWx78.js', 'jsmind', 'jsmind/screenshot', './_virtual_plugin-monkey-loader-sbGfF__7-Bf_IV2LY.js'], (function (exports, module) {
   'use strict';
   var $, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, Utils, _GM_setValue, jsMind, cssLoader;
   return {
