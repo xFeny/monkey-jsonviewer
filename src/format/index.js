@@ -28,7 +28,9 @@ const formatStyle = {
         unsafeWindow.GLOBAL_JSON,
         unsafeWindow.GLOBAL_JSONP_FUN
       );
-      layer.closeAll();
+      try {
+        layer.closeAll();
+      } catch (error) {}
     } else {
       const trHTML = treeTableTrHTML(unsafeWindow.GLOBAL_JSON);
       let appendHtml = `<table id="treeTable">${trHTML}</table>`;
@@ -44,7 +46,9 @@ const formatStyle = {
           expander: "#expandAll",
           collapser: "#collapseAll",
         });
-        layer.closeAll();
+        try {
+          layer.closeAll();
+        } catch (error) {}
       });
 
       // Highlight selected row
