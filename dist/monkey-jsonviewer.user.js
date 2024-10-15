@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.7.3
+// @version      v0.7.4
 // @author       Feny
 // @description  格式化显示JSON使数据看起来更加漂亮，支持折叠/展开格式化后的数据，支持JSON脑图让调用层级看着更清晰，支持复制JSON脑图节点路径
 // @icon         data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9wvjF8bLX4ZrHZx+XNqlwnmKjH5YUyRvb6kEAd8H058d1b47XV5Ir3eoN++bagaXYrN6KOBn2FfPPx5/aEutX8a+KNWhIubhruZLSNj8u1WMcIOP4QoXOOwNS/wDBM79lDTfjh8YNe+IXj63TxRdeHfKjsE1KMTxtdSbmMmxvlAiVV2IBsUybgAyKR9ZTy6lhsM69Xovm2+iPmKmOqYjEKjT6v5WXU9e8beKrjxZpp/s/xFrfhjWIwWs9X0q42z2kmPlZo2zDcxjqYZ0eNv7obDDf/YL/AG8L745eJNc+G3xCttP0n4qeEWZZ2sVZNP8AENsu0rd2ysS0ZKPG7RMSQsisCcukWd+3x4RtfhpqGk+JNPjS0g1mV7a8iT5UM4XesgHYsofdjglQepJPxwPE1x4V/au8LePtNkeK40ma0lmdDgyorvHMhPo9uxjP+y1bUcHRxmGbS1adn1TXT0/4fcipiqmExCi3pfVdGn19f+GLni/w7ceGf2wPFXga+Vo5rW/vDbI3WWI/v4HA/wBqBg3tk+lfWX7AXia1+F/iDV9B1CRbWHXjFLayyHannpuUxk+rqy4zxlMdWAPQft7fsL33x91nQfiD4DutP0r4oeDXVrT7cWWx1y3UsTZ3LKCyAh5FEigkLLIpHzBk5vwj4JuvE2kLJfeHdY8N6lGAl5pepwBZrOT+JRIuYp0ByBNCzxPg4bIICqYyljMKot62Sa6prr6P/gBDC1MLiHJLS90+jT6ev/Dnmn/BVP8Aaw0nxv4/8P8Aw18KXK69qmk3MlxqEdiRMwuivlpbrtPLopkMnZNy5IIYLyPwa/Z8vvEmv+HtHu4/Ovr+5iS6KDcqAtukwe6om7nuEJxX0XoH7PK/bJG0vRoY5rr/AFslvbLGZf8AfcAf+PGvafgv8CbX4byNqFyI5tWmXYCoytsh6qvqx7t+A4yWiWYUsLhlRpbr72318kVHA1MTiHVqbP7kl0P/2Q==
@@ -9,14 +9,19 @@
 // @match        *://*/*
 // @require      https://unpkg.com/dom-to-image@2.6.0/dist/dom-to-image.min.js
 // @require      https://unpkg.com/jquery@3.7.1/dist/jquery.min.js
-// @require      data:application/javascript,%3Bwindow.jQuery%3DjQuery%3B%3Bwindow.jquery%3DjQuery%3B
+// @require      data:application/javascript,%3Bwindow.jquery%3DjQuery%3B
 // @require      https://unpkg.com/jsmind@0.8.5/es6/jsmind.js
-// @require      data:application/javascript,%3Bwindow.jsMind%3DjsMind%3Bwindow.jsmind%3DjsMind%3B
+// @require      data:application/javascript,%3Bwindow.jsmind%3DjsMind%3B
 // @require      https://unpkg.com/jsmind@0.8.5/es6/jsmind.screenshot.js
+// @require      https://unpkg.com/beautifier@0.1.7
+// @require      data:application/javascript,%3Bwindow.beautifier%3Djs_beautify%3Bwindow.js_beautify%3Djs_beautify%3Bwindow.css_beautify%3Dcss_beautify%3B
+// @require      https://unpkg.com/@highlightjs/cdn-assets@11.10.0/highlight.min.js
+// @require      data:application/javascript,%3Bwindow.hljs%3Dhljs%3B
 // @require      https://unpkg.com/systemjs@6.15.1/dist/system.min.js
 // @require      https://unpkg.com/systemjs@6.15.1/dist/extras/named-register.min.js
 // @require      data:application/javascript,%3B(typeof%20System!%3D'undefined')%26%26(System%3Dnew%20System.constructor())%3B
-// @resource     jsmind  https://unpkg.com/jsmind@0.8.5/style/jsmind.css
+// @resource     highlightjs  https://unpkg.com/@highlightjs/cdn-assets@11.10.0/styles/xcode.min.css
+// @resource     jsmind       https://unpkg.com/jsmind@0.8.5/style/jsmind.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_getValue
@@ -25,7 +30,8 @@
 // @grant        GM_setClipboard
 // @grant        GM_setValue
 // @grant        unsafeWindow
-// @note         v0.6.9 切换为暗黑主题，tab栏和JSONCrak的也跟着改变
+// @note         v0.7.4 增加对JS、CSS美化输出
+// @note		 v0.6.9 切换为暗黑主题，tab栏和JSONCrak的也跟着改变
 // @note		 v0.6.6 增加多一种暗黑主题，默认主题色修改
 // @note		 v0.6.3 修复暗黑主题，tab颜色问题
 // @note		 v0.6.2 脑图增加JSON Crack
@@ -48,14 +54,16 @@
 // @note		 v0.4.5 在json-viewer-updated原基础上进行了一些修改，主要有CSS样式修改，新增折叠/展开全部功能，新增JSON脑图功能，脑图节点点击显示调用路径
 // ==/UserScript==
 
-(o=>{window.addEventListener("message",a=>{const{data:t}=a;if(t&&t.isJSON){if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const r=document.createElement("style");r.textContent=o,document.head.append(r)}})})(' @charset "UTF-8";body,html{margin:0;padding:0;font-size:14px}body td,html td{font-size:14px}body li::marker,html li::marker{content:""}body input:focus,body select:focus,body textarea:focus,html input:focus,html select:focus,html textarea:focus{outline:0}.hidden{display:none!important}.layui-layer-tips{width:auto!important}.format-container{z-index:10;position:fixed;width:100vw;height:100vh;display:flex;flex-direction:column}.format-container .tabs,.format-container .toolbar{display:flex;line-height:28px;background-color:#ececec;border-bottom:1px solid #ccc}.format-container .toolbar{line-height:23px}.format-container .toolbar .searchbox{display:flex;flex-grow:1}.format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.format-container .tabs-item{border-width:3px;border-top:3px solid #ececec}.format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#e9e9e9}.format-container .tabs-item:hover{border-top-color:#c3c3c6}.format-container .tabs-item,.format-container .toolbar-item{cursor:pointer;padding:0 10px;font-size:12px}.format-container .tabs-item:hover,.format-container .toolbar-item:hover{background-color:#d4d4d4}.format-container .tabs .selectbox{position:absolute;right:200px;display:flex;font-size:13px}.format-container .inputJson,.format-container .fetchApi{cursor:pointer;color:#0060df;margin-left:15px}.format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-family:monospace}.format-container .tabs-container>div{display:none}.format-container .tabs-container>div.active{display:block}.format-container .tabs-container #formatContainer{padding:10px}.format-container .tabs-container #rawTextContainer{padding:0 10px}.format-container .tabs-container #rawTextContainer pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.format-container .jsonp{color:#93983a}.format-container ul.json-object,.format-container ul.json-array{margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e;padding-left:24px}.format-container .json-brackets{font-weight:700}.format-container .json-key{color:#910f93;cursor:pointer}.format-container .json-string,.format-container .json-string a{color:#2e7c16}.format-container .json-number{color:#164ff1}.format-container .json-boolean{color:#905}.format-container .json-null{color:#228fec}.format-container a.json-toggle{position:rElative;color:inherit;opacity:.2;text-decoration:none}.format-container a.json-toggle:hover{opacity:.35}.format-container a.json-toggle:active{opacity:.5}.format-container a.json-toggle:focus{outline:none}.format-container a.json-toggle:before{top:2.5px;left:-15px;position:absolute;content:"";display:block;width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg)}.format-container a.json-toggle.collapsed:before{transform:rotate(0)}.format-container a.json-placeholder{color:#ccc;font-size:12px;padding:0 1em;text-decoration:none}.format-container a.json-placeholder:hover{text-decoration:underline}.format-container .json-curly-brackets{color:#6d9331}.format-container .json-square-brackets{color:#8e9331}.format-container #jmContainer{width:100vw;height:calc(100vh - 57px)}.format-container #jmContainer jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.format-container #jmContainer jmnode.root{padding:0;color:transparent!important}.format-container #jmContainer jmnode:before{content:"";top:50%!important;margin-top:1.5px;position:absolute;border-radius:50%;transform:translateY(-50%)}.format-container #jmContainer jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.format-container #jmContainer jmnode:hover{text-shadow:0px 0px 1px currentColor}.format-container #jmContainer jmnode:not(.root):before{left:0;width:15px;height:15px}.format-container #jmContainer jmexpander{margin-top:1px;line-height:9px}.format-container #jmContainer .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.format-container table{width:-webkit-fill-available;margin-left:20px;border-collapse:collapse}.format-container table tr:hover{background-color:#f0f9fe}.format-container table tr.selected td,.format-container table tr.selected td a{color:#fff!important;background-color:#3875d7}.format-container table tr td:first-child{width:120px}.format-container table .tree-len{color:#ccc;font-size:13px}.format-container table .simple-tree-table-icon{color:#000;opacity:.2;width:0!important;margin:0!important;line-height:0!important}.format-container table .simple-tree-table-icon:before{top:.5px;left:-15px;position:relative;content:"";width:0;height:0;display:none;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg)}.format-container table .simple-tree-table-icon::hover{opacity:.35}.format-container table .simple-tree-table-icon:after{content:""!important}.format-container table .simple-tree-table-icon::active{opacity:.5}.format-container table .simple-tree-table-opened .simple-tree-table-icon:before{display:block}.format-container table .simple-tree-table-closed .simple-tree-table-icon:before{display:block;transform:rotate(0)}.httpRequest{padding:20px}.httpRequest input,.httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.requestbox,.textarea{width:700px;display:flex}.requestbox{height:35px;margin-bottom:15px}.requestbox input{flex-grow:1}.requestbox button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.requestbox button:active{background-color:#cfcfcf}.textarea input{flex-grow:1;height:30px}.light .json-key{color:#0040cf}.light .json-string,.light .json-string a{color:#a31515}.light .json-number{color:#0b7500}.light .json-boolean{color:#00f}.light .json-null{color:#05f}body.dark .format-container li,body.dark .format-container pre,body.dark_IntelliJ .format-container li,body.dark_IntelliJ .format-container pre{color:#ccc}body.dark .format-container .tabs,body.dark .format-container .toolbar,body.dark_IntelliJ .format-container .tabs,body.dark_IntelliJ .format-container .toolbar{color:#c4c4c4;border-bottom-color:#464646;background-color:#333}body.dark .format-container .tabs .tabs-item,body.dark .format-container .toolbar .tabs-item,body.dark_IntelliJ .format-container .tabs .tabs-item,body.dark_IntelliJ .format-container .toolbar .tabs-item{border-top-color:#333}body.dark .format-container .tabs .tabs-item.active,body.dark .format-container .toolbar .tabs-item.active,body.dark_IntelliJ .format-container .tabs .tabs-item.active,body.dark_IntelliJ .format-container .toolbar .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}body.dark .format-container .tabs .tabs-item:hover,body.dark .format-container .tabs .toolbar-item:hover,body.dark .format-container .toolbar .tabs-item:hover,body.dark .format-container .toolbar .toolbar-item:hover,body.dark_IntelliJ .format-container .tabs .tabs-item:hover,body.dark_IntelliJ .format-container .tabs .toolbar-item:hover,body.dark_IntelliJ .format-container .toolbar .tabs-item:hover,body.dark_IntelliJ .format-container .toolbar .toolbar-item:hover{border-top-color:#64b7ff;background-color:#464646}body.dark .format-container .searchbox input,body.dark_IntelliJ .format-container .searchbox input{color:#ccc;background-color:#464646;border-left:1.5px solid #333333}body.dark .format-container .searchbox .clear,body.dark_IntelliJ .format-container .searchbox .clear{filter:invert(.8)}body.dark .format-container .selectbox select,body.dark_IntelliJ .format-container .selectbox select{border:0;color:#333;background-color:#ccc}body.dark .format-container .selectbox .inputJson,body.dark .format-container .selectbox .fetchApi,body.dark_IntelliJ .format-container .selectbox .inputJson,body.dark_IntelliJ .format-container .selectbox .fetchApi{color:#85c6ff}body.dark .format-container .jsonp,body.dark_IntelliJ .format-container .jsonp{color:#f1d700}body.dark .format-container .json-toggle,body.dark_IntelliJ .format-container .json-toggle{opacity:.35}body.dark .format-container .json-toggle:hover,body.dark_IntelliJ .format-container .json-toggle:hover{opacity:.5}body.dark .format-container jmnode,body.dark_IntelliJ .format-container jmnode{filter:brightness(2)}body.dark .format-container jmexpander,body.dark_IntelliJ .format-container jmexpander{background-color:#dfdfdf}body.dark .format-container table tr:hover,body.dark_IntelliJ .format-container table tr:hover{background-color:#353b48}body.dark .format-container .simple-tree-table-icon,body.dark_IntelliJ .format-container .simple-tree-table-icon{color:#fff;opacity:.5}body.dark .format-container .tabs-container{background-color:#252526}body.dark .format-container .json-curly-brackets{color:#ce70d6}body.dark .format-container .json-square-brackets{color:#f1d700}body.dark .format-container .json-key{color:#9cdcfe}body.dark .format-container .json-string,body.dark .format-container .json-string a{color:#ce9178}body.dark .format-container .json-number{color:#b5cea8}body.dark .format-container .json-boolean{color:#358cd6}body.dark .format-container .json-null{color:#569cd6}body.dark_IntelliJ .format-container .tabs-container{background-color:#1e1f22}body.dark_IntelliJ .format-container .json-curly-brackets{color:#bb9667}body.dark_IntelliJ .format-container .json-square-brackets{color:#bbbda3}body.dark_IntelliJ .format-container .json-key{color:#c77dbb}body.dark_IntelliJ .format-container .json-string,body.dark_IntelliJ .format-container .json-string a{color:#499472}body.dark_IntelliJ .format-container .json-number{color:#27abb7}body.dark_IntelliJ .format-container .json-boolean{color:#ce8d66}body.dark_IntelliJ .format-container .json-null{color:#c06235}.scroll-top{width:48px;height:48px;z-index:999;position:fixed;right:30px;bottom:30px;display:none;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA39JREFUaEPtmV2ITVEUx39rJjT5KPKC5DPKK6UGZZ7Eq0whNUiKFPfcKW9mnmjm7ssLaSLygEx5xItMESnKC4V8FV4IJUkyS+fMHZ07zjl3733PvT6a+3S6Z629/r+99sfa+wgpPw1YDtxLe9/k/1eI4X5STMkSokXWNlloYjgpMZSmIxPgbxBfS8M4QK0eavT78Qw0uodrtd+wDGjAMqBcEVAQw6NaYnzeNwRAi2xBOQlMrYj6jLJTygz6iMzyyR1Ai+xCGUgMqnTmDZErgBYoIJjMXhY2S4mLeWUiNwAt0INwyEqY0iNleq1saxjlAqAB64BrToKEHVLijJNPgnHdALqPaUziOsoKRzGfaKFD+nng6FdlXj+Ay9AZq1Q5L2W2/jEA3c8sWqOSe3aCiK/A3cr/K4G2FKEbxXDZF6KuDKROXKWXFvqlxJdQmBaZzDDdKZP8thhW/RmAgKfA4qrgSq+U6UkSlAostEuJOz4Q3hnQgPXAld+CCh1pB5DogKTcSBAalhpHmw1wGtgxJuhbMczJEqIBbxLmzFUxbGg2gCYE9AVADF6jwctJDzKd73xI7DG/IQQTmCFH+OiaBT+AAyykhWcpBZv7JA4bGmaRHOV5cwBqX7mc5Qe9coyX0TK6n/m0RnVSV4bA1KuTLCi/DBTYhHCpRm+Fe8Bo/b8JmJxp71lqOwNowB7guGuqLe33iuGEpW1k5gTgVDK7qIjbZmyESU1aA1TOuA99dTn5CQulxAsbH3uAeqpOGyXVNrvEcMrGzR4gIGnjsonhYzMkhg4bx3EAm17ysGlIBh4DSzzE+LgMiGG3jaPLEApv2Q7YNFq3jcOmZg9gt/u6aH8PzEx0aGWu9PHapjFrgKimCaIDTHiQqf4pNxHW2AT8ZaMEiZdgSreUKdm25QRQgRi7nIZzI7xZcPmeNkAL5xjmVpVQx1049HUGiCAKFBH6K8GjFUP3MIW2CGJpjd4bFEPnmM54grA761tYWpteAJXgy1A6w6p09Opcu1nED7ZlAcQP/BqwGZjORAblMO9sh03czhsgLZgW6EL4JoYL0b0RTArPBfFnH6G5ZyAVYKTkGBlWQVR2bxDDgvjzvwQQXqGsDQ/sGkTXKdHzOECsB3LtjdjKMjqE/qMMjJwn5olh+98+hM6gvAqXy0aN+4Yuo/HG/weAPmC1GNrzHDbxtn4Coc0pQNdM3UAAAAAASUVORK5CYII=)} ');
+(o=>{window.addEventListener("message",a=>{const{data:t}=a;if(t&&t.isJSON){if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const r=document.createElement("style");r.textContent=o,document.head.append(r)}})})(' @charset "UTF-8";body{padding-top:20px;padding-left:5px}body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;padding:5px 10px;position:fixed;display:flex;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}body .beautify_checkbox label{font-size:13px}body .beautify_checkbox input[type=checkbox]{width:14px;height:14px;position:relative;top:1.5px;margin-right:5px}body li::marker,html li::marker{content:""}body input:focus,body select:focus,body textarea:focus,html input:focus,html select:focus,html textarea:focus{outline:0}.hidden{display:none!important}.layui-layer-tips{width:auto!important}.format-container{z-index:10;position:fixed;width:100vw;height:100vh;display:flex;flex-direction:column}.format-container .tabs,.format-container .toolbar{display:flex;line-height:28px;background-color:#ececec;border-bottom:1px solid #ccc}.format-container .toolbar{line-height:23px}.format-container .toolbar .searchbox{display:flex;flex-grow:1}.format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.format-container .tabs-item{border-width:3px;border-top:3px solid #ececec}.format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#e9e9e9}.format-container .tabs-item:hover{border-top-color:#c3c3c6}.format-container .tabs-item,.format-container .toolbar-item{cursor:pointer;padding:0 10px;font-size:12px}.format-container .tabs-item:hover,.format-container .toolbar-item:hover{background-color:#d4d4d4}.format-container .tabs .selectbox{position:absolute;right:200px;display:flex;font-size:13px}.format-container .inputJson,.format-container .fetchApi{cursor:pointer;color:#0060df;margin-left:15px}.format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.format-container .tabs-container>div{display:none}.format-container .tabs-container>div.active{display:block}.format-container .tabs-container #formatContainer{padding:10px}.format-container .tabs-container #rawTextContainer{padding:0 10px}.format-container .tabs-container #rawTextContainer pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.format-container .jsonp{color:#93983a}.format-container ul.json-object,.format-container ul.json-array{margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e;padding-left:24px}.format-container .json-brackets{font-weight:700}.format-container .json-key{color:#910f93;cursor:pointer}.format-container .json-string,.format-container .json-string a{color:#2e7c16}.format-container .json-number{color:#164ff1}.format-container .json-boolean{color:#905}.format-container .json-null{color:#228fec}.format-container a.json-toggle{position:rElative;color:inherit;opacity:.2;text-decoration:none}.format-container a.json-toggle:hover{opacity:.35}.format-container a.json-toggle:active{opacity:.5}.format-container a.json-toggle:focus{outline:none}.format-container a.json-toggle:before{top:2.5px;left:-15px;position:absolute;content:"";display:block;width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg)}.format-container a.json-toggle.collapsed:before{transform:rotate(0)}.format-container a.json-placeholder{color:#ccc;font-size:12px;padding:0 1em;text-decoration:none}.format-container a.json-placeholder:hover{text-decoration:underline}.format-container .json-curly-brackets{color:#6d9331}.format-container .json-square-brackets{color:#8e9331}.format-container #jmContainer{width:100vw;height:calc(100vh - 57px)}.format-container #jmContainer jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.format-container #jmContainer jmnode.root{padding:0;color:transparent!important}.format-container #jmContainer jmnode:before{content:"";top:50%!important;margin-top:1.5px;position:absolute;border-radius:50%;transform:translateY(-50%)}.format-container #jmContainer jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.format-container #jmContainer jmnode:hover{text-shadow:0px 0px 1px currentColor}.format-container #jmContainer jmnode:not(.root):before{left:0;width:15px;height:15px}.format-container #jmContainer jmexpander{margin-top:1px;line-height:9px}.format-container #jmContainer .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.format-container table{width:-webkit-fill-available;margin-left:20px;border-collapse:collapse}.format-container table tr:hover{background-color:#f0f9fe}.format-container table tr.selected td,.format-container table tr.selected td a{color:#fff!important;background-color:#3875d7}.format-container table tr td:first-child{width:120px}.format-container table .tree-len{color:#ccc;font-size:13px}.format-container table .simple-tree-table-icon{color:#000;opacity:.2;width:0!important;margin:0!important;line-height:0!important}.format-container table .simple-tree-table-icon:before{top:.5px;left:-15px;position:relative;content:"";width:0;height:0;display:none;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg)}.format-container table .simple-tree-table-icon::hover{opacity:.35}.format-container table .simple-tree-table-icon:after{content:""!important}.format-container table .simple-tree-table-icon::active{opacity:.5}.format-container table .simple-tree-table-opened .simple-tree-table-icon:before{display:block}.format-container table .simple-tree-table-closed .simple-tree-table-icon:before{display:block;transform:rotate(0)}.httpRequest{padding:20px}.httpRequest input,.httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.requestbox,.textarea{width:700px;display:flex}.requestbox{height:35px;margin-bottom:15px}.requestbox input{flex-grow:1}.requestbox button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.requestbox button:active{background-color:#cfcfcf}.textarea input{flex-grow:1;height:30px}.light .json-key{color:#0040cf}.light .json-string,.light .json-string a{color:#a31515}.light .json-number{color:#0b7500}.light .json-boolean{color:#00f}.light .json-null{color:#05f}body.dark .format-container li,body.dark .format-container pre,body.dark_IntelliJ .format-container li,body.dark_IntelliJ .format-container pre{color:#ccc}body.dark .format-container .tabs,body.dark .format-container .toolbar,body.dark_IntelliJ .format-container .tabs,body.dark_IntelliJ .format-container .toolbar{color:#c4c4c4;border-bottom-color:#464646;background-color:#333}body.dark .format-container .tabs .tabs-item,body.dark .format-container .toolbar .tabs-item,body.dark_IntelliJ .format-container .tabs .tabs-item,body.dark_IntelliJ .format-container .toolbar .tabs-item{border-top-color:#333}body.dark .format-container .tabs .tabs-item.active,body.dark .format-container .toolbar .tabs-item.active,body.dark_IntelliJ .format-container .tabs .tabs-item.active,body.dark_IntelliJ .format-container .toolbar .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}body.dark .format-container .tabs .tabs-item:hover,body.dark .format-container .tabs .toolbar-item:hover,body.dark .format-container .toolbar .tabs-item:hover,body.dark .format-container .toolbar .toolbar-item:hover,body.dark_IntelliJ .format-container .tabs .tabs-item:hover,body.dark_IntelliJ .format-container .tabs .toolbar-item:hover,body.dark_IntelliJ .format-container .toolbar .tabs-item:hover,body.dark_IntelliJ .format-container .toolbar .toolbar-item:hover{border-top-color:#64b7ff;background-color:#464646}body.dark .format-container .searchbox input,body.dark_IntelliJ .format-container .searchbox input{color:#ccc;background-color:#464646;border-left:1.5px solid #333333}body.dark .format-container .searchbox .clear,body.dark_IntelliJ .format-container .searchbox .clear{filter:invert(.8)}body.dark .format-container .selectbox select,body.dark_IntelliJ .format-container .selectbox select{border:0;color:#333;background-color:#ccc}body.dark .format-container .selectbox .inputJson,body.dark .format-container .selectbox .fetchApi,body.dark_IntelliJ .format-container .selectbox .inputJson,body.dark_IntelliJ .format-container .selectbox .fetchApi{color:#85c6ff}body.dark .format-container .jsonp,body.dark_IntelliJ .format-container .jsonp{color:#f1d700}body.dark .format-container .json-toggle,body.dark_IntelliJ .format-container .json-toggle{opacity:.35}body.dark .format-container .json-toggle:hover,body.dark_IntelliJ .format-container .json-toggle:hover{opacity:.5}body.dark .format-container jmnode,body.dark_IntelliJ .format-container jmnode{filter:brightness(2)}body.dark .format-container jmexpander,body.dark_IntelliJ .format-container jmexpander{background-color:#dfdfdf}body.dark .format-container table tr:hover,body.dark_IntelliJ .format-container table tr:hover{background-color:#353b48}body.dark .format-container .simple-tree-table-icon,body.dark_IntelliJ .format-container .simple-tree-table-icon{color:#fff;opacity:.5}body.dark .format-container .tabs-container{background-color:#252526}body.dark .format-container .json-curly-brackets{color:#ce70d6}body.dark .format-container .json-square-brackets{color:#f1d700}body.dark .format-container .json-key{color:#9cdcfe}body.dark .format-container .json-string,body.dark .format-container .json-string a{color:#ce9178}body.dark .format-container .json-number{color:#b5cea8}body.dark .format-container .json-boolean{color:#358cd6}body.dark .format-container .json-null{color:#569cd6}body.dark_IntelliJ .format-container .tabs-container{background-color:#1e1f22}body.dark_IntelliJ .format-container .json-curly-brackets{color:#bb9667}body.dark_IntelliJ .format-container .json-square-brackets{color:#bbbda3}body.dark_IntelliJ .format-container .json-key{color:#c77dbb}body.dark_IntelliJ .format-container .json-string,body.dark_IntelliJ .format-container .json-string a{color:#499472}body.dark_IntelliJ .format-container .json-number{color:#27abb7}body.dark_IntelliJ .format-container .json-boolean{color:#ce8d66}body.dark_IntelliJ .format-container .json-null{color:#c06235}.scroll-top{width:48px;height:48px;z-index:999;position:fixed;right:30px;bottom:30px;display:none;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA39JREFUaEPtmV2ITVEUx39rJjT5KPKC5DPKK6UGZZ7Eq0whNUiKFPfcKW9mnmjm7ssLaSLygEx5xItMESnKC4V8FV4IJUkyS+fMHZ07zjl3733PvT6a+3S6Z629/r+99sfa+wgpPw1YDtxLe9/k/1eI4X5STMkSokXWNlloYjgpMZSmIxPgbxBfS8M4QK0eavT78Qw0uodrtd+wDGjAMqBcEVAQw6NaYnzeNwRAi2xBOQlMrYj6jLJTygz6iMzyyR1Ai+xCGUgMqnTmDZErgBYoIJjMXhY2S4mLeWUiNwAt0INwyEqY0iNleq1saxjlAqAB64BrToKEHVLijJNPgnHdALqPaUziOsoKRzGfaKFD+nng6FdlXj+Ay9AZq1Q5L2W2/jEA3c8sWqOSe3aCiK/A3cr/K4G2FKEbxXDZF6KuDKROXKWXFvqlxJdQmBaZzDDdKZP8thhW/RmAgKfA4qrgSq+U6UkSlAostEuJOz4Q3hnQgPXAld+CCh1pB5DogKTcSBAalhpHmw1wGtgxJuhbMczJEqIBbxLmzFUxbGg2gCYE9AVADF6jwctJDzKd73xI7DG/IQQTmCFH+OiaBT+AAyykhWcpBZv7JA4bGmaRHOV5cwBqX7mc5Qe9coyX0TK6n/m0RnVSV4bA1KuTLCi/DBTYhHCpRm+Fe8Bo/b8JmJxp71lqOwNowB7guGuqLe33iuGEpW1k5gTgVDK7qIjbZmyESU1aA1TOuA99dTn5CQulxAsbH3uAeqpOGyXVNrvEcMrGzR4gIGnjsonhYzMkhg4bx3EAm17ysGlIBh4DSzzE+LgMiGG3jaPLEApv2Q7YNFq3jcOmZg9gt/u6aH8PzEx0aGWu9PHapjFrgKimCaIDTHiQqf4pNxHW2AT8ZaMEiZdgSreUKdm25QRQgRi7nIZzI7xZcPmeNkAL5xjmVpVQx1049HUGiCAKFBH6K8GjFUP3MIW2CGJpjd4bFEPnmM54grA761tYWpteAJXgy1A6w6p09Opcu1nED7ZlAcQP/BqwGZjORAblMO9sh03czhsgLZgW6EL4JoYL0b0RTArPBfFnH6G5ZyAVYKTkGBlWQVR2bxDDgvjzvwQQXqGsDQ/sGkTXKdHzOECsB3LtjdjKMjqE/qMMjJwn5olh+98+hM6gvAqXy0aN+4Yuo/HG/weAPmC1GNrzHDbxtn4Coc0pQNdM3UAAAAAASUVORK5CYII=)} ');
 
-System.addImportMap({ imports: {"jquery":"user:jquery","jsmind":"user:jsmind","jsmind/screenshot":"user:jsmind/screenshot"} });
+System.addImportMap({ imports: {"jquery":"user:jquery","highlight.js":"user:highlight.js","beautifier":"user:beautifier","jsmind":"user:jsmind","jsmind/screenshot":"user:jsmind/screenshot"} });
 System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);return _})());
+System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=_);return _})());
+System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind/screenshot", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-B29vpteJ.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-Bl9ZzpsM.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -67,7 +75,7 @@ System.register("./__entry.js", ['./__monkey.entry-B29vpteJ.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-B29vpteJ.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-Bl9ZzpsM.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -198,7 +206,8 @@ System.register("./__monkey.entry-B29vpteJ.js", ['jquery'], (function (exports, 
             "application/json",
             "text/javascript",
             "text/plain",
-            "text/json"
+            "text/json",
+            "text/css"
           ];
           if (!docType.includes(contentType)) {
             return false;
@@ -245,6 +254,7 @@ System.register("./__monkey.entry-B29vpteJ.js", ['jquery'], (function (exports, 
           rawText = tokens[2];
         }
         if (!Utils.isJSON(rawText)) {
+          __vitePreload(() => module.import('./index-YlJtjkg--CylewoXz.js'), void 0 );
           return;
         }
         window.postMessage({ isJSON: true });
@@ -261,8 +271,8 @@ System.register("./__monkey.entry-B29vpteJ.js", ['jquery'], (function (exports, 
      jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
     `
           );
-          __vitePreload(() => module.import('./index-Dqs87KRh-uTztYeYN.js'), void 0 );
-          __vitePreload(() => module.import('./index-CpWO7f99-xHwKQ2PM.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DP4E5zNd-_N9B-6vd.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
+          __vitePreload(() => module.import('./index-B6iB3N_--CxgiotWU.js'), void 0 );
+          __vitePreload(() => module.import('./index-C1UCgioK-CNTL2Kjj.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-CtLWYbMr-ZpZh-RF-.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
         });
         const openInTab = () => _GM_openInTab(URL.EXAMPLE_JSON);
         _GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
@@ -277,65 +287,131 @@ System.register("./__monkey.entry-B29vpteJ.js", ['jquery'], (function (exports, 
   };
 }));
 
-System.register("./index-Dqs87KRh-uTztYeYN.js", [], (function (exports, module) {
-        'use strict';
-        return {
-                execute: (function () {
+System.register("./index-YlJtjkg--CylewoXz.js", ['jquery', 'highlight.js', 'beautifier', './_virtual_plugin-monkey-loader-sbGfF__7-Bf_IV2LY.js'], (function (exports, module) {
+  'use strict';
+  var $, hljs, js_beautify, css_beautify, cssLoader;
+  return {
+    setters: [module => {
+      $ = module.default;
+    }, module => {
+      hljs = module.default;
+    }, module => {
+      js_beautify = module.js_beautify;
+      css_beautify = module.css_beautify;
+    }, module => {
+      cssLoader = module.c;
+    }],
+    execute: (function () {
 
-                        const layout = `
-        <div class="format-container">
-            <div class="panel">
-                <div class="tabs">
-                    <div class="tabs-item btn active" id="format">JSON格式化</div>
-                    <div class="tabs-item btn" id="viewJsonMind">JSON脑图</div>
-                    <div class="tabs-item btn" id="viewRawText">原始数据</div>
-                    <div class="selectbox">
-                        <div class="formatStyle">
-                            <label>风格:</label>
-                            <select>
-                                <option value="default">默认</option>
-                                <option value="treaTable">表格</option>
-                            </select>
-                        </div>
-                        <div class="theme" style="margin: 0 15px">
-                            <label>主题: </label>
-                            <select>
-                                <option value="default">默认</option>
-                                <option value="light">浅色</option>
-                                <option value="dark">暗黑</option>
-                                <option value="dark_IntelliJ">暗黑+</option>
-                            </select>
-                        </div>
-                        <span class="inputJson">JSON 输入</span>
-                        <span class="fetchApi">HTTP 请求</span>
-                    </div>
-                </div>
-                <div class="toolbar">
-                    <div class="toolbar-item btn" id="saveJson">保存</div>
-                    <div class="toolbar-item btn" id="copyJson">复制</div>
-                    <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
-                    <div class="toolbar-item btn" id="expandAll">全部展开</div>
-                    <div class="toolbar-item btn" id="jsoncrack" style="display: none;">JSON Crack</div>
-                    <div class="toolbar-item btn" id="beautify" style="display: none;">美化输出</div>
-                    <div class="searchbox">
-                        <input type="text" placeholder="过滤 JSON "/>
-                        <button class="clear" hidden></button>
-                    </div>
-                </div>
-            </div>
-            <div class="tabs-container">
-                <div class="active" id="formatContainer"></div>
-                <div id="jmContainer"></div>
-                <div id="rawTextContainer"><pre></pre></div>
-            </div>
-        </div>`;
-                        document.body.insertAdjacentHTML("afterbegin", layout);
+      cssLoader("highlightjs");
+      const docType = ["application/javascript", "text/javascript", "text/css"];
+      const contentType = document.contentType;
+      if (docType.includes(document.contentType)) {
+        window.postMessage({ isJSON: true });
+        setTimeout(() => {
+          const preElement = $("pre").first();
+          if (preElement.length == 0) {
+            return;
+          }
+          const rawText = preElement.text();
+          const layout = '<div class="beautify_checkbox"><input type="checkbox" id="beautify"/><label for="beautify">美化输出</label></div>';
+          document.body.insertAdjacentHTML("afterbegin", layout);
+          const checkbox = document.querySelector(".beautify_checkbox input");
+          checkbox.addEventListener("click", function() {
+            if (this.checked) {
+              beautifyCode(contentType, preElement, rawText);
+            } else {
+              preElement.html(rawText);
+            }
+          });
+        });
+      }
+      function beautifyCode(contentType2, element, rawText) {
+        const language = contentType2.substring(contentType2.indexOf("/") + 1);
+        if (!["css", "javascript"].includes(language)) {
+          return;
+        }
+        let beautifyCode2;
+        switch (language) {
+          case "css":
+            const cssBeautify = css_beautify ? css_beautify : window.css_beautify;
+            beautifyCode2 = hljs.highlight(cssBeautify(rawText), {
+              language
+            }).value;
+            break;
+          case "javascript":
+            const jsBeautify = js_beautify ? js_beautify : window.js_beautify;
+            beautifyCode2 = hljs.highlight(jsBeautify(rawText), {
+              language
+            }).value;
+            break;
+        }
+        element.html(`<code>${beautifyCode2}</code>`);
+      }
 
-                })
-        };
+    })
+  };
 }));
 
-System.register("./index-CpWO7f99-xHwKQ2PM.js", ['jquery', './__monkey.entry-B29vpteJ.js'], (function (exports, module) {
+System.register("./index-B6iB3N_--CxgiotWU.js", [], (function (exports, module) {
+    'use strict';
+    return {
+        execute: (function () {
+
+            const layout = `
+<div class="format-container">
+    <div class="panel">
+        <div class="tabs">
+            <div class="tabs-item btn active" id="format">JSON格式化</div>
+            <div class="tabs-item btn" id="viewJsonMind">JSON脑图</div>
+            <div class="tabs-item btn" id="viewRawText">原始数据</div>
+            <div class="selectbox">
+                <div class="formatStyle">
+                    <label>风格:</label>
+                    <select>
+                        <option value="default">默认</option>
+                        <option value="treaTable">表格</option>
+                    </select>
+                </div>
+                <div class="theme" style="margin: 0 15px">
+                    <label>主题: </label>
+                    <select>
+                        <option value="default">默认</option>
+                        <option value="light">浅色</option>
+                        <option value="dark">暗黑</option>
+                        <option value="dark_IntelliJ">暗黑+</option>
+                    </select>
+                </div>
+                <span class="inputJson">JSON 输入</span>
+                <span class="fetchApi">HTTP 请求</span>
+            </div>
+        </div>
+        <div class="toolbar">
+            <div class="toolbar-item btn" id="saveJson">保存</div>
+            <div class="toolbar-item btn" id="copyJson">复制</div>
+            <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
+            <div class="toolbar-item btn" id="expandAll">全部展开</div>
+            <div class="toolbar-item btn" id="jsoncrack" style="display: none;">JSON Crack</div>
+            <div class="toolbar-item btn" id="beautify" style="display: none;">美化输出</div>
+            <div class="searchbox">
+                <input type="text" placeholder="过滤 JSON "/>
+                <button class="clear" hidden></button>
+            </div>
+        </div>
+    </div>
+    <div class="tabs-container">
+        <div class="active" id="formatContainer"></div>
+        <div id="jmContainer"></div>
+        <div id="rawTextContainer"><pre></pre></div>
+    </div>
+</div>`;
+            document.body.insertAdjacentHTML("afterbegin", layout);
+
+        })
+    };
+}));
+
+System.register("./index-C1UCgioK-CNTL2Kjj.js", ['jquery', './__monkey.entry-Bl9ZzpsM.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
@@ -979,9 +1055,9 @@ System.register("./index-CpWO7f99-xHwKQ2PM.js", ['jquery', './__monkey.entry-B29
   };
 }));
 
-System.register("./index-DP4E5zNd-_N9B-6vd.js", ['jquery', './__monkey.entry-B29vpteJ.js', 'jsmind', 'jsmind/screenshot'], (function (exports, module) {
+System.register("./index-CtLWYbMr-ZpZh-RF-.js", ['jquery', './__monkey.entry-Bl9ZzpsM.js', 'jsmind', 'jsmind/screenshot', './_virtual_plugin-monkey-loader-sbGfF__7-Bf_IV2LY.js'], (function (exports, module) {
   'use strict';
-  var $, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, Utils, _GM_setValue, jsMind;
+  var $, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, Utils, _GM_setValue, jsMind, cssLoader;
   return {
     setters: [module => {
       $ = module.default;
@@ -994,13 +1070,11 @@ System.register("./index-DP4E5zNd-_N9B-6vd.js", ['jquery', './__monkey.entry-B29
       _GM_setValue = module._;
     }, module => {
       jsMind = module.default;
-    }, null],
+    }, null, module => {
+      cssLoader = module.c;
+    }],
     execute: (function () {
 
-      const cssLoader = (e) => {
-        const t = GM_getResourceText(e);
-        return GM_addStyle(t), t;
-      };
       cssLoader("jsmind");
       const jsonMind = {
         isFirst: true,
@@ -1495,6 +1569,20 @@ System.register("./index-DP4E5zNd-_N9B-6vd.js", ['jquery', './__monkey.entry-B29
       tools.init();
       tabsEvent.init();
       jsonFilter.init();
+
+    })
+  };
+}));
+
+System.register("./_virtual_plugin-monkey-loader-sbGfF__7-Bf_IV2LY.js", [], (function (exports, module) {
+  'use strict';
+  return {
+    execute: (function () {
+
+      const cssLoader = exports("c", (e) => {
+        const t = GM_getResourceText(e);
+        return GM_addStyle(t), t;
+      });
 
     })
   };
