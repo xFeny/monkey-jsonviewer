@@ -65,7 +65,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-CMAZDR66.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-Dfcbkz_c.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -77,7 +77,7 @@ System.register("./__entry.js", ['./__monkey.entry-CMAZDR66.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-CMAZDR66.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-Dfcbkz_c.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -275,7 +275,7 @@ System.register("./__monkey.entry-CMAZDR66.js", ['jquery'], (function (exports, 
     `
           );
           __vitePreload(() => module.import('./index-C-RqXyes-s_srA-gc.js'), void 0 );
-          __vitePreload(() => module.import('./index-D5EMMp2g-DcL3bma-.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-By-EC87j-DotvBcca.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
+          __vitePreload(() => module.import('./index-CCeHrbKh-0Ue6lujD.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BfmcW1dM-CllKk742.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
         });
         const openInTab = () => _GM_openInTab(URL.EXAMPLE_JSON);
         _GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
@@ -433,7 +433,7 @@ System.register("./index-C-RqXyes-s_srA-gc.js", [], (function (exports, module) 
     };
 }));
 
-System.register("./index-D5EMMp2g-DcL3bma-.js", ['jquery', './__monkey.entry-CMAZDR66.js'], (function (exports, module) {
+System.register("./index-CCeHrbKh-0Ue6lujD.js", ['jquery', './__monkey.entry-Dfcbkz_c.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
@@ -939,7 +939,7 @@ System.register("./index-D5EMMp2g-DcL3bma-.js", ['jquery', './__monkey.entry-CMA
           $("#formatContainer").on(
             {
               mouseenter: function() {
-                var that = $(this), href = that.attr("href");
+                const that = $(this), href = that.attr("href");
                 if (Utils.isImg(href)) {
                   layer.tips(`<img src="${href}" />`, that, {
                     time: 0,
@@ -960,7 +960,7 @@ System.register("./index-D5EMMp2g-DcL3bma-.js", ['jquery', './__monkey.entry-CMA
          * @returns this
          */
         tipsJsonPath: function() {
-          var that = this;
+          const that = this;
           $("#formatContainer").on(
             {
               mouseenter: function() {
@@ -984,7 +984,7 @@ System.register("./index-D5EMMp2g-DcL3bma-.js", ['jquery', './__monkey.entry-CMA
          * @returns
          */
         copyJsonPath: function() {
-          var that = this;
+          const that = this;
           $("#formatContainer").on("click", ".json-key", function(event) {
             if (event.ctrlKey) {
               const jsonPath = that.getJsonPath(this);
@@ -1082,7 +1082,7 @@ System.register("./index-D5EMMp2g-DcL3bma-.js", ['jquery', './__monkey.entry-CMA
   };
 }));
 
-System.register("./index-By-EC87j-DotvBcca.js", ['jquery', './__monkey.entry-CMAZDR66.js', 'jsmind'], (function (exports, module) {
+System.register("./index-BfmcW1dM-CllKk742.js", ['jquery', './__monkey.entry-Dfcbkz_c.js', 'jsmind'], (function (exports, module) {
   'use strict';
   var $, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, Utils, _GM_setValue, require$$0;
   return {
