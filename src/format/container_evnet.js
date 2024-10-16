@@ -13,7 +13,7 @@ export default {
     $("#formatContainer").on(
       {
         mouseenter: function () {
-          var that = $(this),
+          const that = $(this),
             href = that.attr("href");
           if (Utils.isImg(href)) {
             layer.tips(`<img src="${href}" />`, that, {
@@ -35,7 +35,7 @@ export default {
    * @returns this
    */
   tipsJsonPath: function () {
-    var that = this;
+    const that = this;
     $("#formatContainer").on(
       {
         mouseenter: function () {
@@ -59,7 +59,7 @@ export default {
    * @returns
    */
   copyJsonPath: function () {
-    var that = this;
+    const that = this;
     $("#formatContainer").on("click", ".json-key", function (event) {
       if (event.ctrlKey) {
         const jsonPath = that.getJsonPath(this);

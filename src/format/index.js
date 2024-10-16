@@ -7,7 +7,6 @@ import evnet from "./container_evnet";
 const formatStyle = {
   // 切换风格
   changeStyle: function (val) {
-    const that = this;
     layer.load(0, { shade: false });
     GM_setValue("style", val);
     this.setStyle();
