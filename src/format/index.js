@@ -6,20 +6,16 @@ import evnet from "./container_evnet";
 
 const formatStyle = {
   // 切换风格
-  changeStyle: function () {
+  changeStyle: function (val) {
     const that = this;
-    $(".formatStyle select").on("change", function (e) {
-      layer.load(0, { shade: false });
-      const val = $(e.target).val();
-      GM_setValue("formatStyle", val);
-      that.setStyle();
-    });
+    layer.load(0, { shade: false });
+    GM_setValue("style", val);
+    this.setStyle();
     return this;
   },
   // 设置风格
   setStyle: function () {
-    const style = GM_getValue("formatStyle") || "default";
-    $(".formatStyle select").val(style);
+    const style = GM_getValue("style") || "default";
 
     $("input").val("");
     $("#formatContainer").html("");
@@ -60,17 +56,27 @@ const formatStyle = {
     return this;
   },
   init: function () {
-    this.setStyle().changeStyle();
+    const that = this;
+    that.setStyle();
     evnet.init();
+
+    window.addEventListener("message", function (event) {
+      const { data } = event;
+      if (!data) {
+        return;
+      }
+      if (data.reload) {
+        that.setStyle();
+        return;
+      }
+
+      const { type, value } = data;
+      if (type === "style") {
+        that.changeStyle(value);
+        return;
+      }
+    });
   },
 };
-
-window.addEventListener("message", function (event) {
-  const { data } = event;
-  if (data && data.reload) {
-    formatStyle.setStyle();
-    // console.log("JSON数据变更，重新格式化");
-  }
-});
 
 export default formatStyle;

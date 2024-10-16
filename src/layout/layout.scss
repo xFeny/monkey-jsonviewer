@@ -5,6 +5,9 @@ $color-e9: #e9e9e9;
 $color-gray: #ccc;
 $tab-color: #ececec;
 
+$tip_color: #ececec;
+$dark_tip_color: #4e4e4e;
+
 body,
 html {
   li::marker {
@@ -102,18 +105,74 @@ html {
     }
   }
 
-  .tabs .selectbox {
+  .rightbox {
     position: absolute;
     right: 200px;
     display: flex;
     font-size: $fz13;
-  }
 
-  .inputJson,
-  .fetchApi {
-    cursor: pointer;
-    color: #0060df;
-    margin-left: 15px;
+    > div {
+      padding: 0 5px;
+      margin-top: 2px;
+
+      span {
+        cursor: pointer;
+        display: inline;
+        padding: 5px 10px;
+        border-radius: 3px;
+
+        &:hover {
+          background-color: $color-gray;
+        }
+
+        &:after {
+          content: "";
+          right: -5px;
+          top: 40%;
+          position: relative;
+          border-top: 5px solid #999;
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          z-index: 999;
+        }
+      }
+      .ulbox {
+        display: none;
+      }
+
+      ul {
+        color: #333;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 3px;
+
+        li {
+          font-size: $fz13;
+          padding: 5px 20px;
+          background-color: $tip_color;
+
+          &.active::before {
+            left: 15px;
+            content: "√";
+            display: inline;
+            position: absolute;
+          }
+        }
+
+        li:hover {
+          border-radius: 3px;
+          background-color: $color-gray;
+        }
+      }
+
+      .tippy-box {
+        background-color: $tip_color !important;
+
+        .tippy-arrow {
+          color: $tip_color !important;
+        }
+      }
+    }
   }
   /** 工具栏样式 END **/
 
@@ -454,7 +513,7 @@ html {
 /**浅色主题 END **/
 /** 暗黑主题 START **/
 body.dark,
-body.dark_IntelliJ {
+body.dark_plus {
   $color: #464646;
   $color_333: #333333;
   $color_c4: #c4c4c4;
@@ -502,15 +561,25 @@ body.dark_IntelliJ {
       }
     }
 
-    .selectbox {
-      select {
-        border: 0;
-        color: $color_333;
-        background-color: $color-gray;
+    .rightbox {
+      > div span:hover {
+        background-color: $color;
       }
-      .inputJson,
-      .fetchApi {
-        color: #85c6ff;
+
+      .tippy-box {
+        background-color: $dark_tip_color !important;
+
+        .tippy-arrow {
+          color: $dark_tip_color !important;
+        }
+
+        li {
+          background-color: $dark_tip_color !important;
+        }
+
+        li:hover {
+          background-color: $color !important;
+        }
       }
     }
 
@@ -582,7 +651,7 @@ body.dark {
 }
 /** 暗黑主题 END **/
 /** 第二个暗黑主题 START **/
-body.dark_IntelliJ {
+body.dark_plus {
   .format-container {
     .tabs-container {
       background-color: #1e1f22;

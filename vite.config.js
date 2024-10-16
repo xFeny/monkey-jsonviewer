@@ -19,7 +19,7 @@ export default defineConfig({
           jsmind: cdn
             .unpkg("jsmind", "es6/jsmind.js")
             .concat(util.dataUrl(";window.jsmind=jsMind;")),
-          "jsmind/screenshot": cdn.unpkg("jsmind", "es6/jsmind.screenshot.js"),
+          // "jsmind/screenshot": cdn.unpkg("jsmind", "es6/jsmind.screenshot.js"),
           beautifier: cdn
             .unpkg("beautifier")
             .concat(
@@ -32,14 +32,18 @@ export default defineConfig({
             (version) =>
               `https://unpkg.com/@highlightjs/cdn-assets@${version}/highlight.min.js`,
           ].concat(util.dataUrl(";window.hljs=hljs;")),
+          // "tippy.js": [
+          //   "tippy",
+          //   (version) => "https://unpkg.com/tippy.js@6",
+          // ].concat(util.dataUrl(";window.tippy=tippy")),
         },
         externalResource: {
-          "jsmind/style/jsmind.css": cdn.unpkg("jsmind"),
-          "highlight.js/styles/xcode.min.css": [
-            "highlightjs",
-            (version) =>
-              `https://unpkg.com/@highlightjs/cdn-assets@${version}/styles/xcode.min.css`,
-          ],
+          // "jsmind/style/jsmind.css": cdn.unpkg("jsmind"),
+          // "highlight.js/styles/xcode.min.css": [
+          //   "highlightjs",
+          //   (version, name, importName, resolveName) =>
+          //     `https://unpkg.com/@highlightjs/cdn-assets@${version}/${resolveName}`,
+          // ],
         },
         systemjs: cdn.unpkg()[1],
         cssSideEffects: () => {

@@ -3,7 +3,7 @@ import $ from "jquery";
 export default {
   // 过滤 JSON
   filterJSON: function (filter) {
-    const style = GM_getValue("formatStyle") || "default";
+    const style = GM_getValue("style") || "default";
     if (!filter) {
       style == "default"
         ? $("#formatContainer li").removeClass("hidden")

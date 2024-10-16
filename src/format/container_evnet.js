@@ -75,7 +75,7 @@ export default {
    * @returns
    */
   getJsonPath: function (element) {
-    const style = GM_getValue("formatStyle") || "default";
+    const style = GM_getValue("style") || "default";
     const jsonPath =
       style == "default"
         ? $(element).parent().attr("json-path")
