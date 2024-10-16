@@ -65,7 +65,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-Dfcbkz_c.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-C9amzrwp.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -77,7 +77,7 @@ System.register("./__entry.js", ['./__monkey.entry-Dfcbkz_c.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-Dfcbkz_c.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-C9amzrwp.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -274,8 +274,8 @@ System.register("./__monkey.entry-Dfcbkz_c.js", ['jquery'], (function (exports, 
      jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
     `
           );
-          __vitePreload(() => module.import('./index-C-RqXyes-s_srA-gc.js'), void 0 );
-          __vitePreload(() => module.import('./index-CCeHrbKh-0Ue6lujD.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BfmcW1dM-CllKk742.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
+          __vitePreload(() => module.import('./index-Br6_RM-l-DMETjyL_.js'), void 0 );
+          __vitePreload(() => module.import('./index-Bh1L0bkF-Cksj6_mf.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DLIQUm1z-DMvlwzrK.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-Cgl7hcfy-DaTAQqy4.js'), void 0 ));
         });
         const openInTab = () => _GM_openInTab(URL.EXAMPLE_JSON);
         _GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
@@ -361,7 +361,7 @@ System.register("./index-K1cLASEb-EuUtQHGj.js", ['jquery', 'highlight.js', 'beau
   };
 }));
 
-System.register("./index-C-RqXyes-s_srA-gc.js", [], (function (exports, module) {
+System.register("./index-Br6_RM-l-DMETjyL_.js", [], (function (exports, module) {
     'use strict';
     return {
         execute: (function () {
@@ -381,8 +381,8 @@ System.register("./index-C-RqXyes-s_srA-gc.js", [], (function (exports, module) 
                     <span>风格</span>
                     <span class="ulbox" data-type="style">
                         <ul>
-                            <li data-type="style" data-value="default">默认</option>
-                            <li data-type="style" data-value="table">表格</option>
+                            <li data-type="style" data-value="default">默认</li>
+                            <li data-type="style" data-value="table">表格</li>
                         </ul>
                     </span>
                 </div>
@@ -433,7 +433,7 @@ System.register("./index-C-RqXyes-s_srA-gc.js", [], (function (exports, module) 
     };
 }));
 
-System.register("./index-CCeHrbKh-0Ue6lujD.js", ['jquery', './__monkey.entry-Dfcbkz_c.js'], (function (exports, module) {
+System.register("./index-Bh1L0bkF-Cksj6_mf.js", ['jquery', './__monkey.entry-C9amzrwp.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
@@ -1082,7 +1082,7 @@ System.register("./index-CCeHrbKh-0Ue6lujD.js", ['jquery', './__monkey.entry-Dfc
   };
 }));
 
-System.register("./index-BfmcW1dM-CllKk742.js", ['jquery', './__monkey.entry-Dfcbkz_c.js', 'jsmind'], (function (exports, module) {
+System.register("./index-DLIQUm1z-DMvlwzrK.js", ['jquery', './__monkey.entry-C9amzrwp.js', 'jsmind'], (function (exports, module) {
   'use strict';
   var $, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, Utils, _GM_setValue, require$$0;
   return {
