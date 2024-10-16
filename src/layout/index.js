@@ -15,8 +15,8 @@ const layout = `
                     <span>风格</span>
                     <span class="ulbox" data-type="style">
                         <ul>
-                            <li data-type="style" data-value="default">默认</option>
-                            <li data-type="style" data-value="table">表格</option>
+                            <li data-type="style" data-value="default">默认</li>
+                            <li data-type="style" data-value="table">表格</li>
                         </ul>
                     </span>
                 </div>
