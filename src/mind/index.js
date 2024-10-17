@@ -1,8 +1,9 @@
 import $ from "jquery";
-import Utils from "../common/Utils";
+import tippy from "tippy.js";
 import jsMind from "jsmind";
 import "jsmind/screenshot";
 import "jsmind/style/jsmind.css";
+import Utils from "../common/Utils";
 
 export default {
   isFirst: true,
@@ -81,28 +82,25 @@ export default {
   // 脑图节点事件
   event: function () {
     const jsonMind = this;
-    $("jmnode").on("dblclick mouseover mouseout", function (event) {
+    $("jmnode").on("dblclick mouseover", function (event) {
       const that = $(this),
         node = unsafeWindow.GLOBAL_JSMIND.get_node(that.attr("nodeid"));
       if (!node.parent) {
         return;
       }
 
-      switch (event.type) {
-        case "dblclick":
-          GM_setClipboard(jsonMind.mindChain(node));
-          layer.msg("节点路径复制成功", { time: 1500 });
-          break;
-        case "mouseover":
-          const s = `<b>节点路径（双击复制）</b><br/>${jsonMind.mindChain(node)}`;
-          layer.tips(s, that, {
-            time: 0,
-            tips: [2, "#2e59a7"],
-          });
-          break;
-        default:
-          layer.closeAll();
-          break;
+      if (event.type === "dblclick") {
+        GM_setClipboard(jsonMind.mindChain(node));
+        layer.msg("节点路径复制成功", { time: 1500 });
+      } else {
+        const content = `<b>节点路径（双击复制）</b><br/>${jsonMind.mindChain(
+          node
+        )}`;
+        tippy(this, {
+          content,
+          allowHTML: true,
+          theme: "layer",
+        }).show();
       }
     });
     return this;

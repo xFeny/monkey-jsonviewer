@@ -1,6 +1,7 @@
 import $ from "jquery";
 import Utils from "./common/Utils";
 import URL from "./common/URL";
+import "tippy.js/dist/tippy.css";
 
 (function () {
   "use strict";

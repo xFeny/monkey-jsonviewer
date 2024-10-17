@@ -1,4 +1,5 @@
 import $ from "jquery";
+import tippy from "tippy.js";
 import Utils from "../common/Utils";
 
 /**
@@ -10,24 +11,17 @@ export default {
    * @returns this
    */
   urlHover: function () {
-    $("#formatContainer").on(
-      {
-        mouseenter: function () {
-          const that = $(this),
-            href = that.attr("href");
-          if (Utils.isImg(href)) {
-            layer.tips(`<img src="${href}" />`, that, {
-              time: 0,
-              anim: 5,
-              maxWidth: 500,
-              tips: [3, "#d9d9d9"],
-            });
-          }
-        },
-        mouseleave: () => layer.closeAll(),
-      },
-      "a[href]"
-    );
+    $("#formatContainer").on("mouseenter", "a[href]", function () {
+      const that = $(this),
+        href = that.attr("href");
+      if (Utils.isImg(href)) {
+        tippy(this, {
+          content: `<img style="max-width: 500px;" src="${href}" />`,
+          allowHTML: true,
+          theme: "imagebox",
+        }).show();
+      }
+    });
     return this;
   },
   /**
@@ -36,23 +30,16 @@ export default {
    */
   tipsJsonPath: function () {
     const that = this;
-    $("#formatContainer").on(
-      {
-        mouseenter: function () {
-          const jsonPath = that.getJsonPath(this);
-          const tips = `<b>ctrl + 点击复制</b><br/>${jsonPath}`;
-          layer.tips(tips, this, {
-            time: 0,
-            anim: 5,
-            maxWidth: 500,
-            tips: [1, "#2e59a7"],
-          });
-        },
-        mouseleave: () => layer.closeAll(),
-      },
-      ".json-key"
-    );
-    return this;
+    $("#formatContainer").on("mouseenter", ".json-key", function () {
+      const jsonPath = that.getJsonPath(this);
+      const content = `<b>ctrl + 点击复制</b><br/>${jsonPath}`;
+      tippy(this, {
+        content,
+        allowHTML: true,
+        theme: "layer",
+      }).show();
+    });
+    return that;
   },
   /**
    * 复制key的JSONPath
@@ -67,7 +54,7 @@ export default {
         layer.msg("复制成功", { time: 1500 });
       }
     });
-    return this;
+    return that;
   },
   /**
    * 给定htmlElement获取JSONPath

@@ -1,6 +1,5 @@
 import $ from "jquery";
 import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
 
 /**
  * 右侧提示操作

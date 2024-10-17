@@ -318,8 +318,7 @@ html {
     jmnode {
       display: flex;
       align-items: center;
-      // padding: 0 7px 0 22px;
-      padding-left: 22px;
+      padding: 0 7px 0 22px;
       color: #475872 !important;
       box-shadow: none !important;
       background-color: transparent !important;
@@ -332,10 +331,11 @@ html {
       &::before {
         content: "";
         top: 50% !important;
-        margin-top: 1.5px;
+        margin-top: 1px;
         position: absolute;
         border-radius: 50%;
         transform: translateY(-50%);
+        background-color: rgba(129, 73, 191, 0.5);
       }
 
       &.root::before {
@@ -691,3 +691,23 @@ body.dark_plus {
   }
 }
 /** 第二个暗黑主题 END **/
+
+.tippy-box[data-theme~="layer"] {
+  color: #fff;
+  padding: 5px;
+  font-size: $fz12;
+  line-height: 20px;
+  background-color: #2e59a7;
+
+  .tippy-arrow {
+    color: #2e59a7;
+  }
+}
+
+.tippy-box[data-theme~="imagebox"] {
+  background-color: #d9d9d9;
+
+  .tippy-arrow {
+    color: #d9d9d9;
+  }
+}
