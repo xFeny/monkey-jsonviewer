@@ -30,6 +30,8 @@ html {
 }
 
 .format-container {
+  top: 0;
+  left: 0;
   z-index: 10;
   position: fixed;
   width: 100vw;
@@ -316,7 +318,8 @@ html {
     jmnode {
       display: flex;
       align-items: center;
-      padding: 0 7px 0 22px;
+      // padding: 0 7px 0 22px;
+      padding-left: 22px;
       color: #475872 !important;
       box-shadow: none !important;
       background-color: transparent !important;
