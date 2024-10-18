@@ -16,6 +16,7 @@ GitHub地址：<https://github.com/xFeny/monkey-jsonviewer>
 - 过滤JSON，模糊查找key和value的值
 - JSON格式化和JOSN脑图，鼠标移入JSON的key上面提示JSONPath，并可复制JSONPath
 - 原始数据美化输出
+- 支持JS、CSS美化数据
 
 ### 效果图
 
@@ -35,5 +36,11 @@ GitHub地址：<https://github.com/xFeny/monkey-jsonviewer>
 
 ![JSON_Http_Request](./images/JSON_Http_Request.gif) 
 
+##### JS 美化
+
+![js_beautify](./images/js_beautify.gif) 
   
+##### CSS 美化
+
+![css_beautify](./images/css_beautify.gif) 
 
