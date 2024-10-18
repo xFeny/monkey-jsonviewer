@@ -3,6 +3,7 @@
 脚本地址：<https://greasyfork.org/zh-CN/scripts/508417-json-viewer>
 
 GitHub地址：<https://github.com/xFeny/monkey-jsonviewer>
+Gitee地址：<https://portrait.gitee.com/xfeny/monkey-jsonviewer>
 
 ### 实现的功能
 
