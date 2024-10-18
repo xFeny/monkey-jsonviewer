@@ -57,7 +57,7 @@ export default {
     return that;
   },
   /**
-   * 给定htmlElement获取JSONPath
+   * 给定HtmlElement获取JSONPath
    * @param {*} element
    * @returns
    */

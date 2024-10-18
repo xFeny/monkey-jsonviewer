@@ -1,11 +1,11 @@
-import tabsEvent from "./tabsEvent";
-import jsonFilter from "./jsonFilter";
+import tabs from "./tabs";
+import filter from "./filter";
 import theme from "./theme";
 import tools from "./tools";
-import tippyEvent from "./tippyEvent";
+import handleBar from "./handleBar";
 
+tabs.init();
 theme.init();
 tools.init();
-tabsEvent.init();
-tippyEvent.init();
-jsonFilter.init();
+filter.init();
+handleBar.init();

@@ -7,7 +7,11 @@ import Utils from "../common/Utils";
 
 export default {
   isFirst: true,
-  // JSON数据转换为jsMind所需要的数据结构
+  /**
+   * JSON数据转换为jsMind所需要的数据结构
+   * @param {*} json JSON 数据
+   * @returns
+   */
   convert: function (json) {
     const children = [];
     if (typeof json === "object") {
@@ -31,7 +35,11 @@ export default {
     }
     return children;
   },
-  // 脑图节点调用链
+  /**
+   * 脑图节点调用链
+   * @param {*} node 脑图节点对象
+   * @returns
+   */
   mindChain: function (node) {
     let chain = node.data.chain;
     if (!node.parent) {
@@ -45,7 +53,11 @@ export default {
       : `${parentChain}.${chain}`;
     return chain;
   },
-  //  显示脑图
+  /**
+   * 显示脑图
+   * @param {*} json JSON 数据
+   * @returns
+   */
   show: function (json) {
     let isArr = Array.isArray(json);
     if (isArr) {
@@ -79,7 +91,10 @@ export default {
     this.isFirst = false;
     return this;
   },
-  // 脑图节点事件
+  /**
+   * 脑图节点事件
+   * @returns
+   */
   event: function () {
     const jsonMind = this;
     $("jmnode").on("dblclick mouseover", function (event) {

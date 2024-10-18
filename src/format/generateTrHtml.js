@@ -2,7 +2,7 @@ import Utils from "../common/Utils";
 /**
  * 表格
  */
-function treeTableTrHTML(json, level = 0, pId = "", pChain = "") {
+function generateTrHtml(json, level = 0, pId = "", pChain = "") {
   let tr = "";
   for (const key in json) {
     let val = json[key],
@@ -12,7 +12,7 @@ function treeTableTrHTML(json, level = 0, pId = "", pChain = "") {
     if (["array", "object"].includes(type)) {
       let brackets = "",
         len = Object.keys(val).length,
-        res = treeTableTrHTML(val, level + 1, tId, chain);
+        res = generateTrHtml(val, level + 1, tId, chain);
 
       if (!res) {
         if (type === "array") {
@@ -62,4 +62,4 @@ function treeTableTrHTML(json, level = 0, pId = "", pChain = "") {
   return tr;
 }
 
-export default treeTableTrHTML;
+export default generateTrHtml;

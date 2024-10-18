@@ -48,10 +48,10 @@ export default defineConfig({
         systemjs: cdn.unpkg()[1],
         cssSideEffects: () => {
           return (e) => {
-            // 是否为JSON数据
+            // 是否向document.head插入样式
             window.addEventListener("message", (event) => {
               const { data } = event;
-              if (data && data.isJSON) {
+              if (data && data.addStyle) {
                 if (typeof GM_addStyle == "function") {
                   GM_addStyle(e);
                   return;

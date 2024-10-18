@@ -7,9 +7,9 @@ body {
     left: 0;
     z-index: 999;
     width: 100vw;
-    padding: 5px 10px;
-    position: fixed;
     display: flex;
+    position: fixed;
+    padding: 5px 10px;
 
     align-items: center;
     background-color: #f3f3f3;
@@ -20,11 +20,11 @@ body {
     }
 
     input[type="checkbox"] {
+      top: 1.5px;
       width: 14px;
       height: 14px;
-      position: relative;
-      top: 1.5px;
       margin-right: 5px;
+      position: relative;
     }
   }
 }

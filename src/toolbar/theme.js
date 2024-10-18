@@ -1,13 +1,20 @@
 import $ from "jquery";
 
 export default {
-  // 切换主题
-  changeTheme: function (value) {
-    GM_setValue("theme", value);
+  /**
+   * 切换主题色
+   * @param {*} theme  主题色：default、light、dark、dark_plus
+   * @returns
+   */
+  changeTheme: function (theme) {
+    GM_setValue("theme", theme);
     this.setTheme();
     return this;
   },
-  // 设置主题
+  /**
+   * 设置主题
+   * @returns
+   */
   setTheme: function () {
     const theme = GM_getValue("theme") || "default";
     $("body").removeClass().addClass(theme);

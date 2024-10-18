@@ -1,19 +1,30 @@
 export default {
-  // 检查字符串是否为URL
-  isUrl: function (string) {
+  /**
+   * 检查字符串是否为URL
+   * @param {*} str 字符串
+   * @returns
+   */
+  isUrl: function (str) {
     const regexp =
       /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-    return regexp.test(string);
+    return regexp.test(str);
   },
 
-  // 检查是否是图片链接
-  isImg: function (pathImg) {
-    // var regexp = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?\/([\w#!:.?+=&%@!\-\/])*\.(gif|jpg|jpeg|png|GIF|JPG|PNG)([\w#!:.?+=&%@!\-\/])?/;
+  /**
+   * 检查是否为图片链接
+   * @param {*} str 字符串
+   * @returns
+   */
+  isImg: function (str) {
     const regexp =
       /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
-    return regexp.test(pathImg);
+    return regexp.test(str);
   },
-  // 检验内容是否是json格式的内容
+  /**
+   * 是否为json格式的内容
+   * @param {*} str 字符串
+   * @returns
+   */
   isJSON: function (str) {
     try {
       JSON.parse(str);
@@ -23,14 +34,22 @@ export default {
       return false;
     }
   },
-  // 获取数据类型
-  getType: function (value) {
+  /**
+   * 获取数据类型
+   * @param {*} v
+   * @returns
+   */
+  getType: function (v) {
     return Object.prototype.toString
-      .call(value)
+      .call(v)
       .match(/\s(.+)]/)[1]
       .toLowerCase();
   },
-  // 获取数组中对象key最多的对象
+  /**
+   * 获取数组中对象key最多的对象
+   * @param {*} arr 对象数组
+   * @returns
+   */
   findMaxKeysObject: function (arr) {
     let maxKeysCount = 0,
       maxKeysObject;
@@ -43,7 +62,11 @@ export default {
     }
     return maxKeysObject;
   },
-  // 随机rgb颜色
+  /**
+   * 随机rgb颜色
+   * @param {*} opacity 透明度
+   * @returns
+   */
   randomColor: (opacity) => {
     const red = Math.floor(Math.random() * 256);
     const green = Math.floor(Math.random() * 256);
@@ -51,7 +74,7 @@ export default {
     return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
   },
   /**
-   * 是否满足JSON
+   * 文档类型判断
    * @returns
    */
   isJSONDocument: function (contentType) {
@@ -69,5 +92,22 @@ export default {
       return false;
     }
     return true;
+  },
+  /**
+   * 下载文本内容
+   * @param {*} content 文本内容
+   * @param {*} filename 文件名
+   */
+  downloadText: function (content, filename) {
+    // 创建一个 Blob 对象，包含要下载的文本内容
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+
+    URL.revokeObjectURL(url);
   },
 };

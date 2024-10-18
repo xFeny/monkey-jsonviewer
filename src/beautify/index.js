@@ -1,30 +1,36 @@
-/**
- * 美化JS、CSS
- */
 import "./style.scss";
 import $ from "jquery";
 import hljs from "highlight.js";
 import { js_beautify, css_beautify } from "beautifier";
 import "highlight.js/styles/xcode.min.css";
 
-const docType = [
-  "application/x-javascript",
-  "application/javascript",
-  "text/javascript",
-  "text/css",
-];
-const contentType = document.contentType;
-if (docType.includes(document.contentType)) {
-  window.postMessage({ isJSON: true });
-  setTimeout(() => {
-    const preElement = $("pre").first();
-    if (preElement.length == 0) {
-      return;
-    }
+/**
+ * 对JS、CSS美化
+ */
+(function () {
+  const docType = [
+    "application/x-javascript",
+    "application/javascript",
+    "text/javascript",
+    "text/css",
+  ];
+  const contentType = document.contentType;
+  if (!docType.includes(document.contentType)) {
+    return;
+  }
 
+  const preElement = $("pre").first();
+  if (preElement.length === 0) {
+    return;
+  }
+
+  window.postMessage({ addStyle: true });
+  setTimeout(() => {
     const rawText = preElement.text();
-    const layout =
-      '<div class="beautify_checkbox"><input type="checkbox" id="beautify"/><label for="beautify">美化输出</label></div>';
+    const layout = `<div class="beautify_checkbox">
+        <input type="checkbox" id="beautify"/>
+        <label for="beautify">美化输出</label>
+      </div>`;
 
     document.body.insertAdjacentHTML("afterbegin", layout);
 
@@ -37,8 +43,15 @@ if (docType.includes(document.contentType)) {
       }
     });
   });
-}
+})();
 
+/**
+ * JS、CSS美化
+ * @param {*} contentType 文档类型
+ * @param {*} element <pre></pre>标签
+ * @param {*} rawText 原始数据
+ * @returns
+ */
 function beautifyCode(contentType, element, rawText) {
   const language = contentType.substring(contentType.indexOf("/") + 1);
   if (!["css", "javascript", "x-javascript"].includes(language)) {

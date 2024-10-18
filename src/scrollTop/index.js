@@ -1,20 +1,17 @@
 import $ from "jquery";
-import "./style.css";
+import "./scroll-top.css";
 
-$(document.body)
-  .append('<div class="scroll-top"></div>')
-  .find(".tabs-container")
-  .on("scroll", function (e) {
-    const scrollTop = $(this).scrollTop();
-    scrollTop > 500 ? $(".scroll-top").fadeIn() : $(".scroll-top").fadeOut();
-  })
-  .parents()
-  .find(".scroll-top")
-  .on("click", function () {
-    $(".tabs-container").animate(
-      {
-        scrollTop: "0",
-      },
-      1000
-    );
-  });
+const $body = $(document.body);
+const $container = $(".tabs-container");
+$body.append('<div class="scroll-top"></div>');
+// 滚动监听
+$container.on("scroll", function () {
+  const scrollTop = $(this).scrollTop();
+  const scrollElment = $(".scroll-top");
+  scrollTop > 500 ? scrollElment.fadeIn() : scrollElment.fadeOut();
+});
+
+// 滚动回顶部
+$body.on("click", ".scroll-top", function () {
+  $container.animate({ scrollTop: "0" }, 1000);
+});

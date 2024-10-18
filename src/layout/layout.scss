@@ -1,15 +1,14 @@
 $fz12: 12px;
 $fz13: 13px;
 $fz14: 14px;
-$color-e9: #e9e9e9;
 $color-gray: #ccc;
 $tab-color: #ececec;
+$tab-hover-color: #c3c3c6;
 
 $tip_color: #dfdfdf;
 $dark_tip_color: #4e4e4e;
 
-body,
-html {
+body {
   li::marker {
     content: "";
   }
@@ -33,25 +32,55 @@ html {
   top: 0;
   left: 0;
   z-index: 10;
-  position: fixed;
   width: 100vw;
   height: 100vh;
   display: flex;
+  position: fixed;
   flex-direction: column;
 
   /** 工具栏样式 START **/
+  .panel {
+    display: flex;
+    line-height: 28px;
+    flex-direction: column;
+    background-color: $tab-color;
+  }
+
   .tabs,
   .toolbar {
     display: flex;
-    line-height: 28px;
-    background-color: $tab-color;
     border-bottom: 1px solid $color-gray;
+
+    > div {
+      cursor: pointer;
+      padding: 0 10px;
+      font-size: $fz12;
+
+      &:hover {
+        background-color: #d4d4d4;
+      }
+    }
+  }
+
+  .tabs-item {
+    border-top: 3px solid $tab-color;
+
+    &:hover {
+      border-top-color: $tab-hover-color;
+    }
+
+    &.active {
+      color: #0060df;
+      border-top-color: #0060df;
+      background-color: #f1f1f1;
+    }
   }
 
   .toolbar {
     line-height: 23px;
 
     .searchbox {
+      padding: 0;
       display: flex;
       flex-grow: 1;
 
@@ -61,6 +90,7 @@ html {
         outline: none;
         font-size: $fz12;
         padding-left: 23px;
+        border-left: 1.5px solid $color-gray;
         background-size: 12px;
         background-repeat: no-repeat;
         background-position: 7px center;
@@ -81,37 +111,11 @@ html {
     }
   }
 
-  .tabs-item {
-    border-width: 3px;
-    border-top: 3px solid $tab-color;
-
-    &.active {
-      color: #0060df;
-      border-top-color: #0060df;
-      background-color: $color-e9;
-    }
-
-    &:hover {
-      border-top-color: #c3c3c6;
-    }
-  }
-
-  .tabs-item,
-  .toolbar-item {
-    cursor: pointer;
-    padding: 0 10px;
-    font-size: $fz12;
-
-    &:hover {
-      background-color: #d4d4d4;
-    }
-  }
-
   .rightbox {
-    position: absolute;
     right: 200px;
     display: flex;
     font-size: $fz13;
+    position: absolute;
 
     > div {
       padding: 0 5px;
@@ -127,7 +131,7 @@ html {
           background-color: $color-gray;
         }
 
-        &:after {
+        &::after {
           content: "";
           right: -5px;
           top: 40%;
@@ -138,6 +142,7 @@ html {
           z-index: 999;
         }
       }
+
       .ulbox {
         display: none;
       }
@@ -153,17 +158,17 @@ html {
           padding: 5px 20px;
           background-color: $tip_color;
 
+          &:hover {
+            border-radius: 3px;
+            background-color: $color-gray;
+          }
+
           &.active::before {
             left: 15px;
             content: "√";
             display: inline;
             position: absolute;
           }
-        }
-
-        li:hover {
-          border-radius: 3px;
-          background-color: $color-gray;
         }
       }
 
@@ -188,10 +193,10 @@ html {
 
     > div {
       display: none;
-    }
 
-    > div.active {
-      display: block;
+      &.active {
+        display: block;
+      }
     }
 
     #formatContainer {
@@ -200,12 +205,12 @@ html {
 
     #rawTextContainer {
       padding: 0 10px;
-    }
 
-    #rawTextContainer pre {
-      display: block !important;
-      overflow-wrap: break-word;
-      white-space: pre-wrap;
+      pre {
+        display: block !important;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+      }
     }
   }
   /** 容器样式 END **/
@@ -272,7 +277,7 @@ html {
       outline: none;
     }
 
-    &:before {
+    &::before {
       top: 2.5px;
       left: -15px;
       position: absolute;
@@ -286,7 +291,7 @@ html {
       transform: rotate(90deg);
     }
 
-    &.collapsed:before {
+    &.collapsed::before {
       transform: rotate(0deg);
     }
   }
@@ -372,18 +377,20 @@ html {
 
   /** 表格样式 START **/
   table {
-    width: -webkit-fill-available;
     margin-left: 20px;
+    width: -webkit-fill-available;
     border-collapse: collapse;
 
     tr:hover {
       background-color: #f0f9fe;
     }
 
-    tr.selected td,
-    tr.selected td a {
-      color: #fff !important;
-      background-color: #3875d7;
+    tr.selected {
+      td,
+      td a {
+        color: #fff !important;
+        background-color: #3875d7;
+      }
     }
 
     tr td:first-child {
@@ -416,7 +423,7 @@ html {
         transform: rotate(90deg);
       }
 
-      &::hover {
+      &:hover {
         opacity: 0.35;
       }
 
@@ -424,19 +431,19 @@ html {
         content: "" !important;
       }
 
-      &::active {
+      &:active {
         opacity: 0.5;
       }
     }
 
     .simple-tree-table-opened {
-      .simple-tree-table-icon:before {
+      .simple-tree-table-icon::before {
         display: block;
       }
     }
 
     .simple-tree-table-closed {
-      .simple-tree-table-icon:before {
+      .simple-tree-table-icon::before {
         display: block;
         transform: rotate(0deg);
       }
@@ -528,25 +535,30 @@ body.dark_plus {
       color: $color-gray;
     }
 
-    .tabs,
-    .toolbar {
+    .panel {
       color: $color_c4;
-      border-bottom-color: $color;
       background-color: $color_333;
 
-      .tabs-item {
-        border-top-color: $color_333;
-
-        &.active {
-          color: $color_c4;
-          border-top-color: $bd_color;
-          background-color: $color;
-        }
+      > div {
+        border-bottom-color: $color;
       }
 
       .tabs-item,
       .toolbar-item {
         &:hover {
+          background-color: $color;
+        }
+      }
+
+      .tabs-item {
+        border-top-color: $color_333;
+
+        &:hover {
+          border-top-color: $tab-hover-color;
+        }
+
+        &.active {
+          color: $color_c4;
           border-top-color: $bd_color;
           background-color: $color;
         }
@@ -557,8 +569,9 @@ body.dark_plus {
       input {
         color: $color-gray;
         background-color: $color;
-        border-left: 1.5px solid $color_333;
+        border-left-color: $color_333;
       }
+
       .clear {
         filter: invert(0.8);
       }
@@ -578,10 +591,9 @@ body.dark_plus {
 
         li {
           background-color: $dark_tip_color !important;
-        }
-
-        li:hover {
-          background-color: $color !important;
+          &:hover {
+            background-color: $color !important;
+          }
         }
       }
     }

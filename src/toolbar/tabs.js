@@ -1,6 +1,7 @@
 import $ from "jquery";
 import jsonMind from "../mind";
 import COMMON_URL from "../common/URL";
+import Utils from "../common/Utils";
 
 const tabsEvent = {
   firstFormat: true,
@@ -8,37 +9,30 @@ const tabsEvent = {
   $rawText: $("#rawTextContainer"),
   /**
    * 保存为文件
+   * 如果是JSON 格式化可见，保存JSON数据为.json文件
+   * 如果是JSON 脑图可见，保存脑图为图片
    */
-  download: {
-    download: function (content, filename) {
-      const link = document.createElement("a");
-      link.href = content;
-      link.download = filename;
-      link.click();
-    },
-    saveJSON: function (text) {
-      // 创建一个 Blob 对象，包含要下载的文本内容
-      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const filename = new Date().getTime() + ".json";
-      this.download(url, filename);
-      URL.revokeObjectURL(url);
-    },
-    savePNG: () => unsafeWindow.GLOBAL_JSMIND.shoot(),
-  },
   saveJson: function () {
     if ($("#jmContainer").is(":visible")) {
-      this.download.savePNG();
+      unsafeWindow.GLOBAL_JSMIND.shoot();
     } else {
-      this.download.saveJSON(this.$rawText.text());
+      const content = this.$rawText.text();
+      const filename = new Date().getTime() + ".json";
+      Utils.downloadText(content, filename);
     }
   },
-  // 复制JSON文本内容
+  /**
+   * 复制JSON文本内容
+   */
   copyJson: function () {
     GM_setClipboard(this.$rawText.text());
     layer.msg("复制成功", { time: 1500 });
   },
-  // 全部折叠
+  /**
+   * 点击了`全部折叠`
+   * 如果是JSON 格式化可见，折叠JSON
+   * 如果是JSON 脑图可见，折叠脑图节点
+   */
   collapseAll: function () {
     if ($("#formatContainer").is(":visible")) {
       try {
@@ -48,7 +42,11 @@ const tabsEvent = {
       unsafeWindow.GLOBAL_JSMIND.collapse_all();
     }
   },
-  // 全部展开
+  /**
+   * 点击了`全部展开`
+   * 如果是JSON 格式化可见，展开JSON
+   * 如果是JSON 脑图可见，展开脑图节点
+   */
   expandAll: function () {
     if ($("#formatContainer").is(":visible")) {
       try {
@@ -62,21 +60,27 @@ const tabsEvent = {
     }
   },
   format: function () {},
-  // 显示JSON脑图
+  /**
+   * tabs点击了`JSON脑图`
+   */
   viewJsonMind: function () {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
     unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(
       unsafeWindow.GLOBAL_JSMIND.get_root()
     );
   },
-  // 查看原始JSON内容
+  /**
+   * tabs点击了`原始数据`
+   */
   viewRawText: function () {
     if (this.firstFormat) {
       this.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
       this.firstFormat = false;
     }
   },
-  // 美化
+  /**
+   * 点击了`美化输出`
+   */
   beautify: function () {
     this.isBeautify = !this.isBeautify;
     if (this.isBeautify) {
@@ -92,6 +96,9 @@ const tabsEvent = {
       this.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
     }
   },
+  /**
+   * 点击了`JSON Crack`
+   */
   jsoncrack: function () {
     let theme = GM_getValue("theme") || "light";
     theme = theme.replace(/_.*/, "");

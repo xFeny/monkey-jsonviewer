@@ -1,7 +1,11 @@
 import $ from "jquery";
 
 export default {
-  // 过滤 JSON
+  /**
+   * 根据`filter`过滤 JSON
+   * @param {*} filter 过滤值
+   * @returns
+   */
   filterJSON: function (filter) {
     const style = GM_getValue("style") || "default";
     if (!filter) {
@@ -69,7 +73,10 @@ export default {
             .removeClass("hidden");
     });
   },
-  // JSON 过滤
+  /**
+   * JSON 过滤输入框事件监听
+   * @returns
+   */
   input: function () {
     const that = this;
     $("input").on("input", function () {
@@ -81,7 +88,10 @@ export default {
     });
     return that;
   },
-  // 清空输入框内容
+  /**
+   * 清空输入框内容
+   * @returns
+   */
   clear: function () {
     const that = this;
     $(".clear").click(function () {

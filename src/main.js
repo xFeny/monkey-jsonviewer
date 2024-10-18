@@ -40,7 +40,17 @@ import "tippy.js/dist/tippy.css";
     return;
   }
 
-  window.postMessage({ isJSON: true });
+  window.postMessage({ addStyle: true });
+  // document.head插入layui
+  $(document.head)
+    .append(`<link href="${URL.LAYUI_CSS}" rel="stylesheet"/>`)
+    .append(`<script src="${URL.LAYUI_JS}" type="text/javascript"></script>`);
+
+  // 脑图节点随机颜色
+  GM_addStyle(`
+    jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
+    jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
+    `);
   setTimeout(() => {
     unsafeWindow.GLOBAL_SOURCE_ELEMENT.hide();
     // 将内容用eval函数处理下
@@ -49,17 +59,6 @@ import "tippy.js/dist/tippy.css";
     } catch (e) {
       unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
     }
-
-    $(document.head)
-      .append(`<link href="${URL.LAYUI_CSS}" rel="stylesheet">`)
-      .append(`<script src="${URL.LAYUI_JS}">`);
-
-    // 脑图节点随机颜色
-    GM_addStyle(
-      `jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
-     jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
-    `
-    );
 
     import("./layout");
     import("./format")

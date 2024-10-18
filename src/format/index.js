@@ -1,18 +1,25 @@
 import $ from "jquery";
 import "../lib/jquery.json-viewer";
 import "../lib/jquery-simple-tree-table.min";
-import treeTableTrHTML from "./treeTable";
-import evnet from "./container_evnet";
+import generateTrHtml from "./generateTrHtml";
+import evnet from "./evnet";
 
-const formatStyle = {
-  // 切换风格
-  changeStyle: function (val) {
+const format_style = {
+  /**
+   * 切换JSON 格式化风格
+   * @param {*} style 格式化风格，default/table
+   * @returns
+   */
+  changeStyle: function (style) {
     layer.load(0, { shade: false });
-    GM_setValue("style", val);
+    GM_setValue("style", style);
     this.setStyle();
     return this;
   },
-  // 设置风格
+  /**
+   * 设置JSON 格式化风格
+   * @returns
+   */
   setStyle: function () {
     const style = GM_getValue("style") || "default";
 
@@ -27,7 +34,7 @@ const formatStyle = {
         layer.closeAll();
       } catch (error) {}
     } else {
-      const trHTML = treeTableTrHTML(unsafeWindow.GLOBAL_JSON);
+      const trHTML = generateTrHtml(unsafeWindow.GLOBAL_JSON);
       let appendHtml = `<table id="treeTable">${trHTML}</table>`;
       if (
         unsafeWindow.GLOBAL_JSONP_FUN !== undefined &&
@@ -78,4 +85,4 @@ const formatStyle = {
   },
 };
 
-export default formatStyle;
+export default format_style;

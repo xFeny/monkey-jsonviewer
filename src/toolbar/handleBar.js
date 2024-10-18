@@ -6,6 +6,10 @@ import tippy from "tippy.js";
  */
 export default {
   instance: null,
+  /**
+   * 对右侧操作栏的点击事件初始化
+   * @returns
+   */
   tippy: function () {
     const that = this;
     [".style", ".theme", ".tools"].forEach((selector) => {
@@ -27,6 +31,11 @@ export default {
     });
     return this;
   },
+  /**
+   * 点击了对应选项
+   * 如点击了`主题`-`暗黑`，通过window.postMessage进行主题色更新
+   * @returns
+   */
   checked: function () {
     const that = this;
     $(document.body).on("click", ".rightbox li", function () {
