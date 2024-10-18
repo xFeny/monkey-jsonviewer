@@ -23,9 +23,6 @@ importers:
       jsmind:
         specifier: ^0.8.5
         version: 0.8.5
-      layui:
-        specifier: ^2.9.17
-        version: 2.9.17
       sass:
         specifier: ^1.79.5
         version: 1.79.5
@@ -590,9 +587,6 @@ packages:
 
   jsmind@0.8.5:
     resolution: {integrity: sha512-fz7SZ4X9GFktM8Kr9qyqt9fw2fcSe3n94HmdDTsibTKrvgFFeXneO3z7xSk1zE2NK9Zzex2X3TCKxHczdpxmfg==}
-
-  layui@2.9.17:
-    resolution: {integrity: sha512-cTkOETVHFRrUtulGGOqF50+JpJoyucHGM9bd473KOWHWzdr+dQh0YCG9pYbJoFTfcSWIlb9xCna1gSuEZoyBTg==}
 
   local-pkg@0.5.0:
     resolution: {integrity: sha512-ok6z3qlYyCDS4ZEU27HaU6x/xZa9Whf8jD4ptH5UZTQYZVYeb9bnZ3ojVhiJNLiXK1Hfc0GNbLXcmZ5plLDDBg==}
@@ -1253,8 +1247,6 @@ snapshots:
   js-tokens@9.0.0: {}
 
   jsmind@0.8.5: {}
-
-  layui@2.9.17: {}
 
   local-pkg@0.5.0:
     dependencies:

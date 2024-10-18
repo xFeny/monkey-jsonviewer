@@ -14,7 +14,6 @@
     "highlight.js": "^11.10.0",
     "jquery": "^3.7.1",
     "jsmind": "^0.8.5",
-    "layui": "^2.9.17",
     "sass": "^1.79.5",
     "tippy.js": "^6.3.7",
     "unplugin-auto-import": "^0.18.3",
