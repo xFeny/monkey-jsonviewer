@@ -57,7 +57,12 @@ const format_style = {
       });
 
       // Highlight selected row
-      $("#treeTable").on("mousedown", "tr", function () {
+      $("#treeTable").on("mousedown", "tr", function (event) {
+        const target = event.target;
+        if (target.tagName === "SPAN") {
+          return;
+        }
+
         $(".selected").not(this).removeClass("selected");
         $(this).toggleClass("selected");
       });
