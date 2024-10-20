@@ -1,5 +1,5 @@
 import $ from "jquery";
-import "../lib/jquery.json-viewer";
+import "../lib/jquery-json-viewer";
 import "../lib/jquery-simple-tree-table.min";
 import generateTrHtml from "./generateTrHtml";
 import evnet from "./evnet";
@@ -40,7 +40,10 @@ const format_style = {
         unsafeWindow.GLOBAL_JSONP_FUN !== undefined &&
         unsafeWindow.GLOBAL_JSONP_FUN !== null
       ) {
-        appendHtml = `<div class="jsonp">${unsafeWindow.GLOBAL_JSONP_FUN}(</div>${appendHtml}<div class="jsonp">)</div>`;
+        appendHtml = `
+        <div class="jsonp">${unsafeWindow.GLOBAL_JSONP_FUN}(</div>
+        ${appendHtml}
+        <div class="jsonp">)</div>`;
       }
       $("#formatContainer").append(appendHtml);
       setTimeout(() => {

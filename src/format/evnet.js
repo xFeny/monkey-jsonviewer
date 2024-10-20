@@ -16,6 +16,7 @@ export default {
         href = that.attr("href");
       if (Utils.isImg(href)) {
         tippy(this, {
+          duration: 800,
           content: `<img style="max-width: 500px;" src="${href}" />`,
           allowHTML: true,
           theme: "imagebox",
@@ -35,6 +36,7 @@ export default {
       const content = `<b>ctrl + 点击复制</b><br/>${jsonPath}`;
       tippy(this, {
         content,
+        duration: 800,
         allowHTML: true,
         theme: "layer",
       }).show();

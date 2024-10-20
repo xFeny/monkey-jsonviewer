@@ -113,6 +113,7 @@ export default {
         )}`;
         tippy(this, {
           content,
+          duration: 800,
           allowHTML: true,
           theme: "layer",
         }).show();

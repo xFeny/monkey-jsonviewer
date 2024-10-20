@@ -103,13 +103,11 @@ const tabsEvent = {
     let theme = GM_getValue("theme") || "light";
     theme = theme.replace(/_.*/, "");
     layer.closeAll();
-    const index = layer.open({
+    layer.open({
       type: 1,
       title: false,
-      maxmin: true,
-      shadeClose: true,
-      area: ["900px", "600px"],
-      content: `<iframe style="width: 100%;height: 100%;border: 0;" id="jsoncrackEmbed" src="${COMMON_URL.JSON_CRACK_WIDGET}"></iframe>`,
+      area: ["100vw", "100vh"],
+      content: `<iframe id="jsoncrackEmbed" src="${COMMON_URL.JSON_CRACK_WIDGET}"></iframe>`,
       success: function (layero) {
         const jsonCrackEmbed = layero.find("#jsoncrackEmbed")[0];
         window?.addEventListener("message", () => {
@@ -123,7 +121,6 @@ const tabsEvent = {
         });
       },
     });
-    layer.full(index);
   },
   init: function () {
     this.viewRawText();

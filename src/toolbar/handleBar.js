@@ -10,22 +10,33 @@ export default {
    * 对右侧操作栏的点击事件初始化
    * @returns
    */
-  tippy: function () {
+  handle: function () {
     const that = this;
     [".style", ".theme", ".tools"].forEach((selector) => {
       tippy(selector, {
-        duration: 100,
+        duration: 500,
         allowHTML: true,
         interactive: true,
         trigger: "click",
         onTrigger: function (instance) {
-          const ulbox = $(instance.reference).find(".ulbox");
-          const type = ulbox.data("type");
+          const tools = $(instance.reference);
+          tools.siblings().find("span").removeClass();
+          tools.find("span").addClass("active");
+
+          const template = tools.find("template");
+          const type = template.data("type");
           const dataValue = GM_getValue(type) || "default";
-          ulbox.find("li").removeClass();
-          ulbox.find(`li[data-value=${dataValue}]`).addClass("active");
-          instance.setContent(ulbox.html());
+
+          const ul = template.contents();
+          ul.find("li").removeClass();
+          ul.find(`li[data-value=${dataValue}]`).addClass("active");
+
+          instance.setContent(template.html());
           that.instance = instance;
+        },
+        onHide: function (instance) {
+          const tools = $(instance.reference);
+          tools.find("span").removeClass();
         },
       });
     });
@@ -58,6 +69,6 @@ export default {
     return this;
   },
   init: function () {
-    this.tippy().checked();
+    this.handle().checked();
   },
 };

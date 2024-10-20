@@ -23,32 +23,32 @@ const layout = `
         <div class="rightbox">
             <div class="style">
                 <span>风格</span>
-                <span class="ulbox" data-type="style">
+                <template data-type="style">
                     <ul>
                         <li data-type="style" data-value="default">默认</li>
                         <li data-type="style" data-value="table">表格</li>
                     </ul>
-                </span>
+                </template>
             </div>
             <div class="theme">
                 <span>主题</span>
-                <span class="ulbox" data-type="theme">
+                <template data-type="theme">
                     <ul>
                         <li data-type="theme" data-value="default">默认</li>
                         <li data-type="theme" data-value="light">浅色</li>
                         <li data-type="theme" data-value="dark">暗黑</li>
                         <li data-type="theme" data-value="dark_plus">暗黑+</li>
                     </ul>
-                </span>
+                </template>
             </div>
             <div class="tools">
                 <span>工具</span>
-                <span class="ulbox" data-type="tools">
+                <template data-type="tools">
                     <ul>
                         <li data-type="tools" data-value="inputJson">JSON 输入</li>
                         <li data-type="tools" data-value="fetchApi">HTTP 请求</li>
                     </ul>
-                </span>
+                </template>
             </div>
         </div>
     </div>
