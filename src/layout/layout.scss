@@ -231,7 +231,10 @@ body {
     margin: 0 0 0 2px;
     list-style-type: none;
     border-left: 1px dotted #5d6d7e;
-    padding-left: 24px;
+
+    li {
+      padding-left: 24px;
+    }
   }
 
   .json-brackets {
