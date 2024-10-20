@@ -66,7 +66,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-Djv4lDwZ.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-BuezAsB2.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -78,7 +78,7 @@ System.register("./__entry.js", ['./__monkey.entry-Djv4lDwZ.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-Djv4lDwZ.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-BuezAsB2.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -313,7 +313,7 @@ System.register("./__monkey.entry-Djv4lDwZ.js", ['jquery'], (function (exports, 
             _unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
           }
           __vitePreload(() => module.import('./index-CaPUFNpk-BOdKH0uT.js'), void 0 );
-          __vitePreload(() => module.import('./index-BchoGTOO-Ca93VERD.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DLicNKSw-CQrLLkQ-.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-D4T0PPqD-BJAoKg3I.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BY1UhNhF-BgIScdbl.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
         const openInTab = () => _GM_openInTab(URL$1.EXAMPLE_JSON);
         _GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
@@ -474,7 +474,7 @@ System.register("./index-CaPUFNpk-BOdKH0uT.js", [], (function (exports, module) 
     };
 }));
 
-System.register("./index-BchoGTOO-Ca93VERD.js", ['jquery', './__monkey.entry-Djv4lDwZ.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-D4T0PPqD-BJAoKg3I.js", ['jquery', './__monkey.entry-BuezAsB2.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard, tippy;
   return {
@@ -1090,7 +1090,11 @@ System.register("./index-BchoGTOO-Ca93VERD.js", ['jquery', './__monkey.entry-Djv
               } catch (error) {
               }
             });
-            $("#treeTable").on("mousedown", "tr", function() {
+            $("#treeTable").on("mousedown", "tr", function(event) {
+              const target = event.target;
+              if (target.tagName === "SPAN") {
+                return;
+              }
               $(".selected").not(this).removeClass("selected");
               $(this).toggleClass("selected");
             });
@@ -1123,7 +1127,7 @@ System.register("./index-BchoGTOO-Ca93VERD.js", ['jquery', './__monkey.entry-Djv
   };
 }));
 
-System.register("./index-DLicNKSw-CQrLLkQ-.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-Djv4lDwZ.js'], (function (exports, module) {
+System.register("./index-BY1UhNhF-BgIScdbl.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-BuezAsB2.js'], (function (exports, module) {
   'use strict';
   var $, tippy, require$$0, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
   return {
