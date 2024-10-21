@@ -47,10 +47,28 @@ const format_style = {
       }
       $("#formatContainer").append(appendHtml);
       setTimeout(() => {
-        $("#treeTable").simpleTreeTable({
-          expander: "#expandAll",
-          collapser: "#collapseAll",
-        });
+        $("#treeTable")
+          .simpleTreeTable({
+            expander: "#expandAll",
+            collapser: "#collapseAll",
+          })
+          .on("node:open", function (e, $node) {
+            $node.find(".node-len").text("");
+          })
+          .on("node:close", function (e, $node) {
+            const type = $node.attr("type");
+            const id = $node.data("node-id");
+            const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
+
+            let content =
+              "[ " + length + `${length > 1 ? " items" : " item"}` + " ]";
+            if (type === "object") {
+              content =
+                "{ " + length + `${length > 1 ? " keys" : " key"}` + " }";
+            }
+            $node.find(".node-len").text(content);
+          });
+
         try {
           layer.closeAll();
         } catch (error) {}

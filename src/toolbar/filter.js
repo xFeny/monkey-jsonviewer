@@ -94,7 +94,7 @@ export default {
    */
   clear: function () {
     const that = this;
-    $(".clear").click(function () {
+    $(".clear").on("click", function () {
       that.filterJSON();
       $("input").val("");
       $(this).attr("hidden", true);

@@ -55,6 +55,7 @@ body {
       cursor: pointer;
       padding: 0 10px;
       font-size: $fz12;
+      transition: background-color 0.2s ease;
 
       &:hover {
         background-color: #d4d4d4;
@@ -126,6 +127,7 @@ body {
         display: inline;
         padding: 5px 10px;
         border-radius: 3px;
+        transition: background-color 0.2s ease;
 
         &:hover {
           background-color: $color-gray;
@@ -163,6 +165,7 @@ body {
           font-size: $fz13;
           padding: 5px 20px;
           background-color: $tip_color;
+          transition: background-color 0.2s ease;
 
           &:hover {
             border-radius: 3px;
@@ -407,9 +410,10 @@ body {
       width: 120px;
     }
 
-    .tree-len {
+    .node-len {
       color: $color-gray;
       font-size: $fz13;
+      margin-left: 0.5em;
     }
 
     .simple-tree-table-icon {

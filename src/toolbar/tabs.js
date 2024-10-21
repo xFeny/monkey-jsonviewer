@@ -36,7 +36,23 @@ const tabsEvent = {
   collapseAll: function () {
     if ($("#formatContainer").is(":visible")) {
       try {
-        $("a.json-toggle").not(".collapsed").click();
+        $("a.json-toggle").not(".collapsed").trigger("click");
+      } catch (e) {}
+
+      try {
+        $("tr:not(.simple-tree-table-empty)").each((i, node) => {
+          const $node = $(node);
+          const type = $node.attr("type");
+          const id = $node.data("node-id");
+          const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
+
+          let content =
+            "[ " + length + `${length > 1 ? " items" : " item"}` + " ]";
+          if (type === "object") {
+            content = "{ " + length + `${length > 1 ? " keys" : " key"}` + " }";
+          }
+          $node.find(".node-len").text(content);
+        });
       } catch (e) {}
     } else {
       unsafeWindow.GLOBAL_JSMIND.collapse_all();
@@ -50,7 +66,13 @@ const tabsEvent = {
   expandAll: function () {
     if ($("#formatContainer").is(":visible")) {
       try {
-        $("a.json-placeholder").click().remove();
+        $("a.json-placeholder").trigger("click").remove();
+      } catch (e) {}
+
+      try {
+        $("tr:not(.simple-tree-table-empty)").each((i, node) => {
+          $(node).find(".node-len").text("");
+        });
       } catch (e) {}
     } else {
       unsafeWindow.GLOBAL_JSMIND.expand_all();

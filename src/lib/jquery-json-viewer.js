@@ -104,8 +104,15 @@ import Utils from "../common/Utils";
         if (target.is(":visible")) {
           target.siblings(".json-placeholder").remove();
         } else {
+          let clas = target.attr("class");
+          clas = clas.substring(clas.indexOf("-") + 1);
+
           var count = target.children('li:not([class*="hidden"])').length;
           var placeholder = count + (count > 1 ? " items" : " item");
+          if (clas === "object") {
+            placeholder = count + (count > 1 ? " keys" : " key");
+          }
+
           target.after(
             '<a href class="json-placeholder">' + placeholder + "</a>"
           );
@@ -115,7 +122,7 @@ import Utils from "../common/Utils";
 
       /* Simulate click on toggle button when placeholder is clicked */
       $(this).on("click", "a.json-placeholder", function () {
-        $(this).siblings("a.json-toggle").click();
+        $(this).siblings("a.json-toggle").trigger("click");
         $(this).siblings("a.json-placeholder").remove();
         return false;
       });

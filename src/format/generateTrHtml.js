@@ -24,16 +24,10 @@ function generateTrHtml(json, level = 0, pId = "", pChain = "") {
 
       tr += `
                 <tr data-node-id="${tId}" data-node-pid="${pId}" type="${type}">
-                    <td class="json-key" json-path="${chain}" style="padding-left: ${
-                      level * 19
-                    }px">${key}:
-                        <span class="tree-len">${
-                          len > 0
-                            ? type === "array"
-                              ? "[" + len + "]"
-                              : "{" + len + "}"
-                            : ""
-                        }</span>
+                    <td class="json-key" colspan="${ len > 0 ? 2 : "" }" 
+                    json-path="${chain}" 
+                    style="padding-left: ${level * 19}px">${key}:
+                      <span class="node-len"></span>
                     </td>
                     <td>${brackets}</td>
                 </tr>`;
@@ -47,11 +41,13 @@ function generateTrHtml(json, level = 0, pId = "", pChain = "") {
               .replace(/>/g, "&gt;")
           : val;
       tr += `<tr data-node-id="${tId}" data-node-pid="${pId}" type="${type}">
-                <td class="json-key" json-path="${chain}" style="padding-left: ${
-                  level * 19
-                }px">${key}:</td>`;
+                <td class="json-key" 
+                json-path="${chain}" 
+                style="padding-left: ${level * 19}px">${key}:</td>`;
       if (Utils.isUrl(val)) {
-        tr += `<td class="json-${type}"><a target="_blank" href="${val}">"${val}"</a></td>`;
+        tr += `<td class="json-${type}">
+          <a target="_blank" href="${val}">"${val}"</a>
+        </td>`;
       } else {
         val = type === "string" ? `"${val}"` : val;
         tr += `<td class="json-${type}">${val}</td>`;
