@@ -8,10 +8,11 @@ export default {
    */
   filterJSON: function (filter) {
     const style = GM_getValue("style") || "default";
+    const allPath = $(`#formatContainer *[json-path]`);
     if (!filter) {
       style == "default"
-        ? $("#formatContainer li").removeClass("hidden")
-        : $(".json-key").parent().removeClass("hidden");
+        ? allPath.removeClass("hidden")
+        : allPath.parent().removeClass("hidden");
       return;
     }
 
@@ -26,12 +27,12 @@ export default {
       if (!chain) {
         return;
       }
-      const newChain = chain.substr(chain.lastIndexOf("."));
+      const newChain = chain.substring(chain.lastIndexOf("."));
       if (!newChain.toLowerCase().includes(filter.toLowerCase())) {
         return;
       }
       chainSet.add(chain);
-      while ((chain = chain.substr(0, chain.lastIndexOf(".")))) {
+      while ((chain = chain.substring(0, chain.lastIndexOf(".")))) {
         chainSet.add(chain);
       }
     });
@@ -48,7 +49,7 @@ export default {
         let chain =
           style == "default"
             ? target.parent().attr("json-path")
-            : target.siblings(".json-key").attr("json-path");
+            : target.siblings().attr("json-path");
         if (!chain) {
           return;
         }
@@ -61,16 +62,19 @@ export default {
           chainSet.add(chain);
         }
       });
+
     // console.log(chainSet)
     style == "default"
-      ? $("#formatContainer li").addClass("hidden")
-      : $(".json-key").parent().addClass("hidden");
+      ? allPath.addClass("hidden")
+      : allPath.parent().addClass("hidden");
     chainSet.forEach((chain) => {
-      style == "default"
-        ? $(`#formatContainer *[json-path="${chain}"]`).removeClass("hidden")
-        : $(`#formatContainer *[json-path="${chain}"]`)
-            .parent()
-            .removeClass("hidden");
+      const path = $(`#formatContainer *[json-path="${chain}"]`);
+      if (style == "default") {
+        path.removeClass("hidden");
+        return;
+      }
+
+      path.parent().removeClass("hidden");
     });
   },
   /**

@@ -64,11 +64,7 @@ export default {
    * @returns
    */
   getJsonPath: function (element) {
-    const style = GM_getValue("style") || "default";
-    const jsonPath =
-      style == "default"
-        ? $(element).parent().attr("json-path")
-        : $(element).attr("json-path");
+    const jsonPath = $(element).parent().attr("json-path");
     return jsonPath
       .split(".")
       .reduce((prev, next) =>

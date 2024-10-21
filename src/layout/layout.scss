@@ -394,12 +394,17 @@ body {
     width: -webkit-fill-available;
     border-collapse: collapse;
 
+    b {
+      font-weight: normal;
+    }
+
     tr:hover {
       background-color: #f0f9fe;
     }
 
     tr.selected {
       td,
+      td b,
       td a {
         color: #fff !important;
         background-color: #3875d7;
@@ -411,9 +416,21 @@ body {
     }
 
     .node-len {
+      cursor: pointer;
       color: $color-gray;
-      font-size: $fz13;
+      font-size: $fz12;
       margin-left: 0.5em;
+
+      span:hover {
+        text-decoration: underline;
+      }
+    }
+    .simple-tree-table-empty {
+      .simple-tree-table-icon {
+        padding-left: 0.5em;
+        display: inline !important;
+        background-color: transparent !important;
+      }
     }
 
     .simple-tree-table-icon {
@@ -425,7 +442,7 @@ body {
 
       &::before {
         top: 0.5px;
-        left: -15px;
+        left: -8px;
         position: relative;
         content: "";
         width: 0;

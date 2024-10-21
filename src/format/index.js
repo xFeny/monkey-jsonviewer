@@ -4,6 +4,8 @@ import "../lib/jquery-simple-tree-table.min";
 import generateTrHtml from "./generateTrHtml";
 import evnet from "./evnet";
 
+const table = {};
+
 const format_style = {
   /**
    * 切换JSON 格式化风格
@@ -47,27 +49,49 @@ const format_style = {
       }
       $("#formatContainer").append(appendHtml);
       setTimeout(() => {
-        $("#treeTable")
+        const simpleTreeTable = $("#treeTable")
           .simpleTreeTable({
             expander: "#expandAll",
             collapser: "#collapseAll",
           })
-          .on("node:open", function (e, $node) {
-            $node.find(".node-len").text("");
-          })
-          .on("node:close", function (e, $node) {
-            const type = $node.attr("type");
-            const id = $node.data("node-id");
-            const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
+          .on("node:open", (e, $node) => onNodeOpen($node))
+          .on("node:close", (e, $node) => onNodeClose($node));
 
-            let content =
-              "[ " + length + `${length > 1 ? " items" : " item"}` + " ]";
-            if (type === "object") {
-              content =
-                "{ " + length + `${length > 1 ? " keys" : " key"}` + " }";
-            }
-            $node.find(".node-len").text(content);
-          });
+        const arrow = $("tr:not(.simple-tree-table-empty)");
+        $("#expandAll").on("click", function () {
+          arrow.each((i, node) => onNodeOpen($(node)));
+        });
+
+        $("#collapseAll").on("click", function () {
+          arrow.each((i, node) => onNodeClose($(node)));
+        });
+
+        simpleTreeTable.on("click", ".node-len", function () {
+          const id = $(this).closest("tr").data("node-id");
+          simpleTreeTable.data("simple-tree-table").openByID(id);
+        });
+
+        function onNodeOpen($node) {
+          $node.find(".node-len").html("");
+        }
+
+        function onNodeClose($node) {
+          const type = $node.attr("type");
+          const id = $node.data("node-id");
+          const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
+
+          let content =
+            `[ <span>${length}` +
+            `${length > 1 ? " items" : " item"}` +
+            "</span> ]";
+          if (type === "object") {
+            content =
+              `{ <span>${length}` +
+              `${length > 1 ? " keys" : " key"}` +
+              "</span> }";
+          }
+          $node.find(".node-len").html(content);
+        }
 
         try {
           layer.closeAll();
