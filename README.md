@@ -36,11 +36,6 @@ GitHub地址：<https://github.com/xFeny/monkey-jsonviewer
 
 ![JSON_Http_Request](./images/JSON_Http_Request.gif) 
 
-##### JS 美化
+##### JS、CSS 美化
 
-![js_beautify](./images/js_beautify.gif) 
-
-##### CSS 美化
-
-![css_beautify](./images/css_beautify.gif) 
-
+![js_beautify](./images/js_css_beautify.gif) 
