@@ -11,8 +11,10 @@ export default {
       {
         title: "JSON 输入",
         formType: 2,
+        btn: ["确认"],
         shadeClose: true,
         maxlength: 1000000,
+        area: ["400px", "300px"],
       },
       function (text) {
         if (!text) {

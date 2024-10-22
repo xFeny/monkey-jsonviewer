@@ -111,7 +111,9 @@ body {
       }
     }
   }
+  /** 工具栏样式 END **/
 
+  /** 右侧选项样式 START **/
   .rightbox {
     right: 200px;
     display: flex;
@@ -190,7 +192,7 @@ body {
       }
     }
   }
-  /** 工具栏样式 END **/
+  /** 右侧选项样式 END **/
 
   /** 容器样式 START **/
   .tabs-container {
@@ -327,6 +329,7 @@ body {
   .json-square-brackets {
     color: #8e9331;
   }
+  /** JSON 格式化样式 END **/
 
   /** 脑图样式 START **/
   #jmContainer {
@@ -485,9 +488,16 @@ body {
   /** 表格样式 END **/
 }
 
-/** tabs 右边操作选项 START **/
+/** HTTP 请求弹窗样式 START **/
 .httpRequest {
-  padding: 20px;
+  padding: 30px 20px;
+  width: 700px;
+
+  > div {
+    display: flex;
+    height: 35px;
+    margin-bottom: 20px;
+  }
 
   input,
   select {
@@ -495,20 +505,18 @@ body {
     padding-left: 10px;
     border: 1px solid $color-gray;
   }
-}
-
-.requestbox,
-.textarea {
-  width: 700px;
-  display: flex;
-}
-
-.requestbox {
-  height: 35px;
-  margin-bottom: 15px;
 
   input {
     flex-grow: 1;
+
+    &[name="url"],
+    &:first-child {
+      border-right: none;
+    }
+  }
+
+  select {
+    border-right: none;
   }
 
   button {
@@ -521,12 +529,7 @@ body {
     }
   }
 }
-
-.textarea input {
-  flex-grow: 1;
-  height: 30px;
-}
-/** tabs 右边操作选项 END **/
+/** HTTP 请求弹窗样式 END **/
 
 /**浅色主题 START **/
 .light {
