@@ -110,4 +110,23 @@ export default {
 
     URL.revokeObjectURL(url);
   },
+  /**
+   * JSONP 数据处理
+   * @param {*} rawText 字符串
+   * @returns
+   */
+  jsonpMatch: function (rawText) {
+    let tokens = rawText.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
+    if (tokens && tokens[1] && tokens[2]) {
+      return {
+        raw: tokens[2],
+        jsonpFun: tokens[1],
+      };
+    }
+
+    return {
+      raw: rawText,
+      jsonpFun: null,
+    };
+  },
 };

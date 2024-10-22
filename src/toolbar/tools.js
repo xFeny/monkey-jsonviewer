@@ -1,5 +1,6 @@
 import $ from "jquery";
 import URL from "../common/URL";
+import Utils from "../common/Utils";
 /**
  * toolbar右侧JOSN输入和HTTP请求功能操作
  */
@@ -19,21 +20,15 @@ export default {
           return;
         }
 
-        const rawText = text,
-          oldJSONPFun = unsafeWindow.GLOBAL_JSONP_FUN;
+        const oldJSONPFun = unsafeWindow.GLOBAL_JSONP_FUN;
 
         // 判断是否为jsonp格式
-        const match = text.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
-        if (match && match[1] && match[2]) {
-          unsafeWindow.GLOBAL_JSONP_FUN = match[1];
-          text = match[2];
-        }
-
+        const { raw, jsonpFun } = Utils.jsonpMatch(text);
+        unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
         try {
-          const json = JSON.parse(JSON.stringify(eval(`(${text})`)));
-          that.reload(json, rawText);
+          const json = JSON.parse(JSON.stringify(eval(`(${raw})`)));
+          that.reload(json, raw);
         } catch (e) {
-          console.log(e);
           unsafeWindow.GLOBAL_JSONP_FUN = oldJSONPFun;
           layer.msg("JSON不合法", { time: 1500 });
         }
@@ -112,8 +107,14 @@ export default {
         contentType: "application/json",
       }).then(
         (response) => {
-          unsafeWindow.GLOBAL_JSONP_FUN = null;
-          that.reload(response, JSON.stringify(response));
+          if (typeof response === "string") {
+            const { raw, jsonpFun } = Utils.jsonpMatch(response);
+            unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
+            that.reload(eval(`(${raw})`), raw);
+          } else {
+            unsafeWindow.GLOBAL_JSONP_FUN = null;
+            that.reload(response, JSON.stringify(response));
+          }
         },
         (error) => {
           layer.closeAll();
@@ -136,7 +137,7 @@ export default {
       if (!data) {
         return;
       }
-      
+
       const { type, value } = data;
       if (type === "tools") {
         that[value]();

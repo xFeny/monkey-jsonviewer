@@ -425,6 +425,7 @@ body {
         text-decoration: underline;
       }
     }
+
     .simple-tree-table-empty {
       .simple-tree-table-icon {
         padding-left: 0.5em;
@@ -661,77 +662,73 @@ body.dark_plus {
   }
 }
 body.dark {
-  .format-container {
-    .tabs-container {
-      background-color: #252526;
-    }
+  .tabs-container {
+    background-color: #252526;
+  }
 
-    .json-curly-brackets {
-      color: #ce70d6;
-    }
+  .json-curly-brackets {
+    color: #ce70d6;
+  }
 
-    .json-square-brackets {
-      color: #f1d700;
-    }
+  .json-square-brackets {
+    color: #f1d700;
+  }
 
-    .json-key {
-      color: #9cdcfe;
-    }
+  .json-key {
+    color: #9cdcfe;
+  }
 
-    .json-string,
-    .json-string a {
-      color: #ce9178;
-    }
+  .json-string,
+  .json-string a {
+    color: #ce9178;
+  }
 
-    .json-number {
-      color: #b5cea8;
-    }
+  .json-number {
+    color: #b5cea8;
+  }
 
-    .json-boolean {
-      color: #358cd6;
-    }
+  .json-boolean {
+    color: #358cd6;
+  }
 
-    .json-null {
-      color: #569cd6;
-    }
+  .json-null {
+    color: #569cd6;
   }
 }
 /** 暗黑主题 END **/
 /** 第二个暗黑主题 START **/
 body.dark_plus {
-  .format-container {
-    .tabs-container {
-      background-color: #1e1f22;
-    }
+  .tabs-container {
+    background-color: #1e1f22;
+  }
 
-    .json-curly-brackets {
-      color: #bb9667;
-    }
+  .json-curly-brackets {
+    color: #bb9667;
+  }
 
-    .json-square-brackets {
-      color: #bbbda3;
-    }
+  .json-square-brackets {
+    color: #bbbda3;
+  }
 
-    .json-key {
-      color: #c77dbb;
-    }
+  .json-key {
+    color: #c77dbb;
+  }
 
-    .json-string,
-    .json-string a {
-      color: #499472;
-    }
+  .json-string,
+  .json-string a {
+    color: #499472;
+  }
 
-    .json-number {
-      color: #27abb7;
-    }
+  .json-number {
+    color: #27abb7;
+  }
 
-    .json-boolean {
-      color: #ce8d66;
-    }
+  .json-boolean {
+    color: #ce8d66;
+  }
 
-    .json-null {
-      color: #c06235;
-    }
+  .json-null {
+    color: #c06235;
   }
 }
 /** 第二个暗黑主题 END **/

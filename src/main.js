@@ -6,6 +6,15 @@ import "tippy.js/dist/tippy.css";
 (function () {
   "use strict";
 
+  // 新标签页打开测试JSON
+  const openInTab = () => GM_openInTab(URL.EXAMPLE_JSON);
+  GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
+  window.addEventListener("keydown", function (event) {
+    if (event.altKey && event.key === "j") {
+      openInTab();
+    }
+  });
+
   if (!Utils.isJSONDocument(document.contentType)) {
     return;
   }
@@ -29,11 +38,9 @@ import "tippy.js/dist/tippy.css";
   }
 
   // 判断是否为jsonp格式
-  let tokens = rawText.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
-  if (tokens && tokens[1] && tokens[2]) {
-    unsafeWindow.GLOBAL_JSONP_FUN = tokens[1];
-    rawText = tokens[2];
-  }
+  const { raw, jsonpFun } = Utils.jsonpMatch(rawText);
+  rawText = raw;
+  unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
 
   if (!Utils.isJSON(rawText)) {
     import("./beautify");
@@ -65,14 +72,5 @@ import "tippy.js/dist/tippy.css";
       .then((format) => format.default.init())
       .then(() => import("./toolbar"))
       .then(() => import("./scrollTop"));
-  });
-
-  // 新标签页打开测试JSON
-  const openInTab = () => GM_openInTab(URL.EXAMPLE_JSON);
-  GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
-  document.addEventListener("keydown", function (event) {
-    if (event.altKey && event.key === "j") {
-      openInTab();
-    }
   });
 })();

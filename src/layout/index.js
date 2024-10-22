@@ -4,8 +4,8 @@ const layout = `
 <div class="format-container">
     <div class="panel">
         <div class="tabs">
-            <div class="tabs-item btn active" id="format">JSON格式化</div>
-            <div class="tabs-item btn" id="viewJsonMind">JSON脑图</div>
+            <div class="tabs-item btn active" id="format">JSON 格式化</div>
+            <div class="tabs-item btn" id="viewJsonMind">JSON 脑图</div>
             <div class="tabs-item btn" id="viewRawText">原始数据</div>
         </div>
         <div class="toolbar">
