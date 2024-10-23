@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.8.3
+// @version      v0.8.4
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -68,7 +68,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-0d2KIql-.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-BOlLPAAW.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -80,7 +80,7 @@ System.register("./__entry.js", ['./__monkey.entry-0d2KIql-.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-0d2KIql-.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-BOlLPAAW.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -225,26 +225,6 @@ System.register("./__monkey.entry-0d2KIql-.js", ['jquery'], (function (exports, 
           return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
         },
         /**
-         * 文档类型判断
-         * @returns
-         */
-        isJSONDocument: function(contentType) {
-          const docType = [
-            "application/vnd.api+json",
-            "application/x-javascript",
-            "application/javascript",
-            "application/json",
-            "text/javascript",
-            "text/plain",
-            "text/json",
-            "text/css"
-          ];
-          if (!docType.includes(contentType)) {
-            return false;
-          }
-          return true;
-        },
-        /**
          * 下载文本内容
          * @param {*} content 文本内容
          * @param {*} filename 文件名
@@ -282,7 +262,7 @@ System.register("./__monkey.entry-0d2KIql-.js", ['jquery'], (function (exports, 
         EXAMPLE_JSON: "https://fetch-api.feny.ink/example.json",
         LAYUI_JS: "https://unpkg.com/layui@2.7.6/dist/layui.js",
         LAYUI_CSS: "https://unpkg.com/layui@2.7.6/dist/css/layui.css",
-        ONLINE_HTTP_REQUEST: "https://fetch-api.feny.ink/httpRequest"
+        ONLINE_REQUEST: "https://fetch-api.feny.ink/httpRequest"
       });
       var _GM_addStyle = /* @__PURE__ */ (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
       var _GM_getValue = exports("a", /* @__PURE__ */ (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)());
@@ -299,7 +279,17 @@ System.register("./__monkey.entry-0d2KIql-.js", ['jquery'], (function (exports, 
             openInTab();
           }
         });
-        if (!Utils.isJSONDocument(document.contentType)) {
+        const docType = [
+          "application/vnd.api+json",
+          "application/x-javascript",
+          "application/javascript",
+          "application/json",
+          "text/javascript",
+          "text/plain",
+          "text/json",
+          "text/css"
+        ];
+        if (!docType.includes(document.contentType)) {
           return;
         }
         _unsafeWindow.GLOBAL_SOURCE_ELEMENT = $("pre").first();
@@ -321,7 +311,7 @@ System.register("./__monkey.entry-0d2KIql-.js", ['jquery'], (function (exports, 
         rawText = raw;
         _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
         if (!Utils.isJSON(rawText)) {
-          __vitePreload(() => module.import('./index-DGytUOX_-D8Hm-GfS.js'), void 0 );
+          __vitePreload(() => module.import('./index-C65K4Lj5-8_ctkQOg.js'), void 0 );
           return;
         }
         window.postMessage({ addStyle: true });
@@ -338,7 +328,7 @@ System.register("./__monkey.entry-0d2KIql-.js", ['jquery'], (function (exports, 
             _unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
           }
           __vitePreload(() => module.import('./index-DSatIUFh-C2SR-72Z.js'), void 0 );
-          __vitePreload(() => module.import('./index-0u_3-RfS-CearszQM.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-Y5b9FIqu-DdZhVuW4.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-cdB1pXVV-CO1T8Ceq.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BsqGqezS-D-F_bs3k.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
       })();
 
@@ -346,17 +336,17 @@ System.register("./__monkey.entry-0d2KIql-.js", ['jquery'], (function (exports, 
   };
 }));
 
-System.register("./index-DGytUOX_-D8Hm-GfS.js", ['jquery', 'highlight.js', 'beautifier'], (function (exports, module) {
+System.register("./index-C65K4Lj5-8_ctkQOg.js", ['jquery', 'highlight.js', 'beautifier'], (function (exports, module) {
   'use strict';
-  var $, hljs, js_beautify, css_beautify;
+  var $, hljs, css_beautify, js_beautify;
   return {
     setters: [module => {
       $ = module.default;
     }, module => {
       hljs = module.default;
     }, module => {
-      js_beautify = module.js_beautify;
       css_beautify = module.css_beautify;
+      js_beautify = module.js_beautify;
     }],
     execute: (function () {
 
@@ -368,7 +358,7 @@ System.register("./index-DGytUOX_-D8Hm-GfS.js", ['jquery', 'highlight.js', 'beau
           "text/css"
         ];
         const contentType = document.contentType;
-        if (!docType.includes(document.contentType)) {
+        if (!docType.includes(contentType)) {
           return;
         }
         const preElement = $("pre").first();
@@ -399,22 +389,18 @@ System.register("./index-DGytUOX_-D8Hm-GfS.js", ['jquery', 'highlight.js', 'beau
           return;
         }
         let beautifyCode2;
-        switch (language) {
-          case "css":
-            const cssBeautify = css_beautify ? css_beautify : window.css_beautify;
-            beautifyCode2 = cssBeautify(rawText);
-            beautifyCode2 = hljs.highlight(beautifyCode2, {
-              language
-            }).value;
-            break;
-          case "javascript":
-          case "x-javascript":
-            const jsBeautify = js_beautify ? js_beautify : window.js_beautify;
-            beautifyCode2 = jsBeautify(rawText);
-            beautifyCode2 = hljs.highlight(beautifyCode2, {
-              language: "javascript"
-            }).value;
-            break;
+        if ("css" === language) {
+          const cssBeautify = css_beautify ? css_beautify : window.css_beautify;
+          beautifyCode2 = cssBeautify(rawText);
+          beautifyCode2 = hljs.highlight(beautifyCode2, {
+            language
+          }).value;
+        } else {
+          const jsBeautify = js_beautify ? js_beautify : window.js_beautify;
+          beautifyCode2 = jsBeautify(rawText);
+          beautifyCode2 = hljs.highlight(beautifyCode2, {
+            language: "javascript"
+          }).value;
         }
         element.html(`<code>${beautifyCode2}</code>`);
       }
@@ -492,7 +478,7 @@ System.register("./index-DSatIUFh-C2SR-72Z.js", [], (function (exports, module) 
     };
 }));
 
-System.register("./index-0u_3-RfS-CearszQM.js", ['jquery', './__monkey.entry-0d2KIql-.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-cdB1pXVV-CO1T8Ceq.js", ['jquery', './__monkey.entry-BOlLPAAW.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard, tippy;
   return {
@@ -1011,7 +997,7 @@ System.register("./index-0u_3-RfS-CearszQM.js", ['jquery', './__monkey.entry-0d2
          */
         urlHover: function() {
           $("#formatContainer").on("mouseenter", "a[href]", function() {
-            const that = $(this), href = that.attr("href");
+            const href = $(this).attr("href");
             if (Utils.isImg(href)) {
               tippy(this, {
                 duration: 800,
@@ -1071,6 +1057,19 @@ System.register("./index-0u_3-RfS-CearszQM.js", ['jquery', './__monkey.entry-0d2
           this.urlHover().tipsJsonPath().copyJsonPath();
         }
       };
+      function onNodeOpen($node) {
+        $node.find(".node-len").html("");
+      }
+      function onNodeClose($node) {
+        const type = $node.attr("type");
+        const id = $node.data("node-id");
+        const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
+        let content = `[ <span>${length}${length > 1 ? " items" : " item"}</span> ]`;
+        if (type === "object") {
+          content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
+        }
+        $node.find(".node-len").html(content);
+      }
       const format_style = exports("default", {
         /**
          * 切换JSON 格式化风格
@@ -1100,59 +1099,53 @@ System.register("./index-0u_3-RfS-CearszQM.js", ['jquery', './__monkey.entry-0d2
               layer.closeAll();
             } catch (error) {
             }
-          } else {
-            const trHTML = generateTrHtml(_unsafeWindow.GLOBAL_JSON);
-            let appendHtml = `<table id="treeTable">${trHTML}</table>`;
-            if (_unsafeWindow.GLOBAL_JSONP_FUN !== void 0 && _unsafeWindow.GLOBAL_JSONP_FUN !== null) {
-              appendHtml = `
+            return this;
+          }
+          this.tableFormat();
+          return this;
+        },
+        /**
+         * JSON 表格格式化
+         */
+        tableFormat: function() {
+          const trHTML = generateTrHtml(_unsafeWindow.GLOBAL_JSON);
+          let appendHtml = `<table id="treeTable">${trHTML}</table>`;
+          if (_unsafeWindow.GLOBAL_JSONP_FUN) {
+            appendHtml = `
         <div class="jsonp">${_unsafeWindow.GLOBAL_JSONP_FUN}(</div>
         ${appendHtml}
         <div class="jsonp">)</div>`;
-            }
-            $("#formatContainer").append(appendHtml);
-            setTimeout(() => {
-              const simpleTreeTable = $("#treeTable").simpleTreeTable({
-                expander: "#expandAll",
-                collapser: "#collapseAll"
-              }).on("node:open", (e, $node) => onNodeOpen($node)).on("node:close", (e, $node) => onNodeClose($node));
-              const arrow = $("tr:not(.simple-tree-table-empty)");
-              $("#expandAll").on("click", function() {
-                arrow.each((i, node) => onNodeOpen($(node)));
-              });
-              $("#collapseAll").on("click", function() {
-                arrow.each((i, node) => onNodeClose($(node)));
-              });
-              simpleTreeTable.on("click", ".node-len", function() {
-                const id = $(this).closest("tr").data("node-id");
-                simpleTreeTable.data("simple-tree-table").openByID(id);
-              });
-              function onNodeOpen($node) {
-                $node.find(".node-len").html("");
-              }
-              function onNodeClose($node) {
-                const type = $node.attr("type");
-                const id = $node.data("node-id");
-                const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
-                let content = `[ <span>${length}${length > 1 ? " items" : " item"}</span> ]`;
-                if (type === "object") {
-                  content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
-                }
-                $node.find(".node-len").html(content);
-              }
-              try {
-                layer.closeAll();
-              } catch (error) {
-              }
-            });
-            $("#treeTable").on("mousedown", "tr", function(event) {
-              const target = event.target;
-              if (target.tagName === "SPAN") {
-                return;
-              }
-              $(".selected").not(this).removeClass("selected");
-              $(this).toggleClass("selected");
-            });
           }
+          $("#formatContainer").append(appendHtml);
+          setTimeout(() => {
+            const simpleTreeTable = $("#treeTable").simpleTreeTable({
+              expander: "#expandAll",
+              collapser: "#collapseAll"
+            }).on("node:open", (e, $node) => onNodeOpen($node)).on("node:close", (e, $node) => onNodeClose($node));
+            const arrow = $("tr:not(.simple-tree-table-empty)");
+            $("#expandAll").on("click", function() {
+              arrow.each((i, node) => onNodeOpen($(node)));
+            });
+            $("#collapseAll").on("click", function() {
+              arrow.each((i, node) => onNodeClose($(node)));
+            });
+            simpleTreeTable.on("click", ".node-len", function() {
+              const id = $(this).closest("tr").data("node-id");
+              simpleTreeTable.data("simple-tree-table").openByID(id);
+            });
+            try {
+              layer.closeAll();
+            } catch (error) {
+            }
+          });
+          $("#treeTable").on("mousedown", "tr", function(event) {
+            const target = event.target;
+            if (target.tagName === "SPAN") {
+              return;
+            }
+            $(".selected").not(this).removeClass("selected");
+            $(this).toggleClass("selected");
+          });
           return this;
         },
         init: function() {
@@ -1181,7 +1174,7 @@ System.register("./index-0u_3-RfS-CearszQM.js", ['jquery', './__monkey.entry-0d2
   };
 }));
 
-System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-0d2KIql-.js'], (function (exports, module) {
+System.register("./index-BsqGqezS-D-F_bs3k.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-BOlLPAAW.js'], (function (exports, module) {
   'use strict';
   var $, tippy, require$$0, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
   return {
@@ -1900,7 +1893,7 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
             return chain;
           }
           const parent = node.parent, parentChain = this.mindChain(parent);
-          chain = parent.data.isArray ? `${parentChain}[0].${chain}` : `${parentChain}.${chain}`;
+          chain = parent.data.isArray ? `${parentChain}[i].${chain}` : `${parentChain}.${chain}`;
           return chain;
         },
         /**
@@ -1922,9 +1915,9 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
           }
           _unsafeWindow.GLOBAL_JSMIND.show({
             meta: {
+              version: "1.0",
               name: "JSON脑图",
-              author: "1220301855@qq.com",
-              version: "1.0"
+              author: "1220301855@qq.com"
             },
             format: "node_tree",
             /* 数据内容 */
@@ -1933,7 +1926,7 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
               topic: "Response",
               direction: "left",
               children: this.convert(json2),
-              chain: isArr ? "Response[0]" : "Response"
+              chain: isArr ? "Response[i]" : "Response"
             }
           });
           this.isFirst = false;
@@ -2066,7 +2059,7 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
         format: function() {
         },
         /**
-         * tabs点击了`JSON脑图`
+         * tabs点击了`JSON 脑图`
          */
         viewJsonMind: function() {
           jsonMind.init(_unsafeWindow.GLOBAL_JSON);
@@ -2090,7 +2083,7 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
           this.isBeautify = !this.isBeautify;
           if (this.isBeautify) {
             let str = JSON.stringify(_unsafeWindow.GLOBAL_JSON, null, 2);
-            if (_unsafeWindow.GLOBAL_JSONP_FUN !== void 0 && _unsafeWindow.GLOBAL_JSONP_FUN !== null) {
+            if (_unsafeWindow.GLOBAL_JSONP_FUN) {
               str = `${_unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
             }
             this.$rawText.find("pre").text(str);
@@ -2127,12 +2120,18 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
         init: function() {
           this.viewRawText();
           $(".btn").on("click", (e) => {
-            const target = e.target, id = target.id;
+            const target = e.target;
+            const id = target.id;
             if (target.classList.contains("tabs-item")) {
+              const clas = "active";
               const index = $(target).index();
-              $(target).addClass("active").siblings().removeClass("active");
-              $(".tabs-container > div").removeClass("active").eq(index).addClass("active");
-              const beautifyEl = $("#beautify"), searchEl = $(".searchbox"), copyJsonEl = $("#copyJson"), jsoncrackEl = $("#jsoncrack"), aEl = $("#collapseAll, #expandAll");
+              $(target).addClass(clas).siblings().removeClass(clas);
+              $(".tabs-container > div").removeClass(clas).eq(index).addClass(clas);
+              const beautifyEl = $("#beautify");
+              const searchEl = $(".searchbox");
+              const copyJsonEl = $("#copyJson");
+              const jsoncrackEl = $("#jsoncrack");
+              const aEl = $("#collapseAll, #expandAll");
               id === "format" ? searchEl.show() : searchEl.hide();
               id === "viewJsonMind" ? copyJsonEl.hide() && jsoncrackEl.show() : copyJsonEl.show() && jsoncrackEl.hide();
               id === "viewRawText" ? beautifyEl.show() && aEl.hide() : beautifyEl.hide() && aEl.show();
@@ -2146,8 +2145,8 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
         const { data } = event2;
         if (data && data.reload) {
           jsonMind.isFirst = true;
-          jsonMind.init(_unsafeWindow.GLOBAL_JSON);
           tabsEvent.isBeautify = false;
+          jsonMind.init(_unsafeWindow.GLOBAL_JSON);
           tabsEvent.$rawText.html(_unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
         }
       });
@@ -2214,7 +2213,7 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
           const that2 = this;
           $("input").on("input", function() {
             const val = $(this).val();
-            val === "" ? $(".clear").attr("hidden", true) : $(".clear").attr("hidden", false);
+            $(".clear").attr("hidden", !val);
             that2.filterJSON(val);
           });
           return that2;
@@ -2288,15 +2287,13 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
                 layer.msg("内容不能为空", { time: 1500 });
                 return;
               }
-              const oldJSONPFun = _unsafeWindow.GLOBAL_JSONP_FUN;
               const { raw, jsonpFun } = Utils.jsonpMatch(text);
-              _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
               try {
                 const json = JSON.parse(JSON.stringify(eval(`(${raw})`)));
-                that.reload(json, raw);
+                that.reload(json, raw, jsonpFun);
               } catch (e) {
-                _unsafeWindow.GLOBAL_JSONP_FUN = oldJSONPFun;
-                layer.msg("JSON不合法", { time: 1500 });
+                layer.msg("JSON 格式化异常", { time: 1500 });
+                console.log("格式化异常: ", e);
               }
             }
           );
@@ -2364,31 +2361,41 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
             }
             layer.load(0, { shade: false });
             $.ajax({
-              url: URL$1.ONLINE_HTTP_REQUEST,
               type: "POST",
+              url: URL$1.ONLINE_REQUEST,
               data: JSON.stringify(form),
               contentType: "application/json"
             }).then(
               (response) => {
                 if (typeof response === "string") {
-                  const { raw, jsonpFun } = Utils.jsonpMatch(response);
-                  _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
-                  that.reload(eval(`(${raw})`), raw);
+                  try {
+                    const { raw, jsonpFun } = Utils.jsonpMatch(response);
+                    const json = JSON.parse(JSON.stringify(eval(`(${raw})`)));
+                    that.reload(json, raw, jsonpFun);
+                  } catch (e) {
+                    layer.closeAll();
+                    layer.msg("JSON 格式化异常", { time: 1500 });
+                    console.log("格式化异常：", e);
+                  }
                 } else {
-                  _unsafeWindow.GLOBAL_JSONP_FUN = null;
-                  that.reload(response, JSON.stringify(response));
+                  that.reload(response, JSON.stringify(response), null);
                 }
               },
               (error) => {
                 layer.closeAll();
-                console.log(error);
+                layer.msg("HTTP 请求异常", { time: 1500 });
+                console.log("HTTP 请求异常：", error);
               }
             );
           });
           return this;
         },
-        reload: function(json2, rawText) {
+        reload: function(json2, rawText, jsonpFun2) {
           _unsafeWindow.GLOBAL_JSON = json2;
+          _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun2;
+          if (_unsafeWindow.GLOBAL_JSONP_FUN) {
+            rawText = `${_unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
+          }
           _unsafeWindow.GLOBAL_SOURCE_ELEMENT.text(rawText);
           window.postMessage({ reload: true });
           layer.closeAll();
@@ -2415,6 +2422,7 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
          */
         handle: function() {
           const that2 = this;
+          const tagName = "span";
           [".style", ".theme", ".tools"].forEach((selector) => {
             tippy(selector, {
               duration: 500,
@@ -2423,20 +2431,20 @@ System.register("./index-Y5b9FIqu-DdZhVuW4.js", ['jquery', './tippy.esm-Ot9MORvr
               trigger: "click",
               onTrigger: function(instance) {
                 const tools2 = $(instance.reference);
-                tools2.siblings().find("span").removeClass();
-                tools2.find("span").addClass("active");
+                tools2.siblings().find(tagName).removeClass();
+                tools2.find(tagName).addClass("active");
                 const template = tools2.find("template");
                 const type = template.data("type");
-                const dataValue = _GM_getValue(type) || "default";
+                const value = _GM_getValue(type) || "default";
                 const ul = template.contents();
                 ul.find("li").removeClass();
-                ul.find(`li[data-value=${dataValue}]`).addClass("active");
+                ul.find(`li[data-value=${value}]`).addClass("active");
                 instance.setContent(template.html());
                 that2.instance = instance;
               },
               onHide: function(instance) {
                 const tools2 = $(instance.reference);
-                tools2.find("span").removeClass();
+                tools2.find(tagName).removeClass();
               }
             });
           });
