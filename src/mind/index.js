@@ -49,7 +49,7 @@ export default {
     const parent = node.parent,
       parentChain = this.mindChain(parent);
     chain = parent.data.isArray
-      ? `${parentChain}[0].${chain}`
+      ? `${parentChain}[i].${chain}`
       : `${parentChain}.${chain}`;
     return chain;
   },
@@ -74,9 +74,9 @@ export default {
 
     unsafeWindow.GLOBAL_JSMIND.show({
       meta: {
+        version: "1.0",
         name: "JSON脑图",
         author: "1220301855@qq.com",
-        version: "1.0",
       },
       format: "node_tree",
       /* 数据内容 */
@@ -85,7 +85,7 @@ export default {
         topic: "Response",
         direction: "left",
         children: this.convert(json),
-        chain: isArr ? "Response[0]" : "Response",
+        chain: isArr ? "Response[i]" : "Response",
       },
     });
     this.isFirst = false;

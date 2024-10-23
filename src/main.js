@@ -15,7 +15,17 @@ import "tippy.js/dist/tippy.css";
     }
   });
 
-  if (!Utils.isJSONDocument(document.contentType)) {
+  const docType = [
+    "application/vnd.api+json",
+    "application/x-javascript",
+    "application/javascript",
+    "application/json",
+    "text/javascript",
+    "text/plain",
+    "text/json",
+    "text/css",
+  ];
+  if (!docType.includes(document.contentType)) {
     return;
   }
 

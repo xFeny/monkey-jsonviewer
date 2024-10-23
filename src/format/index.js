@@ -4,7 +4,30 @@ import "../lib/jquery-simple-tree-table.min";
 import generateTrHtml from "./generateTrHtml";
 import evnet from "./evnet";
 
-const table = {};
+/**
+ * 表格节点展开事件
+ * @param {*} $node 节点
+ */
+function onNodeOpen($node) {
+  $node.find(".node-len").html("");
+}
+/**
+ * 表格节点折叠事件
+ * @param {*} $node 节点
+ */
+function onNodeClose($node) {
+  const type = $node.attr("type");
+  const id = $node.data("node-id");
+  const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
+
+  let content =
+    `[ <span>${length}` + `${length > 1 ? " items" : " item"}` + "</span> ]";
+  if (type === "object") {
+    content =
+      `{ <span>${length}` + `${length > 1 ? " keys" : " key"}` + "</span> }";
+  }
+  $node.find(".node-len").html(content);
+}
 
 const format_style = {
   /**
@@ -35,80 +58,66 @@ const format_style = {
       try {
         layer.closeAll();
       } catch (error) {}
-    } else {
-      const trHTML = generateTrHtml(unsafeWindow.GLOBAL_JSON);
-      let appendHtml = `<table id="treeTable">${trHTML}</table>`;
-      if (
-        unsafeWindow.GLOBAL_JSONP_FUN !== undefined &&
-        unsafeWindow.GLOBAL_JSONP_FUN !== null
-      ) {
-        appendHtml = `
+
+      return this;
+    }
+
+    this.tableFormat();
+    return this;
+  },
+  /**
+   * JSON 表格格式化
+   */
+  tableFormat: function () {
+    const trHTML = generateTrHtml(unsafeWindow.GLOBAL_JSON);
+    let appendHtml = `<table id="treeTable">${trHTML}</table>`;
+    if (unsafeWindow.GLOBAL_JSONP_FUN) {
+      appendHtml = `
         <div class="jsonp">${unsafeWindow.GLOBAL_JSONP_FUN}(</div>
         ${appendHtml}
         <div class="jsonp">)</div>`;
-      }
-      $("#formatContainer").append(appendHtml);
-      setTimeout(() => {
-        const simpleTreeTable = $("#treeTable")
-          .simpleTreeTable({
-            expander: "#expandAll",
-            collapser: "#collapseAll",
-          })
-          .on("node:open", (e, $node) => onNodeOpen($node))
-          .on("node:close", (e, $node) => onNodeClose($node));
-
-        const arrow = $("tr:not(.simple-tree-table-empty)");
-        $("#expandAll").on("click", function () {
-          arrow.each((i, node) => onNodeOpen($(node)));
-        });
-
-        $("#collapseAll").on("click", function () {
-          arrow.each((i, node) => onNodeClose($(node)));
-        });
-
-        simpleTreeTable.on("click", ".node-len", function () {
-          const id = $(this).closest("tr").data("node-id");
-          simpleTreeTable.data("simple-tree-table").openByID(id);
-        });
-
-        function onNodeOpen($node) {
-          $node.find(".node-len").html("");
-        }
-
-        function onNodeClose($node) {
-          const type = $node.attr("type");
-          const id = $node.data("node-id");
-          const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
-
-          let content =
-            `[ <span>${length}` +
-            `${length > 1 ? " items" : " item"}` +
-            "</span> ]";
-          if (type === "object") {
-            content =
-              `{ <span>${length}` +
-              `${length > 1 ? " keys" : " key"}` +
-              "</span> }";
-          }
-          $node.find(".node-len").html(content);
-        }
-
-        try {
-          layer.closeAll();
-        } catch (error) {}
-      });
-
-      // Highlight selected row
-      $("#treeTable").on("mousedown", "tr", function (event) {
-        const target = event.target;
-        if (target.tagName === "SPAN") {
-          return;
-        }
-
-        $(".selected").not(this).removeClass("selected");
-        $(this).toggleClass("selected");
-      });
     }
+    $("#formatContainer").append(appendHtml);
+
+    setTimeout(() => {
+      const simpleTreeTable = $("#treeTable")
+        .simpleTreeTable({
+          expander: "#expandAll",
+          collapser: "#collapseAll",
+        })
+        .on("node:open", (e, $node) => onNodeOpen($node))
+        .on("node:close", (e, $node) => onNodeClose($node));
+
+      const arrow = $("tr:not(.simple-tree-table-empty)");
+      $("#expandAll").on("click", function () {
+        arrow.each((i, node) => onNodeOpen($(node)));
+      });
+
+      $("#collapseAll").on("click", function () {
+        arrow.each((i, node) => onNodeClose($(node)));
+      });
+
+      simpleTreeTable.on("click", ".node-len", function () {
+        const id = $(this).closest("tr").data("node-id");
+        simpleTreeTable.data("simple-tree-table").openByID(id);
+      });
+
+      try {
+        layer.closeAll();
+      } catch (error) {}
+    });
+
+    // Highlight selected row
+    $("#treeTable").on("mousedown", "tr", function (event) {
+      const target = event.target;
+      if (target.tagName === "SPAN") {
+        return;
+      }
+
+      $(".selected").not(this).removeClass("selected");
+      $(this).toggleClass("selected");
+    });
+
     return this;
   },
   init: function () {

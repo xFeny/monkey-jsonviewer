@@ -12,6 +12,7 @@ export default {
    */
   handle: function () {
     const that = this;
+    const tagName = "span";
     [".style", ".theme", ".tools"].forEach((selector) => {
       tippy(selector, {
         duration: 500,
@@ -20,23 +21,23 @@ export default {
         trigger: "click",
         onTrigger: function (instance) {
           const tools = $(instance.reference);
-          tools.siblings().find("span").removeClass();
-          tools.find("span").addClass("active");
+          tools.siblings().find(tagName).removeClass();
+          tools.find(tagName).addClass("active");
 
           const template = tools.find("template");
           const type = template.data("type");
-          const dataValue = GM_getValue(type) || "default";
+          const value = GM_getValue(type) || "default";
 
           const ul = template.contents();
           ul.find("li").removeClass();
-          ul.find(`li[data-value=${dataValue}]`).addClass("active");
+          ul.find(`li[data-value=${value}]`).addClass("active");
 
           instance.setContent(template.html());
           that.instance = instance;
         },
         onHide: function (instance) {
           const tools = $(instance.reference);
-          tools.find("span").removeClass();
+          tools.find(tagName).removeClass();
         },
       });
     });

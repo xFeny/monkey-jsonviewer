@@ -3,3 +3,4 @@
 /// <reference types="vite-plugin-monkey/global" />
 
 declare module "jsmind";
+declare module "beautifier";

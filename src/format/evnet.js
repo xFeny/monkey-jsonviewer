@@ -12,8 +12,7 @@ export default {
    */
   urlHover: function () {
     $("#formatContainer").on("mouseenter", "a[href]", function () {
-      const that = $(this),
-        href = that.attr("href");
+      const href = $(this).attr("href");
       if (Utils.isImg(href)) {
         tippy(this, {
           duration: 800,

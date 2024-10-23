@@ -3,5 +3,5 @@ export default {
   EXAMPLE_JSON: "https://fetch-api.feny.ink/example.json",
   LAYUI_JS: "https://unpkg.com/layui@2.7.6/dist/layui.js",
   LAYUI_CSS: "https://unpkg.com/layui@2.7.6/dist/css/layui.css",
-  ONLINE_HTTP_REQUEST: "https://fetch-api.feny.ink/httpRequest",
+  ONLINE_REQUEST: "https://fetch-api.feny.ink/httpRequest",
 };

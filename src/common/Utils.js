@@ -74,26 +74,6 @@ export default {
     return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
   },
   /**
-   * 文档类型判断
-   * @returns
-   */
-  isJSONDocument: function (contentType) {
-    const docType = [
-      "application/vnd.api+json",
-      "application/x-javascript",
-      "application/javascript",
-      "application/json",
-      "text/javascript",
-      "text/plain",
-      "text/json",
-      "text/css",
-    ];
-    if (!docType.includes(contentType)) {
-      return false;
-    }
-    return true;
-  },
-  /**
    * 下载文本内容
    * @param {*} content 文本内容
    * @param {*} filename 文件名

@@ -2,6 +2,7 @@ import "./style.scss";
 import $ from "jquery";
 import hljs from "highlight.js";
 import { js_beautify, css_beautify } from "beautifier";
+// import "highlight.js/styles/vs.min.css";
 import "highlight.js/styles/xcode.min.css";
 
 /**
@@ -15,7 +16,7 @@ import "highlight.js/styles/xcode.min.css";
     "text/css",
   ];
   const contentType = document.contentType;
-  if (!docType.includes(document.contentType)) {
+  if (!docType.includes(contentType)) {
     return;
   }
 
@@ -59,24 +60,18 @@ function beautifyCode(contentType, element, rawText) {
   }
 
   let beautifyCode;
-  switch (language) {
-    case "css":
-      const cssBeautify = css_beautify ? css_beautify : window.css_beautify;
-      beautifyCode = cssBeautify(rawText);
-      beautifyCode = hljs.highlight(beautifyCode, {
-        language,
-      }).value;
-      break;
-    case "javascript":
-    case "x-javascript":
-      const jsBeautify = js_beautify ? js_beautify : window.js_beautify;
-      beautifyCode = jsBeautify(rawText);
-      beautifyCode = hljs.highlight(beautifyCode, {
-        language: "javascript",
-      }).value;
-      break;
-    default:
-      break;
+  if ("css" === language) {
+    const cssBeautify = css_beautify ? css_beautify : window.css_beautify;
+    beautifyCode = cssBeautify(rawText);
+    beautifyCode = hljs.highlight(beautifyCode, {
+      language,
+    }).value;
+  } else {
+    const jsBeautify = js_beautify ? js_beautify : window.js_beautify;
+    beautifyCode = jsBeautify(rawText);
+    beautifyCode = hljs.highlight(beautifyCode, {
+      language: "javascript",
+    }).value;
   }
 
   element.html(`<code>${beautifyCode}</code>`);

@@ -85,9 +85,7 @@ export default {
     const that = this;
     $("input").on("input", function () {
       const val = $(this).val();
-      val === ""
-        ? $(".clear").attr("hidden", true)
-        : $(".clear").attr("hidden", false);
+      $(".clear").attr("hidden", !val);
       that.filterJSON(val);
     });
     return that;

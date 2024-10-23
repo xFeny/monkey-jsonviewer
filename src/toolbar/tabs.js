@@ -61,7 +61,7 @@ const tabsEvent = {
   },
   format: function () {},
   /**
-   * tabs点击了`JSON脑图`
+   * tabs点击了`JSON 脑图`
    */
   viewJsonMind: function () {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
@@ -85,10 +85,7 @@ const tabsEvent = {
     this.isBeautify = !this.isBeautify;
     if (this.isBeautify) {
       let str = JSON.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
-      if (
-        unsafeWindow.GLOBAL_JSONP_FUN !== undefined &&
-        unsafeWindow.GLOBAL_JSONP_FUN !== null
-      ) {
+      if (unsafeWindow.GLOBAL_JSONP_FUN) {
         str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
       }
       this.$rawText.find("pre").text(str);
@@ -126,21 +123,20 @@ const tabsEvent = {
     this.viewRawText();
     // 按钮点击事件
     $(".btn").on("click", (e) => {
-      const target = e.target,
-        id = target.id;
+      const target = e.target;
+      const id = target.id;
       if (target.classList.contains("tabs-item")) {
+        const clas = "active";
         const index = $(target).index();
-        $(target).addClass("active").siblings().removeClass("active");
-        $(".tabs-container > div")
-          .removeClass("active")
-          .eq(index)
-          .addClass("active");
+        $(target).addClass(clas).siblings().removeClass(clas);
+        $(".tabs-container > div").removeClass(clas).eq(index).addClass(clas);
 
-        const beautifyEl = $("#beautify"),
-          searchEl = $(".searchbox"),
-          copyJsonEl = $("#copyJson"),
-          jsoncrackEl = $("#jsoncrack"),
-          aEl = $("#collapseAll, #expandAll");
+        const beautifyEl = $("#beautify");
+        const searchEl = $(".searchbox");
+        const copyJsonEl = $("#copyJson");
+        const jsoncrackEl = $("#jsoncrack");
+        const aEl = $("#collapseAll, #expandAll");
+
         id === "format" ? searchEl.show() : searchEl.hide();
         id === "viewJsonMind"
           ? copyJsonEl.hide() && jsoncrackEl.show()
@@ -160,10 +156,9 @@ window.addEventListener("message", function (event) {
   const { data } = event;
   if (data && data.reload) {
     jsonMind.isFirst = true;
-    jsonMind.init(unsafeWindow.GLOBAL_JSON);
     tabsEvent.isBeautify = false;
+    jsonMind.init(unsafeWindow.GLOBAL_JSON);
     tabsEvent.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
-    // console.log("JSON数据变更，更新原始数据");
   }
 });
 

@@ -22,17 +22,14 @@ export default {
           return;
         }
 
-        const oldJSONPFun = unsafeWindow.GLOBAL_JSONP_FUN;
-
         // 判断是否为jsonp格式
         const { raw, jsonpFun } = Utils.jsonpMatch(text);
-        unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
         try {
           const json = JSON.parse(JSON.stringify(eval(`(${raw})`)));
-          that.reload(json, raw);
+          that.reload(json, raw, jsonpFun);
         } catch (e) {
-          unsafeWindow.GLOBAL_JSONP_FUN = oldJSONPFun;
-          layer.msg("JSON不合法", { time: 1500 });
+          layer.msg("JSON 格式化异常", { time: 1500 });
+          console.log("格式化异常: ", e);
         }
       }
     );
@@ -103,31 +100,41 @@ export default {
 
       layer.load(0, { shade: false });
       $.ajax({
-        url: URL.ONLINE_HTTP_REQUEST,
         type: "POST",
+        url: URL.ONLINE_REQUEST,
         data: JSON.stringify(form),
         contentType: "application/json",
       }).then(
         (response) => {
           if (typeof response === "string") {
-            const { raw, jsonpFun } = Utils.jsonpMatch(response);
-            unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
-            that.reload(eval(`(${raw})`), raw);
+            try {
+              const { raw, jsonpFun } = Utils.jsonpMatch(response);
+              const json = JSON.parse(JSON.stringify(eval(`(${raw})`)));
+              that.reload(json, raw, jsonpFun);
+            } catch (e) {
+              layer.closeAll();
+              layer.msg("JSON 格式化异常", { time: 1500 });
+              console.log("格式化异常：", e);
+            }
           } else {
-            unsafeWindow.GLOBAL_JSONP_FUN = null;
-            that.reload(response, JSON.stringify(response));
+            that.reload(response, JSON.stringify(response), null);
           }
         },
         (error) => {
           layer.closeAll();
-          console.log(error);
+          layer.msg("HTTP 请求异常", { time: 1500 });
+          console.log("HTTP 请求异常：", error);
         }
       );
     });
     return this;
   },
-  reload: function (json, rawText) {
+  reload: function (json, rawText, jsonpFun) {
     unsafeWindow.GLOBAL_JSON = json;
+    unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
+    if (unsafeWindow.GLOBAL_JSONP_FUN) {
+      rawText = `${unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
+    }
     unsafeWindow.GLOBAL_SOURCE_ELEMENT.text(rawText);
     window.postMessage({ reload: true });
     layer.closeAll();
