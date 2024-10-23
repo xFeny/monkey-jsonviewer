@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.8.4
+// @version      v0.8.5
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -27,7 +27,8 @@
 // @grant        GM_setClipboard
 // @grant        GM_setValue
 // @grant        unsafeWindow
-// @note         v0.8.3 HTTP 请求jsonp问题
+// @note         v0.8.5 fix:JSON 脑图节点类型判断有误
+// @note		 v0.8.3 HTTP 请求jsonp问题
 // @note		 v0.8.0 css样式小修改
 // @note		 v0.7.6 操作栏右侧布局修改
 // @note		 v0.7.4 增加对JS、CSS美化输出 v0.7.4 增加对JS、CSS美化输出
@@ -68,7 +69,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-BOlLPAAW.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-CwPBIHb_.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -80,7 +81,7 @@ System.register("./__entry.js", ['./__monkey.entry-BOlLPAAW.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-BOlLPAAW.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-CwPBIHb_.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -190,12 +191,20 @@ System.register("./__monkey.entry-BOlLPAAW.js", ['jquery'], (function (exports, 
           }
         },
         /**
-         * 获取数据类型
+         * 获取数据类型，全小写
          * @param {*} v
          * @returns
          */
         getType: function(v) {
           return Object.prototype.toString.call(v).match(/\s(.+)]/)[1].toLowerCase();
+        },
+        /**
+         * 获取数据类型
+         * @param {*} val
+         * @returns
+         */
+        getPrototype: function(val) {
+          return Object.prototype.toString.call(val).match(/\s(.+)]/)[1];
         },
         /**
          * 获取数组中对象key最多的对象
@@ -328,7 +337,7 @@ System.register("./__monkey.entry-BOlLPAAW.js", ['jquery'], (function (exports, 
             _unsafeWindow.GLOBAL_JSON = JSON.parse(rawText);
           }
           __vitePreload(() => module.import('./index-DSatIUFh-C2SR-72Z.js'), void 0 );
-          __vitePreload(() => module.import('./index-cdB1pXVV-CO1T8Ceq.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BsqGqezS-D-F_bs3k.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-68rbaVt6-B_J0LDid.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-CddvVdRD-B15ffOY7.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
       })();
 
@@ -478,7 +487,7 @@ System.register("./index-DSatIUFh-C2SR-72Z.js", [], (function (exports, module) 
     };
 }));
 
-System.register("./index-cdB1pXVV-CO1T8Ceq.js", ['jquery', './__monkey.entry-BOlLPAAW.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-68rbaVt6-B_J0LDid.js", ['jquery', './__monkey.entry-CwPBIHb_.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard, tippy;
   return {
@@ -1174,7 +1183,7 @@ System.register("./index-cdB1pXVV-CO1T8Ceq.js", ['jquery', './__monkey.entry-BOl
   };
 }));
 
-System.register("./index-BsqGqezS-D-F_bs3k.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-BOlLPAAW.js'], (function (exports, module) {
+System.register("./index-CddvVdRD-B15ffOY7.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-CwPBIHb_.js'], (function (exports, module) {
   'use strict';
   var $, tippy, require$$0, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
   return {
@@ -1867,10 +1876,10 @@ System.register("./index-BsqGqezS-D-F_bs3k.js", ['jquery', './tippy.esm-Ot9MORvr
           if (typeof json2 === "object") {
             for (const key in json2) {
               let val = json2[key], isArray = Array.isArray(val);
+              const type = Utils.getPrototype(val);
               if (isArray && val.length > 0) {
                 val = Utils.findMaxKeysObject(val);
               }
-              const type = Object.prototype.toString.call(val).match(/\s(.+)]/)[1];
               children.push({
                 isArray,
                 chain: key,
