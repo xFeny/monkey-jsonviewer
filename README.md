@@ -20,22 +20,22 @@ GitHub地址：<https://github.com/xFeny/monkey-jsonviewer
 
 ### 效果图
 
-##### JSON格式化和主题色
+##### `JSON` 格式化和主题色
 
 ![JSON_Format](./images/JSON_Format.gif) 
 
-##### JSON脑图和JSON Crack
+##### `JSON` 脑图和 `JSON Crack`
 
 ![JSON_Mind](./images/JSON_Mind.gif) 
 
-##### JSON手动输入
+##### `JSON` 手动输入
 
 ![JSON_Input](./images/JSON_Input.gif) 
 
-##### HTTP 请求
+##### `HTTP` 请求
 
 ![JSON_Http_Request](./images/JSON_Http_Request.gif) 
 
-##### JS、CSS 美化
+##### `JS`、`CSS` 美化
 
 ![js_css_beautify](./images/js_css_beautify.gif) 
