@@ -19,11 +19,11 @@ export default {
         let val = json[key],
           isArray = Array.isArray(val);
 
+        const type = Utils.getPrototype(val);
         if (isArray && val.length > 0) {
           val = Utils.findMaxKeysObject(val);
         }
 
-        const type = Object.prototype.toString.call(val).match(/\s(.+)]/)[1];
         children.push({
           isArray,
           chain: key,

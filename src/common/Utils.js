@@ -35,7 +35,7 @@ export default {
     }
   },
   /**
-   * 获取数据类型
+   * 获取数据类型，全小写
    * @param {*} v
    * @returns
    */
@@ -44,6 +44,14 @@ export default {
       .call(v)
       .match(/\s(.+)]/)[1]
       .toLowerCase();
+  },
+  /**
+   * 获取数据类型
+   * @param {*} val
+   * @returns
+   */
+  getPrototype: function (val) {
+    return Object.prototype.toString.call(val).match(/\s(.+)]/)[1];
   },
   /**
    * 获取数组中对象key最多的对象
