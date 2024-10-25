@@ -32,7 +32,10 @@ const tabsEvent = {
       return;
     }
 
-    const content = this.$rawTextPre.text();
+    let content = this.$rawTextPre.text();
+    if (!content) {
+      content = unsafeWindow.RAW_TEXT;
+    }
     const filename = new Date().getTime() + ".json";
     Utils.downloadText(content, filename);
   },
@@ -166,7 +169,7 @@ const tabsEvent = {
           ? beautifyEl.show() && aEl.hide()
           : beautifyEl.hide() && aEl.show();
       }
-      
+
       this[id](target);
     });
 
