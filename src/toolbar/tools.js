@@ -1,6 +1,8 @@
 import $ from "jquery";
 import URL from "../common/URL";
 import Utils from "../common/Utils";
+import http_form from "../layout/http_form";
+
 /**
  * toolbar右侧JOSN输入和HTTP请求功能操作
  */
@@ -23,10 +25,10 @@ export default {
         }
 
         // 判断是否为jsonp格式
-        const { raw, jsonpFun } = Utils.jsonpMatch(text);
+        const { rawText, jsonpFun } = Utils.jsonpMatch(text);
         try {
-          const json = JSON.parse(JSON.stringify(eval(`(${raw})`)));
-          that.reload(json, raw, jsonpFun);
+          const json = JSON.parse(JSON.stringify(eval(`(${rawText})`)));
+          that.reload(json, rawText, jsonpFun);
         } catch (e) {
           layer.msg("JSON 格式化异常", { time: 1500 });
           console.log("格式化异常: ", e);
@@ -39,29 +41,10 @@ export default {
     const that = this;
     layer.open({
       type: 1,
-      closeBtn: 0, //不显示关闭按钮
-      shadeClose: true, //开启遮罩关闭
+      closeBtn: 0,
+      shadeClose: true,
       title: "HTTP 请求",
-      content: `<form class="httpRequest">
-                    <div class="requestbox">
-                        <select name="method">
-                            <option value="POST">POST</option>
-                            <option value="GET">GET</option>
-                            <option value="PUT">PUT</option>
-                            <option value="DELETE">DELETE</option>
-                        </select>
-                        <input name="url" placeholder="请求地址" />
-                        <select name="contentType">
-                            <option value="application/x-www-form-urlencoded;charset=UTF-8">urlencoded</option>
-                            <option value="application/json;charset=UTF-8">application/json</option>
-                        </select>
-                        <button type="submit">发送</button>
-                    </div>
-                    <div class="textarea">
-                        <input name="headers" placeholder='请求头 {"token": "test"}' />
-                        <input name="params" placeholder='请求参数 {"id": "test", ""name": "test"}' />
-                    </div>
-                </form>`,
+      content: http_form,
     });
 
     $("form").on("submit", function (event) {
@@ -81,6 +64,7 @@ export default {
 
       let headers = form.headers;
       let params = form.params;
+
       try {
         if (headers) {
           headers = JSON.parse(headers);
@@ -89,6 +73,7 @@ export default {
         layer.msg("请求头格式不合法");
         return;
       }
+
       try {
         if (params) {
           params = JSON.parse(params);
@@ -108,13 +93,13 @@ export default {
         (response) => {
           if (typeof response === "string") {
             try {
-              const { raw, jsonpFun } = Utils.jsonpMatch(response);
-              const json = JSON.parse(JSON.stringify(eval(`(${raw})`)));
-              that.reload(json, raw, jsonpFun);
+              const { rawText, jsonpFun } = Utils.jsonpMatch(response);
+              const json = JSON.parse(JSON.stringify(eval(`(${rawText})`)));
+              that.reload(json, rawText, jsonpFun);
             } catch (e) {
               layer.closeAll();
-              layer.msg("JSON 格式化异常", { time: 1500 });
-              console.log("格式化异常：", e);
+              layer.msg("HTTP 请求返回数据不是有效JSON", { time: 1500 });
+              console.log("HTTP 请求返回数据不是有效JSON：", e);
             }
           } else {
             that.reload(response, JSON.stringify(response), null);
@@ -131,17 +116,13 @@ export default {
   },
   reload: function (json, rawText, jsonpFun) {
     unsafeWindow.GLOBAL_JSON = json;
+    unsafeWindow.RAW_TEXT = rawText;
     unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
-    if (unsafeWindow.GLOBAL_JSONP_FUN) {
-      rawText = `${unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
-    }
-    unsafeWindow.GLOBAL_SOURCE_ELEMENT.text(rawText);
     window.postMessage({ reload: true });
     layer.closeAll();
   },
   init: function () {
-    const that = this;
-    window.addEventListener("message", function (event) {
+    window.addEventListener("message", (event) => {
       const { data } = event;
       if (!data) {
         return;
@@ -149,7 +130,7 @@ export default {
 
       const { type, value } = data;
       if (type === "tools") {
-        that[value]();
+        this[value]();
       }
     });
   },

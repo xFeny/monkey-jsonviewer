@@ -11,7 +11,7 @@ export default {
    * @returns this
    */
   urlHover: function () {
-    $("#formatContainer").on("mouseenter", "a[href]", function () {
+    $(document.body).on("mouseenter", "a[href]", function () {
       const href = $(this).attr("href");
       if (Utils.isImg(href)) {
         tippy(this, {
@@ -30,7 +30,7 @@ export default {
    */
   tipsJsonPath: function () {
     const that = this;
-    $("#formatContainer").on("mouseenter", ".json-key", function () {
+    $(document.body).on("mouseenter", ".json-key", function () {
       const jsonPath = that.getJsonPath(this);
       const content = `<b>ctrl + 点击复制</b><br/>${jsonPath}`;
       tippy(this, {
@@ -48,7 +48,7 @@ export default {
    */
   copyJsonPath: function () {
     const that = this;
-    $("#formatContainer").on("click", ".json-key", function (event) {
+    $(document.body).on("click", ".json-key", function (event) {
       if (event.ctrlKey) {
         const jsonPath = that.getJsonPath(this);
         GM_setClipboard(jsonPath);

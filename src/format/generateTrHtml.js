@@ -33,22 +33,19 @@ function generateTrHtml(json, level = 0, pId = "", pChain = "") {
                 </tr>`;
       tr += res;
     } else {
-      val =
-        type === "string"
-          ? val
-              .replace(/&/g, "&amp;")
-              .replace(/</g, "&lt;")
-              .replace(/>/g, "&gt;")
-          : val;
+      if (type === "string") {
+        val = val
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
       tr += `<tr data-node-id="${tId}" data-node-pid="${pId}" type="${type}">
                 <td json-path="${chain}" 
                 style="padding-left: ${level * 19}px">
                   <b class="json-key">${key}:</b>
                 </td>`;
       if (Utils.isUrl(val)) {
-        tr += `<td class="json-${type}">
-          <a target="_blank" href="${val}">"${val}"</a>
-        </td>`;
+        tr += `<td class="json-${type}"><a target="_blank" href="${val}">"${val}"</a></td>`;
       } else {
         val = type === "string" ? `"${val}"` : val;
         tr += `<td class="json-${type}">${val}</td>`;

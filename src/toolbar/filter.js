@@ -27,10 +27,12 @@ export default {
       if (!chain) {
         return;
       }
+
       const newChain = chain.substring(chain.lastIndexOf("."));
       if (!newChain.toLowerCase().includes(filter.toLowerCase())) {
         return;
       }
+
       chainSet.add(chain);
       while ((chain = chain.substring(0, chain.lastIndexOf(".")))) {
         chainSet.add(chain);
@@ -53,10 +55,12 @@ export default {
         if (!chain) {
           return;
         }
+
         const text = target.text();
         if (!text.toLowerCase().includes(filter.toLowerCase())) {
           return;
         }
+
         chainSet.add(chain);
         while ((chain = chain.substring(0, chain.lastIndexOf(".")))) {
           chainSet.add(chain);
@@ -67,6 +71,7 @@ export default {
     style == "default"
       ? allPath.addClass("hidden")
       : allPath.parent().addClass("hidden");
+
     chainSet.forEach((chain) => {
       const path = $(`#formatContainer *[json-path="${chain}"]`);
       if (style == "default") {
@@ -83,7 +88,7 @@ export default {
    */
   input: function () {
     const that = this;
-    $("input").on("input", function () {
+    $(document.body).on("input", ".searchbox input", function () {
       const val = $(this).val();
       $(".clear").attr("hidden", !val);
       that.filterJSON(val);
@@ -96,7 +101,7 @@ export default {
    */
   clear: function () {
     const that = this;
-    $(".clear").on("click", function () {
+    $(document.body).on("click", ".searchbox .clear", function () {
       that.filterJSON();
       $("input").val("");
       $(this).attr("hidden", true);

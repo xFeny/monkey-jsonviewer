@@ -17,7 +17,7 @@ export default {
    */
   setTheme: function () {
     const theme = GM_getValue("theme") || "default";
-    $("body").removeClass().addClass(theme);
+    $(document.body).removeClass().addClass(theme);
     return this;
   },
   init: function () {

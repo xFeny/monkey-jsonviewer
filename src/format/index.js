@@ -4,6 +4,8 @@ import "../lib/jquery-simple-tree-table.min";
 import generateTrHtml from "./generateTrHtml";
 import evnet from "./evnet";
 
+const $formatContainer = $("#formatContainer");
+
 /**
  * 表格节点展开事件
  * @param {*} $node 节点
@@ -49,21 +51,22 @@ const format_style = {
     const style = GM_getValue("style") || "default";
 
     $("input").val("");
-    $("#formatContainer").html("");
-    if (style === "default") {
-      $("#formatContainer").jsonViewer(
-        unsafeWindow.GLOBAL_JSON,
-        unsafeWindow.GLOBAL_JSONP_FUN
-      );
+    $formatContainer.html("");
+    try {
+      if (style === "default") {
+        $formatContainer.jsonViewer(
+          unsafeWindow.GLOBAL_JSON,
+          unsafeWindow.GLOBAL_JSONP_FUN
+        );
+        return this;
+      }
+
+      this.tableFormat();
+    } finally {
       try {
         layer.closeAll();
       } catch (error) {}
-
-      return this;
     }
-
-    this.tableFormat();
-    return this;
   },
   /**
    * JSON 表格格式化
@@ -77,7 +80,8 @@ const format_style = {
         ${appendHtml}
         <div class="jsonp">)</div>`;
     }
-    $("#formatContainer").append(appendHtml);
+
+    $formatContainer.append(appendHtml);
 
     setTimeout(() => {
       const simpleTreeTable = $("#treeTable")
@@ -89,11 +93,11 @@ const format_style = {
         .on("node:close", (e, $node) => onNodeClose($node));
 
       const arrow = $("tr:not(.simple-tree-table-empty)");
-      $("#expandAll").on("click", function () {
+      $(document.body).on("click", "#expandAll", function () {
         arrow.each((i, node) => onNodeOpen($(node)));
       });
 
-      $("#collapseAll").on("click", function () {
+      $(document.body).on("click", "#collapseAll", function () {
         arrow.each((i, node) => onNodeClose($(node)));
       });
 
@@ -101,16 +105,12 @@ const format_style = {
         const id = $(this).closest("tr").data("node-id");
         simpleTreeTable.data("simple-tree-table").openByID(id);
       });
-
-      try {
-        layer.closeAll();
-      } catch (error) {}
     });
 
     // Highlight selected row
     $("#treeTable").on("mousedown", "tr", function (event) {
-      const target = event.target;
-      if (target.tagName === "SPAN") {
+      const { tagName } = event.target;
+      if (tagName === "SPAN" || event.ctrlKey) {
         return;
       }
 
@@ -130,6 +130,7 @@ const format_style = {
       if (!data) {
         return;
       }
+
       if (data.reload) {
         that.setStyle();
         return;

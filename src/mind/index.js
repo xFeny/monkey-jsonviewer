@@ -97,7 +97,7 @@ export default {
    */
   event: function () {
     const jsonMind = this;
-    $("jmnode").on("dblclick mouseover", function (event) {
+    $(document.body).on("dblclick mouseover", "jmnode", function (event) {
       const that = $(this),
         node = unsafeWindow.GLOBAL_JSMIND.get_node(that.attr("nodeid"));
       if (!node.parent) {

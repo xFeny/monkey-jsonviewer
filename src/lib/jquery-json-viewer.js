@@ -65,13 +65,13 @@ import Utils from "../common/Utils";
         break;
       default:
         /* Escape tags */
-        json =
-          type === "string"
-            ? json
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-            : json;
+        if (type === "string") {
+          json = json
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
         if (Utils.isUrl(json)) {
           html += `<a target="_blank" href="${json}" class="json-string">"${json}"</a>`;
         } else {

@@ -1,6 +1,7 @@
-import "./layout.scss";
-
-const layout = `
+/**
+ * JSON Viewer 布局
+ */
+export default `
 <div class="format-container">
     <div class="panel">
         <div class="tabs">
@@ -58,5 +59,3 @@ const layout = `
         <div id="rawTextContainer"><pre></pre></div>
     </div>
 </div>`;
-
-document.body.insertAdjacentHTML("afterbegin", layout);

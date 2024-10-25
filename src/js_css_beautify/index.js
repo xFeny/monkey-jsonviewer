@@ -1,8 +1,7 @@
 import "./style.scss";
-import $ from "jquery";
 import hljs from "highlight.js";
 import { js_beautify, css_beautify } from "beautifier";
-// import "highlight.js/styles/vs.min.css";
+import layout from "../layout/beautify";
 import "highlight.js/styles/xcode.min.css";
 
 /**
@@ -20,18 +19,16 @@ import "highlight.js/styles/xcode.min.css";
     return;
   }
 
-  const preElement = $("pre").first();
-  if (preElement.length === 0) {
+  const preElement = document.querySelector("pre");
+  if (!preElement) {
     return;
   }
 
   window.postMessage({ addStyle: true });
+  document.querySelector("html").classList.add("monkey-js-css-beautify");
+
   setTimeout(() => {
-    const rawText = preElement.text();
-    const layout = `<div class="beautify_checkbox">
-        <input type="checkbox" id="beautify"/>
-        <label for="beautify">美化输出</label>
-      </div>`;
+    const rawText = preElement.innerText;
 
     document.body.insertAdjacentHTML("afterbegin", layout);
 
@@ -40,7 +37,7 @@ import "highlight.js/styles/xcode.min.css";
       if (this.checked) {
         beautifyCode(contentType, preElement, rawText);
       } else {
-        preElement.html(rawText);
+        preElement.innerText = rawText;
       }
     });
   });
@@ -74,5 +71,5 @@ function beautifyCode(contentType, element, rawText) {
     }).value;
   }
 
-  element.html(`<code>${beautifyCode}</code>`);
+  element.innerHTML = `<code>${beautifyCode}</code>`;
 }

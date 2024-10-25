@@ -65,6 +65,7 @@ export default {
       } else {
         that.instance.hide();
       }
+      
       window.postMessage({ type, value });
     });
     return this;

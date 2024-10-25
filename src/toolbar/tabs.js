@@ -1,31 +1,46 @@
 import $ from "jquery";
 import jsonMind from "../mind";
-import COMMON_URL from "../common/URL";
+import URL from "../common/URL";
 import Utils from "../common/Utils";
+
+const $jmContainer = $("#jmContainer");
+const $formatContainer = $("#formatContainer");
+const $rawTextContainer = $("#rawTextContainer");
 
 const tabsEvent = {
   firstFormat: true,
   isBeautify: false,
-  $rawText: $("#rawTextContainer"),
+  $rawTextPre: $rawTextContainer.find("pre"),
+  /**
+   * 原始数据
+   */
+  _setRawText: function () {
+    let rawText = unsafeWindow.RAW_TEXT;
+    if (unsafeWindow.GLOBAL_JSONP_FUN) {
+      rawText = `${unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
+    }
+    this.$rawTextPre.text(rawText);
+  },
   /**
    * 保存为文件
    * 如果是JSON 格式化可见，保存JSON数据为.json文件
    * 如果是JSON 脑图可见，保存脑图为图片
    */
   saveJson: function () {
-    if ($("#jmContainer").is(":visible")) {
+    if ($jmContainer.is(":visible")) {
       unsafeWindow.GLOBAL_JSMIND.shoot();
-    } else {
-      const content = this.$rawText.text();
-      const filename = new Date().getTime() + ".json";
-      Utils.downloadText(content, filename);
+      return;
     }
+
+    const content = this.$rawTextPre.text();
+    const filename = new Date().getTime() + ".json";
+    Utils.downloadText(content, filename);
   },
   /**
    * 复制JSON文本内容
    */
   copyJson: function () {
-    GM_setClipboard(this.$rawText.text());
+    GM_setClipboard(this.$rawTextPre.text());
     layer.msg("复制成功", { time: 1500 });
   },
   /**
@@ -34,13 +49,15 @@ const tabsEvent = {
    * 如果是JSON 脑图可见，折叠脑图节点
    */
   collapseAll: function () {
-    if ($("#formatContainer").is(":visible")) {
+    if ($formatContainer.is(":visible")) {
       try {
         $("a.json-toggle").not(".collapsed").trigger("click");
       } catch (e) {}
-    } else {
-      unsafeWindow.GLOBAL_JSMIND.collapse_all();
+
+      return;
     }
+
+    unsafeWindow.GLOBAL_JSMIND.collapse_all();
   },
   /**
    * 点击了`全部展开`
@@ -48,16 +65,18 @@ const tabsEvent = {
    * 如果是JSON 脑图可见，展开脑图节点
    */
   expandAll: function () {
-    if ($("#formatContainer").is(":visible")) {
+    if ($formatContainer.is(":visible")) {
       try {
         $("a.json-placeholder").trigger("click").remove();
       } catch (e) {}
-    } else {
-      unsafeWindow.GLOBAL_JSMIND.expand_all();
-      unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(
-        unsafeWindow.GLOBAL_JSMIND.get_root()
-      );
+
+      return;
     }
+
+    unsafeWindow.GLOBAL_JSMIND.expand_all();
+    unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(
+      unsafeWindow.GLOBAL_JSMIND.get_root()
+    );
   },
   format: function () {},
   /**
@@ -73,10 +92,12 @@ const tabsEvent = {
    * tabs点击了`原始数据`
    */
   viewRawText: function () {
-    if (this.firstFormat) {
-      this.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
-      this.firstFormat = false;
+    if (!this.firstFormat) {
+      return;
     }
+
+    this.firstFormat = false;
+    this._setRawText();
   },
   /**
    * 点击了`美化输出`
@@ -88,10 +109,12 @@ const tabsEvent = {
       if (unsafeWindow.GLOBAL_JSONP_FUN) {
         str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
       }
-      this.$rawText.find("pre").text(str);
-    } else {
-      this.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
+
+      this.$rawTextPre.text(str);
+      return;
     }
+
+    this._setRawText();
   },
   /**
    * 点击了`JSON Crack`
@@ -104,14 +127,14 @@ const tabsEvent = {
       type: 1,
       title: false,
       area: ["100vw", "100vh"],
-      content: `<iframe id="jsoncrackEmbed" src="${COMMON_URL.JSON_CRACK_WIDGET}"></iframe>`,
+      content: `<iframe id="jsoncrackEmbed" src="${URL.JSON_CRACK_WIDGET}"></iframe>`,
       success: function (layero) {
         const jsonCrackEmbed = layero.find("#jsoncrackEmbed")[0];
         window?.addEventListener("message", () => {
-          jsonCrackEmbed.contentWindow.postMessage(
+          jsonCrackEmbed?.contentWindow?.postMessage(
             {
               options: { theme },
-              json: JSON.stringify(unsafeWindow.GLOBAL_JSON),
+              json: unsafeWindow.RAW_TEXT,
             },
             "*"
           );
@@ -122,7 +145,7 @@ const tabsEvent = {
   init: function () {
     this.viewRawText();
     // 按钮点击事件
-    $(".btn").on("click", (e) => {
+    $(document.body).on("click", ".btn", (e) => {
       const target = e.target;
       const id = target.id;
       if (target.classList.contains("tabs-item")) {
@@ -152,13 +175,25 @@ const tabsEvent = {
   },
 };
 
+/**
+ * 数据发生变更
+ */
 window.addEventListener("message", function (event) {
   const { data } = event;
   if (data && data.reload) {
+    $jmContainer.html("");
     jsonMind.isFirst = true;
     tabsEvent.isBeautify = false;
-    jsonMind.init(unsafeWindow.GLOBAL_JSON);
-    tabsEvent.$rawText.html(unsafeWindow.GLOBAL_SOURCE_ELEMENT.clone());
+    tabsEvent.firstFormat = true;
+    unsafeWindow.GLOBAL_JSMIND = undefined;
+
+    if ($rawTextContainer.is(":visible")) {
+      tabsEvent.viewRawText();
+    }
+
+    if ($jmContainer.is(":visible")) {
+      jsonMind.init(unsafeWindow.GLOBAL_JSON);
+    }
   }
 });
 
