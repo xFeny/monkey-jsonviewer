@@ -110,7 +110,7 @@ const format_style = {
     // Highlight selected row
     $("#treeTable").on("mousedown", "tr", function (event) {
       const { tagName } = event.target;
-      if (tagName === "SPAN" || event.ctrlKey) {
+      if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
         return;
       }
 

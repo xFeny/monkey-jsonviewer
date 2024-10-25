@@ -78,11 +78,11 @@ const tabsEvent = {
       unsafeWindow.GLOBAL_JSMIND.get_root()
     );
   },
-  format: function () {},
+  viewFormater: function () {},
   /**
    * tabs点击了`JSON 脑图`
    */
-  viewJsonMind: function () {
+  viewMind: function () {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
     unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(
       unsafeWindow.GLOBAL_JSMIND.get_root()
@@ -143,8 +143,6 @@ const tabsEvent = {
     });
   },
   init: function () {
-    this.viewRawText();
-    // 按钮点击事件
     $(document.body).on("click", ".btn", (e) => {
       const target = e.target;
       const id = target.id;
@@ -156,18 +154,19 @@ const tabsEvent = {
 
         const beautifyEl = $("#beautify");
         const searchEl = $(".searchbox");
-        const copyJsonEl = $("#copyJson");
+        const copyEl = $("#copyJson");
         const jsoncrackEl = $("#jsoncrack");
         const aEl = $("#collapseAll, #expandAll");
 
-        id === "format" ? searchEl.show() : searchEl.hide();
-        id === "viewJsonMind"
-          ? copyJsonEl.hide() && jsoncrackEl.show()
-          : copyJsonEl.show() && jsoncrackEl.hide();
+        id === "viewFormater" ? searchEl.show() : searchEl.hide();
+        id === "viewMind"
+          ? copyEl.hide() && jsoncrackEl.show()
+          : copyEl.show() && jsoncrackEl.hide();
         id === "viewRawText"
           ? beautifyEl.show() && aEl.hide()
           : beautifyEl.hide() && aEl.show();
       }
+      
       this[id](target);
     });
 
@@ -180,20 +179,22 @@ const tabsEvent = {
  */
 window.addEventListener("message", function (event) {
   const { data } = event;
-  if (data && data.reload) {
-    $jmContainer.html("");
-    jsonMind.isFirst = true;
-    tabsEvent.isBeautify = false;
-    tabsEvent.firstFormat = true;
-    unsafeWindow.GLOBAL_JSMIND = undefined;
+  if (!data?.reload) {
+    return;
+  }
 
-    if ($rawTextContainer.is(":visible")) {
-      tabsEvent.viewRawText();
-    }
+  $jmContainer.html("");
+  jsonMind.isFirst = true;
+  tabsEvent.isBeautify = false;
+  tabsEvent.firstFormat = true;
+  unsafeWindow.GLOBAL_JSMIND = undefined;
 
-    if ($jmContainer.is(":visible")) {
-      jsonMind.init(unsafeWindow.GLOBAL_JSON);
-    }
+  if ($rawTextContainer.is(":visible")) {
+    tabsEvent.viewRawText();
+  }
+
+  if ($jmContainer.is(":visible")) {
+    jsonMind.init(unsafeWindow.GLOBAL_JSON);
   }
 });
 

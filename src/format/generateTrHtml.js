@@ -5,14 +5,15 @@ import Utils from "../common/Utils";
 function generateTrHtml(json, level = 0, pId = "", pChain = "") {
   let tr = "";
   for (const key in json) {
-    let val = json[key],
-      type = Utils.getType(val),
-      tId = key + "_" + Math.random(),
-      chain = pChain + "." + key;
-    if (["array", "object"].includes(type)) {
-      let brackets = "",
-        res = generateTrHtml(val, level + 1, tId, chain);
+    let val = json[key];
+    const type = Utils.getType(val);
+    const chain = pChain + "." + key;
+    const tId = key + "_" + Math.random();
 
+    if (["array", "object"].includes(type)) {
+      const res = generateTrHtml(val, level + 1, tId, chain);
+
+      let brackets = "";
       if (!res) {
         if (type === "array") {
           brackets = `<span class="json-brackets json-square-brackets">[]</span>`;
@@ -22,15 +23,15 @@ function generateTrHtml(json, level = 0, pId = "", pChain = "") {
       }
 
       tr += `
-                <tr data-node-id="${tId}" data-node-pid="${pId}" type="${type}">
-                    <td colspan="${res ? 2 : ""}" 
-                    json-path="${chain}" 
-                    style="padding-left: ${level * 19}px">
-                      <b class="json-key">${key}:</b>
-                      <span class="node-len"></span>
-                    </td>
-                    <td>${brackets}</td>
-                </tr>`;
+            <tr data-node-id="${tId}" data-node-pid="${pId}" type="${type}">
+                <td colspan="${res ? 2 : ""}" 
+                json-path="${chain}" 
+                style="padding-left: ${level * 19}px">
+                  <b class="json-key">${key}:</b>
+                  <span class="node-len"></span>
+                </td>
+                <td>${brackets}</td>
+            </tr>`;
       tr += res;
     } else {
       if (type === "string") {

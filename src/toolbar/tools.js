@@ -30,7 +30,7 @@ export default {
           const json = JSON.parse(JSON.stringify(eval(`(${rawText})`)));
           that.reload(json, rawText, jsonpFun);
         } catch (e) {
-          layer.msg("JSON 格式化异常", { time: 1500 });
+          layer.msg("JSON格式不正确", { time: 1500 });
           console.log("格式化异常: ", e);
         }
       }
@@ -98,8 +98,8 @@ export default {
               that.reload(json, rawText, jsonpFun);
             } catch (e) {
               layer.closeAll();
-              layer.msg("HTTP 请求返回数据不是有效JSON", { time: 1500 });
-              console.log("HTTP 请求返回数据不是有效JSON：", e);
+              layer.msg("HTTP 请求JSON格式不正确", { time: 1500 });
+              console.log("HTTP 请求JSON格式不正确：", e);
             }
           } else {
             that.reload(response, JSON.stringify(response), null);

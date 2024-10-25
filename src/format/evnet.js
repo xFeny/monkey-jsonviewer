@@ -64,11 +64,11 @@ export default {
    */
   getJsonPath: function (element) {
     const jsonPath = $(element).parent().attr("json-path");
-    return jsonPath
-      .split(".")
-      .reduce((prev, next) =>
-        /^\d+$/.test(next) ? prev + `[${next}]` : prev + "." + next
-      );
+    const path = jsonPath.split(".");
+    path.splice(0, 1);
+    return path.reduce((prev, next) => {
+      return /^\d+$/.test(next) ? prev + `[${next}]` : prev + "." + next;
+    }, "Root");
   },
   init: function () {
     this.urlHover().tipsJsonPath().copyJsonPath();

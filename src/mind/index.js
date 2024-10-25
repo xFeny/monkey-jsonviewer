@@ -46,8 +46,8 @@ export default {
       return chain;
     }
 
-    const parent = node.parent,
-      parentChain = this.mindChain(parent);
+    const parent = node.parent;
+    const parentChain = this.mindChain(parent);
     chain = parent.data.isArray
       ? `${parentChain}[i].${chain}`
       : `${parentChain}.${chain}`;
@@ -82,10 +82,10 @@ export default {
       /* 数据内容 */
       data: {
         id: "root",
-        topic: "Response",
+        topic: "Root",
         direction: "left",
         children: this.convert(json),
-        chain: isArr ? "Response[i]" : "Response",
+        chain: isArr ? "Root[i]" : "Root",
       },
     });
     this.isFirst = false;
@@ -98,8 +98,8 @@ export default {
   event: function () {
     const jsonMind = this;
     $(document.body).on("dblclick mouseover", "jmnode", function (event) {
-      const that = $(this),
-        node = unsafeWindow.GLOBAL_JSMIND.get_node(that.attr("nodeid"));
+      const nodeid = $(this).attr("nodeid");
+      const node = unsafeWindow.GLOBAL_JSMIND.get_node(nodeid);
       if (!node.parent) {
         return;
       }
@@ -108,9 +108,8 @@ export default {
         GM_setClipboard(jsonMind.mindChain(node));
         layer.msg("节点路径复制成功", { time: 1500 });
       } else {
-        const content = `<b>节点路径（双击复制）</b><br/>${jsonMind.mindChain(
-          node
-        )}`;
+        const chain = jsonMind.mindChain(node);
+        const content = `<b>节点路径（双击复制）</b><br/>${chain}`;
         tippy(this, {
           content,
           duration: 800,

@@ -14,32 +14,28 @@ import Utils from "../common/Utils";
    * @return string
    */
   function json2html(json, parentPath = "") {
-    let html = "",
-      type = Utils.getType(json);
+    let html = "";
+    const type = Utils.getType(json);
     switch (type) {
       case "array":
       case "object":
         let len = json.length || Object.keys(json).length;
         if (len > 0) {
-          html += `<span class="json-brackets ${
-            type == "array" ? "json-square-brackets" : "json-curly-brackets"
-          }">`;
-          html +=
-            type === "array"
-              ? '[</span><ol class="json-array">'
-              : '{</span><ul class="json-object">';
+          html += `<span class="json-brackets ${ type == "array" ? "json-square-brackets" : "json-curly-brackets" }">`;
+          html += type === "array" ? '[</span><ol class="json-array">' : '{</span><ul class="json-object">';
+
           for (var key in json) {
             if (json.hasOwnProperty(key)) {
-              let comma = --len > 0 ? "," : "",
-                jsonPath = parentPath + "." + key,
-                collapse = isCollapsable(json[key])
-                  ? '<a href class="json-toggle"></a>'
-                  : "",
-                res = json2html(json[key], jsonPath);
-              let toHtml =
-                type === "array"
-                  ? res
-                  : `<span class="json-key">"${key}"</span>: ${res}`;
+              const comma = --len > 0 ? "," : "";
+              const jsonPath = parentPath + "." + key;
+              const collapse = isCollapsable(json[key]) ? '<a href class="json-toggle"></a>' : "";
+              const res = json2html(json[key], jsonPath);
+
+              let toHtml = res;
+              if (type !== "array") {
+                toHtml = `<span class="json-key">"${key}"</span>: ${res}`;
+              }
+
               html += [
                 `<li json-path="${jsonPath}">`,
                 collapse,
@@ -56,9 +52,7 @@ import Utils from "../common/Utils";
             html += `</ul><span class="json-brackets json-curly-brackets">}</span>`;
           }
         } else {
-          html += `<span class="json-brackets ${
-            type == "array" ? "json-square-brackets" : "json-curly-brackets"
-          }">`;
+          html += `<span class="json-brackets ${ type == "array" ? "json-square-brackets" : "json-curly-brackets" }">`;
           html += type === "array" ? "[]" : "{}";
           html += "</span>";
         }
@@ -66,10 +60,7 @@ import Utils from "../common/Utils";
       default:
         /* Escape tags */
         if (type === "string") {
-          json = json
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
+          json = json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
         if (Utils.isUrl(json)) {
@@ -97,10 +88,9 @@ import Utils from "../common/Utils";
       /* Bind click on toggle buttons */
       $(this).off("click");
       $(this).on("click", "a.json-toggle", function () {
-        var target = $(this)
-          .toggleClass("collapsed")
-          .siblings("ul.json-object, ol.json-array");
+        var target = $(this).toggleClass("collapsed").siblings("ul.json-object, ol.json-array");
         target.toggle();
+
         if (target.is(":visible")) {
           target.siblings(".json-placeholder").remove();
         } else {
@@ -113,9 +103,7 @@ import Utils from "../common/Utils";
             placeholder = count + (count > 1 ? " keys" : " key");
           }
 
-          target.after(
-            '<a href class="json-placeholder">' + placeholder + "</a>"
-          );
+          target.after(`<a href class="json-placeholder">${placeholder}</a>`);
         }
         return false;
       });

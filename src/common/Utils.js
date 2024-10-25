@@ -59,8 +59,8 @@ export default {
    * @returns
    */
   findMaxKeysObject: function (arr) {
-    let maxKeysCount = 0,
-      maxKeysObject;
+    let maxKeysCount = 0;
+    let maxKeysObject;
     for (const obj of arr) {
       const keysCount = Object.keys(obj).length;
       if (keysCount > maxKeysCount) {
@@ -104,7 +104,7 @@ export default {
    * @returns
    */
   jsonpMatch: function (rawText) {
-    let tokens = rawText.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
+    const tokens = rawText.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
     if (tokens && tokens[1] && tokens[2]) {
       return {
         rawText: tokens[2],

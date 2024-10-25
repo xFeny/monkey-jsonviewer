@@ -21,7 +21,6 @@ const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL;
 
   const innerText = document.body.innerText;
 
-  // 判断是否为jsonp格式
   const { rawText, jsonpFun } = Utils.jsonpMatch(innerText);
   unsafeWindow.RAW_TEXT = rawText;
   unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
@@ -32,9 +31,9 @@ const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL;
   }
 
   $("pre").hide();
+  $("html").addClass("monkey-jsonviewer");
 
   window.postMessage({ addStyle: true });
-  $("html").addClass("monkey-jsonviewer");
 
   $(document.head)
     .append(`<link href="${LAYUI_CSS}" rel="stylesheet"/>`)
@@ -44,7 +43,8 @@ const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL;
   GM_addStyle(`
     jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
     jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
-    `);
+  `);
+
   setTimeout(() => {
     // 将内容用eval函数处理下
     try {

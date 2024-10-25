@@ -5,8 +5,8 @@ export default `
 <div class="format-container">
     <div class="panel">
         <div class="tabs">
-            <div class="tabs-item btn active" id="format">JSON 格式化</div>
-            <div class="tabs-item btn" id="viewJsonMind">JSON 脑图</div>
+            <div class="tabs-item btn active" id="viewFormater">JSON 格式化</div>
+            <div class="tabs-item btn" id="viewMind">JSON 脑图</div>
             <div class="tabs-item btn" id="viewRawText">原始数据</div>
         </div>
         <div class="toolbar">
@@ -56,6 +56,8 @@ export default `
     <div class="tabs-container">
         <div class="active" id="formatContainer"></div>
         <div id="jmContainer"></div>
-        <div id="rawTextContainer"><pre></pre></div>
+        <div id="rawTextContainer">
+            <pre></pre>
+        </div>
     </div>
 </div>`;

@@ -48,10 +48,11 @@ export default {
       )
       .forEach((el) => {
         const target = $(el);
-        let chain =
-          style == "default"
-            ? target.parent().attr("json-path")
-            : target.siblings().attr("json-path");
+        let chain = target.siblings().attr("json-path");
+        if (style == "default") {
+          chain = target.parent().attr("json-path");
+        }
+
         if (!chain) {
           return;
         }
@@ -71,15 +72,11 @@ export default {
     style == "default"
       ? allPath.addClass("hidden")
       : allPath.parent().addClass("hidden");
-
     chainSet.forEach((chain) => {
       const path = $(`#formatContainer *[json-path="${chain}"]`);
-      if (style == "default") {
-        path.removeClass("hidden");
-        return;
-      }
-
-      path.parent().removeClass("hidden");
+      style == "default"
+        ? path.removeClass("hidden")
+        : path.parent().removeClass("hidden");
     });
   },
   /**
