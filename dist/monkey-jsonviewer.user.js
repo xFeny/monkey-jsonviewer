@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.9.0
+// @version      v0.9.1
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -43,7 +43,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-DSntVMGh.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-DpjQGM3q.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-DSntVMGh.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-DSntVMGh.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-DpjQGM3q.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -2085,7 +2085,7 @@ System.register("./__monkey.entry-DSntVMGh.js", ['jquery'], (function (exports, 
             _unsafeWindow.RAW_TEXT
           );
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-BGLWclI--DhjGmoJF.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-CvVgzpst-BdNS2z44.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-D1vY-pUA-wY0vEJOR.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DMdadOQj-DsoClyim.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
       })();
 
@@ -2166,7 +2166,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-BGLWclI--DhjGmoJF.js", ['jquery', './__monkey.entry-DSntVMGh.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-D1vY-pUA-wY0vEJOR.js", ['jquery', './__monkey.entry-DpjQGM3q.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard, tippy;
   return {
@@ -2185,7 +2185,7 @@ System.register("./index-BGLWclI--DhjGmoJF.js", ['jquery', './__monkey.entry-DSn
 
       (function($2) {
         function isCollapsable(arg) {
-          return arg instanceof Object && Object.keys(arg).length > 0;
+          return arg && typeof arg === "object" && Object.keys(arg).length > 0;
         }
         function json2html(json, parentPath = "") {
           let html = "";
@@ -2874,7 +2874,7 @@ System.register("./index-BGLWclI--DhjGmoJF.js", ['jquery', './__monkey.entry-DSn
   };
 }));
 
-System.register("./index-CvVgzpst-BdNS2z44.js", ['jquery', './__monkey.entry-DSntVMGh.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
+System.register("./index-DMdadOQj-DsoClyim.js", ['jquery', './__monkey.entry-DpjQGM3q.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
   'use strict';
   var $, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, JSONbig, _GM_getValue, URL$1, _GM_setValue, tippy, require$$0;
   return {
