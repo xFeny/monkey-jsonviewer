@@ -32,10 +32,7 @@ const tabsEvent = {
       return;
     }
 
-    let content = this.$rawTextPre.text();
-    if (!content) {
-      content = unsafeWindow.RAW_TEXT;
-    }
+    const content = this.$rawTextPre.text() || unsafeWindow.RAW_TEXT;
     const filename = new Date().getTime() + ".json";
     Utils.downloadText(content, filename);
   },
@@ -43,7 +40,8 @@ const tabsEvent = {
    * 复制JSON文本内容
    */
   copyJson: function () {
-    GM_setClipboard(this.$rawTextPre.text());
+    const content = this.$rawTextPre.text() || unsafeWindow.RAW_TEXT;
+    GM_setClipboard(content);
     layer.msg("复制成功", { time: 1500 });
   },
   /**
