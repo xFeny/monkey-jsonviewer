@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.8.9
+// @version      v0.9.0
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -29,7 +29,7 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(o=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .hidden{display:none!important}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer .format-container{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column;background-color:#fefefe}.monkey-jsonviewer .format-container .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .format-container .tabs,.monkey-jsonviewer .format-container .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .format-container .tabs>div,.monkey-jsonviewer .format-container .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .tabs>div:hover,.monkey-jsonviewer .format-container .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .format-container .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .format-container .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .format-container .toolbar{line-height:23px}.monkey-jsonviewer .format-container .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .rightbox{right:200px;display:flex;font-size:13px;position:absolute}.monkey-jsonviewer .format-container .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .format-container .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div span:after{content:"";top:-2px;right:-5px;width:0;display:inline-block;height:0;position:relative;border-style:solid;border-width:5px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .format-container .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .format-container .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .format-container .rightbox>div ul li{font-size:13px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .format-container .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .format-container .tabs-container>div{display:none}.monkey-jsonviewer .format-container .tabs-container>div.active{display:block}.monkey-jsonviewer .format-container .tabs-container #formatContainer{padding:10px}.monkey-jsonviewer .format-container .tabs-container #rawTextContainer{font-size:13px;padding:5px 10px}.monkey-jsonviewer .format-container .tabs-container #rawTextContainer pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .format-container .jsonp{color:#93983a}.monkey-jsonviewer .format-container .json-object,.monkey-jsonviewer .format-container .json-array{margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e}.monkey-jsonviewer .format-container .json-object li,.monkey-jsonviewer .format-container .json-array li{padding-left:24px}.monkey-jsonviewer .format-container .json-brackets{font-weight:700}.monkey-jsonviewer .format-container .json-key{color:#910f93;cursor:pointer}.monkey-jsonviewer .format-container .json-string,.monkey-jsonviewer .format-container .json-string a{color:#2e7c16}.monkey-jsonviewer .format-container .json-number{color:#164ff1}.monkey-jsonviewer .format-container .json-boolean{color:#c41a16}.monkey-jsonviewer .format-container .json-null{color:#228fec}.monkey-jsonviewer .format-container a.json-toggle{position:rElative;color:inherit;opacity:.2;text-decoration:none}.monkey-jsonviewer .format-container a.json-toggle:hover{opacity:.35}.monkey-jsonviewer .format-container a.json-toggle:active{opacity:.5}.monkey-jsonviewer .format-container a.json-toggle:focus{outline:none}.monkey-jsonviewer .format-container a.json-toggle:before{top:2.5px;left:-15px;position:absolute;content:"";display:block;width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg);transition:transform .3s ease}.monkey-jsonviewer .format-container a.json-toggle.collapsed:before{transform:rotate(0)}.monkey-jsonviewer .format-container a.json-placeholder{color:#ccc;font-size:12px;padding:0 1em;text-decoration:none}.monkey-jsonviewer .format-container a.json-placeholder:hover{text-decoration:underline}.monkey-jsonviewer .format-container .json-curly-brackets{color:#6d9331}.monkey-jsonviewer .format-container .json-square-brackets{color:#8e9331}.monkey-jsonviewer .format-container #jmContainer{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .format-container #jmContainer jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .format-container #jmContainer jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .format-container #jmContainer jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .format-container #jmContainer jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .format-container #jmContainer jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .format-container #jmContainer jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .format-container #jmContainer jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .format-container #jmContainer .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .format-container table{margin-left:20px;width:-webkit-fill-available;border-collapse:collapse}.monkey-jsonviewer .format-container table b{font-weight:400}.monkey-jsonviewer .format-container table tr:hover{background-color:#f0f9fe}.monkey-jsonviewer .format-container table tr.selected td,.monkey-jsonviewer .format-container table tr.selected td b,.monkey-jsonviewer .format-container table tr.selected td a{color:#fff!important;background-color:#3875d7}.monkey-jsonviewer .format-container table tr td:first-child{width:120px}.monkey-jsonviewer .format-container table .node-len{cursor:pointer;color:#ccc;font-size:12px;margin-left:.5em}.monkey-jsonviewer .format-container table .node-len span:hover{text-decoration:underline}.monkey-jsonviewer .format-container table .simple-tree-table-empty .simple-tree-table-icon{padding-left:.5em;display:inline!important;background-color:transparent!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon{color:#000;opacity:.2;width:0!important;margin:0!important;line-height:0!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:before{top:.5px;left:-8px;position:relative;content:"";width:0;height:0;display:none;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg);transition:transform .3s ease}.monkey-jsonviewer .format-container table .simple-tree-table-icon:hover{opacity:.35}.monkey-jsonviewer .format-container table .simple-tree-table-icon:after{content:""!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:active{opacity:.5}.monkey-jsonviewer .format-container table .simple-tree-table-opened .simple-tree-table-icon:before{display:block}.monkey-jsonviewer .format-container table .simple-tree-table-closed .simple-tree-table-icon:before{display:block;transform:rotate(0)}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .light .json-key{color:#0040cf}.monkey-jsonviewer .light .json-string,.monkey-jsonviewer .light .json-string a{color:#a31515}.monkey-jsonviewer .light .json-number{color:#0b7500}.monkey-jsonviewer .light .json-boolean{color:#00f}.monkey-jsonviewer .light .json-null{color:#05f}.monkey-jsonviewer body.dark .format-container li,.monkey-jsonviewer body.dark .format-container pre,.monkey-jsonviewer body.dark_plus .format-container li,.monkey-jsonviewer body.dark_plus .format-container pre{color:#ccc}.monkey-jsonviewer body.dark .format-container .panel,.monkey-jsonviewer body.dark_plus .format-container .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer body.dark .format-container .panel>div,.monkey-jsonviewer body.dark_plus .format-container .panel>div{border-bottom-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark .format-container .panel .toolbar-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer body.dark .format-container .panel .tabs-item.active,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer body.dark .format-container .searchbox input,.monkey-jsonviewer body.dark_plus .format-container .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer body.dark .format-container .searchbox .clear,.monkey-jsonviewer body.dark_plus .format-container .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer body.dark .format-container .rightbox>div span:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer body.dark .format-container .jsonp,.monkey-jsonviewer body.dark_plus .format-container .jsonp{color:#f1d700}.monkey-jsonviewer body.dark .format-container .json-toggle,.monkey-jsonviewer body.dark_plus .format-container .json-toggle{opacity:.35}.monkey-jsonviewer body.dark .format-container .json-toggle:hover,.monkey-jsonviewer body.dark_plus .format-container .json-toggle:hover{opacity:.5}.monkey-jsonviewer body.dark .format-container jmnode,.monkey-jsonviewer body.dark_plus .format-container jmnode{filter:brightness(2)}.monkey-jsonviewer body.dark .format-container jmexpander,.monkey-jsonviewer body.dark_plus .format-container jmexpander{background-color:#dfdfdf}.monkey-jsonviewer body.dark .format-container table tr:hover,.monkey-jsonviewer body.dark_plus .format-container table tr:hover{background-color:#353b48}.monkey-jsonviewer body.dark .format-container .simple-tree-table-icon,.monkey-jsonviewer body.dark_plus .format-container .simple-tree-table-icon{color:#fff;opacity:.5}.monkey-jsonviewer body.dark .tabs-container{background-color:#252526}.monkey-jsonviewer body.dark .json-curly-brackets{color:#ce70d6}.monkey-jsonviewer body.dark .json-square-brackets{color:#f1d700}.monkey-jsonviewer body.dark .json-key{color:#9cdcfe}.monkey-jsonviewer body.dark .json-string,.monkey-jsonviewer body.dark .json-string a{color:#ce9178}.monkey-jsonviewer body.dark .json-number{color:#b5cea8}.monkey-jsonviewer body.dark .json-boolean{color:#358cd6}.monkey-jsonviewer body.dark .json-null{color:#569cd6}.monkey-jsonviewer body.dark_plus .tabs-container{background-color:#1e1f22}.monkey-jsonviewer body.dark_plus .json-curly-brackets{color:#bb9667}.monkey-jsonviewer body.dark_plus .json-square-brackets{color:#bbbda3}.monkey-jsonviewer body.dark_plus .json-key{color:#c77dbb}.monkey-jsonviewer body.dark_plus .json-string,.monkey-jsonviewer body.dark_plus .json-string a{color:#6aab73}.monkey-jsonviewer body.dark_plus .json-number{color:#28aab4}.monkey-jsonviewer body.dark_plus .json-boolean{color:#ce8951}.monkey-jsonviewer body.dark_plus .json-null{color:#c78d61}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}/**
+(o=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .hidden{display:none!important}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer .format-container{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column;background-color:#fefefe}.monkey-jsonviewer .format-container .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .format-container .tabs,.monkey-jsonviewer .format-container .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .format-container .tabs>div,.monkey-jsonviewer .format-container .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .tabs>div:hover,.monkey-jsonviewer .format-container .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .format-container .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .format-container .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .format-container .toolbar{line-height:23px}.monkey-jsonviewer .format-container .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .rightbox{right:200px;display:flex;font-size:13px;position:absolute}.monkey-jsonviewer .format-container .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .format-container .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div span:after{content:"";top:-2px;right:-5px;width:0;display:inline-block;height:0;position:relative;border-style:solid;border-width:5px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .format-container .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .format-container .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .format-container .rightbox>div ul li{font-size:13px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .format-container .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .format-container .tabs-container>div{display:none}.monkey-jsonviewer .format-container .tabs-container>div.active{display:block}.monkey-jsonviewer .format-container .tabs-container #formatContainer{padding:10px}.monkey-jsonviewer .format-container .tabs-container #rawTextContainer{font-size:13px;padding:5px 10px}.monkey-jsonviewer .format-container .tabs-container #rawTextContainer pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .format-container .jsonp{color:#93983a}.monkey-jsonviewer .format-container .json-object,.monkey-jsonviewer .format-container .json-array{margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e}.monkey-jsonviewer .format-container .json-object li,.monkey-jsonviewer .format-container .json-array li{padding-left:24px}.monkey-jsonviewer .format-container .json-brackets{font-weight:700}.monkey-jsonviewer .format-container .json-key{color:#910f93;cursor:pointer}.monkey-jsonviewer .format-container .json-string,.monkey-jsonviewer .format-container .json-string a{color:#2e7c16}.monkey-jsonviewer .format-container .json-bigint,.monkey-jsonviewer .format-container .json-number{color:#164ff1}.monkey-jsonviewer .format-container .json-boolean{color:#c41a16}.monkey-jsonviewer .format-container .json-null{color:#228fec}.monkey-jsonviewer .format-container a.json-toggle{position:rElative;color:inherit;opacity:.2;text-decoration:none}.monkey-jsonviewer .format-container a.json-toggle:hover{opacity:.35}.monkey-jsonviewer .format-container a.json-toggle:active{opacity:.5}.monkey-jsonviewer .format-container a.json-toggle:focus{outline:none}.monkey-jsonviewer .format-container a.json-toggle:before{top:2.5px;left:-15px;position:absolute;content:"";display:block;width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg);transition:transform .3s ease}.monkey-jsonviewer .format-container a.json-toggle.collapsed:before{transform:rotate(0)}.monkey-jsonviewer .format-container a.json-placeholder{color:#ccc;font-size:12px;padding:0 1em;text-decoration:none}.monkey-jsonviewer .format-container a.json-placeholder:hover{text-decoration:underline}.monkey-jsonviewer .format-container .json-curly-brackets{color:#6d9331}.monkey-jsonviewer .format-container .json-square-brackets{color:#8e9331}.monkey-jsonviewer .format-container #jmContainer{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .format-container #jmContainer jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .format-container #jmContainer jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .format-container #jmContainer jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .format-container #jmContainer jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .format-container #jmContainer jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .format-container #jmContainer jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .format-container #jmContainer jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .format-container #jmContainer .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .format-container table{margin-left:20px;width:-webkit-fill-available;border-collapse:collapse}.monkey-jsonviewer .format-container table b{font-weight:400}.monkey-jsonviewer .format-container table tr:hover{background-color:#f0f9fe}.monkey-jsonviewer .format-container table tr.selected td,.monkey-jsonviewer .format-container table tr.selected td b,.monkey-jsonviewer .format-container table tr.selected td a{color:#fff!important;background-color:#3875d7}.monkey-jsonviewer .format-container table tr td:first-child{width:120px}.monkey-jsonviewer .format-container table .node-len{cursor:pointer;color:#ccc;font-size:12px;margin-left:.5em}.monkey-jsonviewer .format-container table .node-len span:hover{text-decoration:underline}.monkey-jsonviewer .format-container table .simple-tree-table-empty .simple-tree-table-icon{padding-left:.5em;display:inline!important;background-color:transparent!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon{color:#000;opacity:.2;width:0!important;margin:0!important;line-height:0!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:before{top:.5px;left:-8px;position:relative;content:"";width:0;height:0;display:none;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg);transition:transform .3s ease}.monkey-jsonviewer .format-container table .simple-tree-table-icon:hover{opacity:.35}.monkey-jsonviewer .format-container table .simple-tree-table-icon:after{content:""!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:active{opacity:.5}.monkey-jsonviewer .format-container table .simple-tree-table-opened .simple-tree-table-icon:before{display:block}.monkey-jsonviewer .format-container table .simple-tree-table-closed .simple-tree-table-icon:before{display:block;transform:rotate(0)}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .light .json-key{color:#0040cf}.monkey-jsonviewer .light .json-string,.monkey-jsonviewer .light .json-string a{color:#a31515}.monkey-jsonviewer .light .json-bigint,.monkey-jsonviewer .light .json-number{color:#0b7500}.monkey-jsonviewer .light .json-boolean{color:#00f}.monkey-jsonviewer .light .json-null{color:#05f}.monkey-jsonviewer body.dark .format-container li,.monkey-jsonviewer body.dark .format-container pre,.monkey-jsonviewer body.dark_plus .format-container li,.monkey-jsonviewer body.dark_plus .format-container pre{color:#ccc}.monkey-jsonviewer body.dark .format-container .panel,.monkey-jsonviewer body.dark_plus .format-container .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer body.dark .format-container .panel>div,.monkey-jsonviewer body.dark_plus .format-container .panel>div{border-bottom-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark .format-container .panel .toolbar-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer body.dark .format-container .panel .tabs-item.active,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer body.dark .format-container .searchbox input,.monkey-jsonviewer body.dark_plus .format-container .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer body.dark .format-container .searchbox .clear,.monkey-jsonviewer body.dark_plus .format-container .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer body.dark .format-container .rightbox>div span:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer body.dark .format-container .jsonp,.monkey-jsonviewer body.dark_plus .format-container .jsonp{color:#f1d700}.monkey-jsonviewer body.dark .format-container .json-toggle,.monkey-jsonviewer body.dark_plus .format-container .json-toggle{opacity:.35}.monkey-jsonviewer body.dark .format-container .json-toggle:hover,.monkey-jsonviewer body.dark_plus .format-container .json-toggle:hover{opacity:.5}.monkey-jsonviewer body.dark .format-container jmnode,.monkey-jsonviewer body.dark_plus .format-container jmnode{filter:brightness(2)}.monkey-jsonviewer body.dark .format-container jmexpander,.monkey-jsonviewer body.dark_plus .format-container jmexpander{background-color:#dfdfdf}.monkey-jsonviewer body.dark .format-container table tr:hover,.monkey-jsonviewer body.dark_plus .format-container table tr:hover{background-color:#353b48}.monkey-jsonviewer body.dark .format-container .simple-tree-table-icon,.monkey-jsonviewer body.dark_plus .format-container .simple-tree-table-icon{color:#fff;opacity:.5}.monkey-jsonviewer body.dark .tabs-container{background-color:#252526}.monkey-jsonviewer body.dark .json-curly-brackets{color:#ce70d6}.monkey-jsonviewer body.dark .json-square-brackets{color:#f1d700}.monkey-jsonviewer body.dark .json-key{color:#9cdcfe}.monkey-jsonviewer body.dark .json-string,.monkey-jsonviewer body.dark .json-string a{color:#ce9178}.monkey-jsonviewer body.dark .json-bigint,.monkey-jsonviewer body.dark .json-number{color:#b5cea8}.monkey-jsonviewer body.dark .json-boolean{color:#358cd6}.monkey-jsonviewer body.dark .json-null{color:#569cd6}.monkey-jsonviewer body.dark_plus .tabs-container{background-color:#1e1f22}.monkey-jsonviewer body.dark_plus .json-curly-brackets{color:#bb9667}.monkey-jsonviewer body.dark_plus .json-square-brackets{color:#bbbda3}.monkey-jsonviewer body.dark_plus .json-key{color:#c77dbb}.monkey-jsonviewer body.dark_plus .json-string,.monkey-jsonviewer body.dark_plus .json-string a{color:#6aab73}.monkey-jsonviewer body.dark_plus .json-bigint,.monkey-jsonviewer body.dark_plus .json-number{color:#28aab4}.monkey-jsonviewer body.dark_plus .json-boolean{color:#ce8951}.monkey-jsonviewer body.dark_plus .json-null{color:#c78d61}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}/**
 * @license BSD
 * @copyright 2014-2023 hizzgdev@163.com
 * 
@@ -43,7 +43,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-ClII6pV-.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-DSntVMGh.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-ClII6pV-.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-ClII6pV-.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-DSntVMGh.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -131,6 +131,1745 @@ System.register("./__monkey.entry-ClII6pV-.js", ['jquery'], (function (exports, 
           return baseModule().catch(handlePreloadError);
         });
       };
+      var commonjsGlobal = exports("d", typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {});
+      function getDefaultExportFromCjs(x) {
+        return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
+      }
+      var jsonBigint = { exports: {} };
+      var stringify = { exports: {} };
+      var bignumber = { exports: {} };
+      (function(module) {
+        (function(globalObject) {
+          var BigNumber2, isNumeric = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i, mathceil = Math.ceil, mathfloor = Math.floor, bignumberError = "[BigNumber Error] ", tooManyDigits = bignumberError + "Number primitive has more than 15 significant digits: ", BASE = 1e14, LOG_BASE = 14, MAX_SAFE_INTEGER = 9007199254740991, POWS_TEN = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13], SQRT_BASE = 1e7, MAX = 1e9;
+          function clone(configObject) {
+            var div, convertBase, parseNumeric, P = BigNumber3.prototype = { constructor: BigNumber3, toString: null, valueOf: null }, ONE = new BigNumber3(1), DECIMAL_PLACES = 20, ROUNDING_MODE = 4, TO_EXP_NEG = -7, TO_EXP_POS = 21, MIN_EXP = -1e7, MAX_EXP = 1e7, CRYPTO = false, MODULO_MODE = 1, POW_PRECISION = 0, FORMAT = {
+              prefix: "",
+              groupSize: 3,
+              secondaryGroupSize: 0,
+              groupSeparator: ",",
+              decimalSeparator: ".",
+              fractionGroupSize: 0,
+              fractionGroupSeparator: " ",
+              // non-breaking space
+              suffix: ""
+            }, ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz", alphabetHasNormalDecimalDigits = true;
+            function BigNumber3(v, b) {
+              var alphabet, c, caseChanged, e, i, isNum, len, str, x = this;
+              if (!(x instanceof BigNumber3)) return new BigNumber3(v, b);
+              if (b == null) {
+                if (v && v._isBigNumber === true) {
+                  x.s = v.s;
+                  if (!v.c || v.e > MAX_EXP) {
+                    x.c = x.e = null;
+                  } else if (v.e < MIN_EXP) {
+                    x.c = [x.e = 0];
+                  } else {
+                    x.e = v.e;
+                    x.c = v.c.slice();
+                  }
+                  return;
+                }
+                if ((isNum = typeof v == "number") && v * 0 == 0) {
+                  x.s = 1 / v < 0 ? (v = -v, -1) : 1;
+                  if (v === ~~v) {
+                    for (e = 0, i = v; i >= 10; i /= 10, e++) ;
+                    if (e > MAX_EXP) {
+                      x.c = x.e = null;
+                    } else {
+                      x.e = e;
+                      x.c = [v];
+                    }
+                    return;
+                  }
+                  str = String(v);
+                } else {
+                  if (!isNumeric.test(str = String(v))) return parseNumeric(x, str, isNum);
+                  x.s = str.charCodeAt(0) == 45 ? (str = str.slice(1), -1) : 1;
+                }
+                if ((e = str.indexOf(".")) > -1) str = str.replace(".", "");
+                if ((i = str.search(/e/i)) > 0) {
+                  if (e < 0) e = i;
+                  e += +str.slice(i + 1);
+                  str = str.substring(0, i);
+                } else if (e < 0) {
+                  e = str.length;
+                }
+              } else {
+                intCheck(b, 2, ALPHABET.length, "Base");
+                if (b == 10 && alphabetHasNormalDecimalDigits) {
+                  x = new BigNumber3(v);
+                  return round(x, DECIMAL_PLACES + x.e + 1, ROUNDING_MODE);
+                }
+                str = String(v);
+                if (isNum = typeof v == "number") {
+                  if (v * 0 != 0) return parseNumeric(x, str, isNum, b);
+                  x.s = 1 / v < 0 ? (str = str.slice(1), -1) : 1;
+                  if (BigNumber3.DEBUG && str.replace(/^0\.0*|\./, "").length > 15) {
+                    throw Error(tooManyDigits + v);
+                  }
+                } else {
+                  x.s = str.charCodeAt(0) === 45 ? (str = str.slice(1), -1) : 1;
+                }
+                alphabet = ALPHABET.slice(0, b);
+                e = i = 0;
+                for (len = str.length; i < len; i++) {
+                  if (alphabet.indexOf(c = str.charAt(i)) < 0) {
+                    if (c == ".") {
+                      if (i > e) {
+                        e = len;
+                        continue;
+                      }
+                    } else if (!caseChanged) {
+                      if (str == str.toUpperCase() && (str = str.toLowerCase()) || str == str.toLowerCase() && (str = str.toUpperCase())) {
+                        caseChanged = true;
+                        i = -1;
+                        e = 0;
+                        continue;
+                      }
+                    }
+                    return parseNumeric(x, String(v), isNum, b);
+                  }
+                }
+                isNum = false;
+                str = convertBase(str, b, 10, x.s);
+                if ((e = str.indexOf(".")) > -1) str = str.replace(".", "");
+                else e = str.length;
+              }
+              for (i = 0; str.charCodeAt(i) === 48; i++) ;
+              for (len = str.length; str.charCodeAt(--len) === 48; ) ;
+              if (str = str.slice(i, ++len)) {
+                len -= i;
+                if (isNum && BigNumber3.DEBUG && len > 15 && (v > MAX_SAFE_INTEGER || v !== mathfloor(v))) {
+                  throw Error(tooManyDigits + x.s * v);
+                }
+                if ((e = e - i - 1) > MAX_EXP) {
+                  x.c = x.e = null;
+                } else if (e < MIN_EXP) {
+                  x.c = [x.e = 0];
+                } else {
+                  x.e = e;
+                  x.c = [];
+                  i = (e + 1) % LOG_BASE;
+                  if (e < 0) i += LOG_BASE;
+                  if (i < len) {
+                    if (i) x.c.push(+str.slice(0, i));
+                    for (len -= LOG_BASE; i < len; ) {
+                      x.c.push(+str.slice(i, i += LOG_BASE));
+                    }
+                    i = LOG_BASE - (str = str.slice(i)).length;
+                  } else {
+                    i -= len;
+                  }
+                  for (; i--; str += "0") ;
+                  x.c.push(+str);
+                }
+              } else {
+                x.c = [x.e = 0];
+              }
+            }
+            BigNumber3.clone = clone;
+            BigNumber3.ROUND_UP = 0;
+            BigNumber3.ROUND_DOWN = 1;
+            BigNumber3.ROUND_CEIL = 2;
+            BigNumber3.ROUND_FLOOR = 3;
+            BigNumber3.ROUND_HALF_UP = 4;
+            BigNumber3.ROUND_HALF_DOWN = 5;
+            BigNumber3.ROUND_HALF_EVEN = 6;
+            BigNumber3.ROUND_HALF_CEIL = 7;
+            BigNumber3.ROUND_HALF_FLOOR = 8;
+            BigNumber3.EUCLID = 9;
+            BigNumber3.config = BigNumber3.set = function(obj) {
+              var p, v;
+              if (obj != null) {
+                if (typeof obj == "object") {
+                  if (obj.hasOwnProperty(p = "DECIMAL_PLACES")) {
+                    v = obj[p];
+                    intCheck(v, 0, MAX, p);
+                    DECIMAL_PLACES = v;
+                  }
+                  if (obj.hasOwnProperty(p = "ROUNDING_MODE")) {
+                    v = obj[p];
+                    intCheck(v, 0, 8, p);
+                    ROUNDING_MODE = v;
+                  }
+                  if (obj.hasOwnProperty(p = "EXPONENTIAL_AT")) {
+                    v = obj[p];
+                    if (v && v.pop) {
+                      intCheck(v[0], -MAX, 0, p);
+                      intCheck(v[1], 0, MAX, p);
+                      TO_EXP_NEG = v[0];
+                      TO_EXP_POS = v[1];
+                    } else {
+                      intCheck(v, -MAX, MAX, p);
+                      TO_EXP_NEG = -(TO_EXP_POS = v < 0 ? -v : v);
+                    }
+                  }
+                  if (obj.hasOwnProperty(p = "RANGE")) {
+                    v = obj[p];
+                    if (v && v.pop) {
+                      intCheck(v[0], -MAX, -1, p);
+                      intCheck(v[1], 1, MAX, p);
+                      MIN_EXP = v[0];
+                      MAX_EXP = v[1];
+                    } else {
+                      intCheck(v, -MAX, MAX, p);
+                      if (v) {
+                        MIN_EXP = -(MAX_EXP = v < 0 ? -v : v);
+                      } else {
+                        throw Error(bignumberError + p + " cannot be zero: " + v);
+                      }
+                    }
+                  }
+                  if (obj.hasOwnProperty(p = "CRYPTO")) {
+                    v = obj[p];
+                    if (v === !!v) {
+                      if (v) {
+                        if (typeof crypto != "undefined" && crypto && (crypto.getRandomValues || crypto.randomBytes)) {
+                          CRYPTO = v;
+                        } else {
+                          CRYPTO = !v;
+                          throw Error(bignumberError + "crypto unavailable");
+                        }
+                      } else {
+                        CRYPTO = v;
+                      }
+                    } else {
+                      throw Error(bignumberError + p + " not true or false: " + v);
+                    }
+                  }
+                  if (obj.hasOwnProperty(p = "MODULO_MODE")) {
+                    v = obj[p];
+                    intCheck(v, 0, 9, p);
+                    MODULO_MODE = v;
+                  }
+                  if (obj.hasOwnProperty(p = "POW_PRECISION")) {
+                    v = obj[p];
+                    intCheck(v, 0, MAX, p);
+                    POW_PRECISION = v;
+                  }
+                  if (obj.hasOwnProperty(p = "FORMAT")) {
+                    v = obj[p];
+                    if (typeof v == "object") FORMAT = v;
+                    else throw Error(bignumberError + p + " not an object: " + v);
+                  }
+                  if (obj.hasOwnProperty(p = "ALPHABET")) {
+                    v = obj[p];
+                    if (typeof v == "string" && !/^.?$|[+\-.\s]|(.).*\1/.test(v)) {
+                      alphabetHasNormalDecimalDigits = v.slice(0, 10) == "0123456789";
+                      ALPHABET = v;
+                    } else {
+                      throw Error(bignumberError + p + " invalid: " + v);
+                    }
+                  }
+                } else {
+                  throw Error(bignumberError + "Object expected: " + obj);
+                }
+              }
+              return {
+                DECIMAL_PLACES,
+                ROUNDING_MODE,
+                EXPONENTIAL_AT: [TO_EXP_NEG, TO_EXP_POS],
+                RANGE: [MIN_EXP, MAX_EXP],
+                CRYPTO,
+                MODULO_MODE,
+                POW_PRECISION,
+                FORMAT,
+                ALPHABET
+              };
+            };
+            BigNumber3.isBigNumber = function(v) {
+              if (!v || v._isBigNumber !== true) return false;
+              if (!BigNumber3.DEBUG) return true;
+              var i, n, c = v.c, e = v.e, s = v.s;
+              out: if ({}.toString.call(c) == "[object Array]") {
+                if ((s === 1 || s === -1) && e >= -MAX && e <= MAX && e === mathfloor(e)) {
+                  if (c[0] === 0) {
+                    if (e === 0 && c.length === 1) return true;
+                    break out;
+                  }
+                  i = (e + 1) % LOG_BASE;
+                  if (i < 1) i += LOG_BASE;
+                  if (String(c[0]).length == i) {
+                    for (i = 0; i < c.length; i++) {
+                      n = c[i];
+                      if (n < 0 || n >= BASE || n !== mathfloor(n)) break out;
+                    }
+                    if (n !== 0) return true;
+                  }
+                }
+              } else if (c === null && e === null && (s === null || s === 1 || s === -1)) {
+                return true;
+              }
+              throw Error(bignumberError + "Invalid BigNumber: " + v);
+            };
+            BigNumber3.maximum = BigNumber3.max = function() {
+              return maxOrMin(arguments, -1);
+            };
+            BigNumber3.minimum = BigNumber3.min = function() {
+              return maxOrMin(arguments, 1);
+            };
+            BigNumber3.random = function() {
+              var pow2_53 = 9007199254740992;
+              var random53bitInt = Math.random() * pow2_53 & 2097151 ? function() {
+                return mathfloor(Math.random() * pow2_53);
+              } : function() {
+                return (Math.random() * 1073741824 | 0) * 8388608 + (Math.random() * 8388608 | 0);
+              };
+              return function(dp) {
+                var a, b, e, k, v, i = 0, c = [], rand = new BigNumber3(ONE);
+                if (dp == null) dp = DECIMAL_PLACES;
+                else intCheck(dp, 0, MAX);
+                k = mathceil(dp / LOG_BASE);
+                if (CRYPTO) {
+                  if (crypto.getRandomValues) {
+                    a = crypto.getRandomValues(new Uint32Array(k *= 2));
+                    for (; i < k; ) {
+                      v = a[i] * 131072 + (a[i + 1] >>> 11);
+                      if (v >= 9e15) {
+                        b = crypto.getRandomValues(new Uint32Array(2));
+                        a[i] = b[0];
+                        a[i + 1] = b[1];
+                      } else {
+                        c.push(v % 1e14);
+                        i += 2;
+                      }
+                    }
+                    i = k / 2;
+                  } else if (crypto.randomBytes) {
+                    a = crypto.randomBytes(k *= 7);
+                    for (; i < k; ) {
+                      v = (a[i] & 31) * 281474976710656 + a[i + 1] * 1099511627776 + a[i + 2] * 4294967296 + a[i + 3] * 16777216 + (a[i + 4] << 16) + (a[i + 5] << 8) + a[i + 6];
+                      if (v >= 9e15) {
+                        crypto.randomBytes(7).copy(a, i);
+                      } else {
+                        c.push(v % 1e14);
+                        i += 7;
+                      }
+                    }
+                    i = k / 7;
+                  } else {
+                    CRYPTO = false;
+                    throw Error(bignumberError + "crypto unavailable");
+                  }
+                }
+                if (!CRYPTO) {
+                  for (; i < k; ) {
+                    v = random53bitInt();
+                    if (v < 9e15) c[i++] = v % 1e14;
+                  }
+                }
+                k = c[--i];
+                dp %= LOG_BASE;
+                if (k && dp) {
+                  v = POWS_TEN[LOG_BASE - dp];
+                  c[i] = mathfloor(k / v) * v;
+                }
+                for (; c[i] === 0; c.pop(), i--) ;
+                if (i < 0) {
+                  c = [e = 0];
+                } else {
+                  for (e = -1; c[0] === 0; c.splice(0, 1), e -= LOG_BASE) ;
+                  for (i = 1, v = c[0]; v >= 10; v /= 10, i++) ;
+                  if (i < LOG_BASE) e -= LOG_BASE - i;
+                }
+                rand.e = e;
+                rand.c = c;
+                return rand;
+              };
+            }();
+            BigNumber3.sum = function() {
+              var i = 1, args = arguments, sum = new BigNumber3(args[0]);
+              for (; i < args.length; ) sum = sum.plus(args[i++]);
+              return sum;
+            };
+            convertBase = /* @__PURE__ */ function() {
+              var decimal = "0123456789";
+              function toBaseOut(str, baseIn, baseOut, alphabet) {
+                var j, arr = [0], arrL, i = 0, len = str.length;
+                for (; i < len; ) {
+                  for (arrL = arr.length; arrL--; arr[arrL] *= baseIn) ;
+                  arr[0] += alphabet.indexOf(str.charAt(i++));
+                  for (j = 0; j < arr.length; j++) {
+                    if (arr[j] > baseOut - 1) {
+                      if (arr[j + 1] == null) arr[j + 1] = 0;
+                      arr[j + 1] += arr[j] / baseOut | 0;
+                      arr[j] %= baseOut;
+                    }
+                  }
+                }
+                return arr.reverse();
+              }
+              return function(str, baseIn, baseOut, sign, callerIsToString) {
+                var alphabet, d, e, k, r, x, xc, y, i = str.indexOf("."), dp = DECIMAL_PLACES, rm = ROUNDING_MODE;
+                if (i >= 0) {
+                  k = POW_PRECISION;
+                  POW_PRECISION = 0;
+                  str = str.replace(".", "");
+                  y = new BigNumber3(baseIn);
+                  x = y.pow(str.length - i);
+                  POW_PRECISION = k;
+                  y.c = toBaseOut(
+                    toFixedPoint(coeffToString(x.c), x.e, "0"),
+                    10,
+                    baseOut,
+                    decimal
+                  );
+                  y.e = y.c.length;
+                }
+                xc = toBaseOut(str, baseIn, baseOut, callerIsToString ? (alphabet = ALPHABET, decimal) : (alphabet = decimal, ALPHABET));
+                e = k = xc.length;
+                for (; xc[--k] == 0; xc.pop()) ;
+                if (!xc[0]) return alphabet.charAt(0);
+                if (i < 0) {
+                  --e;
+                } else {
+                  x.c = xc;
+                  x.e = e;
+                  x.s = sign;
+                  x = div(x, y, dp, rm, baseOut);
+                  xc = x.c;
+                  r = x.r;
+                  e = x.e;
+                }
+                d = e + dp + 1;
+                i = xc[d];
+                k = baseOut / 2;
+                r = r || d < 0 || xc[d + 1] != null;
+                r = rm < 4 ? (i != null || r) && (rm == 0 || rm == (x.s < 0 ? 3 : 2)) : i > k || i == k && (rm == 4 || r || rm == 6 && xc[d - 1] & 1 || rm == (x.s < 0 ? 8 : 7));
+                if (d < 1 || !xc[0]) {
+                  str = r ? toFixedPoint(alphabet.charAt(1), -dp, alphabet.charAt(0)) : alphabet.charAt(0);
+                } else {
+                  xc.length = d;
+                  if (r) {
+                    for (--baseOut; ++xc[--d] > baseOut; ) {
+                      xc[d] = 0;
+                      if (!d) {
+                        ++e;
+                        xc = [1].concat(xc);
+                      }
+                    }
+                  }
+                  for (k = xc.length; !xc[--k]; ) ;
+                  for (i = 0, str = ""; i <= k; str += alphabet.charAt(xc[i++])) ;
+                  str = toFixedPoint(str, e, alphabet.charAt(0));
+                }
+                return str;
+              };
+            }();
+            div = /* @__PURE__ */ function() {
+              function multiply(x, k, base) {
+                var m, temp, xlo, xhi, carry = 0, i = x.length, klo = k % SQRT_BASE, khi = k / SQRT_BASE | 0;
+                for (x = x.slice(); i--; ) {
+                  xlo = x[i] % SQRT_BASE;
+                  xhi = x[i] / SQRT_BASE | 0;
+                  m = khi * xlo + xhi * klo;
+                  temp = klo * xlo + m % SQRT_BASE * SQRT_BASE + carry;
+                  carry = (temp / base | 0) + (m / SQRT_BASE | 0) + khi * xhi;
+                  x[i] = temp % base;
+                }
+                if (carry) x = [carry].concat(x);
+                return x;
+              }
+              function compare2(a, b, aL, bL) {
+                var i, cmp;
+                if (aL != bL) {
+                  cmp = aL > bL ? 1 : -1;
+                } else {
+                  for (i = cmp = 0; i < aL; i++) {
+                    if (a[i] != b[i]) {
+                      cmp = a[i] > b[i] ? 1 : -1;
+                      break;
+                    }
+                  }
+                }
+                return cmp;
+              }
+              function subtract(a, b, aL, base) {
+                var i = 0;
+                for (; aL--; ) {
+                  a[aL] -= i;
+                  i = a[aL] < b[aL] ? 1 : 0;
+                  a[aL] = i * base + a[aL] - b[aL];
+                }
+                for (; !a[0] && a.length > 1; a.splice(0, 1)) ;
+              }
+              return function(x, y, dp, rm, base) {
+                var cmp, e, i, more, n, prod, prodL, q, qc, rem, remL, rem0, xi, xL, yc0, yL, yz, s = x.s == y.s ? 1 : -1, xc = x.c, yc = y.c;
+                if (!xc || !xc[0] || !yc || !yc[0]) {
+                  return new BigNumber3(
+                    // Return NaN if either NaN, or both Infinity or 0.
+                    !x.s || !y.s || (xc ? yc && xc[0] == yc[0] : !yc) ? NaN : (
+                      // Return ±0 if x is ±0 or y is ±Infinity, or return ±Infinity as y is ±0.
+                      xc && xc[0] == 0 || !yc ? s * 0 : s / 0
+                    )
+                  );
+                }
+                q = new BigNumber3(s);
+                qc = q.c = [];
+                e = x.e - y.e;
+                s = dp + e + 1;
+                if (!base) {
+                  base = BASE;
+                  e = bitFloor(x.e / LOG_BASE) - bitFloor(y.e / LOG_BASE);
+                  s = s / LOG_BASE | 0;
+                }
+                for (i = 0; yc[i] == (xc[i] || 0); i++) ;
+                if (yc[i] > (xc[i] || 0)) e--;
+                if (s < 0) {
+                  qc.push(1);
+                  more = true;
+                } else {
+                  xL = xc.length;
+                  yL = yc.length;
+                  i = 0;
+                  s += 2;
+                  n = mathfloor(base / (yc[0] + 1));
+                  if (n > 1) {
+                    yc = multiply(yc, n, base);
+                    xc = multiply(xc, n, base);
+                    yL = yc.length;
+                    xL = xc.length;
+                  }
+                  xi = yL;
+                  rem = xc.slice(0, yL);
+                  remL = rem.length;
+                  for (; remL < yL; rem[remL++] = 0) ;
+                  yz = yc.slice();
+                  yz = [0].concat(yz);
+                  yc0 = yc[0];
+                  if (yc[1] >= base / 2) yc0++;
+                  do {
+                    n = 0;
+                    cmp = compare2(yc, rem, yL, remL);
+                    if (cmp < 0) {
+                      rem0 = rem[0];
+                      if (yL != remL) rem0 = rem0 * base + (rem[1] || 0);
+                      n = mathfloor(rem0 / yc0);
+                      if (n > 1) {
+                        if (n >= base) n = base - 1;
+                        prod = multiply(yc, n, base);
+                        prodL = prod.length;
+                        remL = rem.length;
+                        while (compare2(prod, rem, prodL, remL) == 1) {
+                          n--;
+                          subtract(prod, yL < prodL ? yz : yc, prodL, base);
+                          prodL = prod.length;
+                          cmp = 1;
+                        }
+                      } else {
+                        if (n == 0) {
+                          cmp = n = 1;
+                        }
+                        prod = yc.slice();
+                        prodL = prod.length;
+                      }
+                      if (prodL < remL) prod = [0].concat(prod);
+                      subtract(rem, prod, remL, base);
+                      remL = rem.length;
+                      if (cmp == -1) {
+                        while (compare2(yc, rem, yL, remL) < 1) {
+                          n++;
+                          subtract(rem, yL < remL ? yz : yc, remL, base);
+                          remL = rem.length;
+                        }
+                      }
+                    } else if (cmp === 0) {
+                      n++;
+                      rem = [0];
+                    }
+                    qc[i++] = n;
+                    if (rem[0]) {
+                      rem[remL++] = xc[xi] || 0;
+                    } else {
+                      rem = [xc[xi]];
+                      remL = 1;
+                    }
+                  } while ((xi++ < xL || rem[0] != null) && s--);
+                  more = rem[0] != null;
+                  if (!qc[0]) qc.splice(0, 1);
+                }
+                if (base == BASE) {
+                  for (i = 1, s = qc[0]; s >= 10; s /= 10, i++) ;
+                  round(q, dp + (q.e = i + e * LOG_BASE - 1) + 1, rm, more);
+                } else {
+                  q.e = e;
+                  q.r = +more;
+                }
+                return q;
+              };
+            }();
+            function format(n, i, rm, id) {
+              var c0, e, ne, len, str;
+              if (rm == null) rm = ROUNDING_MODE;
+              else intCheck(rm, 0, 8);
+              if (!n.c) return n.toString();
+              c0 = n.c[0];
+              ne = n.e;
+              if (i == null) {
+                str = coeffToString(n.c);
+                str = id == 1 || id == 2 && (ne <= TO_EXP_NEG || ne >= TO_EXP_POS) ? toExponential(str, ne) : toFixedPoint(str, ne, "0");
+              } else {
+                n = round(new BigNumber3(n), i, rm);
+                e = n.e;
+                str = coeffToString(n.c);
+                len = str.length;
+                if (id == 1 || id == 2 && (i <= e || e <= TO_EXP_NEG)) {
+                  for (; len < i; str += "0", len++) ;
+                  str = toExponential(str, e);
+                } else {
+                  i -= ne;
+                  str = toFixedPoint(str, e, "0");
+                  if (e + 1 > len) {
+                    if (--i > 0) for (str += "."; i--; str += "0") ;
+                  } else {
+                    i += e - len;
+                    if (i > 0) {
+                      if (e + 1 == len) str += ".";
+                      for (; i--; str += "0") ;
+                    }
+                  }
+                }
+              }
+              return n.s < 0 && c0 ? "-" + str : str;
+            }
+            function maxOrMin(args, n) {
+              var k, y, i = 1, x = new BigNumber3(args[0]);
+              for (; i < args.length; i++) {
+                y = new BigNumber3(args[i]);
+                if (!y.s || (k = compare(x, y)) === n || k === 0 && x.s === n) {
+                  x = y;
+                }
+              }
+              return x;
+            }
+            function normalise(n, c, e) {
+              var i = 1, j = c.length;
+              for (; !c[--j]; c.pop()) ;
+              for (j = c[0]; j >= 10; j /= 10, i++) ;
+              if ((e = i + e * LOG_BASE - 1) > MAX_EXP) {
+                n.c = n.e = null;
+              } else if (e < MIN_EXP) {
+                n.c = [n.e = 0];
+              } else {
+                n.e = e;
+                n.c = c;
+              }
+              return n;
+            }
+            parseNumeric = /* @__PURE__ */ function() {
+              var basePrefix = /^(-?)0([xbo])(?=\w[\w.]*$)/i, dotAfter = /^([^.]+)\.$/, dotBefore = /^\.([^.]+)$/, isInfinityOrNaN = /^-?(Infinity|NaN)$/, whitespaceOrPlus = /^\s*\+(?=[\w.])|^\s+|\s+$/g;
+              return function(x, str, isNum, b) {
+                var base, s = isNum ? str : str.replace(whitespaceOrPlus, "");
+                if (isInfinityOrNaN.test(s)) {
+                  x.s = isNaN(s) ? null : s < 0 ? -1 : 1;
+                } else {
+                  if (!isNum) {
+                    s = s.replace(basePrefix, function(m, p1, p2) {
+                      base = (p2 = p2.toLowerCase()) == "x" ? 16 : p2 == "b" ? 2 : 8;
+                      return !b || b == base ? p1 : m;
+                    });
+                    if (b) {
+                      base = b;
+                      s = s.replace(dotAfter, "$1").replace(dotBefore, "0.$1");
+                    }
+                    if (str != s) return new BigNumber3(s, base);
+                  }
+                  if (BigNumber3.DEBUG) {
+                    throw Error(bignumberError + "Not a" + (b ? " base " + b : "") + " number: " + str);
+                  }
+                  x.s = null;
+                }
+                x.c = x.e = null;
+              };
+            }();
+            function round(x, sd, rm, r) {
+              var d, i, j, k, n, ni, rd, xc = x.c, pows10 = POWS_TEN;
+              if (xc) {
+                out: {
+                  for (d = 1, k = xc[0]; k >= 10; k /= 10, d++) ;
+                  i = sd - d;
+                  if (i < 0) {
+                    i += LOG_BASE;
+                    j = sd;
+                    n = xc[ni = 0];
+                    rd = mathfloor(n / pows10[d - j - 1] % 10);
+                  } else {
+                    ni = mathceil((i + 1) / LOG_BASE);
+                    if (ni >= xc.length) {
+                      if (r) {
+                        for (; xc.length <= ni; xc.push(0)) ;
+                        n = rd = 0;
+                        d = 1;
+                        i %= LOG_BASE;
+                        j = i - LOG_BASE + 1;
+                      } else {
+                        break out;
+                      }
+                    } else {
+                      n = k = xc[ni];
+                      for (d = 1; k >= 10; k /= 10, d++) ;
+                      i %= LOG_BASE;
+                      j = i - LOG_BASE + d;
+                      rd = j < 0 ? 0 : mathfloor(n / pows10[d - j - 1] % 10);
+                    }
+                  }
+                  r = r || sd < 0 || // Are there any non-zero digits after the rounding digit?
+                  // The expression  n % pows10[d - j - 1]  returns all digits of n to the right
+                  // of the digit at j, e.g. if n is 908714 and j is 2, the expression gives 714.
+                  xc[ni + 1] != null || (j < 0 ? n : n % pows10[d - j - 1]);
+                  r = rm < 4 ? (rd || r) && (rm == 0 || rm == (x.s < 0 ? 3 : 2)) : rd > 5 || rd == 5 && (rm == 4 || r || rm == 6 && // Check whether the digit to the left of the rounding digit is odd.
+                  (i > 0 ? j > 0 ? n / pows10[d - j] : 0 : xc[ni - 1]) % 10 & 1 || rm == (x.s < 0 ? 8 : 7));
+                  if (sd < 1 || !xc[0]) {
+                    xc.length = 0;
+                    if (r) {
+                      sd -= x.e + 1;
+                      xc[0] = pows10[(LOG_BASE - sd % LOG_BASE) % LOG_BASE];
+                      x.e = -sd || 0;
+                    } else {
+                      xc[0] = x.e = 0;
+                    }
+                    return x;
+                  }
+                  if (i == 0) {
+                    xc.length = ni;
+                    k = 1;
+                    ni--;
+                  } else {
+                    xc.length = ni + 1;
+                    k = pows10[LOG_BASE - i];
+                    xc[ni] = j > 0 ? mathfloor(n / pows10[d - j] % pows10[j]) * k : 0;
+                  }
+                  if (r) {
+                    for (; ; ) {
+                      if (ni == 0) {
+                        for (i = 1, j = xc[0]; j >= 10; j /= 10, i++) ;
+                        j = xc[0] += k;
+                        for (k = 1; j >= 10; j /= 10, k++) ;
+                        if (i != k) {
+                          x.e++;
+                          if (xc[0] == BASE) xc[0] = 1;
+                        }
+                        break;
+                      } else {
+                        xc[ni] += k;
+                        if (xc[ni] != BASE) break;
+                        xc[ni--] = 0;
+                        k = 1;
+                      }
+                    }
+                  }
+                  for (i = xc.length; xc[--i] === 0; xc.pop()) ;
+                }
+                if (x.e > MAX_EXP) {
+                  x.c = x.e = null;
+                } else if (x.e < MIN_EXP) {
+                  x.c = [x.e = 0];
+                }
+              }
+              return x;
+            }
+            function valueOf(n) {
+              var str, e = n.e;
+              if (e === null) return n.toString();
+              str = coeffToString(n.c);
+              str = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential(str, e) : toFixedPoint(str, e, "0");
+              return n.s < 0 ? "-" + str : str;
+            }
+            P.absoluteValue = P.abs = function() {
+              var x = new BigNumber3(this);
+              if (x.s < 0) x.s = 1;
+              return x;
+            };
+            P.comparedTo = function(y, b) {
+              return compare(this, new BigNumber3(y, b));
+            };
+            P.decimalPlaces = P.dp = function(dp, rm) {
+              var c, n, v, x = this;
+              if (dp != null) {
+                intCheck(dp, 0, MAX);
+                if (rm == null) rm = ROUNDING_MODE;
+                else intCheck(rm, 0, 8);
+                return round(new BigNumber3(x), dp + x.e + 1, rm);
+              }
+              if (!(c = x.c)) return null;
+              n = ((v = c.length - 1) - bitFloor(this.e / LOG_BASE)) * LOG_BASE;
+              if (v = c[v]) for (; v % 10 == 0; v /= 10, n--) ;
+              if (n < 0) n = 0;
+              return n;
+            };
+            P.dividedBy = P.div = function(y, b) {
+              return div(this, new BigNumber3(y, b), DECIMAL_PLACES, ROUNDING_MODE);
+            };
+            P.dividedToIntegerBy = P.idiv = function(y, b) {
+              return div(this, new BigNumber3(y, b), 0, 1);
+            };
+            P.exponentiatedBy = P.pow = function(n, m) {
+              var half, isModExp, i, k, more, nIsBig, nIsNeg, nIsOdd, y, x = this;
+              n = new BigNumber3(n);
+              if (n.c && !n.isInteger()) {
+                throw Error(bignumberError + "Exponent not an integer: " + valueOf(n));
+              }
+              if (m != null) m = new BigNumber3(m);
+              nIsBig = n.e > 14;
+              if (!x.c || !x.c[0] || x.c[0] == 1 && !x.e && x.c.length == 1 || !n.c || !n.c[0]) {
+                y = new BigNumber3(Math.pow(+valueOf(x), nIsBig ? n.s * (2 - isOdd(n)) : +valueOf(n)));
+                return m ? y.mod(m) : y;
+              }
+              nIsNeg = n.s < 0;
+              if (m) {
+                if (m.c ? !m.c[0] : !m.s) return new BigNumber3(NaN);
+                isModExp = !nIsNeg && x.isInteger() && m.isInteger();
+                if (isModExp) x = x.mod(m);
+              } else if (n.e > 9 && (x.e > 0 || x.e < -1 || (x.e == 0 ? x.c[0] > 1 || nIsBig && x.c[1] >= 24e7 : x.c[0] < 8e13 || nIsBig && x.c[0] <= 9999975e7))) {
+                k = x.s < 0 && isOdd(n) ? -0 : 0;
+                if (x.e > -1) k = 1 / k;
+                return new BigNumber3(nIsNeg ? 1 / k : k);
+              } else if (POW_PRECISION) {
+                k = mathceil(POW_PRECISION / LOG_BASE + 2);
+              }
+              if (nIsBig) {
+                half = new BigNumber3(0.5);
+                if (nIsNeg) n.s = 1;
+                nIsOdd = isOdd(n);
+              } else {
+                i = Math.abs(+valueOf(n));
+                nIsOdd = i % 2;
+              }
+              y = new BigNumber3(ONE);
+              for (; ; ) {
+                if (nIsOdd) {
+                  y = y.times(x);
+                  if (!y.c) break;
+                  if (k) {
+                    if (y.c.length > k) y.c.length = k;
+                  } else if (isModExp) {
+                    y = y.mod(m);
+                  }
+                }
+                if (i) {
+                  i = mathfloor(i / 2);
+                  if (i === 0) break;
+                  nIsOdd = i % 2;
+                } else {
+                  n = n.times(half);
+                  round(n, n.e + 1, 1);
+                  if (n.e > 14) {
+                    nIsOdd = isOdd(n);
+                  } else {
+                    i = +valueOf(n);
+                    if (i === 0) break;
+                    nIsOdd = i % 2;
+                  }
+                }
+                x = x.times(x);
+                if (k) {
+                  if (x.c && x.c.length > k) x.c.length = k;
+                } else if (isModExp) {
+                  x = x.mod(m);
+                }
+              }
+              if (isModExp) return y;
+              if (nIsNeg) y = ONE.div(y);
+              return m ? y.mod(m) : k ? round(y, POW_PRECISION, ROUNDING_MODE, more) : y;
+            };
+            P.integerValue = function(rm) {
+              var n = new BigNumber3(this);
+              if (rm == null) rm = ROUNDING_MODE;
+              else intCheck(rm, 0, 8);
+              return round(n, n.e + 1, rm);
+            };
+            P.isEqualTo = P.eq = function(y, b) {
+              return compare(this, new BigNumber3(y, b)) === 0;
+            };
+            P.isFinite = function() {
+              return !!this.c;
+            };
+            P.isGreaterThan = P.gt = function(y, b) {
+              return compare(this, new BigNumber3(y, b)) > 0;
+            };
+            P.isGreaterThanOrEqualTo = P.gte = function(y, b) {
+              return (b = compare(this, new BigNumber3(y, b))) === 1 || b === 0;
+            };
+            P.isInteger = function() {
+              return !!this.c && bitFloor(this.e / LOG_BASE) > this.c.length - 2;
+            };
+            P.isLessThan = P.lt = function(y, b) {
+              return compare(this, new BigNumber3(y, b)) < 0;
+            };
+            P.isLessThanOrEqualTo = P.lte = function(y, b) {
+              return (b = compare(this, new BigNumber3(y, b))) === -1 || b === 0;
+            };
+            P.isNaN = function() {
+              return !this.s;
+            };
+            P.isNegative = function() {
+              return this.s < 0;
+            };
+            P.isPositive = function() {
+              return this.s > 0;
+            };
+            P.isZero = function() {
+              return !!this.c && this.c[0] == 0;
+            };
+            P.minus = function(y, b) {
+              var i, j, t, xLTy, x = this, a = x.s;
+              y = new BigNumber3(y, b);
+              b = y.s;
+              if (!a || !b) return new BigNumber3(NaN);
+              if (a != b) {
+                y.s = -b;
+                return x.plus(y);
+              }
+              var xe = x.e / LOG_BASE, ye = y.e / LOG_BASE, xc = x.c, yc = y.c;
+              if (!xe || !ye) {
+                if (!xc || !yc) return xc ? (y.s = -b, y) : new BigNumber3(yc ? x : NaN);
+                if (!xc[0] || !yc[0]) {
+                  return yc[0] ? (y.s = -b, y) : new BigNumber3(xc[0] ? x : (
+                    // IEEE 754 (2008) 6.3: n - n = -0 when rounding to -Infinity
+                    ROUNDING_MODE == 3 ? -0 : 0
+                  ));
+                }
+              }
+              xe = bitFloor(xe);
+              ye = bitFloor(ye);
+              xc = xc.slice();
+              if (a = xe - ye) {
+                if (xLTy = a < 0) {
+                  a = -a;
+                  t = xc;
+                } else {
+                  ye = xe;
+                  t = yc;
+                }
+                t.reverse();
+                for (b = a; b--; t.push(0)) ;
+                t.reverse();
+              } else {
+                j = (xLTy = (a = xc.length) < (b = yc.length)) ? a : b;
+                for (a = b = 0; b < j; b++) {
+                  if (xc[b] != yc[b]) {
+                    xLTy = xc[b] < yc[b];
+                    break;
+                  }
+                }
+              }
+              if (xLTy) {
+                t = xc;
+                xc = yc;
+                yc = t;
+                y.s = -y.s;
+              }
+              b = (j = yc.length) - (i = xc.length);
+              if (b > 0) for (; b--; xc[i++] = 0) ;
+              b = BASE - 1;
+              for (; j > a; ) {
+                if (xc[--j] < yc[j]) {
+                  for (i = j; i && !xc[--i]; xc[i] = b) ;
+                  --xc[i];
+                  xc[j] += BASE;
+                }
+                xc[j] -= yc[j];
+              }
+              for (; xc[0] == 0; xc.splice(0, 1), --ye) ;
+              if (!xc[0]) {
+                y.s = ROUNDING_MODE == 3 ? -1 : 1;
+                y.c = [y.e = 0];
+                return y;
+              }
+              return normalise(y, xc, ye);
+            };
+            P.modulo = P.mod = function(y, b) {
+              var q, s, x = this;
+              y = new BigNumber3(y, b);
+              if (!x.c || !y.s || y.c && !y.c[0]) {
+                return new BigNumber3(NaN);
+              } else if (!y.c || x.c && !x.c[0]) {
+                return new BigNumber3(x);
+              }
+              if (MODULO_MODE == 9) {
+                s = y.s;
+                y.s = 1;
+                q = div(x, y, 0, 3);
+                y.s = s;
+                q.s *= s;
+              } else {
+                q = div(x, y, 0, MODULO_MODE);
+              }
+              y = x.minus(q.times(y));
+              if (!y.c[0] && MODULO_MODE == 1) y.s = x.s;
+              return y;
+            };
+            P.multipliedBy = P.times = function(y, b) {
+              var c, e, i, j, k, m, xcL, xlo, xhi, ycL, ylo, yhi, zc, base, sqrtBase, x = this, xc = x.c, yc = (y = new BigNumber3(y, b)).c;
+              if (!xc || !yc || !xc[0] || !yc[0]) {
+                if (!x.s || !y.s || xc && !xc[0] && !yc || yc && !yc[0] && !xc) {
+                  y.c = y.e = y.s = null;
+                } else {
+                  y.s *= x.s;
+                  if (!xc || !yc) {
+                    y.c = y.e = null;
+                  } else {
+                    y.c = [0];
+                    y.e = 0;
+                  }
+                }
+                return y;
+              }
+              e = bitFloor(x.e / LOG_BASE) + bitFloor(y.e / LOG_BASE);
+              y.s *= x.s;
+              xcL = xc.length;
+              ycL = yc.length;
+              if (xcL < ycL) {
+                zc = xc;
+                xc = yc;
+                yc = zc;
+                i = xcL;
+                xcL = ycL;
+                ycL = i;
+              }
+              for (i = xcL + ycL, zc = []; i--; zc.push(0)) ;
+              base = BASE;
+              sqrtBase = SQRT_BASE;
+              for (i = ycL; --i >= 0; ) {
+                c = 0;
+                ylo = yc[i] % sqrtBase;
+                yhi = yc[i] / sqrtBase | 0;
+                for (k = xcL, j = i + k; j > i; ) {
+                  xlo = xc[--k] % sqrtBase;
+                  xhi = xc[k] / sqrtBase | 0;
+                  m = yhi * xlo + xhi * ylo;
+                  xlo = ylo * xlo + m % sqrtBase * sqrtBase + zc[j] + c;
+                  c = (xlo / base | 0) + (m / sqrtBase | 0) + yhi * xhi;
+                  zc[j--] = xlo % base;
+                }
+                zc[j] = c;
+              }
+              if (c) {
+                ++e;
+              } else {
+                zc.splice(0, 1);
+              }
+              return normalise(y, zc, e);
+            };
+            P.negated = function() {
+              var x = new BigNumber3(this);
+              x.s = -x.s || null;
+              return x;
+            };
+            P.plus = function(y, b) {
+              var t, x = this, a = x.s;
+              y = new BigNumber3(y, b);
+              b = y.s;
+              if (!a || !b) return new BigNumber3(NaN);
+              if (a != b) {
+                y.s = -b;
+                return x.minus(y);
+              }
+              var xe = x.e / LOG_BASE, ye = y.e / LOG_BASE, xc = x.c, yc = y.c;
+              if (!xe || !ye) {
+                if (!xc || !yc) return new BigNumber3(a / 0);
+                if (!xc[0] || !yc[0]) return yc[0] ? y : new BigNumber3(xc[0] ? x : a * 0);
+              }
+              xe = bitFloor(xe);
+              ye = bitFloor(ye);
+              xc = xc.slice();
+              if (a = xe - ye) {
+                if (a > 0) {
+                  ye = xe;
+                  t = yc;
+                } else {
+                  a = -a;
+                  t = xc;
+                }
+                t.reverse();
+                for (; a--; t.push(0)) ;
+                t.reverse();
+              }
+              a = xc.length;
+              b = yc.length;
+              if (a - b < 0) {
+                t = yc;
+                yc = xc;
+                xc = t;
+                b = a;
+              }
+              for (a = 0; b; ) {
+                a = (xc[--b] = xc[b] + yc[b] + a) / BASE | 0;
+                xc[b] = BASE === xc[b] ? 0 : xc[b] % BASE;
+              }
+              if (a) {
+                xc = [a].concat(xc);
+                ++ye;
+              }
+              return normalise(y, xc, ye);
+            };
+            P.precision = P.sd = function(sd, rm) {
+              var c, n, v, x = this;
+              if (sd != null && sd !== !!sd) {
+                intCheck(sd, 1, MAX);
+                if (rm == null) rm = ROUNDING_MODE;
+                else intCheck(rm, 0, 8);
+                return round(new BigNumber3(x), sd, rm);
+              }
+              if (!(c = x.c)) return null;
+              v = c.length - 1;
+              n = v * LOG_BASE + 1;
+              if (v = c[v]) {
+                for (; v % 10 == 0; v /= 10, n--) ;
+                for (v = c[0]; v >= 10; v /= 10, n++) ;
+              }
+              if (sd && x.e + 1 > n) n = x.e + 1;
+              return n;
+            };
+            P.shiftedBy = function(k) {
+              intCheck(k, -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER);
+              return this.times("1e" + k);
+            };
+            P.squareRoot = P.sqrt = function() {
+              var m, n, r, rep, t, x = this, c = x.c, s = x.s, e = x.e, dp = DECIMAL_PLACES + 4, half = new BigNumber3("0.5");
+              if (s !== 1 || !c || !c[0]) {
+                return new BigNumber3(!s || s < 0 && (!c || c[0]) ? NaN : c ? x : 1 / 0);
+              }
+              s = Math.sqrt(+valueOf(x));
+              if (s == 0 || s == 1 / 0) {
+                n = coeffToString(c);
+                if ((n.length + e) % 2 == 0) n += "0";
+                s = Math.sqrt(+n);
+                e = bitFloor((e + 1) / 2) - (e < 0 || e % 2);
+                if (s == 1 / 0) {
+                  n = "5e" + e;
+                } else {
+                  n = s.toExponential();
+                  n = n.slice(0, n.indexOf("e") + 1) + e;
+                }
+                r = new BigNumber3(n);
+              } else {
+                r = new BigNumber3(s + "");
+              }
+              if (r.c[0]) {
+                e = r.e;
+                s = e + dp;
+                if (s < 3) s = 0;
+                for (; ; ) {
+                  t = r;
+                  r = half.times(t.plus(div(x, t, dp, 1)));
+                  if (coeffToString(t.c).slice(0, s) === (n = coeffToString(r.c)).slice(0, s)) {
+                    if (r.e < e) --s;
+                    n = n.slice(s - 3, s + 1);
+                    if (n == "9999" || !rep && n == "4999") {
+                      if (!rep) {
+                        round(t, t.e + DECIMAL_PLACES + 2, 0);
+                        if (t.times(t).eq(x)) {
+                          r = t;
+                          break;
+                        }
+                      }
+                      dp += 4;
+                      s += 4;
+                      rep = 1;
+                    } else {
+                      if (!+n || !+n.slice(1) && n.charAt(0) == "5") {
+                        round(r, r.e + DECIMAL_PLACES + 2, 1);
+                        m = !r.times(r).eq(x);
+                      }
+                      break;
+                    }
+                  }
+                }
+              }
+              return round(r, r.e + DECIMAL_PLACES + 1, ROUNDING_MODE, m);
+            };
+            P.toExponential = function(dp, rm) {
+              if (dp != null) {
+                intCheck(dp, 0, MAX);
+                dp++;
+              }
+              return format(this, dp, rm, 1);
+            };
+            P.toFixed = function(dp, rm) {
+              if (dp != null) {
+                intCheck(dp, 0, MAX);
+                dp = dp + this.e + 1;
+              }
+              return format(this, dp, rm);
+            };
+            P.toFormat = function(dp, rm, format2) {
+              var str, x = this;
+              if (format2 == null) {
+                if (dp != null && rm && typeof rm == "object") {
+                  format2 = rm;
+                  rm = null;
+                } else if (dp && typeof dp == "object") {
+                  format2 = dp;
+                  dp = rm = null;
+                } else {
+                  format2 = FORMAT;
+                }
+              } else if (typeof format2 != "object") {
+                throw Error(bignumberError + "Argument not an object: " + format2);
+              }
+              str = x.toFixed(dp, rm);
+              if (x.c) {
+                var i, arr = str.split("."), g1 = +format2.groupSize, g2 = +format2.secondaryGroupSize, groupSeparator = format2.groupSeparator || "", intPart = arr[0], fractionPart = arr[1], isNeg = x.s < 0, intDigits = isNeg ? intPart.slice(1) : intPart, len = intDigits.length;
+                if (g2) {
+                  i = g1;
+                  g1 = g2;
+                  g2 = i;
+                  len -= i;
+                }
+                if (g1 > 0 && len > 0) {
+                  i = len % g1 || g1;
+                  intPart = intDigits.substr(0, i);
+                  for (; i < len; i += g1) intPart += groupSeparator + intDigits.substr(i, g1);
+                  if (g2 > 0) intPart += groupSeparator + intDigits.slice(i);
+                  if (isNeg) intPart = "-" + intPart;
+                }
+                str = fractionPart ? intPart + (format2.decimalSeparator || "") + ((g2 = +format2.fractionGroupSize) ? fractionPart.replace(
+                  new RegExp("\\d{" + g2 + "}\\B", "g"),
+                  "$&" + (format2.fractionGroupSeparator || "")
+                ) : fractionPart) : intPart;
+              }
+              return (format2.prefix || "") + str + (format2.suffix || "");
+            };
+            P.toFraction = function(md) {
+              var d, d0, d1, d2, e, exp, n, n0, n1, q, r, s, x = this, xc = x.c;
+              if (md != null) {
+                n = new BigNumber3(md);
+                if (!n.isInteger() && (n.c || n.s !== 1) || n.lt(ONE)) {
+                  throw Error(bignumberError + "Argument " + (n.isInteger() ? "out of range: " : "not an integer: ") + valueOf(n));
+                }
+              }
+              if (!xc) return new BigNumber3(x);
+              d = new BigNumber3(ONE);
+              n1 = d0 = new BigNumber3(ONE);
+              d1 = n0 = new BigNumber3(ONE);
+              s = coeffToString(xc);
+              e = d.e = s.length - x.e - 1;
+              d.c[0] = POWS_TEN[(exp = e % LOG_BASE) < 0 ? LOG_BASE + exp : exp];
+              md = !md || n.comparedTo(d) > 0 ? e > 0 ? d : n1 : n;
+              exp = MAX_EXP;
+              MAX_EXP = 1 / 0;
+              n = new BigNumber3(s);
+              n0.c[0] = 0;
+              for (; ; ) {
+                q = div(n, d, 0, 1);
+                d2 = d0.plus(q.times(d1));
+                if (d2.comparedTo(md) == 1) break;
+                d0 = d1;
+                d1 = d2;
+                n1 = n0.plus(q.times(d2 = n1));
+                n0 = d2;
+                d = n.minus(q.times(d2 = d));
+                n = d2;
+              }
+              d2 = div(md.minus(d0), d1, 0, 1);
+              n0 = n0.plus(d2.times(n1));
+              d0 = d0.plus(d2.times(d1));
+              n0.s = n1.s = x.s;
+              e = e * 2;
+              r = div(n1, d1, e, ROUNDING_MODE).minus(x).abs().comparedTo(
+                div(n0, d0, e, ROUNDING_MODE).minus(x).abs()
+              ) < 1 ? [n1, d1] : [n0, d0];
+              MAX_EXP = exp;
+              return r;
+            };
+            P.toNumber = function() {
+              return +valueOf(this);
+            };
+            P.toPrecision = function(sd, rm) {
+              if (sd != null) intCheck(sd, 1, MAX);
+              return format(this, sd, rm, 2);
+            };
+            P.toString = function(b) {
+              var str, n = this, s = n.s, e = n.e;
+              if (e === null) {
+                if (s) {
+                  str = "Infinity";
+                  if (s < 0) str = "-" + str;
+                } else {
+                  str = "NaN";
+                }
+              } else {
+                if (b == null) {
+                  str = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential(coeffToString(n.c), e) : toFixedPoint(coeffToString(n.c), e, "0");
+                } else if (b === 10 && alphabetHasNormalDecimalDigits) {
+                  n = round(new BigNumber3(n), DECIMAL_PLACES + e + 1, ROUNDING_MODE);
+                  str = toFixedPoint(coeffToString(n.c), n.e, "0");
+                } else {
+                  intCheck(b, 2, ALPHABET.length, "Base");
+                  str = convertBase(toFixedPoint(coeffToString(n.c), e, "0"), 10, b, s, true);
+                }
+                if (s < 0 && n.c[0]) str = "-" + str;
+              }
+              return str;
+            };
+            P.valueOf = P.toJSON = function() {
+              return valueOf(this);
+            };
+            P._isBigNumber = true;
+            if (configObject != null) BigNumber3.set(configObject);
+            return BigNumber3;
+          }
+          function bitFloor(n) {
+            var i = n | 0;
+            return n > 0 || n === i ? i : i - 1;
+          }
+          function coeffToString(a) {
+            var s, z, i = 1, j = a.length, r = a[0] + "";
+            for (; i < j; ) {
+              s = a[i++] + "";
+              z = LOG_BASE - s.length;
+              for (; z--; s = "0" + s) ;
+              r += s;
+            }
+            for (j = r.length; r.charCodeAt(--j) === 48; ) ;
+            return r.slice(0, j + 1 || 1);
+          }
+          function compare(x, y) {
+            var a, b, xc = x.c, yc = y.c, i = x.s, j = y.s, k = x.e, l = y.e;
+            if (!i || !j) return null;
+            a = xc && !xc[0];
+            b = yc && !yc[0];
+            if (a || b) return a ? b ? 0 : -j : i;
+            if (i != j) return i;
+            a = i < 0;
+            b = k == l;
+            if (!xc || !yc) return b ? 0 : !xc ^ a ? 1 : -1;
+            if (!b) return k > l ^ a ? 1 : -1;
+            j = (k = xc.length) < (l = yc.length) ? k : l;
+            for (i = 0; i < j; i++) if (xc[i] != yc[i]) return xc[i] > yc[i] ^ a ? 1 : -1;
+            return k == l ? 0 : k > l ^ a ? 1 : -1;
+          }
+          function intCheck(n, min, max, name) {
+            if (n < min || n > max || n !== mathfloor(n)) {
+              throw Error(bignumberError + (name || "Argument") + (typeof n == "number" ? n < min || n > max ? " out of range: " : " not an integer: " : " not a primitive number: ") + String(n));
+            }
+          }
+          function isOdd(n) {
+            var k = n.c.length - 1;
+            return bitFloor(n.e / LOG_BASE) == k && n.c[k] % 2 != 0;
+          }
+          function toExponential(str, e) {
+            return (str.length > 1 ? str.charAt(0) + "." + str.slice(1) : str) + (e < 0 ? "e" : "e+") + e;
+          }
+          function toFixedPoint(str, e, z) {
+            var len, zs;
+            if (e < 0) {
+              for (zs = z + "."; ++e; zs += z) ;
+              str = zs + str;
+            } else {
+              len = str.length;
+              if (++e > len) {
+                for (zs = z, e -= len; --e; zs += z) ;
+                str += zs;
+              } else if (e < len) {
+                str = str.slice(0, e) + "." + str.slice(e);
+              }
+            }
+            return str;
+          }
+          BigNumber2 = clone();
+          BigNumber2["default"] = BigNumber2.BigNumber = BigNumber2;
+          if (module.exports) {
+            module.exports = BigNumber2;
+          } else {
+            if (!globalObject) {
+              globalObject = typeof self != "undefined" && self ? self : window;
+            }
+            globalObject.BigNumber = BigNumber2;
+          }
+        })(commonjsGlobal);
+      })(bignumber);
+      var bignumberExports = bignumber.exports;
+      (function(module) {
+        var BigNumber2 = bignumberExports;
+        var JSON2 = module.exports;
+        (function() {
+          var escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, gap, indent, meta = {
+            // table of character substitutions
+            "\b": "\\b",
+            "	": "\\t",
+            "\n": "\\n",
+            "\f": "\\f",
+            "\r": "\\r",
+            '"': '\\"',
+            "\\": "\\\\"
+          }, rep;
+          function quote(string) {
+            escapable.lastIndex = 0;
+            return escapable.test(string) ? '"' + string.replace(escapable, function(a) {
+              var c = meta[a];
+              return typeof c === "string" ? c : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+            }) + '"' : '"' + string + '"';
+          }
+          function str(key, holder) {
+            var i, k, v, length, mind = gap, partial, value = holder[key], isBigNumber = value != null && (value instanceof BigNumber2 || BigNumber2.isBigNumber(value));
+            if (value && typeof value === "object" && typeof value.toJSON === "function") {
+              value = value.toJSON(key);
+            }
+            if (typeof rep === "function") {
+              value = rep.call(holder, key, value);
+            }
+            switch (typeof value) {
+              case "string":
+                if (isBigNumber) {
+                  return value;
+                } else {
+                  return quote(value);
+                }
+              case "number":
+                return isFinite(value) ? String(value) : "null";
+              case "boolean":
+              case "null":
+              case "bigint":
+                return String(value);
+              case "object":
+                if (!value) {
+                  return "null";
+                }
+                gap += indent;
+                partial = [];
+                if (Object.prototype.toString.apply(value) === "[object Array]") {
+                  length = value.length;
+                  for (i = 0; i < length; i += 1) {
+                    partial[i] = str(i, value) || "null";
+                  }
+                  v = partial.length === 0 ? "[]" : gap ? "[\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "]" : "[" + partial.join(",") + "]";
+                  gap = mind;
+                  return v;
+                }
+                if (rep && typeof rep === "object") {
+                  length = rep.length;
+                  for (i = 0; i < length; i += 1) {
+                    if (typeof rep[i] === "string") {
+                      k = rep[i];
+                      v = str(k, value);
+                      if (v) {
+                        partial.push(quote(k) + (gap ? ": " : ":") + v);
+                      }
+                    }
+                  }
+                } else {
+                  Object.keys(value).forEach(function(k2) {
+                    var v2 = str(k2, value);
+                    if (v2) {
+                      partial.push(quote(k2) + (gap ? ": " : ":") + v2);
+                    }
+                  });
+                }
+                v = partial.length === 0 ? "{}" : gap ? "{\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "}" : "{" + partial.join(",") + "}";
+                gap = mind;
+                return v;
+            }
+          }
+          if (typeof JSON2.stringify !== "function") {
+            JSON2.stringify = function(value, replacer, space) {
+              var i;
+              gap = "";
+              indent = "";
+              if (typeof space === "number") {
+                for (i = 0; i < space; i += 1) {
+                  indent += " ";
+                }
+              } else if (typeof space === "string") {
+                indent = space;
+              }
+              rep = replacer;
+              if (replacer && typeof replacer !== "function" && (typeof replacer !== "object" || typeof replacer.length !== "number")) {
+                throw new Error("JSON.stringify");
+              }
+              return str("", { "": value });
+            };
+          }
+        })();
+      })(stringify);
+      var stringifyExports = stringify.exports;
+      var BigNumber = null;
+      const suspectProtoRx = /(?:_|\\u005[Ff])(?:_|\\u005[Ff])(?:p|\\u0070)(?:r|\\u0072)(?:o|\\u006[Ff])(?:t|\\u0074)(?:o|\\u006[Ff])(?:_|\\u005[Ff])(?:_|\\u005[Ff])/;
+      const suspectConstructorRx = /(?:c|\\u0063)(?:o|\\u006[Ff])(?:n|\\u006[Ee])(?:s|\\u0073)(?:t|\\u0074)(?:r|\\u0072)(?:u|\\u0075)(?:c|\\u0063)(?:t|\\u0074)(?:o|\\u006[Ff])(?:r|\\u0072)/;
+      var json_parse$1 = function(options) {
+        var _options = {
+          strict: false,
+          // not being strict means do not generate syntax errors for "duplicate key"
+          storeAsString: false,
+          // toggles whether the values should be stored as BigNumber (default) or a string
+          alwaysParseAsBig: false,
+          // toggles whether all numbers should be Big
+          useNativeBigInt: false,
+          // toggles whether to use native BigInt instead of bignumber.js
+          protoAction: "error",
+          constructorAction: "error"
+        };
+        if (options !== void 0 && options !== null) {
+          if (options.strict === true) {
+            _options.strict = true;
+          }
+          if (options.storeAsString === true) {
+            _options.storeAsString = true;
+          }
+          _options.alwaysParseAsBig = options.alwaysParseAsBig === true ? options.alwaysParseAsBig : false;
+          _options.useNativeBigInt = options.useNativeBigInt === true ? options.useNativeBigInt : false;
+          if (typeof options.constructorAction !== "undefined") {
+            if (options.constructorAction === "error" || options.constructorAction === "ignore" || options.constructorAction === "preserve") {
+              _options.constructorAction = options.constructorAction;
+            } else {
+              throw new Error(
+                `Incorrect value for constructorAction option, must be "error", "ignore" or undefined but passed ${options.constructorAction}`
+              );
+            }
+          }
+          if (typeof options.protoAction !== "undefined") {
+            if (options.protoAction === "error" || options.protoAction === "ignore" || options.protoAction === "preserve") {
+              _options.protoAction = options.protoAction;
+            } else {
+              throw new Error(
+                `Incorrect value for protoAction option, must be "error", "ignore" or undefined but passed ${options.protoAction}`
+              );
+            }
+          }
+        }
+        var at, ch, escapee = {
+          '"': '"',
+          "\\": "\\",
+          "/": "/",
+          b: "\b",
+          f: "\f",
+          n: "\n",
+          r: "\r",
+          t: "	"
+        }, text, error = function(m) {
+          throw {
+            name: "SyntaxError",
+            message: m,
+            at,
+            text
+          };
+        }, next = function(c) {
+          if (c && c !== ch) {
+            error("Expected '" + c + "' instead of '" + ch + "'");
+          }
+          ch = text.charAt(at);
+          at += 1;
+          return ch;
+        }, number = function() {
+          var number2, string2 = "";
+          if (ch === "-") {
+            string2 = "-";
+            next("-");
+          }
+          while (ch >= "0" && ch <= "9") {
+            string2 += ch;
+            next();
+          }
+          if (ch === ".") {
+            string2 += ".";
+            while (next() && ch >= "0" && ch <= "9") {
+              string2 += ch;
+            }
+          }
+          if (ch === "e" || ch === "E") {
+            string2 += ch;
+            next();
+            if (ch === "-" || ch === "+") {
+              string2 += ch;
+              next();
+            }
+            while (ch >= "0" && ch <= "9") {
+              string2 += ch;
+              next();
+            }
+          }
+          number2 = +string2;
+          if (!isFinite(number2)) {
+            error("Bad number");
+          } else {
+            if (BigNumber == null) BigNumber = bignumberExports;
+            if (string2.length > 15)
+              return _options.storeAsString ? string2 : _options.useNativeBigInt ? BigInt(string2) : new BigNumber(string2);
+            else
+              return !_options.alwaysParseAsBig ? number2 : _options.useNativeBigInt ? BigInt(number2) : new BigNumber(number2);
+          }
+        }, string = function() {
+          var hex, i, string2 = "", uffff;
+          if (ch === '"') {
+            var startAt = at;
+            while (next()) {
+              if (ch === '"') {
+                if (at - 1 > startAt) string2 += text.substring(startAt, at - 1);
+                next();
+                return string2;
+              }
+              if (ch === "\\") {
+                if (at - 1 > startAt) string2 += text.substring(startAt, at - 1);
+                next();
+                if (ch === "u") {
+                  uffff = 0;
+                  for (i = 0; i < 4; i += 1) {
+                    hex = parseInt(next(), 16);
+                    if (!isFinite(hex)) {
+                      break;
+                    }
+                    uffff = uffff * 16 + hex;
+                  }
+                  string2 += String.fromCharCode(uffff);
+                } else if (typeof escapee[ch] === "string") {
+                  string2 += escapee[ch];
+                } else {
+                  break;
+                }
+                startAt = at;
+              }
+            }
+          }
+          error("Bad string");
+        }, white = function() {
+          while (ch && ch <= " ") {
+            next();
+          }
+        }, word = function() {
+          switch (ch) {
+            case "t":
+              next("t");
+              next("r");
+              next("u");
+              next("e");
+              return true;
+            case "f":
+              next("f");
+              next("a");
+              next("l");
+              next("s");
+              next("e");
+              return false;
+            case "n":
+              next("n");
+              next("u");
+              next("l");
+              next("l");
+              return null;
+          }
+          error("Unexpected '" + ch + "'");
+        }, value, array = function() {
+          var array2 = [];
+          if (ch === "[") {
+            next("[");
+            white();
+            if (ch === "]") {
+              next("]");
+              return array2;
+            }
+            while (ch) {
+              array2.push(value());
+              white();
+              if (ch === "]") {
+                next("]");
+                return array2;
+              }
+              next(",");
+              white();
+            }
+          }
+          error("Bad array");
+        }, object = function() {
+          var key, object2 = /* @__PURE__ */ Object.create(null);
+          if (ch === "{") {
+            next("{");
+            white();
+            if (ch === "}") {
+              next("}");
+              return object2;
+            }
+            while (ch) {
+              key = string();
+              white();
+              next(":");
+              if (_options.strict === true && Object.hasOwnProperty.call(object2, key)) {
+                error('Duplicate key "' + key + '"');
+              }
+              if (suspectProtoRx.test(key) === true) {
+                if (_options.protoAction === "error") {
+                  error("Object contains forbidden prototype property");
+                } else if (_options.protoAction === "ignore") {
+                  value();
+                } else {
+                  object2[key] = value();
+                }
+              } else if (suspectConstructorRx.test(key) === true) {
+                if (_options.constructorAction === "error") {
+                  error("Object contains forbidden constructor property");
+                } else if (_options.constructorAction === "ignore") {
+                  value();
+                } else {
+                  object2[key] = value();
+                }
+              } else {
+                object2[key] = value();
+              }
+              white();
+              if (ch === "}") {
+                next("}");
+                return object2;
+              }
+              next(",");
+              white();
+            }
+          }
+          error("Bad object");
+        };
+        value = function() {
+          white();
+          switch (ch) {
+            case "{":
+              return object();
+            case "[":
+              return array();
+            case '"':
+              return string();
+            case "-":
+              return number();
+            default:
+              return ch >= "0" && ch <= "9" ? number() : word();
+          }
+        };
+        return function(source, reviver) {
+          var result;
+          text = source + "";
+          at = 0;
+          ch = " ";
+          result = value();
+          white();
+          if (ch) {
+            error("Syntax error");
+          }
+          return typeof reviver === "function" ? function walk(holder, key) {
+            var v, value2 = holder[key];
+            if (value2 && typeof value2 === "object") {
+              Object.keys(value2).forEach(function(k) {
+                v = walk(value2, k);
+                if (v !== void 0) {
+                  value2[k] = v;
+                } else {
+                  delete value2[k];
+                }
+              });
+            }
+            return reviver.call(holder, key, value2);
+          }({ "": result }, "") : result;
+        };
+      };
+      var parse = json_parse$1;
+      var json_stringify = stringifyExports.stringify;
+      var json_parse = parse;
+      jsonBigint.exports = function(options) {
+        return {
+          parse: json_parse(options),
+          stringify: json_stringify
+        };
+      };
+      jsonBigint.exports.parse = json_parse();
+      jsonBigint.exports.stringify = json_stringify;
+      var jsonBigintExports = jsonBigint.exports;
+      const JSONbig = exports("J", /* @__PURE__ */ getDefaultExportFromCjs(jsonBigintExports));
       const Utils = exports("U", {
         /**
          * 检查字符串是否为URL
@@ -227,8 +1966,8 @@ System.register("./__monkey.entry-ClII6pV-.js", ['jquery'], (function (exports, 
          * @param {*} rawText 字符串
          * @returns
          */
-        jsonpMatch: function(rawText2) {
-          const tokens = rawText2.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
+        jsonpMatch: function(rawText) {
+          const tokens = rawText.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
           if (tokens && tokens[1] && tokens[2]) {
             return {
               rawText: tokens[2],
@@ -236,12 +1975,12 @@ System.register("./__monkey.entry-ClII6pV-.js", ['jquery'], (function (exports, 
             };
           }
           return {
-            rawText: rawText2,
+            rawText,
             jsonpFun: null
           };
         }
       });
-      const URL$1 = exports("d", {
+      const URL$1 = exports("e", {
         JSON_CRACK_WIDGET: "https://jsoncrack.feny.ink/widget",
         EXAMPLE_JSON: "https://fetch-api.feny.ink/example.json",
         ONLINE_REQUEST: "https://fetch-api.feny.ink/httpRequest",
@@ -342,13 +2081,11 @@ System.register("./__monkey.entry-ClII6pV-.js", ['jquery'], (function (exports, 
     jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
   `);
         setTimeout(() => {
-          try {
-            _unsafeWindow.GLOBAL_JSON = eval(`(${_unsafeWindow.RAW_TEXT})`);
-          } catch (e) {
-            _unsafeWindow.GLOBAL_JSON = JSON.parse(_unsafeWindow.RAW_TEXT);
-          }
+          _unsafeWindow.GLOBAL_JSON = JSONbig({ useNativeBigInt: true }).parse(
+            _unsafeWindow.RAW_TEXT
+          );
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-BQ0G-sPz-B0Qz591F.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BF1lJinC-Bkz7tWrF.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-BGLWclI--DhjGmoJF.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-CvVgzpst-BdNS2z44.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
       })();
 
@@ -429,7 +2166,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-BQ0G-sPz-B0Qz591F.js", ['jquery', './__monkey.entry-ClII6pV-.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-BGLWclI--DhjGmoJF.js", ['jquery', './__monkey.entry-DSntVMGh.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard, tippy;
   return {
@@ -461,7 +2198,7 @@ System.register("./index-BQ0G-sPz-B0Qz591F.js", ['jquery', './__monkey.entry-ClI
                 html += `<span class="json-brackets ${type == "array" ? "json-square-brackets" : "json-curly-brackets"}">`;
                 html += type === "array" ? '[</span><ol class="json-array">' : '{</span><ul class="json-object">';
                 for (var key in json) {
-                  if (json.hasOwnProperty(key)) {
+                  if (Object.prototype.hasOwnProperty.call(json, key)) {
                     const comma = --len > 0 ? "," : "";
                     const jsonPath = parentPath + "." + key;
                     const collapse = isCollapsable(json[key]) ? '<a href class="json-toggle"></a>' : "";
@@ -1137,34 +2874,35 @@ System.register("./index-BQ0G-sPz-B0Qz591F.js", ['jquery', './__monkey.entry-ClI
   };
 }));
 
-System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-ClII6pV-.js'], (function (exports, module) {
+System.register("./index-CvVgzpst-BdNS2z44.js", ['jquery', './__monkey.entry-DSntVMGh.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
   'use strict';
-  var $, tippy, require$$0, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
+  var $, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, JSONbig, _GM_getValue, URL$1, _GM_setValue, tippy, require$$0;
   return {
     setters: [module => {
       $ = module.default;
     }, module => {
-      tippy = module.t;
-    }, module => {
-      require$$0 = module.default;
-    }, module => {
+      commonjsGlobal = module.d;
       _unsafeWindow = module.b;
       Utils = module.U;
       _GM_setClipboard = module.c;
+      JSONbig = module.J;
       _GM_getValue = module.a;
-      URL$1 = module.d;
+      URL$1 = module.e;
       _GM_setValue = module._;
+    }, module => {
+      tippy = module.t;
+    }, module => {
+      require$$0 = module.default;
     }],
     execute: (function () {
 
-      var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
       var domToImage = { exports: {} };
       var hasRequiredDomToImage;
       function requireDomToImage() {
         if (hasRequiredDomToImage) return domToImage.exports;
         hasRequiredDomToImage = 1;
         (function(module) {
-          (function(global2) {
+          (function(global) {
             var util = newUtil();
             var inliner = newInliner();
             var fontFaces = newFontFaces();
@@ -1825,11 +3563,11 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
          * @param {*} json JSON 数据
          * @returns
          */
-        convert: function(json2) {
+        convert: function(json) {
           const children = [];
-          if (typeof json2 === "object") {
-            for (const key in json2) {
-              let val = json2[key], isArray = Array.isArray(val);
+          if (typeof json === "object") {
+            for (const key in json) {
+              let val = json[key], isArray = Array.isArray(val);
               const type = Utils.getPrototype(val);
               if (isArray && val.length > 0) {
                 val = Utils.findMaxKeysObject(val);
@@ -1865,14 +3603,14 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
          * @param {*} json JSON 数据
          * @returns
          */
-        show: function(json2) {
-          let isArr = Array.isArray(json2);
+        show: function(json) {
+          let isArr = Array.isArray(json);
           if (isArr) {
-            if (typeof json2[0] !== "object") {
+            if (typeof json[0] !== "object") {
               layer.msg("数据结构无法生成脑图", { time: 1e3 });
               return this;
             }
-            json2 = Utils.findMaxKeysObject(json2);
+            json = Utils.findMaxKeysObject(json);
           }
           if (!this.isFirst) {
             return this;
@@ -1889,7 +3627,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
               id: "root",
               topic: "Root",
               direction: "left",
-              children: this.convert(json2),
+              children: this.convert(json),
               chain: isArr ? "Root[i]" : "Root"
             }
           });
@@ -1902,13 +3640,13 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
          */
         event: function() {
           const jsonMind2 = this;
-          $(document.body).on("dblclick mouseover", "jmnode", function(event2) {
+          $(document.body).on("dblclick mouseover", "jmnode", function(event) {
             const nodeid = $(this).attr("nodeid");
             const node = _unsafeWindow.GLOBAL_JSMIND.get_node(nodeid);
             if (!node.parent) {
               return;
             }
-            if (event2.type === "dblclick") {
+            if (event.type === "dblclick") {
               _GM_setClipboard(jsonMind2.mindChain(node));
               layer.msg("节点路径复制成功", { time: 1500 });
             } else {
@@ -1924,7 +3662,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
           });
           return this;
         },
-        init: function(json2) {
+        init: function(json) {
           if (!_unsafeWindow.GLOBAL_JSMIND) {
             _unsafeWindow.GLOBAL_JSMIND = new require$$0({
               mode: "side",
@@ -1959,7 +3697,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
               }
             });
           }
-          this.show(json2).event();
+          this.show(json).event();
         }
       };
       const $jmContainer = $("#jmContainer");
@@ -1973,11 +3711,11 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
          * 原始数据
          */
         _setRawText: function() {
-          let rawText2 = _unsafeWindow.RAW_TEXT;
+          let rawText = _unsafeWindow.RAW_TEXT;
           if (_unsafeWindow.GLOBAL_JSONP_FUN) {
-            rawText2 = `${_unsafeWindow.GLOBAL_JSONP_FUN}(${rawText2})`;
+            rawText = `${_unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
           }
-          this.$rawTextPre.text(rawText2);
+          this.$rawTextPre.text(rawText);
         },
         /**
          * 保存为文件
@@ -2061,7 +3799,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
         beautify: function() {
           this.isBeautify = !this.isBeautify;
           if (this.isBeautify) {
-            let str = JSON.stringify(_unsafeWindow.GLOBAL_JSON, null, 2);
+            let str = JSONbig.stringify(_unsafeWindow.GLOBAL_JSON, null, 2);
             if (_unsafeWindow.GLOBAL_JSONP_FUN) {
               str = `${_unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
             }
@@ -2120,8 +3858,8 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
           return this;
         }
       };
-      window.addEventListener("message", function(event2) {
-        const { data } = event2;
+      window.addEventListener("message", function(event) {
+        const { data } = event;
         if (!(data == null ? void 0 : data.reload)) {
           return;
         }
@@ -2176,8 +3914,8 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
             if (!chain) {
               return;
             }
-            const text2 = target.text();
-            if (!text2.toLowerCase().includes(filter2.toLowerCase())) {
+            const text = target.text();
+            if (!text.toLowerCase().includes(filter2.toLowerCase())) {
               return;
             }
             chainSet.add(chain);
@@ -2196,22 +3934,22 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
          * @returns
          */
         input: function() {
-          const that2 = this;
+          const that = this;
           $(document.body).on("input", ".searchbox input", function() {
             const val = $(this).val();
             $(".clear").attr("hidden", !val);
-            that2.filterJSON(val);
+            that.filterJSON(val);
           });
-          return that2;
+          return that;
         },
         /**
          * 清空输入框内容
          * @returns
          */
         clear: function() {
-          const that2 = this;
+          const that = this;
           $(document.body).on("click", ".searchbox .clear", function() {
-            that2.filterJSON();
+            that.filterJSON();
             $("input").val("");
             $(this).attr("hidden", true);
           });
@@ -2242,16 +3980,16 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
           return this;
         },
         init: function() {
-          const that2 = this;
-          that2.setTheme();
-          window.addEventListener("message", function(event2) {
-            const { data } = event2;
+          const that = this;
+          that.setTheme();
+          window.addEventListener("message", function(event) {
+            const { data } = event;
             if (!data) {
               return;
             }
             const { type, value } = data;
             if (type === "theme") {
-              that2.changeTheme(value);
+              that.changeTheme(value);
             }
           });
         }
@@ -2296,7 +4034,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
               }
               const { rawText, jsonpFun } = Utils.jsonpMatch(text);
               try {
-                const json = JSON.parse(JSON.stringify(eval(`(${rawText})`)));
+                const json = JSONbig({ useNativeBigInt: true }).parse(rawText);
                 that.reload(json, rawText, jsonpFun);
               } catch (e) {
                 layer.msg("JSON格式不正确", { time: 1500 });
@@ -2356,7 +4094,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
                 if (typeof response === "string") {
                   try {
                     const { rawText, jsonpFun } = Utils.jsonpMatch(response);
-                    const json = JSON.parse(JSON.stringify(eval(`(${rawText})`)));
+                    const json = JSONbig({ useNativeBigInt: true }).parse(rawText);
                     that.reload(json, rawText, jsonpFun);
                   } catch (e) {
                     layer.closeAll();
@@ -2364,7 +4102,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
                     console.log("HTTP 请求JSON格式不正确：", e);
                   }
                 } else {
-                  that.reload(response, JSON.stringify(response), null);
+                  that.reload(response, JSONbig.stringify(response), null);
                 }
               },
               (error) => {
@@ -2376,16 +4114,16 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
           });
           return this;
         },
-        reload: function(json2, rawText2, jsonpFun2) {
-          _unsafeWindow.GLOBAL_JSON = json2;
-          _unsafeWindow.RAW_TEXT = rawText2;
-          _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun2;
+        reload: function(json, rawText, jsonpFun) {
+          _unsafeWindow.GLOBAL_JSON = json;
+          _unsafeWindow.RAW_TEXT = rawText;
+          _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
           window.postMessage({ reload: true });
           layer.closeAll();
         },
         init: function() {
-          window.addEventListener("message", (event2) => {
-            const { data } = event2;
+          window.addEventListener("message", (event) => {
+            const { data } = event;
             if (!data) {
               return;
             }
@@ -2403,7 +4141,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
          * @returns
          */
         handle: function() {
-          const that2 = this;
+          const that = this;
           const tagName = "span";
           [".style", ".theme", ".tools"].forEach((selector) => {
             tippy(selector, {
@@ -2422,7 +4160,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
                 ul.find("li").removeClass();
                 ul.find(`li[data-value=${value}]`).addClass("active");
                 instance.setContent(template.html());
-                that2.instance = instance;
+                that.instance = instance;
               },
               onHide: function(instance) {
                 const tools2 = $(instance.reference);
@@ -2438,7 +4176,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
          * @returns
          */
         checked: function() {
-          const that2 = this;
+          const that = this;
           $(document.body).on("click", ".rightbox li", function() {
             const el = $(this);
             const hasClass = el.hasClass("active");
@@ -2450,7 +4188,7 @@ System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr
             if (type !== "tools") {
               el.addClass("active").siblings().removeClass();
             } else {
-              that2.instance.hide();
+              that.instance.hide();
             }
             window.postMessage({ type, value });
           });
