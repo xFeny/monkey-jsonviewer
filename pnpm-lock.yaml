@@ -23,6 +23,9 @@ importers:
       jsmind:
         specifier: ^0.8.5
         version: 0.8.5
+      json-bigint:
+        specifier: ^1.0.0
+        version: 1.0.0
       sass:
         specifier: ^1.79.5
         version: 1.79.5
@@ -406,6 +409,9 @@ packages:
     resolution: {integrity: sha512-QxD8cf2eVqJOOz63z6JIN9BzvVs/dlySa5HGSBH5xtR8dPteIRQnBxxKqkNTiT6jbDTF6jAfrd4oMcND9RGbQg==}
     engines: {node: '>=0.6'}
 
+  bignumber.js@9.1.2:
+    resolution: {integrity: sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==}
+
   bplist-parser@0.2.0:
     resolution: {integrity: sha512-z0M+byMThzQmD9NILRniCUXYsYpjwnlO8N5uCFaCqIOpqRsJCrQL9NK3JsD67CN5a08nF5oIL2bD6loTdHOuKw==}
     engines: {node: '>= 5.10.0'}
@@ -587,6 +593,9 @@ packages:
 
   jsmind@0.8.5:
     resolution: {integrity: sha512-fz7SZ4X9GFktM8Kr9qyqt9fw2fcSe3n94HmdDTsibTKrvgFFeXneO3z7xSk1zE2NK9Zzex2X3TCKxHczdpxmfg==}
+
+  json-bigint@1.0.0:
+    resolution: {integrity: sha512-SiPv/8VpZuWbvLSMtTDU8hEfrZWg/mH/nV/b4o0CYbSxu1UIQPLdwKOCIyLQX+VIPO5vrLX3i8qtqFyhdPSUSQ==}
 
   local-pkg@0.5.0:
     resolution: {integrity: sha512-ok6z3qlYyCDS4ZEU27HaU6x/xZa9Whf8jD4ptH5UZTQYZVYeb9bnZ3ojVhiJNLiXK1Hfc0GNbLXcmZ5plLDDBg==}
@@ -1050,6 +1059,8 @@ snapshots:
 
   big-integer@1.6.52: {}
 
+  bignumber.js@9.1.2: {}
+
   bplist-parser@0.2.0:
     dependencies:
       big-integer: 1.6.52
@@ -1247,6 +1258,10 @@ snapshots:
   js-tokens@9.0.0: {}
 
   jsmind@0.8.5: {}
+
+  json-bigint@1.0.0:
+    dependencies:
+      bignumber.js: 9.1.2
 
   local-pkg@0.5.0:
     dependencies:

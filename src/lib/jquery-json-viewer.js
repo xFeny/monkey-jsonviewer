@@ -25,7 +25,7 @@ import Utils from "../common/Utils";
           html += type === "array" ? '[</span><ol class="json-array">' : '{</span><ul class="json-object">';
 
           for (var key in json) {
-            if (json.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(json, key)) {
               const comma = --len > 0 ? "," : "";
               const jsonPath = parentPath + "." + key;
               const collapse = isCollapsable(json[key]) ? '<a href class="json-toggle"></a>' : "";

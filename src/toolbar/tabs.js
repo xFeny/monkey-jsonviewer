@@ -1,4 +1,5 @@
 import $ from "jquery";
+import JSONbig from "json-bigint";
 import jsonMind from "../mind";
 import URL from "../common/URL";
 import Utils from "../common/Utils";
@@ -106,7 +107,7 @@ const tabsEvent = {
   beautify: function () {
     this.isBeautify = !this.isBeautify;
     if (this.isBeautify) {
-      let str = JSON.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
+      let str = JSONbig.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
       if (unsafeWindow.GLOBAL_JSONP_FUN) {
         str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
       }

@@ -1,4 +1,5 @@
 import $ from "jquery";
+import JSONbig from "json-bigint";
 import Utils from "./common/Utils";
 import URL from "./common/URL";
 import layout from "./layout";
@@ -46,13 +47,9 @@ const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL;
   `);
 
   setTimeout(() => {
-    // 将内容用eval函数处理下
-    try {
-      unsafeWindow.GLOBAL_JSON = eval(`(${unsafeWindow.RAW_TEXT})`);
-    } catch (e) {
-      unsafeWindow.GLOBAL_JSON = JSON.parse(unsafeWindow.RAW_TEXT);
-    }
-
+    unsafeWindow.GLOBAL_JSON = JSONbig({ useNativeBigInt: true }).parse(
+      unsafeWindow.RAW_TEXT
+    );
     document.body.insertAdjacentHTML("afterbegin", layout);
 
     import("./format")
