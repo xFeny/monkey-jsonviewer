@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.8.8
+// @version      v0.8.9
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -43,7 +43,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-BHri9xqK.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-ClII6pV-.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-BHri9xqK.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-BHri9xqK.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-ClII6pV-.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -348,7 +348,7 @@ System.register("./__monkey.entry-BHri9xqK.js", ['jquery'], (function (exports, 
             _unsafeWindow.GLOBAL_JSON = JSON.parse(_unsafeWindow.RAW_TEXT);
           }
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-CV0v1IGA-CtIArosR.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DHfJirSX-NT9ypnSr.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-BQ0G-sPz-B0Qz591F.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BF1lJinC-Bkz7tWrF.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
       })();
 
@@ -429,7 +429,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-CV0v1IGA-CtIArosR.js", ['jquery', './__monkey.entry-BHri9xqK.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-BQ0G-sPz-B0Qz591F.js", ['jquery', './__monkey.entry-ClII6pV-.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard, tippy;
   return {
@@ -1137,7 +1137,7 @@ System.register("./index-CV0v1IGA-CtIArosR.js", ['jquery', './__monkey.entry-BHr
   };
 }));
 
-System.register("./index-DHfJirSX-NT9ypnSr.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-BHri9xqK.js'], (function (exports, module) {
+System.register("./index-BF1lJinC-Bkz7tWrF.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-ClII6pV-.js'], (function (exports, module) {
   'use strict';
   var $, tippy, require$$0, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
   return {
@@ -1989,10 +1989,7 @@ System.register("./index-DHfJirSX-NT9ypnSr.js", ['jquery', './tippy.esm-Ot9MORvr
             _unsafeWindow.GLOBAL_JSMIND.shoot();
             return;
           }
-          let content = this.$rawTextPre.text();
-          if (!content) {
-            content = _unsafeWindow.RAW_TEXT;
-          }
+          const content = this.$rawTextPre.text() || _unsafeWindow.RAW_TEXT;
           const filename = (/* @__PURE__ */ new Date()).getTime() + ".json";
           Utils.downloadText(content, filename);
         },
@@ -2000,7 +1997,8 @@ System.register("./index-DHfJirSX-NT9ypnSr.js", ['jquery', './tippy.esm-Ot9MORvr
          * 复制JSON文本内容
          */
         copyJson: function() {
-          _GM_setClipboard(this.$rawTextPre.text());
+          const content = this.$rawTextPre.text() || _unsafeWindow.RAW_TEXT;
+          _GM_setClipboard(content);
           layer.msg("复制成功", { time: 1500 });
         },
         /**
