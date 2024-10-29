@@ -123,7 +123,7 @@ $dark_tip_color: #4e4e4e;
     .rightbox {
       right: 200px;
       display: flex;
-      font-size: $fz13;
+      font-size: $fz12;
       position: absolute;
 
       > div {
@@ -170,7 +170,7 @@ $dark_tip_color: #4e4e4e;
           border-radius: 3px;
 
           li {
-            font-size: $fz13;
+            font-size: $fz12;
             padding: 5px 20px;
             background-color: $tip_color;
             transition: background-color 0.2s ease;
@@ -768,3 +768,22 @@ $dark_tip_color: #4e4e4e;
     }
   }
 }
+
+/** 移动端 START **/
+@media screen and (max-width: 640px) {
+  .rightbox {
+    right: 0 !important;
+
+    .tools {
+      display: none !important;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .searchbox {
+    display: none !important;
+  }
+}
+
+/** 移动端 END **/

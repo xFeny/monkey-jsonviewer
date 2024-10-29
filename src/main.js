@@ -36,9 +36,11 @@ const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL;
 
   window.postMessage({ addStyle: true });
 
+  const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
   $(document.head)
     .append(`<link href="${LAYUI_CSS}" rel="stylesheet"/>`)
-    .append(`<script src="${LAYUI_JS}" type="text/javascript"></script>`);
+    .append(`<script src="${LAYUI_JS}" type="text/javascript"></script>`)
+    .append(viewport);
 
   // 脑图节点随机颜色
   GM_addStyle(`
