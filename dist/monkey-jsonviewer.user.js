@@ -43,7 +43,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-CQv26x-w.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-BoHtUqbL.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-CQv26x-w.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-CQv26x-w.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-BoHtUqbL.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -2075,7 +2075,7 @@ System.register("./__monkey.entry-CQv26x-w.js", ['jquery'], (function (exports, 
         $("pre").hide();
         $("html").addClass("monkey-jsonviewer");
         window.postMessage({ addStyle: true });
-        const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+        const viewport = '<meta name="viewport" content="width=device-width",initial-scale=1,maximum-scale=1,user-scalable=no">';
         $(document.head).append(`<link href="${LAYUI_CSS}" rel="stylesheet"/>`).append(`<script src="${LAYUI_JS}" type="text/javascript"><\/script>`).append(viewport);
         _GM_addStyle(`
     jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
@@ -2086,7 +2086,7 @@ System.register("./__monkey.entry-CQv26x-w.js", ['jquery'], (function (exports, 
             _unsafeWindow.RAW_TEXT
           );
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-D82bj0yN-BQ2fmGNf.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-BD0UcGGX-SFPCM2-n.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-LDlQGNLA-DURqkQS0.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DYCQ_dTV-TSzT23tr.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
       })();
 
@@ -2167,7 +2167,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-D82bj0yN-BQ2fmGNf.js", ['jquery', './__monkey.entry-CQv26x-w.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-LDlQGNLA-DURqkQS0.js", ['jquery', './__monkey.entry-BoHtUqbL.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard, tippy;
   return {
@@ -2875,7 +2875,7 @@ System.register("./index-D82bj0yN-BQ2fmGNf.js", ['jquery', './__monkey.entry-CQv
   };
 }));
 
-System.register("./index-BD0UcGGX-SFPCM2-n.js", ['jquery', './__monkey.entry-CQv26x-w.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
+System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoHtUqbL.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
   'use strict';
   var $, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, JSONbig, _GM_getValue, URL$1, _GM_setValue, tippy, require$$0;
   return {
