@@ -36,7 +36,7 @@ const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL;
 
   window.postMessage({ addStyle: true });
 
-  const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+  const viewport = '<meta name="viewport" content="width=device-width",initial-scale=1,maximum-scale=1,user-scalable=no">';
   $(document.head)
     .append(`<link href="${LAYUI_CSS}" rel="stylesheet"/>`)
     .append(`<script src="${LAYUI_JS}" type="text/javascript"></script>`)
