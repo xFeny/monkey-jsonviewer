@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.9.2
+// @version      v0.9.3
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -29,7 +29,7 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(o=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .hidden{display:none!important}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer .format-container{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column;background-color:#fefefe}.monkey-jsonviewer .format-container .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .format-container .tabs,.monkey-jsonviewer .format-container .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .format-container .tabs>div,.monkey-jsonviewer .format-container .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .tabs>div:hover,.monkey-jsonviewer .format-container .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .format-container .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .format-container .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .format-container .toolbar{line-height:23px}.monkey-jsonviewer .format-container .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .format-container .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .format-container .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div span:after{content:"";top:-2px;right:-5px;width:0;display:inline-block;height:0;position:relative;border-style:solid;border-width:5px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .format-container .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .format-container .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .format-container .rightbox>div ul li{font-size:12px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .format-container .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .format-container .tabs-container>div{display:none}.monkey-jsonviewer .format-container .tabs-container>div.active{display:block}.monkey-jsonviewer .format-container .tabs-container #formatContainer{padding:10px}.monkey-jsonviewer .format-container .tabs-container #rawTextContainer{font-size:13px;padding:5px 10px}.monkey-jsonviewer .format-container .tabs-container #rawTextContainer pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .format-container .jsonp{color:#93983a}.monkey-jsonviewer .format-container .json-object,.monkey-jsonviewer .format-container .json-array{margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e}.monkey-jsonviewer .format-container .json-object li,.monkey-jsonviewer .format-container .json-array li{padding-left:24px}.monkey-jsonviewer .format-container .json-brackets{font-weight:700}.monkey-jsonviewer .format-container .json-key{color:#910f93;cursor:pointer}.monkey-jsonviewer .format-container .json-string,.monkey-jsonviewer .format-container .json-string a{color:#2e7c16}.monkey-jsonviewer .format-container .json-bigint,.monkey-jsonviewer .format-container .json-number{color:#164ff1}.monkey-jsonviewer .format-container .json-boolean{color:#c41a16}.monkey-jsonviewer .format-container .json-null{color:#228fec}.monkey-jsonviewer .format-container a.json-toggle{position:rElative;color:inherit;opacity:.2;text-decoration:none}.monkey-jsonviewer .format-container a.json-toggle:hover{opacity:.35}.monkey-jsonviewer .format-container a.json-toggle:active{opacity:.5}.monkey-jsonviewer .format-container a.json-toggle:focus{outline:none}.monkey-jsonviewer .format-container a.json-toggle:before{top:2.5px;left:-15px;position:absolute;content:"";display:block;width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg);transition:transform .3s ease}.monkey-jsonviewer .format-container a.json-toggle.collapsed:before{transform:rotate(0)}.monkey-jsonviewer .format-container a.json-placeholder{color:#ccc;font-size:12px;padding:0 1em;text-decoration:none}.monkey-jsonviewer .format-container a.json-placeholder:hover{text-decoration:underline}.monkey-jsonviewer .format-container .json-curly-brackets{color:#6d9331}.monkey-jsonviewer .format-container .json-square-brackets{color:#8e9331}.monkey-jsonviewer .format-container #jmContainer{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .format-container #jmContainer jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .format-container #jmContainer jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .format-container #jmContainer jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .format-container #jmContainer jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .format-container #jmContainer jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .format-container #jmContainer jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .format-container #jmContainer jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .format-container #jmContainer .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .format-container table{margin-left:20px;width:-webkit-fill-available;border-collapse:collapse}.monkey-jsonviewer .format-container table b{font-weight:400}.monkey-jsonviewer .format-container table tr:hover{background-color:#f0f9fe}.monkey-jsonviewer .format-container table tr.selected td,.monkey-jsonviewer .format-container table tr.selected td b,.monkey-jsonviewer .format-container table tr.selected td a{color:#fff!important;background-color:#3875d7}.monkey-jsonviewer .format-container table tr td:first-child{width:120px}.monkey-jsonviewer .format-container table .node-len{cursor:pointer;color:#ccc;font-size:12px;margin-left:.5em}.monkey-jsonviewer .format-container table .node-len span:hover{text-decoration:underline}.monkey-jsonviewer .format-container table .simple-tree-table-empty .simple-tree-table-icon{padding-left:.5em;display:inline!important;background-color:transparent!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon{color:#000;opacity:.2;width:0!important;margin:0!important;line-height:0!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:before{top:.5px;left:-8px;position:relative;content:"";width:0;height:0;display:none;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg);transition:transform .3s ease}.monkey-jsonviewer .format-container table .simple-tree-table-icon:hover{opacity:.35}.monkey-jsonviewer .format-container table .simple-tree-table-icon:after{content:""!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:active{opacity:.5}.monkey-jsonviewer .format-container table .simple-tree-table-opened .simple-tree-table-icon:before{display:block}.monkey-jsonviewer .format-container table .simple-tree-table-closed .simple-tree-table-icon:before{display:block;transform:rotate(0)}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .light .json-key{color:#0040cf}.monkey-jsonviewer .light .json-string,.monkey-jsonviewer .light .json-string a{color:#a31515}.monkey-jsonviewer .light .json-bigint,.monkey-jsonviewer .light .json-number{color:#0b7500}.monkey-jsonviewer .light .json-boolean{color:#00f}.monkey-jsonviewer .light .json-null{color:#05f}.monkey-jsonviewer body.dark .format-container li,.monkey-jsonviewer body.dark .format-container pre,.monkey-jsonviewer body.dark_plus .format-container li,.monkey-jsonviewer body.dark_plus .format-container pre{color:#ccc}.monkey-jsonviewer body.dark .format-container .panel,.monkey-jsonviewer body.dark_plus .format-container .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer body.dark .format-container .panel>div,.monkey-jsonviewer body.dark_plus .format-container .panel>div{border-bottom-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark .format-container .panel .toolbar-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer body.dark .format-container .panel .tabs-item.active,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer body.dark .format-container .searchbox input,.monkey-jsonviewer body.dark_plus .format-container .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer body.dark .format-container .searchbox .clear,.monkey-jsonviewer body.dark_plus .format-container .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer body.dark .format-container .rightbox>div span:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer body.dark .format-container .jsonp,.monkey-jsonviewer body.dark_plus .format-container .jsonp{color:#f1d700}.monkey-jsonviewer body.dark .format-container .json-toggle,.monkey-jsonviewer body.dark_plus .format-container .json-toggle{opacity:.35}.monkey-jsonviewer body.dark .format-container .json-toggle:hover,.monkey-jsonviewer body.dark_plus .format-container .json-toggle:hover{opacity:.5}.monkey-jsonviewer body.dark .format-container jmnode,.monkey-jsonviewer body.dark_plus .format-container jmnode{filter:brightness(2)}.monkey-jsonviewer body.dark .format-container jmexpander,.monkey-jsonviewer body.dark_plus .format-container jmexpander{background-color:#dfdfdf}.monkey-jsonviewer body.dark .format-container table tr:hover,.monkey-jsonviewer body.dark_plus .format-container table tr:hover{background-color:#353b48}.monkey-jsonviewer body.dark .format-container .simple-tree-table-icon,.monkey-jsonviewer body.dark_plus .format-container .simple-tree-table-icon{color:#fff;opacity:.5}.monkey-jsonviewer body.dark .tabs-container{background-color:#252526}.monkey-jsonviewer body.dark .json-curly-brackets{color:#ce70d6}.monkey-jsonviewer body.dark .json-square-brackets{color:#f1d700}.monkey-jsonviewer body.dark .json-key{color:#9cdcfe}.monkey-jsonviewer body.dark .json-string,.monkey-jsonviewer body.dark .json-string a{color:#ce9178}.monkey-jsonviewer body.dark .json-bigint,.monkey-jsonviewer body.dark .json-number{color:#b5cea8}.monkey-jsonviewer body.dark .json-boolean{color:#358cd6}.monkey-jsonviewer body.dark .json-null{color:#569cd6}.monkey-jsonviewer body.dark_plus .tabs-container{background-color:#1e1f22}.monkey-jsonviewer body.dark_plus .json-curly-brackets{color:#bb9667}.monkey-jsonviewer body.dark_plus .json-square-brackets{color:#bbbda3}.monkey-jsonviewer body.dark_plus .json-key{color:#c77dbb}.monkey-jsonviewer body.dark_plus .json-string,.monkey-jsonviewer body.dark_plus .json-string a{color:#6aab73}.monkey-jsonviewer body.dark_plus .json-bigint,.monkey-jsonviewer body.dark_plus .json-number{color:#28aab4}.monkey-jsonviewer body.dark_plus .json-boolean{color:#ce8951}.monkey-jsonviewer body.dark_plus .json-null{color:#c78d61}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.rightbox{right:0!important}.rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.searchbox{display:none!important}}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}/**
+(o=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .hidden{display:none!important}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer .format-container{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column;background-color:#fefefe}.monkey-jsonviewer .format-container .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .format-container .tabs,.monkey-jsonviewer .format-container .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .format-container .tabs>div,.monkey-jsonviewer .format-container .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .tabs>div:hover,.monkey-jsonviewer .format-container .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .format-container .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .format-container .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .format-container .toolbar{line-height:23px}.monkey-jsonviewer .format-container .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .format-container .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .format-container .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .format-container .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .format-container .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .format-container .rightbox>div ul li{font-size:12px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .format-container .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .format-container .tabs-container>div{display:none}.monkey-jsonviewer .format-container .tabs-container>div.active{display:block}.monkey-jsonviewer .format-container .tabs-container #formatBox{padding:10px}.monkey-jsonviewer .format-container .tabs-container #rawTextBox{font-size:13px;padding:5px 10px}.monkey-jsonviewer .format-container .tabs-container #rawTextBox pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .format-container .jsonp{color:#93983a}.monkey-jsonviewer .format-container ul.json-items{padding:0;margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e}.monkey-jsonviewer .format-container ul.json-items li{padding-left:20px}.monkey-jsonviewer .format-container .json-key{color:#910f93;cursor:pointer}.monkey-jsonviewer .format-container .json-string,.monkey-jsonviewer .format-container .json-string a{color:#2e7c16}.monkey-jsonviewer .format-container .json-bigint,.monkey-jsonviewer .format-container .json-number{color:#164ff1}.monkey-jsonviewer .format-container .json-boolean{color:#c41a16}.monkey-jsonviewer .format-container .json-null{color:#228fec}.monkey-jsonviewer .format-container .json-color{width:.75em;height:.75em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.monkey-jsonviewer .format-container a.json-toggle{opacity:.2;color:inherit;position:relative;text-decoration:none}.monkey-jsonviewer .format-container a.json-toggle:hover{opacity:.35}.monkey-jsonviewer .format-container a.json-toggle:active{opacity:.5}.monkey-jsonviewer .format-container a.json-toggle:focus{outline:none}.monkey-jsonviewer .format-container a.json-toggle:before{width:0;height:0;left:-5px;content:"";position:relative;border-style:solid;display:inline-block;transform:rotate(90deg);border-width:5px 0 5px 7px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.monkey-jsonviewer .format-container a.json-toggle.collapsed:before{transform:rotate(0)}.monkey-jsonviewer .format-container a.json-placeholder{padding:0 1em;font-size:12px;color:#ccc;text-decoration:none}.monkey-jsonviewer .format-container a.json-placeholder:hover{text-decoration:underline}.monkey-jsonviewer .format-container .json-object-bracket{color:#6d9331;font-weight:700}.monkey-jsonviewer .format-container .json-array-bracket{color:#8e9331;font-weight:700}.monkey-jsonviewer .format-container #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .format-container #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .format-container #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .format-container #mindBox jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .format-container #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .format-container #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .format-container #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .format-container #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .format-container #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .format-container table{margin-left:20px;width:-webkit-fill-available;border-collapse:collapse}.monkey-jsonviewer .format-container table b{font-weight:400;margin-right:.2em}.monkey-jsonviewer .format-container table tr:hover{background-color:#f0f9fe}.monkey-jsonviewer .format-container table tr.selected td,.monkey-jsonviewer .format-container table tr.selected td b,.monkey-jsonviewer .format-container table tr.selected td a{color:#fff!important;background-color:#3875d7}.monkey-jsonviewer .format-container table tr td:first-child{width:120px}.monkey-jsonviewer .format-container table .json-placeholder{cursor:pointer;color:#ccc;font-size:12px;margin-left:.5em}.monkey-jsonviewer .format-container table .json-placeholder span:hover{text-decoration:underline}.monkey-jsonviewer .format-container table .simple-tree-table-empty .simple-tree-table-icon{display:inline!important;background-color:transparent!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon{color:#000;opacity:.2;width:0!important;margin:0!important;line-height:0!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:before{width:0;height:0;left:-13px;content:"";display:none;position:relative;border-style:solid;vertical-align:middle;border-width:5px 0 5px 7px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg);transition:transform .3s ease}.monkey-jsonviewer .format-container table .simple-tree-table-icon:hover{opacity:.35}.monkey-jsonviewer .format-container table .simple-tree-table-icon:after{content:""!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:active{opacity:.5}.monkey-jsonviewer .format-container table .simple-tree-table-opened .simple-tree-table-icon:before{display:inline-block}.monkey-jsonviewer .format-container table .simple-tree-table-closed .simple-tree-table-icon:before{display:block;transform:rotate(0)}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .light .json-key{color:#0040cf}.monkey-jsonviewer .light .json-string,.monkey-jsonviewer .light .json-string a{color:#a31515}.monkey-jsonviewer .light .json-bigint,.monkey-jsonviewer .light .json-number{color:#0b7500}.monkey-jsonviewer .light .json-boolean{color:#00f}.monkey-jsonviewer .light .json-null{color:#05f}.monkey-jsonviewer body.dark .format-container li,.monkey-jsonviewer body.dark .format-container pre,.monkey-jsonviewer body.dark .format-container td:first-child,.monkey-jsonviewer body.dark_plus .format-container li,.monkey-jsonviewer body.dark_plus .format-container pre,.monkey-jsonviewer body.dark_plus .format-container td:first-child{color:#ccc}.monkey-jsonviewer body.dark .format-container .panel,.monkey-jsonviewer body.dark_plus .format-container .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer body.dark .format-container .panel>div,.monkey-jsonviewer body.dark_plus .format-container .panel>div{border-bottom-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark .format-container .panel .toolbar-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer body.dark .format-container .panel .tabs-item.active,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer body.dark .format-container .searchbox input,.monkey-jsonviewer body.dark_plus .format-container .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer body.dark .format-container .searchbox .clear,.monkey-jsonviewer body.dark_plus .format-container .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer body.dark .format-container .rightbox>div span:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer body.dark .format-container .jsonp,.monkey-jsonviewer body.dark_plus .format-container .jsonp{color:#f1d700}.monkey-jsonviewer body.dark .format-container .json-toggle,.monkey-jsonviewer body.dark_plus .format-container .json-toggle{opacity:.35}.monkey-jsonviewer body.dark .format-container .json-toggle:hover,.monkey-jsonviewer body.dark_plus .format-container .json-toggle:hover{opacity:.5}.monkey-jsonviewer body.dark .format-container jmnode,.monkey-jsonviewer body.dark_plus .format-container jmnode{filter:brightness(2)}.monkey-jsonviewer body.dark .format-container jmexpander,.monkey-jsonviewer body.dark_plus .format-container jmexpander{background-color:#dfdfdf}.monkey-jsonviewer body.dark .format-container table tr:hover,.monkey-jsonviewer body.dark_plus .format-container table tr:hover{background-color:#353b48}.monkey-jsonviewer body.dark .format-container .simple-tree-table-icon,.monkey-jsonviewer body.dark_plus .format-container .simple-tree-table-icon{color:#fff;opacity:.5}.monkey-jsonviewer body.dark .tabs-container{background-color:#252526}.monkey-jsonviewer body.dark .json-object-bracket{color:#ce70d6}.monkey-jsonviewer body.dark .json-array-bracket{color:#f1d700}.monkey-jsonviewer body.dark .json-key{color:#9cdcfe}.monkey-jsonviewer body.dark .json-string,.monkey-jsonviewer body.dark .json-string a{color:#ce9178}.monkey-jsonviewer body.dark .json-bigint,.monkey-jsonviewer body.dark .json-number{color:#b5cea8}.monkey-jsonviewer body.dark .json-boolean{color:#358cd6}.monkey-jsonviewer body.dark .json-null{color:#569cd6}.monkey-jsonviewer body.dark_plus .tabs-container{background-color:#1e1f22}.monkey-jsonviewer body.dark_plus .json-object-bracket{color:#bb9667}.monkey-jsonviewer body.dark_plus .json-array-bracket{color:#bbbda3}.monkey-jsonviewer body.dark_plus .json-key{color:#c77dbb}.monkey-jsonviewer body.dark_plus .json-string,.monkey-jsonviewer body.dark_plus .json-string a{color:#6aab73}.monkey-jsonviewer body.dark_plus .json-bigint,.monkey-jsonviewer body.dark_plus .json-number{color:#28aab4}.monkey-jsonviewer body.dark_plus .json-boolean{color:#ce8951}.monkey-jsonviewer body.dark_plus .json-null{color:#c78d61}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}/**
 * @license BSD
 * @copyright 2014-2023 hizzgdev@163.com
 * 
@@ -43,7 +43,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-BoHtUqbL.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-D7Bnb6Hf.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-BoHtUqbL.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-BoHtUqbL.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-D7Bnb6Hf.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -1872,15 +1872,6 @@ System.register("./__monkey.entry-BoHtUqbL.js", ['jquery'], (function (exports, 
       const JSONbig = exports("J", /* @__PURE__ */ getDefaultExportFromCjs(jsonBigintExports));
       const Utils = exports("U", {
         /**
-         * 检查字符串是否为URL
-         * @param {*} str 字符串
-         * @returns
-         */
-        isUrl: function(str) {
-          const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-          return regexp.test(str);
-        },
-        /**
          * 检查是否为图片链接
          * @param {*} str 字符串
          * @returns
@@ -2040,9 +2031,9 @@ System.register("./__monkey.entry-BoHtUqbL.js", ['jquery'], (function (exports, 
         </div>
     </div>
     <div class="tabs-container">
-        <div class="active" id="formatContainer"></div>
-        <div id="jmContainer"></div>
-        <div id="rawTextContainer">
+        <div class="active" id="formatBox"></div>
+        <div id="mindBox"></div>
+        <div id="rawTextBox">
             <pre></pre>
         </div>
     </div>
@@ -2086,7 +2077,7 @@ System.register("./__monkey.entry-BoHtUqbL.js", ['jquery'], (function (exports, 
             _unsafeWindow.RAW_TEXT
           );
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-LDlQGNLA-DURqkQS0.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DYCQ_dTV-TSzT23tr.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-UVhaoIie-DAnTk6H_.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-tDoN38_8-ReYtr8O7.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
       })();
 
@@ -2167,75 +2158,84 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-LDlQGNLA-DURqkQS0.js", ['jquery', './__monkey.entry-BoHtUqbL.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-D7Bnb6Hf.js'], (function (exports, module) {
   'use strict';
-  var $, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard, tippy;
+  var $, tippy, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
     setters: [module => {
       $ = module.default;
+    }, module => {
+      tippy = module.t;
     }, module => {
       _GM_setValue = module._;
       _GM_getValue = module.a;
       _unsafeWindow = module.b;
       Utils = module.U;
       _GM_setClipboard = module.c;
-    }, module => {
-      tippy = module.t;
     }],
     execute: (function () {
 
       (function($2) {
+        function isColor(colorString) {
+          const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+          const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
+          const rgbaRegex = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
+          return hexCodeRegex.test(colorString) || rgbRegex.test(colorString) || rgbaRegex.test(colorString);
+        }
+        function isUrl(str) {
+          const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+          return regexp.test(str);
+        }
+        function getType(value) {
+          return Object.prototype.toString.call(value).match(/\s(.+)]/)[1].toLowerCase();
+        }
+        function escape(str) {
+          return str.replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
         function isCollapsable(arg) {
           return arg && typeof arg === "object" && Object.keys(arg).length > 0;
         }
-        function json2html(json, parentPath = "") {
+        function json2html(json, parentPath = "Root") {
           let html = "";
-          const type = Utils.getType(json);
+          const type = getType(json);
           switch (type) {
             case "array":
             case "object":
               let len = json.length || Object.keys(json).length;
               if (len > 0) {
-                html += `<span class="json-brackets ${type == "array" ? "json-square-brackets" : "json-curly-brackets"}">`;
-                html += type === "array" ? '[</span><ol class="json-array">' : '{</span><ul class="json-object">';
+                html += `<span class="json-${type}-bracket">${type === "array" ? "[" : "{"}</span><ul class="json-items">`;
                 for (var key in json) {
                   if (Object.prototype.hasOwnProperty.call(json, key)) {
                     const comma = --len > 0 ? "," : "";
                     const jsonPath = parentPath + "." + key;
                     const collapse = isCollapsable(json[key]) ? '<a href class="json-toggle"></a>' : "";
-                    const res = json2html(json[key], jsonPath);
-                    let toHtml = res;
+                    const next = json2html(json[key], jsonPath);
+                    let keyVal = next;
                     if (type !== "array") {
-                      toHtml = `<span class="json-key">"${key}"</span>: ${res}`;
+                      keyVal = `<span class="json-key">"${key}"</span>: ${next}`;
                     }
                     html += [
                       `<li json-path="${jsonPath}">`,
                       collapse,
-                      toHtml,
+                      keyVal,
                       comma,
                       "</li>"
                     ].join("");
                   }
                 }
-                if (type === "array") {
-                  html += `</ol><span class="json-brackets json-square-brackets">]</span>`;
-                } else {
-                  html += `</ul><span class="json-brackets json-curly-brackets">}</span>`;
-                }
+                html += `</ul><span class="json-${type}-bracket">${type === "array" ? "]" : "}"}</span>`;
               } else {
-                html += `<span class="json-brackets ${type == "array" ? "json-square-brackets" : "json-curly-brackets"}">`;
-                html += type === "array" ? "[]" : "{}";
-                html += "</span>";
+                html += `<span class="json-${type}-bracket">${type === "array" ? "[]" : "{}"}</span>`;
               }
               break;
             default:
-              if (type === "string") {
-                json = json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-              }
-              if (Utils.isUrl(json)) {
+              if (isUrl(json)) {
                 html += `<a target="_blank" href="${json}" class="json-string">"${json}"</a>`;
+              } else if (isColor(json)) {
+                html += `<span style="background-color: ${json}" class="json-color"></span>`;
+                html += `<span class="json-${type}">"${json}"</span>`;
               } else {
-                json = type === "string" ? `"${json}"` : json;
+                json = type === "string" ? `"${escape(json)}"` : json;
                 html += `<span class="json-${type}">${json}</span>`;
               }
               break;
@@ -2251,10 +2251,10 @@ System.register("./index-LDlQGNLA-DURqkQS0.js", ['jquery', './__monkey.entry-BoH
             $2(this).html(html);
             $2(this).off("click");
             $2(this).on("click", "a.json-toggle", function() {
-              var target = $2(this).toggleClass("collapsed").siblings("ul.json-object, ol.json-array");
+              var target = $2(this).toggleClass("collapsed").siblings(".json-items");
               target.toggle();
               if (target.is(":visible")) {
-                target.siblings(".json-placeholder").remove();
+                target.siblings("a.json-placeholder").remove();
               } else {
                 let clas = target.attr("class");
                 clas = clas.substring(clas.indexOf("-") + 1);
@@ -2642,53 +2642,212 @@ System.register("./index-LDlQGNLA-DURqkQS0.js", ['jquery', './__monkey.entry-BoH
           });
         }, i.a.SimpleTreeTable = p;
       }]);
-      function generateTrHtml(json, level = 0, pId = "", pChain = "") {
-        let tr = "";
-        for (const key in json) {
-          let val = json[key];
-          const type = Utils.getType(val);
-          const chain = pChain + "." + key;
-          const tId = key + "_" + Math.random();
-          if (["array", "object"].includes(type)) {
-            const res = generateTrHtml(val, level + 1, tId, chain);
-            let brackets = "";
-            if (!res) {
-              if (type === "array") {
-                brackets = `<span class="json-brackets json-square-brackets">[]</span>`;
-              } else {
-                brackets = `<span class="json-brackets json-curly-brackets">{}</span>`;
-              }
+      class JsonToTable {
+        constructor(options) {
+          this.nodes = new Array();
+          const defaults = {
+            id: null,
+            json: null,
+            container: null
+          };
+          this.options = Object.assign(defaults, options);
+          if (!options.container) {
+            throw new Error("Container: dom element is required");
+          }
+          if (!options.json) {
+            throw new Error("json: json is required");
+          }
+          this.generated();
+        }
+        generated() {
+          const { id, json, container } = this.options;
+          const $container = container instanceof HTMLElement ? container : document.querySelector(container);
+          this.createNode(json, 0, "Root", "Root");
+          const table = this.createElement("table");
+          if (id) table.setAttribute("id", id);
+          for (let i in this.nodes) {
+            table.appendChild(this.nodes[i]);
+          }
+          $container.appendChild(table);
+        }
+        /**
+         * 创建节点
+         * @param {Object} json
+         * @param {Boolean} isRoot 是否根节点
+         * @param {Number} depth 递归层级
+         * @param {String} pChain 上级json-path
+         */
+        createNode(json, depth, pChain, parentId) {
+          for (const key in json) {
+            let value = json[key];
+            const type = this.getType(value);
+            const jsonPath = `${pChain}.${key}`;
+            const item = this.createItem(key, value, type, depth, jsonPath, parentId);
+            this.nodes.push(item);
+            if (this.canIterate(value)) {
+              const nodeId = item.dataset.nodeId;
+              this.createNode(value, depth + 1, jsonPath, nodeId);
             }
-            tr += `
-            <tr data-node-id="${tId}" data-node-pid="${pId}" type="${type}">
-                <td colspan="${res ? 2 : ""}" 
-                json-path="${chain}" 
-                style="padding-left: ${level * 19}px">
-                  <b class="json-key">${key}:</b>
-                  <span class="node-len"></span>
-                </td>
-                <td>${brackets}</td>
-            </tr>`;
-            tr += res;
-          } else {
-            if (type === "string") {
-              val = val.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            }
-            tr += `<tr data-node-id="${tId}" data-node-pid="${pId}" type="${type}">
-                <td json-path="${chain}" 
-                style="padding-left: ${level * 19}px">
-                  <b class="json-key">${key}:</b>
-                </td>`;
-            if (Utils.isUrl(val)) {
-              tr += `<td class="json-${type}"><a target="_blank" href="${val}">"${val}"</a></td>`;
-            } else {
-              val = type === "string" ? `"${val}"` : val;
-              tr += `<td class="json-${type}">${val}</td>`;
-            }
-            tr += "</tr>";
           }
         }
-        return tr;
+        /**
+         * 创建tr
+         */
+        createItem(key, value, type, depth, jsonPath, parentId) {
+          const id = key + "_" + Math.random();
+          const isIterate = this.isIterate(value);
+          const canIterate = this.canIterate(value);
+          const node = this.createElement("tr", {
+            "data-type": type,
+            "data-node-id": id,
+            "data-node-pid": parentId
+          });
+          const leftNode = this.createLeftNode(key, value, depth, jsonPath);
+          node.appendChild(leftNode);
+          if (!isIterate) {
+            const rightNode = this.createRightNode(type, value);
+            node.appendChild(rightNode);
+          }
+          if (isIterate && !canIterate) {
+            const rightNode = this.createEmptyRightNode(type);
+            node.appendChild(rightNode);
+          }
+          return node;
+        }
+        /**
+         * 创建第一个td
+         */
+        createLeftNode(key, value, depth, jsonPath) {
+          const node = this.createElement("td", {
+            "json-path": jsonPath,
+            colspan: this.canIterate(value) ? 2 : 0,
+            style: `padding-left: ${depth * 20}px`
+          });
+          const b = this.createElement("b", {
+            class: "json-key"
+          });
+          b.innerText = `${key}`;
+          node.appendChild(b);
+          const textNode = document.createTextNode(":");
+          node.appendChild(textNode);
+          if (this.canIterate(value)) {
+            const span = this.createElement("span", {
+              class: "json-placeholder"
+            });
+            node.appendChild(span);
+          }
+          return node;
+        }
+        /**
+         * 创建第二个td
+         */
+        createRightNode(type, value) {
+          const node = this.createElement("td", {
+            class: `json-${type}`
+          });
+          node.innerText = `${value}`;
+          if (type === "string") {
+            value = this.escape(value);
+            node.innerText = `"${value}"`;
+          }
+          if (this.isUrl(value)) {
+            node.innerText = "";
+            const a = this.createElement("a", {
+              target: "_blank",
+              href: value
+            });
+            a.innerText = `"${value}"`;
+            node.appendChild(a);
+          }
+          if (this.isColor(value)) {
+            const span = this.createElement("span", {
+              class: "json-color",
+              style: `background-color: ${value}`
+            });
+            node.prepend(span);
+          }
+          return node;
+        }
+        createEmptyRightNode(type) {
+          const node = this.createElement("td", {
+            class: type === "array" ? "json-array-bracket" : "json-object-bracket"
+          });
+          node.innerText = type === "array" ? "[]" : "{}";
+          return node;
+        }
+        /**
+         * 创建元素
+         * @param {String} name 元素名称
+         * @param {Object} attributes 属性
+         */
+        createElement(name, attributes) {
+          const element = document.createElement(name);
+          this.setAttributes(element, attributes);
+          return element;
+        }
+        /**
+         * 设置属性
+         * @param {HTMLElement} element 元素
+         * @param {Object} attributes 属性
+         */
+        setAttributes(element, attributes) {
+          if (!attributes) {
+            return;
+          }
+          for (const name in attributes) {
+            element.setAttribute(name, attributes[name]);
+          }
+        }
+        /**
+         * 获取数据的类型
+         * @param {Object} value
+         * @return 返回类型 number、object、array、string、null等
+         */
+        getType(value) {
+          return Object.prototype.toString.call(value).match(/\s(.+)]/)[1].toLowerCase();
+        }
+        isIterate(value) {
+          const type = this.getType(value);
+          return ["array", "object"].includes(type);
+        }
+        /**
+         * 是否可迭代
+         * @param {*} value
+         * @returns
+         */
+        canIterate(value) {
+          if (!this.isIterate(value)) {
+            return false;
+          }
+          let len = Object.keys(value).length;
+          return len > 0;
+        }
+        /**
+         * 是否为Url
+         * @param {*} str
+         * @returns
+         */
+        isUrl(str) {
+          const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+          return regexp.test(str);
+        }
+        /**
+         * 转义
+         * @param {*} str
+         * @returns
+         */
+        escape(str) {
+          return str.replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+        isColor(colorString) {
+          const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+          const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
+          const rgbaRegex = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
+          return hexCodeRegex.test(colorString) || rgbRegex.test(colorString) || rgbaRegex.test(colorString);
+        }
+      }
+      if (typeof module != "undefined") {
+        module.exports = JsonToTable;
       }
       const evnet = {
         /**
@@ -2749,29 +2908,29 @@ System.register("./index-LDlQGNLA-DURqkQS0.js", ['jquery', './__monkey.entry-BoH
          */
         getJsonPath: function(element) {
           const jsonPath = $(element).parent().attr("json-path");
-          const path = jsonPath.split(".");
-          path.splice(0, 1);
-          return path.reduce((prev, next) => {
+          const split = jsonPath.split(".");
+          const splice = (prev, next) => {
             return /^\d+$/.test(next) ? prev + `[${next}]` : prev + "." + next;
-          }, "Root");
+          };
+          return split.reduce(splice);
         },
         init: function() {
           this.urlHover().tipsJsonPath().copyJsonPath();
         }
       };
-      const $formatContainer = $("#formatContainer");
+      const $formatBox = $("#formatBox");
       function onNodeOpen($node) {
-        $node.find(".node-len").html("");
+        $node.find("span.json-placeholder").empty();
       }
       function onNodeClose($node) {
-        const type = $node.attr("type");
+        const type = $node.data("type");
         const id = $node.data("node-id");
         const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
         let content = `[ <span>${length}${length > 1 ? " items" : " item"}</span> ]`;
         if (type === "object") {
           content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
         }
-        $node.find(".node-len").html(content);
+        $node.find("span.json-placeholder").html(content);
       }
       const format_style = exports("default", {
         /**
@@ -2792,10 +2951,10 @@ System.register("./index-LDlQGNLA-DURqkQS0.js", ['jquery', './__monkey.entry-BoH
         setStyle: function() {
           const style = _GM_getValue("style") || "default";
           $("input").val("");
-          $formatContainer.html("");
+          $formatBox.empty();
           try {
             if (style === "default") {
-              $formatContainer.jsonViewer(
+              $formatBox.jsonViewer(
                 _unsafeWindow.GLOBAL_JSON,
                 _unsafeWindow.GLOBAL_JSONP_FUN
               );
@@ -2813,33 +2972,40 @@ System.register("./index-LDlQGNLA-DURqkQS0.js", ['jquery', './__monkey.entry-BoH
          * JSON 表格格式化
          */
         tableFormat: function() {
-          const trHTML = generateTrHtml(_unsafeWindow.GLOBAL_JSON);
-          let appendHtml = `<table id="treeTable">${trHTML}</table>`;
+          new JsonToTable({
+            json: _unsafeWindow.GLOBAL_JSON,
+            container: $formatBox[0]
+          });
           if (_unsafeWindow.GLOBAL_JSONP_FUN) {
-            appendHtml = `
-        <div class="jsonp">${_unsafeWindow.GLOBAL_JSONP_FUN}(</div>
-        ${appendHtml}
-        <div class="jsonp">)</div>`;
+            const jsonp = `<div class="jsonp">${_unsafeWindow.GLOBAL_JSONP_FUN}(</div>`;
+            $formatBox.prepend(jsonp);
+            $formatBox.append('<div class="jsonp">)</div>');
           }
-          $formatContainer.append(appendHtml);
           setTimeout(() => {
-            const simpleTreeTable = $("#treeTable").simpleTreeTable({
-              expander: "#expandAll",
-              collapser: "#collapseAll"
-            }).on("node:open", (e, $node) => onNodeOpen($node)).on("node:close", (e, $node) => onNodeClose($node));
-            const arrow = $("tr:not(.simple-tree-table-empty)");
-            $(document.body).on("click", "#expandAll", function() {
+            const $table = $("table");
+            const simple = $table.simpleTreeTable().on("node:open", (e, $node) => onNodeOpen($node)).on("node:close", (e, $node) => onNodeClose($node));
+            const simpleTreeTable = simple.data("simple-tree-table");
+            $(document.body).on("click", "#expandAll", toggle);
+            $(document.body).on("click", "#collapseAll", toggle);
+            function toggle() {
+              if (!$table.is(":visible")) {
+                return;
+              }
+              const arrow = $("tr:not(.simple-tree-table-empty)");
+              if ($(this).is("#collapseAll")) {
+                simpleTreeTable.collapse();
+                arrow.each((i, node) => onNodeClose($(node)));
+                return;
+              }
+              simpleTreeTable.expand();
               arrow.each((i, node) => onNodeOpen($(node)));
-            });
-            $(document.body).on("click", "#collapseAll", function() {
-              arrow.each((i, node) => onNodeClose($(node)));
-            });
-            simpleTreeTable.on("click", ".node-len", function() {
+            }
+            simple.on("click", "span.json-placeholder", function() {
               const id = $(this).closest("tr").data("node-id");
-              simpleTreeTable.data("simple-tree-table").openByID(id);
+              simpleTreeTable.openByID(id);
             });
           });
-          $("#treeTable").on("mousedown", "tr", function(event) {
+          $(document.body).on("mousedown", "table tr", function(event) {
             const { tagName } = event.target;
             if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
               return;
@@ -2875,7 +3041,7 @@ System.register("./index-LDlQGNLA-DURqkQS0.js", ['jquery', './__monkey.entry-BoH
   };
 }));
 
-System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoHtUqbL.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
+System.register("./index-tDoN38_8-ReYtr8O7.js", ['jquery', './__monkey.entry-D7Bnb6Hf.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
   'use strict';
   var $, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, JSONbig, _GM_getValue, URL$1, _GM_setValue, tippy, require$$0;
   return {
@@ -3668,7 +3834,7 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
             _unsafeWindow.GLOBAL_JSMIND = new require$$0({
               mode: "side",
               editable: false,
-              container: "jmContainer",
+              container: "mindBox",
               view: {
                 hmargin: 50,
                 // 思维导图距容器外框的最小水平距离
@@ -3701,13 +3867,13 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
           this.show(json).event();
         }
       };
-      const $jmContainer = $("#jmContainer");
-      const $formatContainer = $("#formatContainer");
-      const $rawTextContainer = $("#rawTextContainer");
+      const $mindBox = $("#mindBox");
+      const $formatBox = $("#formatBox");
+      const $rawTextBox = $("#rawTextBox");
       const tabsEvent = {
         firstFormat: true,
         isBeautify: false,
-        $rawTextPre: $rawTextContainer.find("pre"),
+        $rawTextPre: $rawTextBox.find("pre"),
         /**
          * 原始数据
          */
@@ -3724,7 +3890,7 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
          * 如果是JSON 脑图可见，保存脑图为图片
          */
         saveJson: function() {
-          if ($jmContainer.is(":visible")) {
+          if ($mindBox.is(":visible")) {
             _unsafeWindow.GLOBAL_JSMIND.shoot();
             return;
           }
@@ -3746,7 +3912,7 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
          * 如果是JSON 脑图可见，折叠脑图节点
          */
         collapseAll: function() {
-          if ($formatContainer.is(":visible")) {
+          if ($formatBox.is(":visible")) {
             try {
               $("a.json-toggle").not(".collapsed").trigger("click");
             } catch (e) {
@@ -3761,7 +3927,7 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
          * 如果是JSON 脑图可见，展开脑图节点
          */
         expandAll: function() {
-          if ($formatContainer.is(":visible")) {
+          if ($formatBox.is(":visible")) {
             try {
               $("a.json-placeholder").trigger("click").remove();
             } catch (e) {
@@ -3864,15 +4030,15 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
         if (!(data == null ? void 0 : data.reload)) {
           return;
         }
-        $jmContainer.html("");
+        $mindBox.empty();
         jsonMind.isFirst = true;
         tabsEvent.isBeautify = false;
         tabsEvent.firstFormat = true;
         _unsafeWindow.GLOBAL_JSMIND = void 0;
-        if ($rawTextContainer.is(":visible")) {
+        if ($rawTextBox.is(":visible")) {
           tabsEvent.viewRawText();
         }
-        if ($jmContainer.is(":visible")) {
+        if ($mindBox.is(":visible")) {
           jsonMind.init(_unsafeWindow.GLOBAL_JSON);
         }
       });
@@ -3884,13 +4050,13 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
          */
         filterJSON: function(filter2) {
           const style = _GM_getValue("style") || "default";
-          const allPath = $(`#formatContainer *[json-path]`);
+          const allPath = $(`#formatBox *[json-path]`);
           if (!filter2) {
             style == "default" ? allPath.removeClass("hidden") : allPath.parent().removeClass("hidden");
             return;
           }
           const chainSet = /* @__PURE__ */ new Set();
-          document.querySelectorAll("#formatContainer *[json-path]").forEach((el) => {
+          document.querySelectorAll("#formatBox *[json-path]").forEach((el) => {
             let chain = $(el).attr("json-path");
             if (!chain) {
               return;
@@ -3905,7 +4071,7 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
             }
           });
           document.querySelectorAll(
-            "#formatContainer *[class*='json-']:not([class*='json-key']):not([class*='json-brackets'])"
+            "#formatBox *[class*='json-']:not([class*='json-key']):not([class*='json-placeholder'])"
           ).forEach((el) => {
             const target = $(el);
             let chain = target.siblings().attr("json-path");
@@ -3926,7 +4092,7 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
           });
           style == "default" ? allPath.addClass("hidden") : allPath.parent().addClass("hidden");
           chainSet.forEach((chain) => {
-            const path = $(`#formatContainer *[json-path="${chain}"]`);
+            const path = $(`#formatBox *[json-path="${chain}"]`);
             style == "default" ? path.removeClass("hidden") : path.parent().removeClass("hidden");
           });
         },
@@ -4150,6 +4316,7 @@ System.register("./index-DYCQ_dTV-TSzT23tr.js", ['jquery', './__monkey.entry-BoH
               allowHTML: true,
               interactive: true,
               trigger: "click",
+              appendTo: document.querySelector(selector).parentNode,
               onTrigger: function(instance) {
                 const tools2 = $(instance.reference);
                 tools2.siblings().find(tagName).removeClass();
