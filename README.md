@@ -17,12 +17,12 @@ GitHub地址：<https://github.com/xFeny/monkey-jsonviewer
 - 支持鼠标移入提示 `JSONPath`。
 - 支持原始数据美化输出。
 - 支持显示 `JSON` `value` 颜色。
-- 支持将超过`15`位的数字转换为 `BigInt`，而不是超出部分显示`0`。
+- 支持将超过`15`位的数字转换为 `BigInt`，而不是超出部分显示 `0`。
 - 支持将 `JS`、`CSS` 美化输出。
 
 ### 效果图
 
-##### 超过`15`位的数字和显示颜色
+##### 超过 `15` 位的数字和显示颜色
 
 ![JSON_Format](./images/1730442497312.png) 
 
