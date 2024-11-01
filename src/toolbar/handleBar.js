@@ -19,6 +19,7 @@ export default {
         allowHTML: true,
         interactive: true,
         trigger: "click",
+        appendTo: document.querySelector(selector).parentNode,
         onTrigger: function (instance) {
           const tools = $(instance.reference);
           tools.siblings().find(tagName).removeClass();
@@ -65,7 +66,7 @@ export default {
       } else {
         that.instance.hide();
       }
-      
+
       window.postMessage({ type, value });
     });
     return this;

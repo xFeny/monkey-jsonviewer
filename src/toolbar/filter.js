@@ -8,7 +8,7 @@ export default {
    */
   filterJSON: function (filter) {
     const style = GM_getValue("style") || "default";
-    const allPath = $(`#formatContainer *[json-path]`);
+    const allPath = $(`#formatBox *[json-path]`);
     if (!filter) {
       style == "default"
         ? allPath.removeClass("hidden")
@@ -19,10 +19,12 @@ export default {
     const chainSet = new Set();
     /**
      * 模糊匹配 JSON key
-     * 假如`filter`值为`id`, querySelectorAll得到DOM节点
-     * 得到：['.feedList.0.images.0.user_id', '.feedList.0.images.0', '.feedList.0.images', '.feedList.0', '.feedList']
+     * 假如`filter`值为`id`, querySelectorAll所有`json-path`的DOM节点，判断是否为最末端匹配
+     * 如匹配到`Root.feedList.0.images.0.user_id`
+     * 则循环获取上级，最终结果数组：
+     * ['.feedList.0.images.0.user_id', '.feedList.0.images.0', '.feedList.0.images', '.feedList.0', '.feedList']
      */
-    document.querySelectorAll("#formatContainer *[json-path]").forEach((el) => {
+    document.querySelectorAll("#formatBox *[json-path]").forEach((el) => {
       let chain = $(el).attr("json-path");
       if (!chain) {
         return;
@@ -44,7 +46,7 @@ export default {
      */
     document
       .querySelectorAll(
-        "#formatContainer *[class*='json-']:not([class*='json-key']):not([class*='json-brackets'])"
+        "#formatBox *[class*='json-']:not([class*='json-key']):not([class*='json-placeholder'])"
       )
       .forEach((el) => {
         const target = $(el);
@@ -73,7 +75,7 @@ export default {
       ? allPath.addClass("hidden")
       : allPath.parent().addClass("hidden");
     chainSet.forEach((chain) => {
-      const path = $(`#formatContainer *[json-path="${chain}"]`);
+      const path = $(`#formatBox *[json-path="${chain}"]`);
       style == "default"
         ? path.removeClass("hidden")
         : path.parent().removeClass("hidden");

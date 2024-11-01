@@ -143,14 +143,14 @@ $dark_tip_color: #4e4e4e;
 
           &::after {
             content: "";
-            top: -2px;
-            right: -5px;
             width: 0;
-            display: inline-block;
             height: 0;
+            right: -5px;
             position: relative;
             border-style: solid;
-            border-width: 5px 5px 0 5px;
+            display: inline-block;
+            vertical-align: middle;
+            border-width: 7px 5px 0 5px;
             border-color: #999 transparent transparent transparent;
             transform: rotate(0deg);
             transition: transform 0.3s ease;
@@ -192,6 +192,10 @@ $dark_tip_color: #4e4e4e;
         .tippy-box {
           background-color: $tip_color !important;
 
+          .tippy-content {
+            padding: 5px;
+          }
+
           .tippy-arrow {
             color: $tip_color !important;
           }
@@ -216,11 +220,11 @@ $dark_tip_color: #4e4e4e;
         }
       }
 
-      #formatContainer {
+      #formatBox {
         padding: 10px;
       }
 
-      #rawTextContainer {
+      #rawTextBox {
         font-size: $fz13;
         padding: 5px 10px;
 
@@ -238,19 +242,15 @@ $dark_tip_color: #4e4e4e;
       color: #93983a;
     }
 
-    .json-object,
-    .json-array {
+    ul.json-items {
+      padding: 0;
       margin: 0 0 0 2px;
       list-style-type: none;
       border-left: 1px dotted #5d6d7e;
 
       li {
-        padding-left: 24px;
+        padding-left: 20px;
       }
-    }
-
-    .json-brackets {
-      font-weight: 700;
     }
 
     .json-key {
@@ -276,10 +276,19 @@ $dark_tip_color: #4e4e4e;
       color: #228fec;
     }
 
+    .json-color {
+      width: 0.75em;
+      height: 0.75em;
+      margin-right: 0.3em;
+      display: inline-block;
+      vertical-align: middle;
+      border: 1px solid $color-gray;
+    }
+
     a.json-toggle {
-      position: rElative;
-      color: inherit;
       opacity: 0.2;
+      color: inherit;
+      position: relative;
       text-decoration: none;
 
       &:hover {
@@ -295,18 +304,17 @@ $dark_tip_color: #4e4e4e;
       }
 
       &::before {
-        top: 2.5px;
-        left: -15px;
-        position: absolute;
-        content: "";
-        display: block;
         width: 0;
         height: 0;
+        left: -5px;
+        content: "";
+        position: relative;
         border-style: solid;
-        border-width: 5px 0 5px 8px;
-        border-color: transparent transparent transparent currentColor;
+        display: inline-block;
         transform: rotate(90deg);
+        border-width: 5px 0 5px 7px;
         transition: transform 0.3s ease;
+        border-color: transparent transparent transparent currentColor;
       }
 
       &.collapsed::before {
@@ -315,9 +323,9 @@ $dark_tip_color: #4e4e4e;
     }
 
     a.json-placeholder {
-      color: $color-gray;
-      font-size: $fz12;
       padding: 0 1em;
+      font-size: $fz12;
+      color: $color-gray;
       text-decoration: none;
 
       &:hover {
@@ -325,17 +333,19 @@ $dark_tip_color: #4e4e4e;
       }
     }
 
-    .json-curly-brackets {
+    .json-object-bracket {
       color: #6d9331;
+      font-weight: 700;
     }
 
-    .json-square-brackets {
+    .json-array-bracket {
       color: #8e9331;
+      font-weight: 700;
     }
     /** JSON 格式化样式 END **/
 
     /** 脑图样式 START **/
-    #jmContainer {
+    #mindBox {
       width: 100vw;
       height: calc(100vh - 57px);
 
@@ -402,6 +412,7 @@ $dark_tip_color: #4e4e4e;
 
       b {
         font-weight: normal;
+        margin-right: 0.2em;
       }
 
       tr:hover {
@@ -421,7 +432,7 @@ $dark_tip_color: #4e4e4e;
         width: 120px;
       }
 
-      .node-len {
+      .json-placeholder {
         cursor: pointer;
         color: $color-gray;
         font-size: $fz12;
@@ -434,7 +445,6 @@ $dark_tip_color: #4e4e4e;
 
       .simple-tree-table-empty {
         .simple-tree-table-icon {
-          padding-left: 0.5em;
           display: inline !important;
           background-color: transparent !important;
         }
@@ -448,15 +458,15 @@ $dark_tip_color: #4e4e4e;
         line-height: 0 !important;
 
         &::before {
-          top: 0.5px;
-          left: -8px;
-          position: relative;
-          content: "";
           width: 0;
           height: 0;
+          left: -13px;
+          content: "";
           display: none;
+          position: relative;
           border-style: solid;
-          border-width: 5px 0 5px 8px;
+          vertical-align: middle;
+          border-width: 5px 0 5px 7px;
           border-color: transparent transparent transparent currentColor;
           transform: rotate(90deg);
           transition: transform 0.3s ease;
@@ -477,7 +487,7 @@ $dark_tip_color: #4e4e4e;
 
       .simple-tree-table-opened {
         .simple-tree-table-icon::before {
-          display: block;
+          display: inline-block;
         }
       }
 
@@ -571,7 +581,8 @@ $dark_tip_color: #4e4e4e;
 
     .format-container {
       li,
-      pre {
+      pre,
+      td:first-child {
         color: $color-gray;
       }
 
@@ -673,11 +684,11 @@ $dark_tip_color: #4e4e4e;
       background-color: #252526;
     }
 
-    .json-curly-brackets {
+    .json-object-bracket {
       color: #ce70d6;
     }
 
-    .json-square-brackets {
+    .json-array-bracket {
       color: #f1d700;
     }
 
@@ -710,11 +721,11 @@ $dark_tip_color: #4e4e4e;
       background-color: #1e1f22;
     }
 
-    .json-curly-brackets {
+    .json-object-bracket {
       color: #bb9667;
     }
 
-    .json-square-brackets {
+    .json-array-bracket {
       color: #bbbda3;
     }
 
@@ -767,23 +778,23 @@ $dark_tip_color: #4e4e4e;
       color: #d9d9d9;
     }
   }
-}
 
-/** 移动端 START **/
-@media screen and (max-width: 640px) {
-  .rightbox {
-    right: 0 !important;
+  /** 移动端 START **/
+  @media screen and (max-width: 640px) {
+    .rightbox {
+      right: 0 !important;
 
-    .tools {
+      .tools {
+        display: none !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .searchbox {
       display: none !important;
     }
   }
-}
 
-@media screen and (max-width: 400px) {
-  .searchbox {
-    display: none !important;
-  }
+  /** 移动端 END **/
 }
-
-/** 移动端 END **/

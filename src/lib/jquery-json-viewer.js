@@ -1,7 +1,47 @@
 import jQuery from "jquery";
-import Utils from "../common/Utils";
 
 (function ($) {
+  function isColor(colorString) {
+    const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+    const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
+    const rgbaRegex =
+      /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
+
+    return (
+      hexCodeRegex.test(colorString) ||
+      rgbRegex.test(colorString) ||
+      rgbaRegex.test(colorString)
+    );
+  }
+
+  function isUrl(str) {
+    const regexp =
+      /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(str);
+  }
+
+  /**
+   * 获取数据的类型
+   * @param {Object} value
+   * @return 返回类型 number、object、array、string、null等
+   */
+  function getType(value) {
+    return Object.prototype.toString
+      .call(value)
+      .match(/\s(.+)]/)[1]
+      .toLowerCase();
+  }
+  /**
+   * 转义
+   */
+  function escape(str) {
+    return str
+      .replace(/\t/g, "\\t")
+      .replace(/\n/g, "\\n")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
   /**
    * 检查 arg 是否为至少包含 1 个元素的数组或至少包含 1 个键的字典
    */
@@ -13,73 +53,59 @@ import Utils from "../common/Utils";
    * 将 JSON 对象转换为 HTML 表示形式
    * @return string
    */
-  function json2html(json, parentPath = "") {
+  function json2html(json, parentPath = "Root") {
     let html = "";
-    const type = Utils.getType(json);
+    const type = getType(json);
     switch (type) {
       case "array":
       case "object":
         let len = json.length || Object.keys(json).length;
         if (len > 0) {
-          html += `<span class="json-brackets ${
-            type == "array" ? "json-square-brackets" : "json-curly-brackets"
-          }">`;
-          html +=
-            type === "array"
-              ? '[</span><ol class="json-array">'
-              : '{</span><ul class="json-object">';
+          html += `<span class="json-${type}-bracket">${
+            type === "array" ? "[" : "{"
+          }</span><ul class="json-items">`;
 
           for (var key in json) {
             if (Object.prototype.hasOwnProperty.call(json, key)) {
               const comma = --len > 0 ? "," : "";
               const jsonPath = parentPath + "." + key;
-              // console.log(key, json[key], isCollapsable(json[key]));
               const collapse = isCollapsable(json[key])
                 ? '<a href class="json-toggle"></a>'
                 : "";
-              const res = json2html(json[key], jsonPath);
+              const next = json2html(json[key], jsonPath);
 
-              let toHtml = res;
+              let keyVal = next;
               if (type !== "array") {
-                toHtml = `<span class="json-key">"${key}"</span>: ${res}`;
+                keyVal = `<span class="json-key">"${key}"</span>: ${next}`;
               }
 
               html += [
                 `<li json-path="${jsonPath}">`,
                 collapse,
-                toHtml,
+                keyVal,
                 comma,
                 "</li>",
               ].join("");
             }
           }
 
-          if (type === "array") {
-            html += `</ol><span class="json-brackets json-square-brackets">]</span>`;
-          } else {
-            html += `</ul><span class="json-brackets json-curly-brackets">}</span>`;
-          }
+          html += `</ul><span class="json-${type}-bracket">${
+            type === "array" ? "]" : "}"
+          }</span>`;
         } else {
-          html += `<span class="json-brackets ${
-            type == "array" ? "json-square-brackets" : "json-curly-brackets"
-          }">`;
-          html += type === "array" ? "[]" : "{}";
-          html += "</span>";
+          html += `<span class="json-${type}-bracket">${
+            type === "array" ? "[]" : "{}"
+          }</span>`;
         }
         break;
       default:
-        /* Escape tags */
-        if (type === "string") {
-          json = json
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-        }
-
-        if (Utils.isUrl(json)) {
+        if (isUrl(json)) {
           html += `<a target="_blank" href="${json}" class="json-string">"${json}"</a>`;
+        } else if (isColor(json)) {
+          html += `<span style="background-color: ${json}" class="json-color"></span>`;
+          html += `<span class="json-${type}">"${json}"</span>`;
         } else {
-          json = type === "string" ? `"${json}"` : json;
+          json = type === "string" ? `"${escape(json)}"` : json;
           html += `<span class="json-${type}">${json}</span>`;
         }
         break;
@@ -101,13 +127,11 @@ import Utils from "../common/Utils";
       /* Bind click on toggle buttons */
       $(this).off("click");
       $(this).on("click", "a.json-toggle", function () {
-        var target = $(this)
-          .toggleClass("collapsed")
-          .siblings("ul.json-object, ol.json-array");
+        var target = $(this).toggleClass("collapsed").siblings(".json-items");
         target.toggle();
 
         if (target.is(":visible")) {
-          target.siblings(".json-placeholder").remove();
+          target.siblings("a.json-placeholder").remove();
         } else {
           let clas = target.attr("class");
           clas = clas.substring(clas.indexOf("-") + 1);

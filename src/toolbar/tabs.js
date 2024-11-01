@@ -4,14 +4,14 @@ import jsonMind from "../mind";
 import URL from "../common/URL";
 import Utils from "../common/Utils";
 
-const $jmContainer = $("#jmContainer");
-const $formatContainer = $("#formatContainer");
-const $rawTextContainer = $("#rawTextContainer");
+const $mindBox = $("#mindBox");
+const $formatBox = $("#formatBox");
+const $rawTextBox = $("#rawTextBox");
 
 const tabsEvent = {
   firstFormat: true,
   isBeautify: false,
-  $rawTextPre: $rawTextContainer.find("pre"),
+  $rawTextPre: $rawTextBox.find("pre"),
   /**
    * 原始数据
    */
@@ -28,7 +28,7 @@ const tabsEvent = {
    * 如果是JSON 脑图可见，保存脑图为图片
    */
   saveJson: function () {
-    if ($jmContainer.is(":visible")) {
+    if ($mindBox.is(":visible")) {
       unsafeWindow.GLOBAL_JSMIND.shoot();
       return;
     }
@@ -51,7 +51,7 @@ const tabsEvent = {
    * 如果是JSON 脑图可见，折叠脑图节点
    */
   collapseAll: function () {
-    if ($formatContainer.is(":visible")) {
+    if ($formatBox.is(":visible")) {
       try {
         $("a.json-toggle").not(".collapsed").trigger("click");
       } catch (e) {}
@@ -67,7 +67,7 @@ const tabsEvent = {
    * 如果是JSON 脑图可见，展开脑图节点
    */
   expandAll: function () {
-    if ($formatContainer.is(":visible")) {
+    if ($formatBox.is(":visible")) {
       try {
         $("a.json-placeholder").trigger("click").remove();
       } catch (e) {}
@@ -185,17 +185,17 @@ window.addEventListener("message", function (event) {
     return;
   }
 
-  $jmContainer.html("");
+  $mindBox.empty();
   jsonMind.isFirst = true;
   tabsEvent.isBeautify = false;
   tabsEvent.firstFormat = true;
   unsafeWindow.GLOBAL_JSMIND = undefined;
 
-  if ($rawTextContainer.is(":visible")) {
+  if ($rawTextBox.is(":visible")) {
     tabsEvent.viewRawText();
   }
 
-  if ($jmContainer.is(":visible")) {
+  if ($mindBox.is(":visible")) {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
   }
 });

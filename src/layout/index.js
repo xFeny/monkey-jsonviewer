@@ -54,9 +54,9 @@ export default `
         </div>
     </div>
     <div class="tabs-container">
-        <div class="active" id="formatContainer"></div>
-        <div id="jmContainer"></div>
-        <div id="rawTextContainer">
+        <div class="active" id="formatBox"></div>
+        <div id="mindBox"></div>
+        <div id="rawTextBox">
             <pre></pre>
         </div>
     </div>

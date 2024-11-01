@@ -1,34 +1,31 @@
 import $ from "jquery";
 import "../lib/jquery-json-viewer";
 import "../lib/jquery-simple-tree-table.min";
-import generateTrHtml from "./generateTrHtml";
+import JsonToTable from "../lib/JsonToTable";
 import evnet from "./evnet";
 
-const $formatContainer = $("#formatContainer");
-
+const $formatBox = $("#formatBox");
 /**
  * 表格节点展开事件
  * @param {*} $node 节点
  */
 function onNodeOpen($node) {
-  $node.find(".node-len").html("");
+  $node.find("span.json-placeholder").empty();
 }
 /**
  * 表格节点折叠事件
  * @param {*} $node 节点
  */
 function onNodeClose($node) {
-  const type = $node.attr("type");
+  const type = $node.data("type");
   const id = $node.data("node-id");
   const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
 
-  let content =
-    `[ <span>${length}` + `${length > 1 ? " items" : " item"}` + "</span> ]";
+  let content = `[ <span>${length}${length > 1 ? " items" : " item"}</span> ]`;
   if (type === "object") {
-    content =
-      `{ <span>${length}` + `${length > 1 ? " keys" : " key"}` + "</span> }";
+    content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
   }
-  $node.find(".node-len").html(content);
+  $node.find("span.json-placeholder").html(content);
 }
 
 const format_style = {
@@ -51,10 +48,10 @@ const format_style = {
     const style = GM_getValue("style") || "default";
 
     $("input").val("");
-    $formatContainer.html("");
+    $formatBox.empty();
     try {
       if (style === "default") {
-        $formatContainer.jsonViewer(
+        $formatBox.jsonViewer(
           unsafeWindow.GLOBAL_JSON,
           unsafeWindow.GLOBAL_JSONP_FUN
         );
@@ -72,43 +69,51 @@ const format_style = {
    * JSON 表格格式化
    */
   tableFormat: function () {
-    const trHTML = generateTrHtml(unsafeWindow.GLOBAL_JSON);
-    let appendHtml = `<table id="treeTable">${trHTML}</table>`;
+    new JsonToTable({
+      json: unsafeWindow.GLOBAL_JSON,
+      container: $formatBox[0],
+    });
+
     if (unsafeWindow.GLOBAL_JSONP_FUN) {
-      appendHtml = `
-        <div class="jsonp">${unsafeWindow.GLOBAL_JSONP_FUN}(</div>
-        ${appendHtml}
-        <div class="jsonp">)</div>`;
+      const jsonp = `<div class="jsonp">${unsafeWindow.GLOBAL_JSONP_FUN}(</div>`;
+      $formatBox.prepend(jsonp);
+      $formatBox.append('<div class="jsonp">)</div>');
     }
 
-    $formatContainer.append(appendHtml);
-
     setTimeout(() => {
-      const simpleTreeTable = $("#treeTable")
-        .simpleTreeTable({
-          expander: "#expandAll",
-          collapser: "#collapseAll",
-        })
+      const $table = $("table");
+      const simple = $table
+        .simpleTreeTable()
         .on("node:open", (e, $node) => onNodeOpen($node))
         .on("node:close", (e, $node) => onNodeClose($node));
 
-      const arrow = $("tr:not(.simple-tree-table-empty)");
-      $(document.body).on("click", "#expandAll", function () {
+      const simpleTreeTable = simple.data("simple-tree-table");
+      $(document.body).on("click", "#expandAll", toggle);
+      $(document.body).on("click", "#collapseAll", toggle);
+      function toggle() {
+        if (!$table.is(":visible")) {
+          return;
+        }
+
+        const arrow = $("tr:not(.simple-tree-table-empty)");
+        if ($(this).is("#collapseAll")) {
+          simpleTreeTable.collapse();
+          arrow.each((i, node) => onNodeClose($(node)));
+          return;
+        }
+
+        simpleTreeTable.expand();
         arrow.each((i, node) => onNodeOpen($(node)));
-      });
+      }
 
-      $(document.body).on("click", "#collapseAll", function () {
-        arrow.each((i, node) => onNodeClose($(node)));
-      });
-
-      simpleTreeTable.on("click", ".node-len", function () {
+      simple.on("click", "span.json-placeholder", function () {
         const id = $(this).closest("tr").data("node-id");
-        simpleTreeTable.data("simple-tree-table").openByID(id);
+        simpleTreeTable.openByID(id);
       });
     });
 
     // Highlight selected row
-    $("#treeTable").on("mousedown", "tr", function (event) {
+    $(document.body).on("mousedown", "table tr", function (event) {
       const { tagName } = event.target;
       if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
         return;

@@ -125,7 +125,7 @@ export default {
       unsafeWindow.GLOBAL_JSMIND = new jsMind({
         mode: "side",
         editable: false,
-        container: "jmContainer",
+        container: "mindBox",
         view: {
           hmargin: 50, // 思维导图距容器外框的最小水平距离
           vmargin: 50, // 思维导图距容器外框的最小垂直距离
