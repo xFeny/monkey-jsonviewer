@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.9.3
+// @version      v0.9.4
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -29,7 +29,7 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(o=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .hidden{display:none!important}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer .format-container{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column;background-color:#fefefe}.monkey-jsonviewer .format-container .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .format-container .tabs,.monkey-jsonviewer .format-container .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .format-container .tabs>div,.monkey-jsonviewer .format-container .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .tabs>div:hover,.monkey-jsonviewer .format-container .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .format-container .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .format-container .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .format-container .toolbar{line-height:23px}.monkey-jsonviewer .format-container .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .format-container .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .format-container .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .format-container .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .format-container .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .format-container .rightbox>div ul li{font-size:12px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .format-container .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .format-container .tabs-container>div{display:none}.monkey-jsonviewer .format-container .tabs-container>div.active{display:block}.monkey-jsonviewer .format-container .tabs-container #formatBox{padding:10px}.monkey-jsonviewer .format-container .tabs-container #rawTextBox{font-size:13px;padding:5px 10px}.monkey-jsonviewer .format-container .tabs-container #rawTextBox pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .format-container .jsonp{color:#93983a}.monkey-jsonviewer .format-container ul.json-items{padding:0;margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e}.monkey-jsonviewer .format-container ul.json-items li{padding-left:20px}.monkey-jsonviewer .format-container .json-key{color:#910f93;cursor:pointer}.monkey-jsonviewer .format-container .json-string,.monkey-jsonviewer .format-container .json-string a{color:#2e7c16}.monkey-jsonviewer .format-container .json-bigint,.monkey-jsonviewer .format-container .json-number{color:#164ff1}.monkey-jsonviewer .format-container .json-boolean{color:#c41a16}.monkey-jsonviewer .format-container .json-null{color:#228fec}.monkey-jsonviewer .format-container .json-color{width:.75em;height:.75em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.monkey-jsonviewer .format-container a.json-toggle{opacity:.2;color:inherit;position:relative;text-decoration:none}.monkey-jsonviewer .format-container a.json-toggle:hover{opacity:.35}.monkey-jsonviewer .format-container a.json-toggle:active{opacity:.5}.monkey-jsonviewer .format-container a.json-toggle:focus{outline:none}.monkey-jsonviewer .format-container a.json-toggle:before{width:0;height:0;left:-5px;content:"";position:relative;border-style:solid;display:inline-block;transform:rotate(90deg);border-width:5px 0 5px 7px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.monkey-jsonviewer .format-container a.json-toggle.collapsed:before{transform:rotate(0)}.monkey-jsonviewer .format-container a.json-placeholder{padding:0 1em;font-size:12px;color:#ccc;text-decoration:none}.monkey-jsonviewer .format-container a.json-placeholder:hover{text-decoration:underline}.monkey-jsonviewer .format-container .json-object-bracket{color:#6d9331;font-weight:700}.monkey-jsonviewer .format-container .json-array-bracket{color:#8e9331;font-weight:700}.monkey-jsonviewer .format-container #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .format-container #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .format-container #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .format-container #mindBox jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .format-container #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .format-container #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .format-container #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .format-container #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .format-container #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .format-container table{margin-left:20px;width:-webkit-fill-available;border-collapse:collapse}.monkey-jsonviewer .format-container table b{font-weight:400;margin-right:.2em}.monkey-jsonviewer .format-container table tr:hover{background-color:#f0f9fe}.monkey-jsonviewer .format-container table tr.selected td,.monkey-jsonviewer .format-container table tr.selected td b,.monkey-jsonviewer .format-container table tr.selected td a{color:#fff!important;background-color:#3875d7}.monkey-jsonviewer .format-container table tr td:first-child{width:120px}.monkey-jsonviewer .format-container table .json-placeholder{cursor:pointer;color:#ccc;font-size:12px;margin-left:.5em}.monkey-jsonviewer .format-container table .json-placeholder span:hover{text-decoration:underline}.monkey-jsonviewer .format-container table .simple-tree-table-empty .simple-tree-table-icon{display:inline!important;background-color:transparent!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon{color:#000;opacity:.2;width:0!important;margin:0!important;line-height:0!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:before{width:0;height:0;left:-13px;content:"";display:none;position:relative;border-style:solid;vertical-align:middle;border-width:5px 0 5px 7px;border-color:transparent transparent transparent currentColor;transform:rotate(90deg);transition:transform .3s ease}.monkey-jsonviewer .format-container table .simple-tree-table-icon:hover{opacity:.35}.monkey-jsonviewer .format-container table .simple-tree-table-icon:after{content:""!important}.monkey-jsonviewer .format-container table .simple-tree-table-icon:active{opacity:.5}.monkey-jsonviewer .format-container table .simple-tree-table-opened .simple-tree-table-icon:before{display:inline-block}.monkey-jsonviewer .format-container table .simple-tree-table-closed .simple-tree-table-icon:before{display:block;transform:rotate(0)}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .light .json-key{color:#0040cf}.monkey-jsonviewer .light .json-string,.monkey-jsonviewer .light .json-string a{color:#a31515}.monkey-jsonviewer .light .json-bigint,.monkey-jsonviewer .light .json-number{color:#0b7500}.monkey-jsonviewer .light .json-boolean{color:#00f}.monkey-jsonviewer .light .json-null{color:#05f}.monkey-jsonviewer body.dark .format-container li,.monkey-jsonviewer body.dark .format-container pre,.monkey-jsonviewer body.dark .format-container td:first-child,.monkey-jsonviewer body.dark_plus .format-container li,.monkey-jsonviewer body.dark_plus .format-container pre,.monkey-jsonviewer body.dark_plus .format-container td:first-child{color:#ccc}.monkey-jsonviewer body.dark .format-container .panel,.monkey-jsonviewer body.dark_plus .format-container .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer body.dark .format-container .panel>div,.monkey-jsonviewer body.dark_plus .format-container .panel>div{border-bottom-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark .format-container .panel .toolbar-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer body.dark .format-container .panel .tabs-item.active,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer body.dark .format-container .searchbox input,.monkey-jsonviewer body.dark_plus .format-container .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer body.dark .format-container .searchbox .clear,.monkey-jsonviewer body.dark_plus .format-container .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer body.dark .format-container .rightbox>div span:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer body.dark .format-container .jsonp,.monkey-jsonviewer body.dark_plus .format-container .jsonp{color:#f1d700}.monkey-jsonviewer body.dark .format-container .json-toggle,.monkey-jsonviewer body.dark_plus .format-container .json-toggle{opacity:.35}.monkey-jsonviewer body.dark .format-container .json-toggle:hover,.monkey-jsonviewer body.dark_plus .format-container .json-toggle:hover{opacity:.5}.monkey-jsonviewer body.dark .format-container jmnode,.monkey-jsonviewer body.dark_plus .format-container jmnode{filter:brightness(2)}.monkey-jsonviewer body.dark .format-container jmexpander,.monkey-jsonviewer body.dark_plus .format-container jmexpander{background-color:#dfdfdf}.monkey-jsonviewer body.dark .format-container table tr:hover,.monkey-jsonviewer body.dark_plus .format-container table tr:hover{background-color:#353b48}.monkey-jsonviewer body.dark .format-container .simple-tree-table-icon,.monkey-jsonviewer body.dark_plus .format-container .simple-tree-table-icon{color:#fff;opacity:.5}.monkey-jsonviewer body.dark .tabs-container{background-color:#252526}.monkey-jsonviewer body.dark .json-object-bracket{color:#ce70d6}.monkey-jsonviewer body.dark .json-array-bracket{color:#f1d700}.monkey-jsonviewer body.dark .json-key{color:#9cdcfe}.monkey-jsonviewer body.dark .json-string,.monkey-jsonviewer body.dark .json-string a{color:#ce9178}.monkey-jsonviewer body.dark .json-bigint,.monkey-jsonviewer body.dark .json-number{color:#b5cea8}.monkey-jsonviewer body.dark .json-boolean{color:#358cd6}.monkey-jsonviewer body.dark .json-null{color:#569cd6}.monkey-jsonviewer body.dark_plus .tabs-container{background-color:#1e1f22}.monkey-jsonviewer body.dark_plus .json-object-bracket{color:#bb9667}.monkey-jsonviewer body.dark_plus .json-array-bracket{color:#bbbda3}.monkey-jsonviewer body.dark_plus .json-key{color:#c77dbb}.monkey-jsonviewer body.dark_plus .json-string,.monkey-jsonviewer body.dark_plus .json-string a{color:#6aab73}.monkey-jsonviewer body.dark_plus .json-bigint,.monkey-jsonviewer body.dark_plus .json-number{color:#28aab4}.monkey-jsonviewer body.dark_plus .json-boolean{color:#ce8951}.monkey-jsonviewer body.dark_plus .json-null{color:#c78d61}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}/**
+(o=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .hidden{display:none!important}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer .format-container{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column;background-color:#fefefe}.monkey-jsonviewer .format-container .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .format-container .tabs,.monkey-jsonviewer .format-container .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .format-container .tabs>div,.monkey-jsonviewer .format-container .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .tabs>div:hover,.monkey-jsonviewer .format-container .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .format-container .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .format-container .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .format-container .toolbar{line-height:23px}.monkey-jsonviewer .format-container .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .format-container .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .format-container .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .format-container .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .format-container .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .format-container .rightbox>div ul li{font-size:12px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .format-container .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .format-container .tabs-container>div{display:none}.monkey-jsonviewer .format-container .tabs-container>div.active{display:block}.monkey-jsonviewer .format-container .tabs-container #formatBox{padding:5px 8px}.monkey-jsonviewer .format-container .tabs-container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-jsonviewer .format-container .tabs-container #rawTextBox pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .format-container .jsonp{color:#93983a}.monkey-jsonviewer .format-container ul.json-items{padding:0;margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e}.monkey-jsonviewer .format-container ul.json-items li{padding-left:20px}.monkey-jsonviewer .format-container .json-key{color:#910f93;cursor:pointer}.monkey-jsonviewer .format-container .json-string,.monkey-jsonviewer .format-container .json-string a{color:#2e7c16}.monkey-jsonviewer .format-container .json-bigint,.monkey-jsonviewer .format-container .json-number{color:#164ff1}.monkey-jsonviewer .format-container .json-boolean{color:#c41a16}.monkey-jsonviewer .format-container .json-null{color:#228fec}.monkey-jsonviewer .format-container .json-color{width:.75em;height:.75em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.monkey-jsonviewer .format-container .json-comma{font-family:Courier New,monospace}.monkey-jsonviewer .format-container a.json-toggle{opacity:.2;color:inherit;position:relative;text-decoration:none}.monkey-jsonviewer .format-container a.json-toggle:hover{opacity:.35}.monkey-jsonviewer .format-container a.json-toggle:active{opacity:.5}.monkey-jsonviewer .format-container a.json-toggle:focus{outline:none}.monkey-jsonviewer .format-container a.json-toggle:before{width:0;height:0;left:-5px;content:"";position:relative;border-style:solid;display:inline-block;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.monkey-jsonviewer .format-container a.json-toggle.collapsed:before{transform:rotate(0)}.monkey-jsonviewer .format-container a.json-placeholder{padding:0 .5em;font-size:12px;color:#ccc;text-decoration:none}.monkey-jsonviewer .format-container a.json-placeholder:hover{text-decoration:underline}.monkey-jsonviewer .format-container .json-object-bracket{color:#6d9331;font-weight:700}.monkey-jsonviewer .format-container .json-array-bracket{color:#8e9331;font-weight:700}.monkey-jsonviewer .format-container #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .format-container #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .format-container #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .format-container #mindBox jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .format-container #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .format-container #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .format-container #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .format-container #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .format-container #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .light .json-key{color:#0040cf}.monkey-jsonviewer .light .json-string,.monkey-jsonviewer .light .json-string a{color:#a31515}.monkey-jsonviewer .light .json-bigint,.monkey-jsonviewer .light .json-number{color:#0b7500}.monkey-jsonviewer .light .json-boolean{color:#00f}.monkey-jsonviewer .light .json-null{color:#05f}.monkey-jsonviewer body.dark .format-container li,.monkey-jsonviewer body.dark .format-container pre,.monkey-jsonviewer body.dark .format-container td:first-child,.monkey-jsonviewer body.dark_plus .format-container li,.monkey-jsonviewer body.dark_plus .format-container pre,.monkey-jsonviewer body.dark_plus .format-container td:first-child{color:#ccc}.monkey-jsonviewer body.dark .format-container .panel,.monkey-jsonviewer body.dark_plus .format-container .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer body.dark .format-container .panel>div,.monkey-jsonviewer body.dark_plus .format-container .panel>div{border-bottom-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark .format-container .panel .toolbar-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer body.dark .format-container .panel .tabs-item.active,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer body.dark .format-container .searchbox input,.monkey-jsonviewer body.dark_plus .format-container .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer body.dark .format-container .searchbox .clear,.monkey-jsonviewer body.dark_plus .format-container .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer body.dark .format-container .rightbox>div span:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer body.dark .format-container .jsonp,.monkey-jsonviewer body.dark_plus .format-container .jsonp{color:#f1d700}.monkey-jsonviewer body.dark .format-container .json-toggle,.monkey-jsonviewer body.dark_plus .format-container .json-toggle{opacity:.35}.monkey-jsonviewer body.dark .format-container .json-toggle:hover,.monkey-jsonviewer body.dark_plus .format-container .json-toggle:hover{opacity:.5}.monkey-jsonviewer body.dark .format-container jmnode,.monkey-jsonviewer body.dark_plus .format-container jmnode{filter:brightness(2)}.monkey-jsonviewer body.dark .format-container jmexpander,.monkey-jsonviewer body.dark_plus .format-container jmexpander{background-color:#dfdfdf}.monkey-jsonviewer body.dark .format-container .json-tree-table tr:hover,.monkey-jsonviewer body.dark_plus .format-container .json-tree-table tr:hover{background-color:#353b48}.monkey-jsonviewer body.dark .format-container .json-tree-table-arrow,.monkey-jsonviewer body.dark_plus .format-container .json-tree-table-arrow{color:#fff;opacity:.35}.monkey-jsonviewer body.dark .format-container .json-tree-table-arrow:hover,.monkey-jsonviewer body.dark_plus .format-container .json-tree-table-arrow:hover{opacity:.5}.monkey-jsonviewer body.dark .tabs-container{background-color:#252526}.monkey-jsonviewer body.dark .json-object-bracket{color:#ce70d6}.monkey-jsonviewer body.dark .json-array-bracket{color:#f1d700}.monkey-jsonviewer body.dark .json-key{color:#9cdcfe}.monkey-jsonviewer body.dark .json-string,.monkey-jsonviewer body.dark .json-string a{color:#ce9178}.monkey-jsonviewer body.dark .json-bigint,.monkey-jsonviewer body.dark .json-number{color:#b5cea8}.monkey-jsonviewer body.dark .json-boolean{color:#358cd6}.monkey-jsonviewer body.dark .json-null{color:#569cd6}.monkey-jsonviewer body.dark_plus .tabs-container{background-color:#1e1f22}.monkey-jsonviewer body.dark_plus .json-object-bracket{color:#bb9667}.monkey-jsonviewer body.dark_plus .json-array-bracket{color:#bbbda3}.monkey-jsonviewer body.dark_plus .json-key{color:#c77dbb}.monkey-jsonviewer body.dark_plus .json-string,.monkey-jsonviewer body.dark_plus .json-string a{color:#6aab73}.monkey-jsonviewer body.dark_plus .json-bigint,.monkey-jsonviewer body.dark_plus .json-number{color:#28aab4}.monkey-jsonviewer body.dark_plus .json-boolean{color:#ce8951}.monkey-jsonviewer body.dark_plus .json-null{color:#c78d61}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}/**
 * @license BSD
 * @copyright 2014-2023 hizzgdev@163.com
 * 
@@ -43,7 +43,7 @@ System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-D7Bnb6Hf.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-Cu8UGC0p.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-D7Bnb6Hf.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-D7Bnb6Hf.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-Cu8UGC0p.js", ['jquery'], (function (exports, module) {
   'use strict';
   var $;
   return {
@@ -2077,7 +2077,7 @@ System.register("./__monkey.entry-D7Bnb6Hf.js", ['jquery'], (function (exports, 
             _unsafeWindow.RAW_TEXT
           );
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-UVhaoIie-DAnTk6H_.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-tDoN38_8-ReYtr8O7.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-PL1hKweg-DoENdqki.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-v2noDGWu-Dc0wG4R6.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
         });
       })();
 
@@ -2158,7 +2158,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-D7Bnb6Hf.js'], (function (exports, module) {
+System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-Cu8UGC0p.js'], (function (exports, module) {
   'use strict';
   var $, tippy, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
@@ -2203,10 +2203,10 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
             case "object":
               let len = json.length || Object.keys(json).length;
               if (len > 0) {
-                html += `<span class="json-${type}-bracket">${type === "array" ? "[" : "{"}</span><ul class="json-items">`;
+                html += `<span class="json-${type}-bracket">${type === "array" ? "[" : "{"}</span><ul class="json-items" data-type="${type}">`;
                 for (var key in json) {
                   if (Object.prototype.hasOwnProperty.call(json, key)) {
-                    const comma = --len > 0 ? "," : "";
+                    const comma = --len > 0 ? "<span class='json-comma'>,</span>" : "";
                     const jsonPath = parentPath + "." + key;
                     const collapse = isCollapsable(json[key]) ? '<a href class="json-toggle"></a>' : "";
                     const next = json2html(json[key], jsonPath);
@@ -2256,11 +2256,10 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
               if (target.is(":visible")) {
                 target.siblings("a.json-placeholder").remove();
               } else {
-                let clas = target.attr("class");
-                clas = clas.substring(clas.indexOf("-") + 1);
+                const type = target.data("type");
                 var count = target.children('li:not([class*="hidden"])').length;
                 var placeholder = count + (count > 1 ? " items" : " item");
-                if (clas === "object") {
+                if (type === "object") {
                   placeholder = count + (count > 1 ? " keys" : " key");
                 }
                 target.after(`<a href class="json-placeholder">${placeholder}</a>`);
@@ -2275,400 +2274,108 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
           });
         };
       })($);
-      !function(e) {
-        var t = {};
-        function n(o) {
-          if (t[o]) return t[o].exports;
-          var i = t[o] = { i: o, l: false, exports: {} };
-          return e[o].call(i.exports, i, i.exports, n), i.l = true, i.exports;
-        }
-        n.m = e, n.c = t, n.d = function(e2, t2, o) {
-          n.o(e2, t2) || Object.defineProperty(e2, t2, { enumerable: true, get: o });
-        }, n.r = function(e2) {
-          "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e2, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(e2, "__esModule", { value: true });
-        }, n.t = function(e2, t2) {
-          if (1 & t2 && (e2 = n(e2)), 8 & t2) return e2;
-          if (4 & t2 && "object" == typeof e2 && e2 && e2.__esModule) return e2;
-          var o = /* @__PURE__ */ Object.create(null);
-          if (n.r(o), Object.defineProperty(o, "default", { enumerable: true, value: e2 }), 2 & t2 && "string" != typeof e2) for (var i in e2) n.d(o, i, (function(t3) {
-            return e2[t3];
-          }).bind(null, i));
-          return o;
-        }, n.n = function(e2) {
-          var t2 = e2 && e2.__esModule ? function() {
-            return e2.default;
-          } : function() {
-            return e2;
-          };
-          return n.d(t2, "a", t2), t2;
-        }, n.o = function(e2, t2) {
-          return Object.prototype.hasOwnProperty.call(e2, t2);
-        }, n.p = "/dist", n(n.s = 5);
-      }([function(e, t) {
-        e.exports = $;
-      }, function(e, t, n) {
-        var o = n(2), i = n(3);
-        "string" == typeof (i = i.__esModule ? i.default : i) && (i = [[e.i, i, ""]]);
-        var a = { insert: "head", singleton: false };
-        o(i, a);
-        e.exports = i.locals || {};
-      }, function(e, t, n) {
-        var o, i = function() {
-          return void 0 === o && (o = Boolean(window && document && document.all && !window.atob)), o;
-        }, a = /* @__PURE__ */ function() {
-          var e2 = {};
-          return function(t2) {
-            if (void 0 === e2[t2]) {
-              var n2 = document.querySelector(t2);
-              if (window.HTMLIFrameElement && n2 instanceof window.HTMLIFrameElement) try {
-                n2 = n2.contentDocument.head;
-              } catch (e3) {
-                n2 = null;
-              }
-              e2[t2] = n2;
-            }
-            return e2[t2];
-          };
-        }(), r = [];
-        function s(e2) {
-          for (var t2 = -1, n2 = 0; n2 < r.length; n2++) if (r[n2].identifier === e2) {
-            t2 = n2;
-            break;
-          }
-          return t2;
-        }
-        function c(e2, t2) {
-          for (var n2 = {}, o2 = [], i2 = 0; i2 < e2.length; i2++) {
-            var a2 = e2[i2], c2 = t2.base ? a2[0] + t2.base : a2[0], l2 = n2[c2] || 0, u2 = "".concat(c2, " ").concat(l2);
-            n2[c2] = l2 + 1;
-            var d2 = s(u2), f2 = { css: a2[1], media: a2[2], sourceMap: a2[3] };
-            -1 !== d2 ? (r[d2].references++, r[d2].updater(f2)) : r.push({ identifier: u2, updater: y(f2, t2), references: 1 }), o2.push(u2);
-          }
-          return o2;
-        }
-        function l(e2) {
-          var t2 = document.createElement("style"), o2 = e2.attributes || {};
-          if (void 0 === o2.nonce) {
-            var i2 = n.nc;
-            i2 && (o2.nonce = i2);
-          }
-          if (Object.keys(o2).forEach(function(e3) {
-            t2.setAttribute(e3, o2[e3]);
-          }), "function" == typeof e2.insert) e2.insert(t2);
-          else {
-            var r2 = a(e2.insert || "head");
-            if (!r2) throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
-            r2.appendChild(t2);
-          }
-          return t2;
-        }
-        var u, d = (u = [], function(e2, t2) {
-          return u[e2] = t2, u.filter(Boolean).join("\n");
-        });
-        function f(e2, t2, n2, o2) {
-          var i2 = n2 ? "" : o2.media ? "@media ".concat(o2.media, " {").concat(o2.css, "}") : o2.css;
-          if (e2.styleSheet) e2.styleSheet.cssText = d(t2, i2);
-          else {
-            var a2 = document.createTextNode(i2), r2 = e2.childNodes;
-            r2[t2] && e2.removeChild(r2[t2]), r2.length ? e2.insertBefore(a2, r2[t2]) : e2.appendChild(a2);
-          }
-        }
-        function h(e2, t2, n2) {
-          var o2 = n2.css, i2 = n2.media, a2 = n2.sourceMap;
-          if (i2 ? e2.setAttribute("media", i2) : e2.removeAttribute("media"), a2 && btoa && (o2 += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(a2)))), " */")), e2.styleSheet) e2.styleSheet.cssText = o2;
-          else {
-            for (; e2.firstChild; ) e2.removeChild(e2.firstChild);
-            e2.appendChild(document.createTextNode(o2));
-          }
-        }
-        var p = null, v = 0;
-        function y(e2, t2) {
-          var n2, o2, i2;
-          if (t2.singleton) {
-            var a2 = v++;
-            n2 = p || (p = l(t2)), o2 = f.bind(null, n2, a2, false), i2 = f.bind(null, n2, a2, true);
-          } else n2 = l(t2), o2 = h.bind(null, n2, t2), i2 = function() {
-            !function(e3) {
-              if (null === e3.parentNode) return false;
-              e3.parentNode.removeChild(e3);
-            }(n2);
-          };
-          return o2(e2), function(t3) {
-            if (t3) {
-              if (t3.css === e2.css && t3.media === e2.media && t3.sourceMap === e2.sourceMap) return;
-              o2(e2 = t3);
-            } else i2();
-          };
-        }
-        e.exports = function(e2, t2) {
-          (t2 = t2 || {}).singleton || "boolean" == typeof t2.singleton || (t2.singleton = i());
-          var n2 = c(e2 = e2 || [], t2);
-          return function(e3) {
-            if (e3 = e3 || [], "[object Array]" === Object.prototype.toString.call(e3)) {
-              for (var o2 = 0; o2 < n2.length; o2++) {
-                var i2 = s(n2[o2]);
-                r[i2].references--;
-              }
-              for (var a2 = c(e3, t2), l2 = 0; l2 < n2.length; l2++) {
-                var u2 = s(n2[l2]);
-                0 === r[u2].references && (r[u2].updater(), r.splice(u2, 1));
-              }
-              n2 = a2;
-            }
-          };
-        };
-      }, function(e, t, n) {
-        (t = n(4)(false)).push([e.i, ".simple-tree-table-icon{display:inline-block;width:1.5em;line-height:1.5em;margin:0.1em;background-color:#eee;text-align:center;cursor:pointer}.simple-tree-table-opened .simple-tree-table-icon:after{content:'-'}.simple-tree-table-closed .simple-tree-table-icon:after{content:'+'}\n", ""]), e.exports = t;
-      }, function(e, t, n) {
-        e.exports = function(e2) {
-          var t2 = [];
-          return t2.toString = function() {
-            return this.map(function(t3) {
-              var n2 = function(e3, t4) {
-                var n3 = e3[1] || "", o = e3[3];
-                if (!o) return n3;
-                if (t4 && "function" == typeof btoa) {
-                  var i = (r = o, s = btoa(unescape(encodeURIComponent(JSON.stringify(r)))), c = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(s), "/*# ".concat(c, " */")), a = o.sources.map(function(e4) {
-                    return "/*# sourceURL=".concat(o.sourceRoot || "").concat(e4, " */");
-                  });
-                  return [n3].concat(a).concat([i]).join("\n");
-                }
-                var r, s, c;
-                return [n3].join("\n");
-              }(t3, e2);
-              return t3[2] ? "@media ".concat(t3[2], " {").concat(n2, "}") : n2;
-            }).join("");
-          }, t2.i = function(e3, n2, o) {
-            "string" == typeof e3 && (e3 = [[null, e3, ""]]);
-            var i = {};
-            if (o) for (var a = 0; a < this.length; a++) {
-              var r = this[a][0];
-              null != r && (i[r] = true);
-            }
-            for (var s = 0; s < e3.length; s++) {
-              var c = [].concat(e3[s]);
-              o && i[c[0]] || (n2 && (c[2] ? c[2] = "".concat(n2, " and ").concat(c[2]) : c[2] = n2), t2.push(c));
-            }
-          }, t2;
-        };
-      }, function(e, t, n) {
-        n.r(t);
-        var o = n(0), i = n.n(o);
-        function a(e2, t2) {
-          if (!(e2 instanceof t2)) throw new TypeError("Cannot call a class as a function");
-        }
-        function r(e2, t2) {
-          for (var n2 = 0; n2 < t2.length; n2++) {
-            var o2 = t2[n2];
-            o2.enumerable = o2.enumerable || false, o2.configurable = true, "value" in o2 && (o2.writable = true), Object.defineProperty(e2, o2.key, o2);
-          }
-        }
-        function s(e2, t2, n2) {
-          return t2 && r(e2.prototype, t2), e2;
-        }
-        var c = function() {
-          function e2() {
-            var t2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-            a(this, e2), this.opts = { type: t2.type || "session", key: t2.key }, this.inst = new l(this.opts);
-          }
-          return s(e2, [{ key: "get", value: function() {
-            var e3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
-            return this.inst.get(this.opts.key) || e3;
-          } }, { key: "set", value: function(e3) {
-            this.inst.set(this.opts.key, e3);
-          } }, { key: "remove", value: function() {
-            this.inst.remove(this.opts.key);
-          } }]), e2;
-        }(), l = function() {
-          function e2() {
-            var t2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-            a(this, e2), this.storage = { local: window.localStorage, session: window.sessionStorage }[t2.type];
-          }
-          return s(e2, [{ key: "get", value: function(e3) {
-            try {
-              var t2 = this.storage.getItem(e3);
-              return t2 ? JSON.parse(t2) : null;
-            } catch (e4) {
-              return console.log(e4), null;
-            }
-          } }, { key: "set", value: function(e3, t2) {
-            try {
-              this.storage.setItem(e3, JSON.stringify(t2));
-            } catch (e4) {
-              console.log(e4);
-            }
-          } }, { key: "remove", value: function(e3) {
-            this.storage.removeItem(e3);
-          } }]), e2;
-        }(), u = (n(1), "simple-tree-table");
-        function d(e2, t2) {
-          if (!(e2 instanceof t2)) throw new TypeError("Cannot call a class as a function");
-        }
-        function f(e2, t2) {
-          for (var n2 = 0; n2 < t2.length; n2++) {
-            var o2 = t2[n2];
-            o2.enumerable = o2.enumerable || false, o2.configurable = true, "value" in o2 && (o2.writable = true), Object.defineProperty(e2, o2.key, o2);
-          }
-        }
-        var h = { expander: null, collapser: null, opened: "all", margin: 20, iconPosition: "> :first-child", iconTemplate: "<span />", store: null, storeKey: null }, p = function() {
-          function e2(t3) {
-            var n3 = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-            d(this, e2), this.options = i.a.extend({}, h, n3), this.$table = i()(t3), this.$expander = i()(this.options.expander), this.$collapser = i()(this.options.collapser), this.options.store && this.options.storeKey && (this.store = new c({ type: this.options.store, key: this.options.storeKey })), this.init(), this.load();
-          }
-          var t2, n2, o2;
-          return t2 = e2, o2 = [{ key: "getDefaults", value: function() {
-            return h;
-          } }, { key: "setDefaults", value: function(e3) {
-            return i.a.extend(h, e3);
-          } }], (n2 = [{ key: "init", value: function() {
-            this.$table.addClass(u), this.build(), this.unbind(), this.bind();
-          } }, { key: "destroy", value: function() {
-            var e3 = function(e4, t3) {
-              var n3 = new RegExp("".concat(u, "(-\\S+)?"), "g");
-              return (t3.match(n3) || []).join(" ");
-            };
-            this.$table.removeClass(e3), this.nodes().removeClass(e3), this.$table.find(".".concat(u, "-icon")).remove(), this.unbind();
-          } }, { key: "build", value: function() {
-            var e3 = this;
-            this.nodes().not("[data-node-depth]").each(function(t3, n3) {
-              var o3 = i()(n3), a2 = e3.depth(o3);
-              o3.data("node-depth", a2), 1 == a2 && o3.addClass("".concat(u, "-root"));
-            }), this.nodes().filter(function(t3, n3) {
-              return 0 == i()(n3).find(e3.options.iconPosition).find(".".concat(u, "-handler")).length;
-            }).each(function(t3, n3) {
-              var o3 = i()(n3), a2 = e3.depth(o3), r2 = e3.options.margin * (a2 - 1), s2 = i()(e3.options.iconTemplate).addClass("".concat(u, "-handler ").concat(u, "-icon")).css("margin-left", "".concat(r2, "px"));
-              o3.find(e3.options.iconPosition).prepend(s2);
-            }), this.nodes().not(".".concat(u, "-empty, .").concat(u, "-opened, .").concat(u, "-closed")).each(function(t3, n3) {
-              var o3 = i()(n3);
-              e3.hasChildren(o3) ? e3.opensDefault(o3) ? o3.addClass("".concat(u, "-opened")) : o3.addClass("".concat(u, "-closed")) : o3.addClass("".concat(u, "-empty"));
-            }), this.nodes().filter(".".concat(u, "-opened")).each(function(t3, n3) {
-              e3.show(i()(n3));
-            }), this.nodes().filter(".".concat(u, "-closed")).each(function(t3, n3) {
-              e3.hide(i()(n3));
-            });
-          } }, { key: "opensDefault", value: function(e3) {
-            var t3 = this.options.opened;
-            return t3 && ("all" == t3 || -1 != t3.indexOf(e3.data("node-id")));
-          } }, { key: "bind", value: function() {
-            var e3 = this;
-            this.$expander.on("click.".concat(u), function(t3) {
-              e3.expand();
-            }), this.$collapser.on("click.".concat(u), function(t3) {
-              e3.collapse();
-            }), this.$table.on("click.".concat(u), "tr .".concat(u, "-handler"), function(t3) {
-              var n3 = i()(t3.currentTarget).closest("tr");
-              n3.hasClass("".concat(u, "-opened")) ? e3.close(n3) : e3.open(n3);
-            });
-          } }, { key: "unbind", value: function() {
-            this.$expander.off(".".concat(u)), this.$collapser.off(".".concat(u)), this.$table.off(".".concat(u, " node:open node:close"));
-          } }, { key: "expand", value: function() {
-            var e3 = this;
-            this.nodes().each(function(t3, n3) {
-              e3.show(i()(n3));
-            }), this.save();
-          } }, { key: "collapse", value: function() {
-            var e3 = this;
-            this.nodes().each(function(t3, n3) {
-              e3.hide(i()(n3));
-            }), this.save();
-          } }, { key: "nodes", value: function() {
-            return this.$table.find("tr[data-node-id]");
-          } }, { key: "depth", value: function(e3) {
-            var t3 = e3.data("node-depth");
-            if (t3) return t3;
-            var n3 = this.findByID(e3.data("node-pid"));
-            return 0 != n3.length ? this.depth(n3) + 1 : 1;
-          } }, { key: "open", value: function(e3) {
-            this.show(e3), this.save(), e3.trigger("node:open", [e3]);
-          } }, { key: "show", value: function(e3) {
-            e3.hasClass("".concat(u, "-empty")) || (e3.removeClass("".concat(u, "-closed")).addClass("".concat(u, "-opened")), this.showDescs(e3));
-          } }, { key: "showDescs", value: function(e3) {
-            var t3 = this;
-            this.findChildren(e3).each(function(e4, n3) {
-              var o3 = i()(n3);
-              o3.show(), o3.hasClass("".concat(u, "-opened")) && t3.showDescs(o3);
-            });
-          } }, { key: "close", value: function(e3) {
-            this.hide(e3), this.save(), e3.trigger("node:close", [e3]);
-          } }, { key: "hide", value: function(e3) {
-            e3.hasClass("".concat(u, "-empty")) || (e3.removeClass("".concat(u, "-opened")).addClass("".concat(u, "-closed")), this.hideDescs(e3));
-          } }, { key: "hideDescs", value: function(e3) {
-            var t3 = this;
-            this.findChildren(e3).each(function(e4, n3) {
-              var o3 = i()(n3);
-              o3.hide(), t3.hideDescs(o3);
-            });
-          } }, { key: "hasChildren", value: function(e3) {
-            return 0 != this.findChildren(e3).length;
-          } }, { key: "findChildren", value: function(e3) {
-            var t3 = e3.data("node-id");
-            return this.$table.find('tr[data-node-pid="'.concat(t3, '"]'));
-          } }, { key: "findDescendants", value: function(e3) {
-            var t3 = this, n3 = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], o3 = this.findChildren(e3);
-            return n3.push(o3), o3.each(function(e4, o4) {
-              t3.findDescendants(i()(o4), n3);
-            }), n3;
-          } }, { key: "findByID", value: function(e3) {
-            return this.$table.find('tr[data-node-id="'.concat(e3, '"]'));
-          } }, { key: "openByID", value: function(e3) {
-            this.open(this.findByID(e3));
-          } }, { key: "closeByID", value: function(e3) {
-            this.close(this.findByID(e3));
-          } }, { key: "load", value: function() {
-            var e3 = this;
-            if (this.store) {
-              var t3 = this.store.get();
-              t3 && (this.nodes().each(function(t4, n3) {
-                e3.show(i()(n3));
-              }), this.nodes().filter(function(e4, n3) {
-                return -1 != t3.indexOf(i()(n3).data("node-id"));
-              }).each(function(t4, n3) {
-                e3.hide(i()(n3));
-              }));
-            }
-          } }, { key: "save", value: function() {
-            if (this.store) {
-              var e3 = this.nodes().filter(".".concat(u, "-closed")).map(function(e4, t3) {
-                return i()(t3).data("node-id");
-              }).get();
-              this.store.set(e3);
-            }
-          } }]) && f(t2.prototype, n2), o2 && f(t2, o2), e2;
-        }();
-        i.a.fn.simpleTreeTable = function(e2) {
-          return this.each(function(t2, n2) {
-            var o2 = i()(n2);
-            o2.data(u) && o2.data(u).destroy(), o2.data(u, new p(o2, e2));
-          });
-        }, i.a.SimpleTreeTable = p;
-      }]);
+      const cssText = `
+.json-tree-table {
+  margin-left: 20px;
+  border-collapse: collapse;
+  width: -webkit-fill-available;
+}
+
+.json-tree-table b {
+  font-weight: normal;
+  margin-right: 0.15em;
+}
+
+.json-tree-table tr.selected,
+.json-tree-table tr.selected td,
+.json-tree-table tr.selected td b,
+.json-tree-table tr.selected td a{
+    color: #fff !important;
+    background-color: #3875d7;
+}
+
+.json-tree-table tr:hover {
+  background-color: #f0f9fe;
+}
+
+.json-tree-table tr td:first-child {
+  width: 120px;
+}
+
+.json-tree-table-arrow {
+  width: 0;
+  opacity: 0.2;
+  display: inline-block;
+}
+
+.json-tree-table-arrow:hover {
+  opacity: 0.35;
+}
+
+.json-tree-table-arrow::before {
+  width: 0;
+  height: 0;
+  left: -13px;
+  content: "";
+  cursor: pointer;
+  position: relative;
+  border-style: solid;
+  display: inline-block;
+  vertical-align: middle;
+  transform: rotate(90deg);
+  border-width: 5px 0 5px 8px;
+  transition: transform 0.3s ease;
+  border-color: transparent transparent transparent currentColor;
+}
+
+.json-tree-table-closed .json-tree-table-arrow::before {
+  transform: rotate(0deg);
+}
+
+.json-tree-table-placeholder{
+  color: #ccc;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 0.5em;
+}
+
+.json-tree-table-placeholder span:hover{
+  text-decoration: underline;
+}
+`;
+      const DEFAULTS = {
+        json: null,
+        container: null,
+        onCollapse: null,
+        onExpand: null,
+        expander: null,
+        collapser: null
+      };
       class JsonToTable {
         constructor(options) {
-          this.nodes = new Array();
-          const defaults = {
-            id: null,
-            json: null,
-            container: null
-          };
-          this.options = Object.assign(defaults, options);
+          this.options = Object.assign(DEFAULTS, options);
           if (!options.container) {
             throw new Error("Container: dom element is required");
           }
           if (!options.json) {
             throw new Error("json: json is required");
           }
-          this.generated();
-        }
-        generated() {
-          const { id, json, container } = this.options;
-          const $container = container instanceof HTMLElement ? container : document.querySelector(container);
-          this.createNode(json, 0, "Root", "Root");
-          const table = this.createElement("table");
-          if (id) table.setAttribute("id", id);
-          for (let i in this.nodes) {
-            table.appendChild(this.nodes[i]);
+          if (typeof options.json !== "object") {
+            throw new Error("json: Need to use JSON.parse conversion");
           }
-          $container.appendChild(table);
+          this.render();
+          this.bindEvent();
+        }
+        render() {
+          const { json, container } = this.options;
+          this.$container = container instanceof HTMLElement ? container : document.querySelector(container);
+          const style = this.createElement("style");
+          style.textContent = cssText;
+          document.head.appendChild(style);
+          this.$table = this.createElement("table");
+          this.$table.setAttribute("class", "json-tree-table");
+          this.createNode(json, 0, "Root", "Root");
+          this.$container.appendChild(this.$table);
         }
         /**
          * 创建节点
@@ -2683,16 +2390,13 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
             const type = this.getType(value);
             const jsonPath = `${pChain}.${key}`;
             const item = this.createItem(key, value, type, depth, jsonPath, parentId);
-            this.nodes.push(item);
+            this.$table.appendChild(item);
             if (this.canIterate(value)) {
               const nodeId = item.dataset.nodeId;
               this.createNode(value, depth + 1, jsonPath, nodeId);
             }
           }
         }
-        /**
-         * 创建tr
-         */
         createItem(key, value, type, depth, jsonPath, parentId) {
           const id = key + "_" + Math.random();
           const isIterate = this.isIterate(value);
@@ -2700,7 +2404,8 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
           const node = this.createElement("tr", {
             "data-type": type,
             "data-node-id": id,
-            "data-node-pid": parentId
+            "data-node-pid": parentId,
+            class: "json-tree-table-opened"
           });
           const leftNode = this.createLeftNode(key, value, depth, jsonPath);
           node.appendChild(leftNode);
@@ -2714,9 +2419,6 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
           }
           return node;
         }
-        /**
-         * 创建第一个td
-         */
         createLeftNode(key, value, depth, jsonPath) {
           const node = this.createElement("td", {
             "json-path": jsonPath,
@@ -2726,37 +2428,38 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
           const b = this.createElement("b", {
             class: "json-key"
           });
-          b.innerText = `${key}`;
+          b.textContent = `${key}`;
           node.appendChild(b);
           const textNode = document.createTextNode(":");
           node.appendChild(textNode);
           if (this.canIterate(value)) {
+            const icon = this.createElement("span", {
+              class: "json-tree-table-arrow"
+            });
+            node.prepend(icon);
             const span = this.createElement("span", {
-              class: "json-placeholder"
+              class: "json-tree-table-placeholder"
             });
             node.appendChild(span);
           }
           return node;
         }
-        /**
-         * 创建第二个td
-         */
         createRightNode(type, value) {
           const node = this.createElement("td", {
             class: `json-${type}`
           });
-          node.innerText = `${value}`;
+          node.textContent = `${value}`;
           if (type === "string") {
             value = this.escape(value);
-            node.innerText = `"${value}"`;
+            node.textContent = `"${value}"`;
           }
           if (this.isUrl(value)) {
-            node.innerText = "";
+            node.textContent = "";
             const a = this.createElement("a", {
               target: "_blank",
               href: value
             });
-            a.innerText = `"${value}"`;
+            a.textContent = `"${value}"`;
             node.appendChild(a);
           }
           if (this.isColor(value)) {
@@ -2770,10 +2473,143 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
         }
         createEmptyRightNode(type) {
           const node = this.createElement("td", {
-            class: type === "array" ? "json-array-bracket" : "json-object-bracket"
+            class: `json-${type}-bracket`
           });
-          node.innerText = type === "array" ? "[]" : "{}";
+          node.textContent = type === "array" ? "[]" : "{}";
           return node;
+        }
+        bindEvent() {
+          this.addEvent(`click`, this.options.expander, () => {
+            this.expandAll();
+          });
+          this.addEvent(`click`, this.options.collapser, () => {
+            this.collapseAll();
+          });
+          this.addEvent("click", ".json-tree-table-arrow", (e) => {
+            const node = this.closest(e.currentTarget, "tr");
+            if (this.hasClass(node, "json-tree-table-opened")) {
+              this.hide(node);
+            } else {
+              this.show(node);
+            }
+          });
+          this.addEvent("click", ".json-tree-table-placeholder", (e) => {
+            const node = this.closest(e.currentTarget, "tr");
+            this.show(node);
+          });
+          this.addEvent("mousedown", "table tr", function(event) {
+            const { tagName } = event.target;
+            if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
+              return;
+            }
+            Array.from(document.querySelectorAll(".selected")).filter((ele) => ele !== this).forEach((ele) => ele.classList.remove("selected"));
+            this.classList.toggle("selected");
+          });
+        }
+        expandAll() {
+          this.nodes().forEach((node) => {
+            this.show(node);
+          });
+        }
+        collapseAll() {
+          this.nodes().forEach((node) => {
+            this.hide(node);
+          });
+        }
+        show(node) {
+          this.removeClass(node, "json-tree-table-closed");
+          this.addClass(node, "json-tree-table-opened");
+          this.showDescs(node);
+          this.onShow(node);
+        }
+        onShow(node) {
+          const placeholder = node.querySelector(".json-tree-table-placeholder");
+          if (!placeholder) {
+            return;
+          }
+          placeholder.innerHTML = null;
+          const { onExpand } = this.options;
+          if (onExpand) onExpand(node, this);
+        }
+        showDescs(node) {
+          let children = this.findChildren(node);
+          children.forEach((child) => {
+            child.style.display = null;
+            if (this.hasClass(child, "json-tree-table-opened")) {
+              this.showDescs(child);
+            }
+          });
+        }
+        hide(node) {
+          this.removeClass(node, "json-tree-table-opened");
+          this.addClass(node, "json-tree-table-closed");
+          this.hideDescs(node);
+          this.onHide(node);
+        }
+        onHide(node) {
+          const type = node.dataset.type;
+          const placeholder = node.querySelector(".json-tree-table-placeholder");
+          if (!placeholder) {
+            return;
+          }
+          const length = this.findChildren(node).length;
+          let content = `[ <span>${length}${length > 1 ? " items" : " item"}</span> ]`;
+          if (type === "object") {
+            content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
+          }
+          placeholder.innerHTML = content;
+          const { onCollapse } = this.options;
+          if (onCollapse) onCollapse(node, this);
+        }
+        hideDescs(node) {
+          const children = this.findChildren(node);
+          children.forEach((child) => {
+            child.style.display = "none";
+            this.hideDescs(child);
+          });
+        }
+        findChildren(node) {
+          const pid = node.dataset.nodeId;
+          return this.$container.querySelectorAll(
+            `tr[data-node-pid="${pid}"]:not(.hidden)`
+          );
+        }
+        findByID(id) {
+          return this.$container.querySelector(`tr[data-node-id="${id}"]`);
+        }
+        openByID(id) {
+          this.show(this.findByID(id));
+        }
+        closeByID(id) {
+          this.hide(this.findByID(id));
+        }
+        addEvent(event, selector, fn) {
+          document.body.querySelectorAll(selector).forEach((el) => {
+            el.addEventListener(event, fn);
+          });
+        }
+        closest(element, selector) {
+          while (element) {
+            if (element.matches(selector)) {
+              return element;
+            }
+            element = element.parentElement;
+          }
+          return null;
+        }
+        hasClass(element, clas) {
+          return element.classList.contains(clas);
+        }
+        removeClass(element, clas) {
+          element.classList.remove(clas);
+          return this;
+        }
+        addClass(element, clas) {
+          element.classList.add(clas);
+          return this;
+        }
+        nodes() {
+          return this.$container.querySelectorAll("tr[data-node-id]");
         }
         /**
          * 创建元素
@@ -2795,7 +2631,8 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
             return;
           }
           for (const name in attributes) {
-            element.setAttribute(name, attributes[name]);
+            const value = attributes[name];
+            if (value) element.setAttribute(name, value);
           }
         }
         /**
@@ -2845,9 +2682,6 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
           const rgbaRegex = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
           return hexCodeRegex.test(colorString) || rgbRegex.test(colorString) || rgbaRegex.test(colorString);
         }
-      }
-      if (typeof module != "undefined") {
-        module.exports = JsonToTable;
       }
       const evnet = {
         /**
@@ -2919,19 +2753,6 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
         }
       };
       const $formatBox = $("#formatBox");
-      function onNodeOpen($node) {
-        $node.find("span.json-placeholder").empty();
-      }
-      function onNodeClose($node) {
-        const type = $node.data("type");
-        const id = $node.data("node-id");
-        const length = $(`tr[data-node-pid="${id}"]:not(.hidden)`).length;
-        let content = `[ <span>${length}${length > 1 ? " items" : " item"}</span> ]`;
-        if (type === "object") {
-          content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
-        }
-        $node.find("span.json-placeholder").html(content);
-      }
       const format_style = exports("default", {
         /**
          * 切换JSON 格式化风格
@@ -2972,7 +2793,7 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
          * JSON 表格格式化
          */
         tableFormat: function() {
-          new JsonToTable({
+          _unsafeWindow.JSON_TO_TABLE = new JsonToTable({
             json: _unsafeWindow.GLOBAL_JSON,
             container: $formatBox[0]
           });
@@ -2981,38 +2802,6 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
             $formatBox.prepend(jsonp);
             $formatBox.append('<div class="jsonp">)</div>');
           }
-          setTimeout(() => {
-            const $table = $("table");
-            const simple = $table.simpleTreeTable().on("node:open", (e, $node) => onNodeOpen($node)).on("node:close", (e, $node) => onNodeClose($node));
-            const simpleTreeTable = simple.data("simple-tree-table");
-            $(document.body).on("click", "#expandAll", toggle);
-            $(document.body).on("click", "#collapseAll", toggle);
-            function toggle() {
-              if (!$table.is(":visible")) {
-                return;
-              }
-              const arrow = $("tr:not(.simple-tree-table-empty)");
-              if ($(this).is("#collapseAll")) {
-                simpleTreeTable.collapse();
-                arrow.each((i, node) => onNodeClose($(node)));
-                return;
-              }
-              simpleTreeTable.expand();
-              arrow.each((i, node) => onNodeOpen($(node)));
-            }
-            simple.on("click", "span.json-placeholder", function() {
-              const id = $(this).closest("tr").data("node-id");
-              simpleTreeTable.openByID(id);
-            });
-          });
-          $(document.body).on("mousedown", "table tr", function(event) {
-            const { tagName } = event.target;
-            if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
-              return;
-            }
-            $(".selected").not(this).removeClass("selected");
-            $(this).toggleClass("selected");
-          });
           return this;
         },
         init: function() {
@@ -3041,7 +2830,7 @@ System.register("./index-UVhaoIie-DAnTk6H_.js", ['jquery', './tippy.esm-Ot9MORvr
   };
 }));
 
-System.register("./index-tDoN38_8-ReYtr8O7.js", ['jquery', './__monkey.entry-D7Bnb6Hf.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
+System.register("./index-v2noDGWu-Dc0wG4R6.js", ['jquery', './__monkey.entry-Cu8UGC0p.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
   'use strict';
   var $, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, JSONbig, _GM_getValue, URL$1, _GM_setValue, tippy, require$$0;
   return {
@@ -3917,6 +3706,10 @@ System.register("./index-tDoN38_8-ReYtr8O7.js", ['jquery', './__monkey.entry-D7B
               $("a.json-toggle").not(".collapsed").trigger("click");
             } catch (e) {
             }
+            try {
+              _unsafeWindow.JSON_TO_TABLE.collapseAll();
+            } catch (e) {
+            }
             return;
           }
           _unsafeWindow.GLOBAL_JSMIND.collapse_all();
@@ -3930,6 +3723,10 @@ System.register("./index-tDoN38_8-ReYtr8O7.js", ['jquery', './__monkey.entry-D7B
           if ($formatBox.is(":visible")) {
             try {
               $("a.json-placeholder").trigger("click").remove();
+            } catch (e) {
+            }
+            try {
+              _unsafeWindow.JSON_TO_TABLE.expandAll();
             } catch (e) {
             }
             return;
@@ -4070,9 +3867,18 @@ System.register("./index-tDoN38_8-ReYtr8O7.js", ['jquery', './__monkey.entry-D7B
               chainSet.add(chain);
             }
           });
-          document.querySelectorAll(
-            "#formatBox *[class*='json-']:not([class*='json-key']):not([class*='json-placeholder'])"
-          ).forEach((el) => {
+          const selector = [
+            "json-key",
+            "json-comma",
+            "json-items",
+            "json-viewer",
+            "json-toggle",
+            "json-placeholder"
+          ].reduce(
+            (prev, next) => prev + ':not([class*="' + next + '"])',
+            "#formatBox *[class*='json-']"
+          );
+          document.querySelectorAll(selector).forEach((el) => {
             const target = $(el);
             let chain = target.siblings().attr("json-path");
             if (style == "default") {
