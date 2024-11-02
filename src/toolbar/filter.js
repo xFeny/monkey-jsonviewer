@@ -44,31 +44,38 @@ export default {
     /**
      * 模糊匹配 JSON value
      */
-    document
-      .querySelectorAll(
-        "#formatBox *[class*='json-']:not([class*='json-key']):not([class*='json-placeholder'])"
-      )
-      .forEach((el) => {
-        const target = $(el);
-        let chain = target.siblings().attr("json-path");
-        if (style == "default") {
-          chain = target.parent().attr("json-path");
-        }
+    const selector = [
+      "json-key",
+      "json-comma",
+      "json-items",
+      "json-viewer",
+      "json-toggle",
+      "json-placeholder",
+    ].reduce(
+      (prev, next) => prev + ':not([class*="' + next + '"])',
+      "#formatBox *[class*='json-']"
+    );
+    document.querySelectorAll(selector).forEach((el) => {
+      const target = $(el);
+      let chain = target.siblings().attr("json-path");
+      if (style == "default") {
+        chain = target.parent().attr("json-path");
+      }
 
-        if (!chain) {
-          return;
-        }
+      if (!chain) {
+        return;
+      }
 
-        const text = target.text();
-        if (!text.toLowerCase().includes(filter.toLowerCase())) {
-          return;
-        }
+      const text = target.text();
+      if (!text.toLowerCase().includes(filter.toLowerCase())) {
+        return;
+      }
 
+      chainSet.add(chain);
+      while ((chain = chain.substring(0, chain.lastIndexOf(".")))) {
         chainSet.add(chain);
-        while ((chain = chain.substring(0, chain.lastIndexOf(".")))) {
-          chainSet.add(chain);
-        }
-      });
+      }
+    });
 
     // console.log(chainSet)
     style == "default"

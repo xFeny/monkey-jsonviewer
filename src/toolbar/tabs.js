@@ -55,7 +55,10 @@ const tabsEvent = {
       try {
         $("a.json-toggle").not(".collapsed").trigger("click");
       } catch (e) {}
-
+      
+      try {
+        unsafeWindow.JSON_TO_TABLE.collapseAll();
+      } catch (e) {}
       return;
     }
 
@@ -72,6 +75,9 @@ const tabsEvent = {
         $("a.json-placeholder").trigger("click").remove();
       } catch (e) {}
 
+      try {
+        unsafeWindow.JSON_TO_TABLE.expandAll();
+      } catch (e) {}
       return;
     }
 

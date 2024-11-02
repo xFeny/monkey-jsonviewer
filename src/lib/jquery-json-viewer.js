@@ -63,11 +63,12 @@ import jQuery from "jquery";
         if (len > 0) {
           html += `<span class="json-${type}-bracket">${
             type === "array" ? "[" : "{"
-          }</span><ul class="json-items">`;
+          }</span><ul class="json-items" data-type="${type}">`;
 
           for (var key in json) {
             if (Object.prototype.hasOwnProperty.call(json, key)) {
-              const comma = --len > 0 ? "," : "";
+              const comma =
+                --len > 0 ? "<span class='json-comma'>,</span>" : "";
               const jsonPath = parentPath + "." + key;
               const collapse = isCollapsable(json[key])
                 ? '<a href class="json-toggle"></a>'
@@ -133,12 +134,10 @@ import jQuery from "jquery";
         if (target.is(":visible")) {
           target.siblings("a.json-placeholder").remove();
         } else {
-          let clas = target.attr("class");
-          clas = clas.substring(clas.indexOf("-") + 1);
-
+          const type = target.data("type");
           var count = target.children('li:not([class*="hidden"])').length;
           var placeholder = count + (count > 1 ? " items" : " item");
-          if (clas === "object") {
+          if (type === "object") {
             placeholder = count + (count > 1 ? " keys" : " key");
           }
 

@@ -221,12 +221,12 @@ $dark_tip_color: #4e4e4e;
       }
 
       #formatBox {
-        padding: 10px;
+        padding: 5px 8px;
       }
 
       #rawTextBox {
         font-size: $fz13;
-        padding: 5px 10px;
+        padding: 5px 8px;
 
         pre {
           display: block !important;
@@ -285,6 +285,10 @@ $dark_tip_color: #4e4e4e;
       border: 1px solid $color-gray;
     }
 
+    .json-comma {
+      font-family: "Courier New", monospace;
+    }
+
     a.json-toggle {
       opacity: 0.2;
       color: inherit;
@@ -312,7 +316,7 @@ $dark_tip_color: #4e4e4e;
         border-style: solid;
         display: inline-block;
         transform: rotate(90deg);
-        border-width: 5px 0 5px 7px;
+        border-width: 5px 0 5px 8px;
         transition: transform 0.3s ease;
         border-color: transparent transparent transparent currentColor;
       }
@@ -323,7 +327,7 @@ $dark_tip_color: #4e4e4e;
     }
 
     a.json-placeholder {
-      padding: 0 1em;
+      padding: 0 0.5em;
       font-size: $fz12;
       color: $color-gray;
       text-decoration: none;
@@ -403,102 +407,6 @@ $dark_tip_color: #4e4e4e;
       }
     }
     /** 脑图样式 END **/
-
-    /** 表格样式 START **/
-    table {
-      margin-left: 20px;
-      width: -webkit-fill-available;
-      border-collapse: collapse;
-
-      b {
-        font-weight: normal;
-        margin-right: 0.2em;
-      }
-
-      tr:hover {
-        background-color: #f0f9fe;
-      }
-
-      tr.selected {
-        td,
-        td b,
-        td a {
-          color: #fff !important;
-          background-color: #3875d7;
-        }
-      }
-
-      tr td:first-child {
-        width: 120px;
-      }
-
-      .json-placeholder {
-        cursor: pointer;
-        color: $color-gray;
-        font-size: $fz12;
-        margin-left: 0.5em;
-
-        span:hover {
-          text-decoration: underline;
-        }
-      }
-
-      .simple-tree-table-empty {
-        .simple-tree-table-icon {
-          display: inline !important;
-          background-color: transparent !important;
-        }
-      }
-
-      .simple-tree-table-icon {
-        color: #000;
-        opacity: 0.2;
-        width: 0 !important;
-        margin: 0 !important;
-        line-height: 0 !important;
-
-        &::before {
-          width: 0;
-          height: 0;
-          left: -13px;
-          content: "";
-          display: none;
-          position: relative;
-          border-style: solid;
-          vertical-align: middle;
-          border-width: 5px 0 5px 7px;
-          border-color: transparent transparent transparent currentColor;
-          transform: rotate(90deg);
-          transition: transform 0.3s ease;
-        }
-
-        &:hover {
-          opacity: 0.35;
-        }
-
-        &::after {
-          content: "" !important;
-        }
-
-        &:active {
-          opacity: 0.5;
-        }
-      }
-
-      .simple-tree-table-opened {
-        .simple-tree-table-icon::before {
-          display: inline-block;
-        }
-      }
-
-      .simple-tree-table-closed {
-        .simple-tree-table-icon::before {
-          display: block;
-          transform: rotate(0deg);
-        }
-      }
-    }
-    /** 表格样式 END **/
   }
 
   /** HTTP 请求弹窗样式 START **/
@@ -669,13 +577,17 @@ $dark_tip_color: #4e4e4e;
         background-color: #dfdfdf;
       }
 
-      table tr:hover {
+      .json-tree-table tr:hover {
         background-color: #353b48;
       }
 
-      .simple-tree-table-icon {
+      .json-tree-table-arrow {
         color: #fff;
-        opacity: 0.5;
+        opacity: 0.35;
+
+        &:hover {
+          opacity: 0.5;
+        }
       }
     }
   }
