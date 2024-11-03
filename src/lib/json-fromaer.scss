@@ -49,6 +49,10 @@
   border: 1px solid #ccc;
 }
 
+.json-key {
+  cursor: pointer;
+}
+
 .json-comma {
   font-family: "Courier New", monospace;
 }
@@ -72,7 +76,6 @@
 .default-theme {
   .json-key {
     color: #910f93;
-    cursor: pointer;
   }
 
   .json-string,
