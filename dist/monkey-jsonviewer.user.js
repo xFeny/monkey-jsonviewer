@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      v0.9.4
+// @version      v0.9.5
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -9,7 +9,7 @@
 // @homepage     https://github.com/xFeny/monkey-jsonviewer
 // @match        *://*/*
 // @require      https://unpkg.com/dom-to-image@2
-// @require      https://unpkg.com/jquery@3.7.1/dist/jquery.min.js
+// @require      https://unpkg.com/jquery@3.7.1/dist/jquery.slim.min.js
 // @require      data:application/javascript,%3Bwindow.jquery%3DjQuery%3B
 // @require      https://unpkg.com/jsmind@0.8.5/es6/jsmind.js
 // @require      data:application/javascript,%3Bwindow.jsmind%3DjsMind%3B
@@ -29,7 +29,7 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(o=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .hidden{display:none!important}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer .format-container{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column;background-color:#fefefe}.monkey-jsonviewer .format-container .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .format-container .tabs,.monkey-jsonviewer .format-container .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .format-container .tabs>div,.monkey-jsonviewer .format-container .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .tabs>div:hover,.monkey-jsonviewer .format-container .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .format-container .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .format-container .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .format-container .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .format-container .toolbar{line-height:23px}.monkey-jsonviewer .format-container .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .format-container .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .format-container .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .format-container .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .format-container .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .format-container .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .format-container .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .format-container .rightbox>div ul li{font-size:12px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .format-container .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .format-container .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .format-container .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .format-container .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .format-container .tabs-container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .format-container .tabs-container>div{display:none}.monkey-jsonviewer .format-container .tabs-container>div.active{display:block}.monkey-jsonviewer .format-container .tabs-container #formatBox{padding:5px 8px}.monkey-jsonviewer .format-container .tabs-container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-jsonviewer .format-container .tabs-container #rawTextBox pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .format-container .jsonp{color:#93983a}.monkey-jsonviewer .format-container ul.json-items{padding:0;margin:0 0 0 2px;list-style-type:none;border-left:1px dotted #5d6d7e}.monkey-jsonviewer .format-container ul.json-items li{padding-left:20px}.monkey-jsonviewer .format-container .json-key{color:#910f93;cursor:pointer}.monkey-jsonviewer .format-container .json-string,.monkey-jsonviewer .format-container .json-string a{color:#2e7c16}.monkey-jsonviewer .format-container .json-bigint,.monkey-jsonviewer .format-container .json-number{color:#164ff1}.monkey-jsonviewer .format-container .json-boolean{color:#c41a16}.monkey-jsonviewer .format-container .json-null{color:#228fec}.monkey-jsonviewer .format-container .json-color{width:.75em;height:.75em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.monkey-jsonviewer .format-container .json-comma{font-family:Courier New,monospace}.monkey-jsonviewer .format-container a.json-toggle{opacity:.2;color:inherit;position:relative;text-decoration:none}.monkey-jsonviewer .format-container a.json-toggle:hover{opacity:.35}.monkey-jsonviewer .format-container a.json-toggle:active{opacity:.5}.monkey-jsonviewer .format-container a.json-toggle:focus{outline:none}.monkey-jsonviewer .format-container a.json-toggle:before{width:0;height:0;left:-5px;content:"";position:relative;border-style:solid;display:inline-block;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.monkey-jsonviewer .format-container a.json-toggle.collapsed:before{transform:rotate(0)}.monkey-jsonviewer .format-container a.json-placeholder{padding:0 .5em;font-size:12px;color:#ccc;text-decoration:none}.monkey-jsonviewer .format-container a.json-placeholder:hover{text-decoration:underline}.monkey-jsonviewer .format-container .json-object-bracket{color:#6d9331;font-weight:700}.monkey-jsonviewer .format-container .json-array-bracket{color:#8e9331;font-weight:700}.monkey-jsonviewer .format-container #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .format-container #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .format-container #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .format-container #mindBox jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .format-container #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .format-container #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .format-container #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .format-container #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .format-container #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .light .json-key{color:#0040cf}.monkey-jsonviewer .light .json-string,.monkey-jsonviewer .light .json-string a{color:#a31515}.monkey-jsonviewer .light .json-bigint,.monkey-jsonviewer .light .json-number{color:#0b7500}.monkey-jsonviewer .light .json-boolean{color:#00f}.monkey-jsonviewer .light .json-null{color:#05f}.monkey-jsonviewer body.dark .format-container li,.monkey-jsonviewer body.dark .format-container pre,.monkey-jsonviewer body.dark .format-container td:first-child,.monkey-jsonviewer body.dark_plus .format-container li,.monkey-jsonviewer body.dark_plus .format-container pre,.monkey-jsonviewer body.dark_plus .format-container td:first-child{color:#ccc}.monkey-jsonviewer body.dark .format-container .panel,.monkey-jsonviewer body.dark_plus .format-container .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer body.dark .format-container .panel>div,.monkey-jsonviewer body.dark_plus .format-container .panel>div{border-bottom-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark .format-container .panel .toolbar-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .panel .tabs-item,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer body.dark .format-container .panel .tabs-item:hover,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer body.dark .format-container .panel .tabs-item.active,.monkey-jsonviewer body.dark_plus .format-container .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer body.dark .format-container .searchbox input,.monkey-jsonviewer body.dark_plus .format-container .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer body.dark .format-container .searchbox .clear,.monkey-jsonviewer body.dark_plus .format-container .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer body.dark .format-container .rightbox>div span:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer body.dark .format-container .rightbox .tippy-box li:hover,.monkey-jsonviewer body.dark_plus .format-container .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer body.dark .format-container .jsonp,.monkey-jsonviewer body.dark_plus .format-container .jsonp{color:#f1d700}.monkey-jsonviewer body.dark .format-container .json-toggle,.monkey-jsonviewer body.dark_plus .format-container .json-toggle{opacity:.35}.monkey-jsonviewer body.dark .format-container .json-toggle:hover,.monkey-jsonviewer body.dark_plus .format-container .json-toggle:hover{opacity:.5}.monkey-jsonviewer body.dark .format-container jmnode,.monkey-jsonviewer body.dark_plus .format-container jmnode{filter:brightness(2)}.monkey-jsonviewer body.dark .format-container jmexpander,.monkey-jsonviewer body.dark_plus .format-container jmexpander{background-color:#dfdfdf}.monkey-jsonviewer body.dark .format-container .json-tree-table tr:hover,.monkey-jsonviewer body.dark_plus .format-container .json-tree-table tr:hover{background-color:#353b48}.monkey-jsonviewer body.dark .format-container .json-tree-table-arrow,.monkey-jsonviewer body.dark_plus .format-container .json-tree-table-arrow{color:#fff;opacity:.35}.monkey-jsonviewer body.dark .format-container .json-tree-table-arrow:hover,.monkey-jsonviewer body.dark_plus .format-container .json-tree-table-arrow:hover{opacity:.5}.monkey-jsonviewer body.dark .tabs-container{background-color:#252526}.monkey-jsonviewer body.dark .json-object-bracket{color:#ce70d6}.monkey-jsonviewer body.dark .json-array-bracket{color:#f1d700}.monkey-jsonviewer body.dark .json-key{color:#9cdcfe}.monkey-jsonviewer body.dark .json-string,.monkey-jsonviewer body.dark .json-string a{color:#ce9178}.monkey-jsonviewer body.dark .json-bigint,.monkey-jsonviewer body.dark .json-number{color:#b5cea8}.monkey-jsonviewer body.dark .json-boolean{color:#358cd6}.monkey-jsonviewer body.dark .json-null{color:#569cd6}.monkey-jsonviewer body.dark_plus .tabs-container{background-color:#1e1f22}.monkey-jsonviewer body.dark_plus .json-object-bracket{color:#bb9667}.monkey-jsonviewer body.dark_plus .json-array-bracket{color:#bbbda3}.monkey-jsonviewer body.dark_plus .json-key{color:#c77dbb}.monkey-jsonviewer body.dark_plus .json-string,.monkey-jsonviewer body.dark_plus .json-string a{color:#6aab73}.monkey-jsonviewer body.dark_plus .json-bigint,.monkey-jsonviewer body.dark_plus .json-number{color:#28aab4}.monkey-jsonviewer body.dark_plus .json-boolean{color:#ce8951}.monkey-jsonviewer body.dark_plus .json-null{color:#c78d61}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}/**
+(e=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const o=document.createElement("style");o.textContent=e,document.head.append(o)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .hidden{display:none!important}.monkey-jsonviewer .jsonp{color:#93983a}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.monkey-jsonviewer .json-viewer-layout{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column}.monkey-jsonviewer .json-viewer-layout .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .json-viewer-layout .tabs,.monkey-jsonviewer .json-viewer-layout .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .json-viewer-layout .tabs>div,.monkey-jsonviewer .json-viewer-layout .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .tabs>div:hover,.monkey-jsonviewer .json-viewer-layout .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .json-viewer-layout .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .json-viewer-layout .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .json-viewer-layout .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .json-viewer-layout .toolbar{line-height:23px}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:12px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIGZpbGw9InJnYmEoMTM1LCAxMzUsIDEzNywgMC45KSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTIgMTIiPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgb3BhY2l0eT0iLjQiIGQ9Ik01IDkuMmwyIDEuNlY2LjFMOC41NSA0aC01LjFMNSA2LjF2My4xeiIvPgogIDxwYXRoIGZpbGw9ImNvbnRleHQtZmlsbCIgZD0iTTEuMTggMi42QTEgMSAwIDAgMSAyIDFIMTBhMSAxIDAgMCAxIC44IDEuNkw4IDYuNHY0LjgyYzAgLjYzLS43Mi45OC0xLjIyLjZsLTIuNS0xLjk5QS43NS43NSAwIDAgMSA0IDkuMjVWNi40MUwxLjE4IDIuNnpNMiAyTDUgNi4wOXYzLjA0bDIgMS41OVY2LjA5TDEwLjAxIDJIMnoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/svg+xml;base64,PCEtLSBUaGlzIFNvdXJjZSBDb2RlIEZvcm0gaXMgc3ViamVjdCB0byB0aGUgdGVybXMgb2YgdGhlIE1vemlsbGEgUHVibGljCiAgIC0gTGljZW5zZSwgdi4gMi4wLiBJZiBhIGNvcHkgb2YgdGhlIE1QTCB3YXMgbm90IGRpc3RyaWJ1dGVkIHdpdGggdGhpcwogICAtIGZpbGUsIFlvdSBjYW4gb2J0YWluIG9uZSBhdCBodHRwOi8vbW96aWxsYS5vcmcvTVBMLzIuMC8uIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGZpbGw9ImNvbnRleHQtZmlsbCIgZmlsbC1vcGFjaXR5PSJjb250ZXh0LWZpbGwtb3BhY2l0eSI+CiAgPHBhdGggZD0iTTYuNTg2IDhsLTIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNCAxLjQxNEw4IDkuNDE0bDIuMjkzIDIuMjkzYTEgMSAwIDAgMCAxLjQxNC0xLjQxNEw5LjQxNCA4bDIuMjkzLTIuMjkzYTEgMSAwIDEgMC0xLjQxNC0xLjQxNEw4IDYuNTg2IDUuNzA3IDQuMjkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEw2LjU4NiA4ek04IDBhOCA4IDAgMSAxIDAgMTZBOCA4IDAgMCAxIDggMHoiLz4KPC9zdmc+Cg==)}.monkey-jsonviewer .json-viewer-layout .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .json-viewer-layout .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li{font-size:12px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .json-viewer-layout .container>div{display:none}.monkey-jsonviewer .json-viewer-layout .container>div.active{display:block}.monkey-jsonviewer .json-viewer-layout .container #formatBox{padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .json-viewer-layout #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .json-viewer-layout #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .json-viewer-layout #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .dark-theme .json-viewer-layout li,.monkey-jsonviewer .dark-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-theme .json-viewer-layout td:first-child,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout td:first-child{color:#ccc}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel>div,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel>div{border-bottom-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .toolbar-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item.active,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox input,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox .clear,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox>div span:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .jsonp,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .jsonp{color:#f1d700}.monkey-jsonviewer .dark-theme .json-viewer-layout jmnode,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmnode{filter:brightness(2)}.monkey-jsonviewer .dark-theme .json-viewer-layout jmexpander,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmexpander{background-color:#dfdfdf}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.json-formater-arrow{width:0;opacity:.2;display:inline-block}.json-formater-arrow:hover{opacity:.35}.json-formater-arrow:before{width:0;height:0;left:-13px;content:"";cursor:pointer;position:relative;border-style:solid;display:inline-block;vertical-align:middle;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.json-formater-closed .json-formater-arrow:before{transform:rotate(0)}.json-formater-placeholder{color:#ccc;cursor:pointer;font-size:12px;margin-left:.5em}.json-formater-placeholder span:hover{text-decoration:underline}.json-color{width:.75em;height:.75em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.json-comma{font-family:Courier New,monospace}.json-colon,.json-comma{margin:0 .25em 0 .1em}.json-object-bracket{color:#6d9331;font-weight:700}.json-array-bracket{color:#8e9331;font-weight:700}.default-theme .json-key{color:#910f93;cursor:pointer}.default-theme .json-string,.default-theme .json-string a{color:#2e7c16}.default-theme .json-bigint,.default-theme .json-number{color:#164ff1}.default-theme .json-boolean{color:#c41a16}.default-theme .json-null{color:#228fec}.light-theme .json-key{color:#0040cf}.light-theme .json-string,.light-theme .json-string a{color:#a31515}.light-theme .json-bigint,.light-theme .json-number{color:#0b7500}.light-theme .json-boolean{color:#00f}.light-theme .json-null{color:#05f}.dark-theme .json-colon,.dark-theme .json-comma,.dark-plus-theme .json-colon,.dark-plus-theme .json-comma{color:#ccc}.dark-theme .json-formater-arrow,.dark-plus-theme .json-formater-arrow{color:#fff;opacity:.35}.dark-theme .json-formater-arrow:hover,.dark-plus-theme .json-formater-arrow:hover{opacity:.5}.dark-theme{background-color:#252526}.dark-theme .json-object-bracket{color:#ce70d6}.dark-theme .json-array-bracket{color:#f1d700}.dark-theme .json-key{color:#9cdcfe}.dark-theme .json-string,.dark-theme .json-string a{color:#ce9178}.dark-theme .json-bigint,.dark-theme .json-number{color:#b5cea8}.dark-theme .json-boolean{color:#358cd6}.dark-theme .json-null{color:#569cd6}.dark-plus-theme{background-color:#1e1f22}.dark-plus-theme .json-object-bracket{color:#bb9667}.dark-plus-theme .json-array-bracket{color:#bbbda3}.dark-plus-theme .json-key{color:#c77dbb}.dark-plus-theme .json-string,.dark-plus-theme .json-string a{color:#6aab73}.dark-plus-theme .json-bigint,.dark-plus-theme .json-number{color:#28aab4}.dark-plus-theme .json-boolean{color:#ce8951}.dark-plus-theme .json-null{color:#c78d61}/**
 * @license BSD
 * @copyright 2014-2023 hizzgdev@163.com
 * 
@@ -37,13 +37,13 @@
 *   https://github.com/hizzgdev/jsmind/
 */.jsmind-inner{position:relative;overflow:auto;width:100%;height:100%;outline:none}.jsmind-inner{moz-user-select:-moz-none;-moz-user-select:none;-o-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.jsmind-inner canvas{position:absolute}svg.jsmind{position:absolute;z-index:1}canvas.jsmind{position:absolute;z-index:1}jmnodes{position:absolute;z-index:2;background-color:#0000}jmnode{position:absolute;cursor:default;max-width:400px}jmexpander{position:absolute;width:11px;height:11px;display:block;overflow:hidden;line-height:12px;font-size:10px;text-align:center;border-radius:6px;border-width:1px;border-style:solid;cursor:pointer}.jmnode-overflow-wrap jmnodes{min-width:420px}.jmnode-overflow-hidden jmnode{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}jmnode{padding:10px;background-color:#fff;color:#333;border-radius:5px;box-shadow:1px 1px 1px #666;font:16px/1.125 Verdana,Arial,Helvetica,sans-serif}jmnode:hover{box-shadow:2px 2px 8px #000;background-color:#ebebeb;color:#333}jmnode.selected{background-color:#11f;color:#fff;box-shadow:2px 2px 8px #000}jmnode.root{font-size:24px}jmexpander{border-color:gray}jmexpander:hover{border-color:#000}@media screen and (max-device-width: 1024px){jmnode{padding:5px;border-radius:3px;font-size:14px}jmnode.root{font-size:21px}}jmnodes.theme-primary jmnode{background-color:#428bca;color:#fff;border-color:#357ebd}jmnodes.theme-primary jmnode:hover{background-color:#3276b1;border-color:#285e8e}jmnodes.theme-primary jmnode.selected{background-color:#f1c40f;color:#fff}jmnodes.theme-warning jmnode{background-color:#f0ad4e;border-color:#eea236;color:#fff}jmnodes.theme-warning jmnode:hover{background-color:#ed9c28;border-color:#d58512}jmnodes.theme-warning jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-danger jmnode{background-color:#d9534f;border-color:#d43f3a;color:#fff}jmnodes.theme-danger jmnode:hover{background-color:#d2322d;border-color:#ac2925}jmnodes.theme-danger jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-success jmnode{background-color:#5cb85c;border-color:#4cae4c;color:#fff}jmnodes.theme-success jmnode:hover{background-color:#47a447;border-color:#398439}jmnodes.theme-success jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-info jmnode{background-color:#5dc0de;border-color:#46b8da;color:#fff}jmnodes.theme-info jmnode:hover{background-color:#39b3d7;border-color:#269abc}jmnodes.theme-info jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-greensea jmnode{background-color:#1abc9c;color:#fff}jmnodes.theme-greensea jmnode:hover{background-color:#16a085}jmnodes.theme-greensea jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-nephrite jmnode{background-color:#2ecc71;color:#fff}jmnodes.theme-nephrite jmnode:hover{background-color:#27ae60}jmnodes.theme-nephrite jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-belizehole jmnode{background-color:#3498db;color:#fff}jmnodes.theme-belizehole jmnode:hover{background-color:#2980b9}jmnodes.theme-belizehole jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-wisteria jmnode{background-color:#9b59b6;color:#fff}jmnodes.theme-wisteria jmnode:hover{background-color:#8e44ad}jmnodes.theme-wisteria jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-asphalt jmnode{background-color:#34495e;color:#fff}jmnodes.theme-asphalt jmnode:hover{background-color:#2c3e50}jmnodes.theme-asphalt jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-orange jmnode{background-color:#f1c40f;color:#fff}jmnodes.theme-orange jmnode:hover{background-color:#f39c12}jmnodes.theme-orange jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-pumpkin jmnode{background-color:#e67e22;color:#fff}jmnodes.theme-pumpkin jmnode:hover{background-color:#d35400}jmnodes.theme-pumpkin jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-pomegranate jmnode{background-color:#e74c3c;color:#fff}jmnodes.theme-pomegranate jmnode:hover{background-color:#c0392b}jmnodes.theme-pomegranate jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-clouds jmnode{background-color:#ecf0f1;color:#333}jmnodes.theme-clouds jmnode:hover{background-color:#bdc3c7}jmnodes.theme-clouds jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-asbestos jmnode{background-color:#95a5a6;color:#fff}jmnodes.theme-asbestos jmnode:hover{background-color:#7f8c8d}jmnodes.theme-asbestos jmnode.selected{background-color:#11f;color:#fff}.scroll-top{width:48px;height:48px;z-index:999;position:fixed;right:30px;bottom:30px;display:none;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA39JREFUaEPtmV2ITVEUx39rJjT5KPKC5DPKK6UGZZ7Eq0whNUiKFPfcKW9mnmjm7ssLaSLygEx5xItMESnKC4V8FV4IJUkyS+fMHZ07zjl3733PvT6a+3S6Z629/r+99sfa+wgpPw1YDtxLe9/k/1eI4X5STMkSokXWNlloYjgpMZSmIxPgbxBfS8M4QK0eavT78Qw0uodrtd+wDGjAMqBcEVAQw6NaYnzeNwRAi2xBOQlMrYj6jLJTygz6iMzyyR1Ai+xCGUgMqnTmDZErgBYoIJjMXhY2S4mLeWUiNwAt0INwyEqY0iNleq1saxjlAqAB64BrToKEHVLijJNPgnHdALqPaUziOsoKRzGfaKFD+nng6FdlXj+Ay9AZq1Q5L2W2/jEA3c8sWqOSe3aCiK/A3cr/K4G2FKEbxXDZF6KuDKROXKWXFvqlxJdQmBaZzDDdKZP8thhW/RmAgKfA4qrgSq+U6UkSlAostEuJOz4Q3hnQgPXAld+CCh1pB5DogKTcSBAalhpHmw1wGtgxJuhbMczJEqIBbxLmzFUxbGg2gCYE9AVADF6jwctJDzKd73xI7DG/IQQTmCFH+OiaBT+AAyykhWcpBZv7JA4bGmaRHOV5cwBqX7mc5Qe9coyX0TK6n/m0RnVSV4bA1KuTLCi/DBTYhHCpRm+Fe8Bo/b8JmJxp71lqOwNowB7guGuqLe33iuGEpW1k5gTgVDK7qIjbZmyESU1aA1TOuA99dTn5CQulxAsbH3uAeqpOGyXVNrvEcMrGzR4gIGnjsonhYzMkhg4bx3EAm17ysGlIBh4DSzzE+LgMiGG3jaPLEApv2Q7YNFq3jcOmZg9gt/u6aH8PzEx0aGWu9PHapjFrgKimCaIDTHiQqf4pNxHW2AT8ZaMEiZdgSreUKdm25QRQgRi7nIZzI7xZcPmeNkAL5xjmVpVQx1049HUGiCAKFBH6K8GjFUP3MIW2CGJpjd4bFEPnmM54grA761tYWpteAJXgy1A6w6p09Opcu1nED7ZlAcQP/BqwGZjORAblMO9sh03czhsgLZgW6EL4JoYL0b0RTArPBfFnH6G5ZyAVYKTkGBlWQVR2bxDDgvjzvwQQXqGsDQ/sGkTXKdHzOECsB3LtjdjKMjqE/qMMjJwn5olh+98+hM6gvAqXy0aN+4Yuo/HG/weAPmC1GNrzHDbxtn4Coc0pQNdM3UAAAAAASUVORK5CYII=)} `);
 
-System.addImportMap({ imports: {"jquery":"user:jquery","highlight.js":"user:highlight.js","beautifier":"user:beautifier","jsmind":"user:jsmind"} });
-System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);return _})());
+System.addImportMap({ imports: {"highlight.js":"user:highlight.js","beautifier":"user:beautifier","jquery":"user:jquery","jsmind":"user:jsmind"} });
 System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=_);return _})());
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
+System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-Cu8UGC0p.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-CjbqZLjh.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,13 +55,9 @@ System.register("./__entry.js", ['./__monkey.entry-Cu8UGC0p.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-Cu8UGC0p.js", ['jquery'], (function (exports, module) {
+System.register("./__monkey.entry-CjbqZLjh.js", [], (function (exports, module) {
   'use strict';
-  var $;
   return {
-    setters: [module => {
-      $ = module.default;
-    }],
     execute: (function () {
 
       const scriptRel = function detectScriptRel() {
@@ -1979,7 +1975,7 @@ System.register("./__monkey.entry-Cu8UGC0p.js", ['jquery'], (function (exports, 
         LAYUI_CSS: "https://unpkg.com/layui@2.7.6/dist/css/layui.css"
       });
       const layout = `
-<div class="format-container">
+<div class="json-viewer-layout">
     <div class="panel">
         <div class="tabs">
             <div class="tabs-item btn active" id="viewFormater">JSON 格式化</div>
@@ -2015,7 +2011,7 @@ System.register("./__monkey.entry-Cu8UGC0p.js", ['jquery'], (function (exports, 
                         <li data-type="theme" data-value="default">默认</li>
                         <li data-type="theme" data-value="light">浅色</li>
                         <li data-type="theme" data-value="dark">暗黑</li>
-                        <li data-type="theme" data-value="dark_plus">暗黑+</li>
+                        <li data-type="theme" data-value="dark-plus">暗黑+</li>
                     </ul>
                 </template>
             </div>
@@ -2030,7 +2026,7 @@ System.register("./__monkey.entry-Cu8UGC0p.js", ['jquery'], (function (exports, 
             </div>
         </div>
     </div>
-    <div class="tabs-container">
+    <div class="container">
         <div class="active" id="formatBox"></div>
         <div id="mindBox"></div>
         <div id="rawTextBox">
@@ -2063,11 +2059,21 @@ System.register("./__monkey.entry-Cu8UGC0p.js", ['jquery'], (function (exports, 
           __vitePreload(() => module.import('./index-mjXXc9V1-CzTRTL8e.js'), void 0 );
           return;
         }
-        $("pre").hide();
-        $("html").addClass("monkey-jsonviewer");
+        document.querySelector("pre").style.display = "none";
+        document.querySelector("html").classList.add("monkey-jsonviewer");
         window.postMessage({ addStyle: true });
-        const viewport = '<meta name="viewport" content="width=device-width",initial-scale=1,maximum-scale=1,user-scalable=no">';
-        $(document.head).append(`<link href="${LAYUI_CSS}" rel="stylesheet"/>`).append(`<script src="${LAYUI_JS}" type="text/javascript"><\/script>`).append(viewport);
+        const meta = document.createElement("meta");
+        meta.setAttribute("name", "viewport");
+        meta.setAttribute("content", "width=device-width, initial-scale=1.0");
+        document.head.appendChild(meta);
+        const link = document.createElement("link");
+        link.setAttribute("href", LAYUI_CSS);
+        link.setAttribute("rel", "stylesheet");
+        document.head.appendChild(link);
+        const script = document.createElement("script");
+        script.setAttribute("src", LAYUI_JS);
+        script.setAttribute("type", "text/javascript");
+        document.head.appendChild(script);
         _GM_addStyle(`
     jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
     jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
@@ -2077,7 +2083,7 @@ System.register("./__monkey.entry-Cu8UGC0p.js", ['jquery'], (function (exports, 
             _unsafeWindow.RAW_TEXT
           );
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-PL1hKweg-DoENdqki.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-v2noDGWu-Dc0wG4R6.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-D3l8MoSf-Dhsxm64a.js'), void 0 ));
+          __vitePreload(() => module.import('./index-CA1Xmbxv-DJyVQ1Q6.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DpnWle3q-DqQISagS.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
         });
       })();
 
@@ -2158,7 +2164,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-Cu8UGC0p.js'], (function (exports, module) {
+System.register("./index-CA1Xmbxv-DJyVQ1Q6.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-CjbqZLjh.js'], (function (exports, module) {
   'use strict';
   var $, tippy, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
@@ -2175,281 +2181,153 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
     }],
     execute: (function () {
 
-      (function($2) {
-        function isColor(colorString) {
-          const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-          const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
-          const rgbaRegex = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
-          return hexCodeRegex.test(colorString) || rgbRegex.test(colorString) || rgbaRegex.test(colorString);
-        }
-        function isUrl(str) {
-          const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-          return regexp.test(str);
-        }
-        function getType(value) {
-          return Object.prototype.toString.call(value).match(/\s(.+)]/)[1].toLowerCase();
-        }
-        function escape(str) {
-          return str.replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-        function isCollapsable(arg) {
-          return arg && typeof arg === "object" && Object.keys(arg).length > 0;
-        }
-        function json2html(json, parentPath = "Root") {
-          let html = "";
-          const type = getType(json);
-          switch (type) {
-            case "array":
-            case "object":
-              let len = json.length || Object.keys(json).length;
-              if (len > 0) {
-                html += `<span class="json-${type}-bracket">${type === "array" ? "[" : "{"}</span><ul class="json-items" data-type="${type}">`;
-                for (var key in json) {
-                  if (Object.prototype.hasOwnProperty.call(json, key)) {
-                    const comma = --len > 0 ? "<span class='json-comma'>,</span>" : "";
-                    const jsonPath = parentPath + "." + key;
-                    const collapse = isCollapsable(json[key]) ? '<a href class="json-toggle"></a>' : "";
-                    const next = json2html(json[key], jsonPath);
-                    let keyVal = next;
-                    if (type !== "array") {
-                      keyVal = `<span class="json-key">"${key}"</span>: ${next}`;
-                    }
-                    html += [
-                      `<li json-path="${jsonPath}">`,
-                      collapse,
-                      keyVal,
-                      comma,
-                      "</li>"
-                    ].join("");
-                  }
-                }
-                html += `</ul><span class="json-${type}-bracket">${type === "array" ? "]" : "}"}</span>`;
-              } else {
-                html += `<span class="json-${type}-bracket">${type === "array" ? "[]" : "{}"}</span>`;
-              }
-              break;
-            default:
-              if (isUrl(json)) {
-                html += `<a target="_blank" href="${json}" class="json-string">"${json}"</a>`;
-              } else if (isColor(json)) {
-                html += `<span style="background-color: ${json}" class="json-color"></span>`;
-                html += `<span class="json-${type}">"${json}"</span>`;
-              } else {
-                json = type === "string" ? `"${escape(json)}"` : json;
-                html += `<span class="json-${type}">${json}</span>`;
-              }
-              break;
-          }
-          return html;
-        }
-        $2.fn.jsonViewer = function(json, jsonpFn) {
-          return this.each(function() {
-            var html = json2html(json);
-            if (jsonpFn !== void 0 && jsonpFn !== null) {
-              html = `<div class="jsonp">${jsonpFn}(</div>${html}<div class="jsonp">)</div>`;
-            }
-            $2(this).html(html);
-            $2(this).off("click");
-            $2(this).on("click", "a.json-toggle", function() {
-              var target = $2(this).toggleClass("collapsed").siblings(".json-items");
-              target.toggle();
-              if (target.is(":visible")) {
-                target.siblings("a.json-placeholder").remove();
-              } else {
-                const type = target.data("type");
-                var count = target.children('li:not([class*="hidden"])').length;
-                var placeholder = count + (count > 1 ? " items" : " item");
-                if (type === "object") {
-                  placeholder = count + (count > 1 ? " keys" : " key");
-                }
-                target.after(`<a href class="json-placeholder">${placeholder}</a>`);
-              }
-              return false;
-            });
-            $2(this).on("click", "a.json-placeholder", function() {
-              $2(this).siblings("a.json-toggle").trigger("click");
-              $2(this).siblings("a.json-placeholder").remove();
-              return false;
-            });
-          });
-        };
-      })($);
-      const cssText = `
-.json-tree-table {
-  margin-left: 20px;
-  border-collapse: collapse;
-  width: -webkit-fill-available;
-}
-
-.json-tree-table b {
-  font-weight: normal;
-  margin-right: 0.15em;
-}
-
-.json-tree-table tr.selected,
-.json-tree-table tr.selected td,
-.json-tree-table tr.selected td b,
-.json-tree-table tr.selected td a{
-    color: #fff !important;
-    background-color: #3875d7;
-}
-
-.json-tree-table tr:hover {
-  background-color: #f0f9fe;
-}
-
-.json-tree-table tr td:first-child {
-  width: 120px;
-}
-
-.json-tree-table-arrow {
-  width: 0;
-  opacity: 0.2;
-  display: inline-block;
-}
-
-.json-tree-table-arrow:hover {
-  opacity: 0.35;
-}
-
-.json-tree-table-arrow::before {
-  width: 0;
-  height: 0;
-  left: -13px;
-  content: "";
-  cursor: pointer;
-  position: relative;
-  border-style: solid;
-  display: inline-block;
-  vertical-align: middle;
-  transform: rotate(90deg);
-  border-width: 5px 0 5px 8px;
-  transition: transform 0.3s ease;
-  border-color: transparent transparent transparent currentColor;
-}
-
-.json-tree-table-closed .json-tree-table-arrow::before {
-  transform: rotate(0deg);
-}
-
-.json-tree-table-placeholder{
-  color: #ccc;
-  cursor: pointer;
-  font-size: 12px;
-  margin-left: 0.5em;
-}
-
-.json-tree-table-placeholder span:hover{
-  text-decoration: underline;
-}
-`;
-      const DEFAULTS = {
-        json: null,
-        container: null,
-        onCollapse: null,
-        onExpand: null,
-        expander: null,
-        collapser: null
-      };
-      class JsonToTable {
+      class JsonViewer {
         constructor(options) {
-          this.options = Object.assign(DEFAULTS, options);
+          const defaults = {
+            json: null,
+            theme: "default",
+            container: null,
+            onExpand: null,
+            expander: null,
+            collapser: null,
+            onCollapse: null
+          };
+          this.options = Object.assign(defaults, options);
           if (!options.container) {
             throw new Error("Container: dom element is required");
           }
           if (!options.json) {
             throw new Error("json: json is required");
           }
-          if (typeof options.json !== "object") {
-            throw new Error("json: Need to use JSON.parse conversion");
-          }
           this.render();
-          this.bindEvent();
+          this.bind();
+          this.setTheme(this.options.theme);
+        }
+        setTheme(theme) {
+          const classList = document.body.classList;
+          classList.forEach((clas) => {
+            if (clas.includes("theme")) {
+              classList.remove(clas);
+            }
+          });
+          classList.add(`${theme}-theme`);
         }
         render() {
           const { json, container } = this.options;
           this.$container = container instanceof HTMLElement ? container : document.querySelector(container);
-          const style = this.createElement("style");
-          style.textContent = cssText;
-          document.head.appendChild(style);
-          this.$table = this.createElement("table");
-          this.$table.setAttribute("class", "json-tree-table");
-          this.createNode(json, 0, "Root", "Root");
-          this.$container.appendChild(this.$table);
+          this.$box = this.createElement("div");
+          this.$box.setAttribute("class", `json-view-formater`);
+          this.createNode(this.$box, json, "Root", "Root");
+          this.$container.appendChild(this.$box);
         }
-        /**
-         * 创建节点
-         * @param {Object} json
-         * @param {Boolean} isRoot 是否根节点
-         * @param {Number} depth 递归层级
-         * @param {String} pChain 上级json-path
-         */
-        createNode(json, depth, pChain, parentId) {
-          for (const key in json) {
-            let value = json[key];
-            const type = this.getType(value);
-            const jsonPath = `${pChain}.${key}`;
-            const item = this.createItem(key, value, type, depth, jsonPath, parentId);
-            this.$table.appendChild(item);
-            if (this.canIterate(value)) {
-              const nodeId = item.dataset.nodeId;
-              this.createNode(value, depth + 1, jsonPath, nodeId);
+        createNode(box, json, pChain, pid) {
+          const type2 = this.getType(json);
+          switch (type2) {
+            case "array":
+            case "object":
+              let length = Object.keys(json).length;
+              if (length > 0) {
+                this.createObjectNode(box, type2, json, pChain, pid);
+              } else {
+                const emptyNode = this.createEmptyNode(type2);
+                box.appendChild(emptyNode);
+              }
+              break;
+            default:
+              const valueNode = this.creatValueNode(type2, json);
+              box.appendChild(valueNode);
+              break;
+          }
+        }
+        createObjectNode(box, type2, json, pChain, pid) {
+          const startBracket = this.createStartBracket(type2);
+          box.appendChild(startBracket);
+          if (pChain !== "Root" && this.canIterate(json)) {
+            const span = this.createElement("span", {
+              class: "json-formater-placeholder"
+            });
+            span.addEventListener("click", () => {
+              this.show(box);
+            });
+            box.appendChild(span);
+          }
+          let length = Object.keys(json).length;
+          for (var key in json) {
+            if (Object.prototype.hasOwnProperty.call(json, key)) {
+              const value = json[key];
+              const id = this.random();
+              const canComma = --length > 0;
+              const jsonPath = pChain + "." + key;
+              const node = this.createElement("div", {
+                "data-node-id": id,
+                "data-node-pid": pid,
+                "json-path": jsonPath,
+                style: `padding-left: 24px`,
+                "data-type": this.getType(value),
+                class: this.isIterate(value) ? "json-formater-opened" : null
+              });
+              this.createKeyNode(node, key, value);
+              this.createNode(node, value, jsonPath, id);
+              if (canComma) {
+                const comma = this.createElement("span", {
+                  class: "json-comma"
+                });
+                comma.textContent = ",";
+                node.appendChild(comma);
+              }
+              box.appendChild(node);
             }
           }
+          const endBracket = this.createEndBracket(type2);
+          box.appendChild(endBracket);
         }
-        createItem(key, value, type, depth, jsonPath, parentId) {
-          const id = key + "_" + Math.random();
-          const isIterate = this.isIterate(value);
-          const canIterate = this.canIterate(value);
-          const node = this.createElement("tr", {
-            "data-type": type,
-            "data-node-id": id,
-            "data-node-pid": parentId,
-            class: "json-tree-table-opened"
+        createStartBracket(type2) {
+          const span = this.createElement("span", {
+            class: `json-${type2}-bracket`
           });
-          const leftNode = this.createLeftNode(key, value, depth, jsonPath);
-          node.appendChild(leftNode);
-          if (!isIterate) {
-            const rightNode = this.createRightNode(type, value);
-            node.appendChild(rightNode);
-          }
-          if (isIterate && !canIterate) {
-            const rightNode = this.createEmptyRightNode(type);
-            node.appendChild(rightNode);
-          }
-          return node;
+          span.textContent = type2 === "array" ? "[" : "{";
+          return span;
         }
-        createLeftNode(key, value, depth, jsonPath) {
-          const node = this.createElement("td", {
-            "json-path": jsonPath,
-            colspan: this.canIterate(value) ? 2 : 0,
-            style: `padding-left: ${depth * 20}px`
+        createEndBracket(type2) {
+          const span = this.createElement("span", {
+            class: `json-${type2}-bracket`
           });
-          const b = this.createElement("b", {
-            class: "json-key"
+          span.textContent = type2 === "array" ? "]" : "}";
+          return span;
+        }
+        createBracket() {
+          const span = this.createElement("span", {
+            class: `json-${type}-bracket`
           });
-          b.textContent = `${key}`;
-          node.appendChild(b);
-          const textNode = document.createTextNode(":");
-          node.appendChild(textNode);
+          span.textContent = type === "array" ? "[]" : "{}";
+          return span;
+        }
+        createKeyNode(node, key, value) {
           if (this.canIterate(value)) {
-            const icon = this.createElement("span", {
-              class: "json-tree-table-arrow"
+            const arrow = this.createElement("span", {
+              class: "json-formater-arrow"
             });
-            node.prepend(icon);
-            const span = this.createElement("span", {
-              class: "json-tree-table-placeholder"
-            });
-            node.appendChild(span);
+            node.appendChild(arrow);
           }
-          return node;
+          if (!/^\d+$/.test(key)) {
+            const span = this.createElement("span", {
+              class: "json-key"
+            });
+            span.textContent = `"${key}"`;
+            node.appendChild(span);
+            const colon = this.createElement("span", {
+              class: "json-colon"
+            });
+            colon.textContent = ":";
+            node.appendChild(colon);
+          }
         }
-        createRightNode(type, value) {
-          const node = this.createElement("td", {
-            class: `json-${type}`
+        creatValueNode(type2, value) {
+          const node = this.createElement("span", {
+            class: `json-${type2}`
           });
           node.textContent = `${value}`;
-          if (type === "string") {
+          if (type2 === "string") {
             value = this.escape(value);
             node.textContent = `"${value}"`;
           }
@@ -2471,11 +2349,392 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
           }
           return node;
         }
-        createEmptyRightNode(type) {
-          const node = this.createElement("td", {
-            class: `json-${type}-bracket`
+        createEmptyNode(type2) {
+          const node = this.createElement("span", {
+            class: `json-${type2}-bracket`
           });
-          node.textContent = type === "array" ? "[]" : "{}";
+          node.textContent = type2 === "array" ? "[]" : "{}";
+          return node;
+        }
+        bind() {
+          this.addEvent(this.options.expander, `click`, () => {
+            this.expandAll();
+          });
+          this.addEvent(this.options.collapser, `click`, () => {
+            this.collapseAll();
+          });
+          const { onExpand, onCollapse } = this.options;
+          this.addEvent(".json-formater-arrow", "click", (e) => {
+            const node = e.currentTarget.parentElement;
+            if (this.hasClass(node, "json-formater-opened")) {
+              this.hide(node);
+              if (onCollapse) onCollapse(node, this);
+            } else {
+              this.show(node);
+              if (onExpand) onExpand(node, this);
+            }
+          });
+        }
+        expandAll() {
+          this.nodes().forEach((node) => {
+            this.show(node.parentElement);
+          });
+        }
+        collapseAll() {
+          this.nodes().forEach((node) => {
+            this.hide(node.parentElement);
+          });
+        }
+        show(node) {
+          this.removeClass(node, "json-formater-closed");
+          this.addClass(node, "json-formater-opened");
+          this.showDescs(node);
+          this.onShow(node);
+        }
+        onShow(node) {
+          const nodeId = node.dataset.nodeId;
+          this.findChildren(node).length;
+          const placeholder = node.querySelector(
+            `*[data-node-id*=${nodeId}] > .json-formater-placeholder`
+          );
+          if (!placeholder) {
+            return;
+          }
+          placeholder.textContent = "";
+        }
+        showDescs(node) {
+          let children = this.findChildren(node);
+          children.forEach((child) => {
+            child.style.display = null;
+          });
+        }
+        hide(node) {
+          this.removeClass(node, "json-formater-opened");
+          this.addClass(node, "json-formater-closed");
+          this.hideDescs(node);
+          this.onHide(node);
+        }
+        onHide(node) {
+          const type2 = node.dataset.type;
+          const nodeId = node.dataset.nodeId;
+          const length = this.findChildren(node).length;
+          const placeholder = node.querySelector(
+            `*[data-node-id*=${nodeId}] > .json-formater-placeholder`
+          );
+          if (!placeholder) {
+            return;
+          }
+          placeholder.textContent = `${length}${length > 1 ? " items " : " item "}`;
+          if (type2 === "object") {
+            placeholder.textContent = `${length}${length > 1 ? " keys " : " key "}`;
+          }
+        }
+        hideDescs(node) {
+          const children = this.findChildren(node);
+          children.forEach((child) => {
+            child.style.display = "none";
+          });
+        }
+        findChildren(node) {
+          const pid = node.dataset.nodeId;
+          return this.$container.querySelectorAll(
+            `*[data-node-pid="${pid}"]:not(.hidden)`
+          );
+        }
+        findByID(id) {
+          return this.$container.querySelector(`*[data-node-id="${id}"]`);
+        }
+        openByID(id) {
+          this.show(this.findByID(id));
+        }
+        closeByID(id) {
+          this.hide(this.findByID(id));
+        }
+        addEvent(selector, event, fn) {
+          document.body.querySelectorAll(selector).forEach((el) => {
+            el.addEventListener(event, fn);
+          });
+        }
+        closest(element, selector) {
+          while (element) {
+            if (element.matches(selector)) {
+              return element;
+            }
+            element = element.parentElement;
+          }
+          return null;
+        }
+        hasClass(element, clas) {
+          return element.classList.contains(clas);
+        }
+        removeClass(element, clas) {
+          element.classList.remove(clas);
+          return this;
+        }
+        addClass(element, clas) {
+          element.classList.add(clas);
+          return this;
+        }
+        nodes() {
+          return this.$container.querySelectorAll(".json-formater-arrow");
+        }
+        /**
+         * 创建元素
+         * @param {String} name 元素名称
+         * @param {Object} attributes 属性
+         */
+        createElement(name, attributes) {
+          const element = document.createElement(name);
+          this.setAttributes(element, attributes);
+          return element;
+        }
+        /**
+         * 设置属性
+         * @param {HTMLElement} element 元素
+         * @param {Object} attributes 属性
+         */
+        setAttributes(element, attributes) {
+          if (!attributes) {
+            return;
+          }
+          for (const name in attributes) {
+            const value = attributes[name];
+            if (value) element.setAttribute(name, attributes[name]);
+          }
+        }
+        /**
+         * 获取数据的类型
+         * @param {Object} value
+         * @return 返回类型 number、object、array、string、null等
+         */
+        getType(value) {
+          return Object.prototype.toString.call(value).match(/\s(.+)]/)[1].toLowerCase();
+        }
+        isIterate(value) {
+          const type2 = this.getType(value);
+          return ["array", "object"].includes(type2);
+        }
+        /**
+         * 是否可迭代
+         * @param {*} value
+         * @returns
+         */
+        canIterate(value) {
+          if (!this.isIterate(value)) {
+            return false;
+          }
+          let len = Object.keys(value).length;
+          return len > 0;
+        }
+        /**
+         * 是否为Url
+         * @param {*} str
+         * @returns
+         */
+        isUrl(str) {
+          const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+          return regexp.test(str);
+        }
+        /**
+         * 转义
+         * @param {*} str
+         * @returns
+         */
+        escape(str) {
+          return str.replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+        isColor(colorString) {
+          const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+          const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
+          const rgbaRegex = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
+          return hexCodeRegex.test(colorString) || rgbRegex.test(colorString) || rgbaRegex.test(colorString);
+        }
+        random() {
+          let randomString = "";
+          const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+          for (let i = 0; i < 10; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            randomString += characters.charAt(randomIndex);
+          }
+          return randomString;
+        }
+      }
+      const cssText = `
+.json-tree-table {
+  border-collapse: collapse;
+  width: -webkit-fill-available;
+}
+
+.json-tree-table b {
+  font-weight: normal;
+  margin-right: 0.15em;
+}
+
+.json-tree-table tr.selected,
+.json-tree-table tr.selected td,
+.json-tree-table tr.selected td b,
+.json-tree-table tr.selected td a {
+  color: #fff !important;
+  background-color: #3875d7;
+}
+
+.json-tree-table tr:hover {
+  background-color: #f0f9fe;
+}
+
+.json-tree-table tr td:first-child {
+  width: 120px;
+}
+
+.dark-theme .json-tree-table tr:hover,
+.dark-plus-theme .json-tree-table tr:hover {
+  background-color: #353b48;
+}
+`;
+      const DEFAULTS = {
+        json: null,
+        theme: "default",
+        container: null,
+        onExpand: null,
+        expander: null,
+        collapser: null,
+        onCollapse: null
+      };
+      class JsonToTable {
+        constructor(options) {
+          this.options = Object.assign(DEFAULTS, options);
+          if (!options.container) {
+            throw new Error("Container: dom element is required");
+          }
+          if (!options.json) {
+            throw new Error("json: json is required");
+          }
+          if (typeof options.json !== "object") {
+            throw new Error("json: Need to use JSON.parse conversion");
+          }
+          this.render();
+          this.bindEvent();
+          this.setTheme(this.options.theme);
+        }
+        setTheme(theme) {
+          const classList = document.body.classList;
+          classList.forEach((clas) => {
+            if (clas.includes("theme")) {
+              classList.remove(clas);
+            }
+          });
+          classList.add(`${theme}-theme`);
+        }
+        render() {
+          const { json, container } = this.options;
+          this.$container = container instanceof HTMLElement ? container : document.querySelector(container);
+          const style = this.createElement("style");
+          style.textContent = cssText;
+          document.head.appendChild(style);
+          this.$table = this.createElement("table");
+          this.$table.setAttribute("class", `json-tree-table`);
+          this.createNode(json, 1, "Root", "Root");
+          this.$container.appendChild(this.$table);
+        }
+        /**
+         * 创建节点
+         * @param {Object} json
+         * @param {Boolean} isRoot 是否根节点
+         * @param {Number} depth 递归层级
+         * @param {String} pChain 上级json-path
+         */
+        createNode(json, depth, pChain, parentId) {
+          for (const key in json) {
+            let value = json[key];
+            const type2 = this.getType(value);
+            const jsonPath = `${pChain}.${key}`;
+            const item = this.createItem(key, value, type2, depth, jsonPath, parentId);
+            this.$table.appendChild(item);
+            if (this.canIterate(value)) {
+              const nodeId = item.dataset.nodeId;
+              this.createNode(value, depth + 1, jsonPath, nodeId);
+            }
+          }
+        }
+        createItem(key, value, type2, depth, jsonPath, parentId) {
+          const id = key + "_" + Math.random();
+          const isIterate = this.isIterate(value);
+          const canIterate = this.canIterate(value);
+          const node = this.createElement("tr", {
+            "data-type": type2,
+            "data-node-id": id,
+            "data-node-pid": parentId,
+            class: "json-formater-opened"
+          });
+          const leftNode = this.createLeftNode(key, value, depth, jsonPath);
+          node.appendChild(leftNode);
+          if (!isIterate) {
+            const rightNode = this.createRightNode(type2, value);
+            node.appendChild(rightNode);
+          }
+          if (isIterate && !canIterate) {
+            const rightNode = this.createEmptyRightNode(type2);
+            node.appendChild(rightNode);
+          }
+          return node;
+        }
+        createLeftNode(key, value, depth, jsonPath) {
+          const node = this.createElement("td", {
+            "json-path": jsonPath,
+            colspan: this.canIterate(value) ? 2 : 0,
+            style: `padding-left: ${depth * 20}px`
+          });
+          const b = this.createElement("b", {
+            class: "json-key"
+          });
+          b.textContent = `${key}`;
+          node.appendChild(b);
+          const textNode = document.createTextNode(":");
+          node.append(textNode);
+          if (this.canIterate(value)) {
+            const icon = this.createElement("span", {
+              class: "json-formater-arrow"
+            });
+            node.prepend(icon);
+            const span = this.createElement("span", {
+              class: "json-formater-placeholder"
+            });
+            node.appendChild(span);
+          }
+          return node;
+        }
+        createRightNode(type2, value) {
+          const node = this.createElement("td", {
+            class: `json-${type2}`
+          });
+          node.textContent = `${value}`;
+          if (type2 === "string") {
+            value = this.escape(value);
+            node.textContent = `"${value}"`;
+          }
+          if (this.isUrl(value)) {
+            node.textContent = "";
+            const a = this.createElement("a", {
+              target: "_blank",
+              href: value
+            });
+            a.textContent = `"${value}"`;
+            node.appendChild(a);
+          }
+          if (this.isColor(value)) {
+            const span = this.createElement("span", {
+              class: "json-color",
+              style: `background-color: ${value}`
+            });
+            node.prepend(span);
+          }
+          return node;
+        }
+        createEmptyRightNode(type2) {
+          const node = this.createElement("td", {
+            class: `json-${type2}-bracket`
+          });
+          node.textContent = type2 === "array" ? "[]" : "{}";
           return node;
         }
         bindEvent() {
@@ -2485,15 +2744,15 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
           this.addEvent(`click`, this.options.collapser, () => {
             this.collapseAll();
           });
-          this.addEvent("click", ".json-tree-table-arrow", (e) => {
+          this.addEvent("click", ".json-formater-arrow", (e) => {
             const node = this.closest(e.currentTarget, "tr");
-            if (this.hasClass(node, "json-tree-table-opened")) {
+            if (this.hasClass(node, "json-formater-opened")) {
               this.hide(node);
             } else {
               this.show(node);
             }
           });
-          this.addEvent("click", ".json-tree-table-placeholder", (e) => {
+          this.addEvent("click", ".json-formater-placeholder", (e) => {
             const node = this.closest(e.currentTarget, "tr");
             this.show(node);
           });
@@ -2517,13 +2776,13 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
           });
         }
         show(node) {
-          this.removeClass(node, "json-tree-table-closed");
-          this.addClass(node, "json-tree-table-opened");
+          this.removeClass(node, "json-formater-closed");
+          this.addClass(node, "json-formater-opened");
           this.showDescs(node);
           this.onShow(node);
         }
         onShow(node) {
-          const placeholder = node.querySelector(".json-tree-table-placeholder");
+          const placeholder = node.querySelector(".json-formater-placeholder");
           if (!placeholder) {
             return;
           }
@@ -2535,26 +2794,26 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
           let children = this.findChildren(node);
           children.forEach((child) => {
             child.style.display = null;
-            if (this.hasClass(child, "json-tree-table-opened")) {
+            if (this.hasClass(child, "json-formater-opened")) {
               this.showDescs(child);
             }
           });
         }
         hide(node) {
-          this.removeClass(node, "json-tree-table-opened");
-          this.addClass(node, "json-tree-table-closed");
+          this.removeClass(node, "json-formater-opened");
+          this.addClass(node, "json-formater-closed");
           this.hideDescs(node);
           this.onHide(node);
         }
         onHide(node) {
-          const type = node.dataset.type;
-          const placeholder = node.querySelector(".json-tree-table-placeholder");
+          const type2 = node.dataset.type;
+          const placeholder = node.querySelector(".json-formater-placeholder");
           if (!placeholder) {
             return;
           }
           const length = this.findChildren(node).length;
           let content = `[ <span>${length}${length > 1 ? " items" : " item"}</span> ]`;
-          if (type === "object") {
+          if (type2 === "object") {
             content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
           }
           placeholder.innerHTML = content;
@@ -2644,8 +2903,8 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
           return Object.prototype.toString.call(value).match(/\s(.+)]/)[1].toLowerCase();
         }
         isIterate(value) {
-          const type = this.getType(value);
-          return ["array", "object"].includes(type);
+          const type2 = this.getType(value);
+          return ["array", "object"].includes(type2);
         }
         /**
          * 是否可迭代
@@ -2752,7 +3011,6 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
           this.urlHover().tipsJsonPath().copyJsonPath();
         }
       };
-      const $formatBox = $("#formatBox");
       const format_style = exports("default", {
         /**
          * 切换JSON 格式化风格
@@ -2760,7 +3018,6 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
          * @returns
          */
         changeStyle: function(style) {
-          layer.load(0, { shade: false });
           _GM_setValue("style", style);
           this.setStyle();
           return this;
@@ -2771,36 +3028,31 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
          */
         setStyle: function() {
           const style = _GM_getValue("style") || "default";
-          $("input").val("");
-          $formatBox.empty();
-          try {
-            if (style === "default") {
-              $formatBox.jsonViewer(
-                _unsafeWindow.GLOBAL_JSON,
-                _unsafeWindow.GLOBAL_JSONP_FUN
-              );
-              return this;
-            }
-            this.tableFormat();
-          } finally {
-            try {
-              layer.closeAll();
-            } catch (error) {
-            }
+          const theme = _GM_getValue("theme") || "default";
+          const formatBox = document.querySelector("#formatBox");
+          formatBox.innerHTML = "";
+          document.querySelector(".searchbox input").value = "";
+          if (style === "default") {
+            _unsafeWindow.JSON_VIEWER = new JsonViewer({
+              theme,
+              json: _unsafeWindow.GLOBAL_JSON,
+              container: formatBox
+            });
+          } else {
+            _unsafeWindow.JSON_TO_TABLE = new JsonToTable({
+              theme,
+              json: _unsafeWindow.GLOBAL_JSON,
+              container: formatBox
+            });
           }
-        },
-        /**
-         * JSON 表格格式化
-         */
-        tableFormat: function() {
-          _unsafeWindow.JSON_TO_TABLE = new JsonToTable({
-            json: _unsafeWindow.GLOBAL_JSON,
-            container: $formatBox[0]
-          });
           if (_unsafeWindow.GLOBAL_JSONP_FUN) {
-            const jsonp = `<div class="jsonp">${_unsafeWindow.GLOBAL_JSONP_FUN}(</div>`;
-            $formatBox.prepend(jsonp);
-            $formatBox.append('<div class="jsonp">)</div>');
+            const start = document.createElement("div");
+            start.setAttribute("class", "jsonp");
+            start.textContent = `${_unsafeWindow.GLOBAL_JSONP_FUN}(`;
+            formatBox.prepend(start);
+            const end = start.cloneNode(true);
+            end.textContent = ")";
+            formatBox.append(end);
           }
           return this;
         },
@@ -2817,8 +3069,8 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
               that.setStyle();
               return;
             }
-            const { type, value } = data;
-            if (type === "style") {
+            const { type: type2, value } = data;
+            if (type2 === "style") {
               that.changeStyle(value);
               return;
             }
@@ -2830,7 +3082,7 @@ System.register("./index-PL1hKweg-DoENdqki.js", ['jquery', './tippy.esm-Ot9MORvr
   };
 }));
 
-System.register("./index-v2noDGWu-Dc0wG4R6.js", ['jquery', './__monkey.entry-Cu8UGC0p.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
+System.register("./index-DpnWle3q-DqQISagS.js", ['jquery', './__monkey.entry-CjbqZLjh.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
   'use strict';
   var $, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, JSONbig, _GM_getValue, URL$1, _GM_setValue, tippy, require$$0;
   return {
@@ -3701,15 +3953,10 @@ System.register("./index-v2noDGWu-Dc0wG4R6.js", ['jquery', './__monkey.entry-Cu8
          * 如果是JSON 脑图可见，折叠脑图节点
          */
         collapseAll: function() {
+          var _a, _b, _c, _d;
           if ($formatBox.is(":visible")) {
-            try {
-              $("a.json-toggle").not(".collapsed").trigger("click");
-            } catch (e) {
-            }
-            try {
-              _unsafeWindow.JSON_TO_TABLE.collapseAll();
-            } catch (e) {
-            }
+            (_b = (_a = _unsafeWindow) == null ? void 0 : _a.JSON_VIEWER) == null ? void 0 : _b.collapseAll();
+            (_d = (_c = _unsafeWindow) == null ? void 0 : _c.JSON_TO_TABLE) == null ? void 0 : _d.collapseAll();
             return;
           }
           _unsafeWindow.GLOBAL_JSMIND.collapse_all();
@@ -3720,15 +3967,10 @@ System.register("./index-v2noDGWu-Dc0wG4R6.js", ['jquery', './__monkey.entry-Cu8
          * 如果是JSON 脑图可见，展开脑图节点
          */
         expandAll: function() {
+          var _a, _b, _c, _d;
           if ($formatBox.is(":visible")) {
-            try {
-              $("a.json-placeholder").trigger("click").remove();
-            } catch (e) {
-            }
-            try {
-              _unsafeWindow.JSON_TO_TABLE.expandAll();
-            } catch (e) {
-            }
+            (_b = (_a = _unsafeWindow) == null ? void 0 : _a.JSON_VIEWER) == null ? void 0 : _b.expandAll();
+            (_d = (_c = _unsafeWindow) == null ? void 0 : _c.JSON_TO_TABLE) == null ? void 0 : _d.expandAll();
             return;
           }
           _unsafeWindow.GLOBAL_JSMIND.expand_all();
@@ -3807,7 +4049,7 @@ System.register("./index-v2noDGWu-Dc0wG4R6.js", ['jquery', './__monkey.entry-Cu8
               const clas = "active";
               const index = $(target).index();
               $(target).addClass(clas).siblings().removeClass(clas);
-              $(".tabs-container > div").removeClass(clas).eq(index).addClass(clas);
+              $(".container > div").removeClass(clas).eq(index).addClass(clas);
               const beautifyEl = $("#beautify");
               const searchEl = $(".searchbox");
               const copyEl = $("#copyJson");
@@ -3948,8 +4190,10 @@ System.register("./index-v2noDGWu-Dc0wG4R6.js", ['jquery', './__monkey.entry-Cu8
          * @returns
          */
         setTheme: function() {
+          var _a, _b, _c, _d;
           const theme2 = _GM_getValue("theme") || "default";
-          $(document.body).removeClass().addClass(theme2);
+          (_b = (_a = _unsafeWindow) == null ? void 0 : _a.JSON_VIEWER) == null ? void 0 : _b.setTheme(theme2);
+          (_d = (_c = _unsafeWindow) == null ? void 0 : _c.JSON_TO_TABLE) == null ? void 0 : _d.setTheme(theme2);
           return this;
         },
         init: function() {
@@ -4057,33 +4301,30 @@ System.register("./index-v2noDGWu-Dc0wG4R6.js", ['jquery', './__monkey.entry-Cu8
               return;
             }
             layer.load(0, { shade: false });
-            $.ajax({
-              type: "POST",
-              url: URL$1.ONLINE_REQUEST,
-              data: JSON.stringify(form),
-              contentType: "application/json"
-            }).then(
-              (response) => {
-                if (typeof response === "string") {
-                  try {
-                    const { rawText, jsonpFun } = Utils.jsonpMatch(response);
-                    const json = JSONbig({ useNativeBigInt: true }).parse(rawText);
-                    that.reload(json, rawText, jsonpFun);
-                  } catch (e) {
-                    layer.closeAll();
-                    layer.msg("HTTP 请求JSON格式不正确", { time: 1500 });
-                    console.log("HTTP 请求JSON格式不正确：", e);
-                  }
-                } else {
-                  that.reload(response, JSONbig.stringify(response), null);
-                }
+            fetch(URL$1.ONLINE_REQUEST, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
               },
-              (error) => {
-                layer.closeAll();
-                layer.msg("HTTP 请求异常", { time: 1500 });
-                console.log("HTTP 请求异常：", error);
+              body: JSON.stringify(form)
+            }).then(async (response) => {
+              const result = await response.json();
+              if (typeof result === "string") {
+                try {
+                  const { rawText, jsonpFun } = Utils.jsonpMatch(result);
+                  const json = JSONbig({ useNativeBigInt: true }).parse(rawText);
+                  that.reload(json, rawText, jsonpFun);
+                } catch (e) {
+                  layer.closeAll();
+                  console.log("HTTP 请求异常：", e);
+                }
+              } else {
+                that.reload(result, JSONbig.stringify(result), null);
               }
-            );
+            }).catch((e) => {
+              layer.closeAll();
+              console.log("HTTP 请求异常：", e);
+            });
           });
           return this;
         },
@@ -6705,25 +6946,21 @@ System.register("./tippy.esm-Ot9MORvr-DNGa7Opj.js", [], (function (exports, modu
   };
 }));
 
-System.register("./index-D3l8MoSf-Dhsxm64a.js", ['jquery'], (function (exports, module) {
+System.register("./index-CZOUlSU2-CskZy1NC.js", [], (function (exports, module) {
   'use strict';
-  var $;
   return {
-    setters: [module => {
-      $ = module.default;
-    }],
     execute: (function () {
 
-      const $body = $(document.body);
-      const $container = $(".tabs-container");
-      $body.append('<div class="scroll-top"></div>');
-      $container.on("scroll", function() {
-        const scrollTop = $(this).scrollTop();
-        const scrollElment = $(".scroll-top");
-        scrollTop > 500 ? scrollElment.fadeIn() : scrollElment.fadeOut();
+      const scroll = document.createElement("div");
+      scroll.setAttribute("class", "scroll-top");
+      document.body.appendChild(scroll);
+      const style = scroll.style;
+      const $container = document.querySelector(".container");
+      $container.addEventListener("scroll", function() {
+        this.scrollTop > 500 ? style.display = "block" : style.display = "none";
       });
-      $body.on("click", ".scroll-top", function() {
-        $container.animate({ scrollTop: "0" }, 1e3);
+      scroll.addEventListener("click", function() {
+        $container.scrollTop = 0;
       });
 
     })
