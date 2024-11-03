@@ -43,7 +43,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-CjbqZLjh.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-HmUYOvbb.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-CjbqZLjh.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-CjbqZLjh.js", [], (function (exports, module) {
+System.register("./__monkey.entry-HmUYOvbb.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -2083,7 +2083,7 @@ System.register("./__monkey.entry-CjbqZLjh.js", [], (function (exports, module) 
             _unsafeWindow.RAW_TEXT
           );
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-CA1Xmbxv-DJyVQ1Q6.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-DpnWle3q-DqQISagS.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
+          __vitePreload(() => module.import('./index-Bte_0e4x-Dsso8X54.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-aHigUIL0-B4U0UH9T.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
         });
       })();
 
@@ -2164,7 +2164,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-CA1Xmbxv-DJyVQ1Q6.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-CjbqZLjh.js'], (function (exports, module) {
+System.register("./index-Bte_0e4x-Dsso8X54.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-HmUYOvbb.js'], (function (exports, module) {
   'use strict';
   var $, tippy, _GM_setValue, _GM_getValue, _unsafeWindow, Utils, _GM_setClipboard;
   return {
@@ -2567,7 +2567,6 @@ System.register("./index-CA1Xmbxv-DJyVQ1Q6.js", ['jquery', './tippy.esm-Ot9MORvr
 
 .json-tree-table b {
   font-weight: normal;
-  margin-right: 0.15em;
 }
 
 .json-tree-table tr.selected,
@@ -2689,8 +2688,11 @@ System.register("./index-CA1Xmbxv-DJyVQ1Q6.js", ['jquery', './tippy.esm-Ot9MORvr
           });
           b.textContent = `${key}`;
           node.appendChild(b);
-          const textNode = document.createTextNode(":");
-          node.append(textNode);
+          const colon = this.createElement("span", {
+            class: "json-colon"
+          });
+          colon.textContent = ":";
+          node.appendChild(colon);
           if (this.canIterate(value)) {
             const icon = this.createElement("span", {
               class: "json-formater-arrow"
@@ -3082,7 +3084,7 @@ System.register("./index-CA1Xmbxv-DJyVQ1Q6.js", ['jquery', './tippy.esm-Ot9MORvr
   };
 }));
 
-System.register("./index-DpnWle3q-DqQISagS.js", ['jquery', './__monkey.entry-CjbqZLjh.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
+System.register("./index-aHigUIL0-B4U0UH9T.js", ['jquery', './__monkey.entry-HmUYOvbb.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind'], (function (exports, module) {
   'use strict';
   var $, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, JSONbig, _GM_getValue, URL$1, _GM_setValue, tippy, require$$0;
   return {
@@ -4112,10 +4114,9 @@ System.register("./index-DpnWle3q-DqQISagS.js", ['jquery', './__monkey.entry-Cjb
           const selector = [
             "json-key",
             "json-comma",
-            "json-items",
+            "json-colon",
             "json-viewer",
-            "json-toggle",
-            "json-placeholder"
+            "json-formater-placeholder"
           ].reduce(
             (prev, next) => prev + ':not([class*="' + next + '"])',
             "#formatBox *[class*='json-']"
