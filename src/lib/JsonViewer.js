@@ -97,7 +97,7 @@ class JsonViewer {
           "data-node-id": id,
           "data-node-pid": pid,
           "json-path": jsonPath,
-          style: `padding-left: 24px`,
+          style: `padding-left: 20px`,
           "data-type": this.getType(value),
           class: this.isIterate(value) ? "json-formater-opened" : null,
         });
