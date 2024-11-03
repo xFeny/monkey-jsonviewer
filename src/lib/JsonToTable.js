@@ -6,7 +6,6 @@ const cssText = `
 
 .json-tree-table b {
   font-weight: normal;
-  margin-right: 0.15em;
 }
 
 .json-tree-table tr.selected,
@@ -155,8 +154,11 @@ class JsonToTable {
     b.textContent = `${key}`;
     node.appendChild(b);
 
-    const textNode = document.createTextNode(":");
-    node.append(textNode);
+    const colon = this.createElement("span", {
+      class: "json-colon",
+    });
+    colon.textContent = ":";
+    node.appendChild(colon);
 
     if (this.canIterate(value)) {
       const icon = this.createElement("span", {

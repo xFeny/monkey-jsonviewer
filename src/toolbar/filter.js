@@ -47,10 +47,9 @@ export default {
     const selector = [
       "json-key",
       "json-comma",
-      "json-items",
+      "json-colon",
       "json-viewer",
-      "json-toggle",
-      "json-placeholder",
+      "json-formater-placeholder",
     ].reduce(
       (prev, next) => prev + ':not([class*="' + next + '"])',
       "#formatBox *[class*='json-']"
