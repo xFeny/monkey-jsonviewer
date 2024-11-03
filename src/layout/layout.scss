@@ -29,11 +29,59 @@ $dark_tip_color: #4e4e4e;
     display: none !important;
   }
 
+  .jsonp {
+    color: #93983a;
+  }
+
   .layui-layer-tips {
     width: auto !important;
   }
 
-  .format-container {
+  #jsoncrackEmbed {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .tippy-box[data-theme~="layer"] {
+    color: #fff;
+    padding: 5px;
+    font-size: $fz12;
+    line-height: 20px;
+    background-color: #2e59a7;
+
+    .tippy-arrow {
+      color: #2e59a7;
+    }
+  }
+
+  .tippy-box[data-theme~="imagebox"] {
+    background-color: #d9d9d9;
+
+    .tippy-arrow {
+      color: #d9d9d9;
+    }
+  }
+
+  /** 移动端 START **/
+  @media screen and (max-width: 640px) {
+    .rightbox {
+      right: 0 !important;
+
+      .tools {
+        display: none !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .searchbox {
+      display: none !important;
+    }
+  }
+  /** 移动端 END **/
+
+  .json-viewer-layout {
     top: 0;
     left: 0;
     z-index: 10;
@@ -42,7 +90,6 @@ $dark_tip_color: #4e4e4e;
     display: flex;
     position: fixed;
     flex-direction: column;
-    background-color: #fefefe;
 
     /** 工具栏样式 START **/
     .panel {
@@ -205,7 +252,7 @@ $dark_tip_color: #4e4e4e;
     /** 右侧选项样式 END **/
 
     /** 容器样式 START **/
-    .tabs-container {
+    .container {
       flex-grow: 1;
       overflow: auto;
       line-height: 1.4;
@@ -236,117 +283,6 @@ $dark_tip_color: #4e4e4e;
       }
     }
     /** 容器样式 END **/
-
-    /** JSON 格式化样式 START **/
-    .jsonp {
-      color: #93983a;
-    }
-
-    ul.json-items {
-      padding: 0;
-      margin: 0 0 0 2px;
-      list-style-type: none;
-      border-left: 1px dotted #5d6d7e;
-
-      li {
-        padding-left: 20px;
-      }
-    }
-
-    .json-key {
-      color: #910f93;
-      cursor: pointer;
-    }
-
-    .json-string,
-    .json-string a {
-      color: #2e7c16;
-    }
-
-    .json-bigint,
-    .json-number {
-      color: #164ff1;
-    }
-
-    .json-boolean {
-      color: #c41a16;
-    }
-
-    .json-null {
-      color: #228fec;
-    }
-
-    .json-color {
-      width: 0.75em;
-      height: 0.75em;
-      margin-right: 0.3em;
-      display: inline-block;
-      vertical-align: middle;
-      border: 1px solid $color-gray;
-    }
-
-    .json-comma {
-      font-family: "Courier New", monospace;
-    }
-
-    a.json-toggle {
-      opacity: 0.2;
-      color: inherit;
-      position: relative;
-      text-decoration: none;
-
-      &:hover {
-        opacity: 0.35;
-      }
-
-      &:active {
-        opacity: 0.5;
-      }
-
-      &:focus {
-        outline: none;
-      }
-
-      &::before {
-        width: 0;
-        height: 0;
-        left: -5px;
-        content: "";
-        position: relative;
-        border-style: solid;
-        display: inline-block;
-        transform: rotate(90deg);
-        border-width: 5px 0 5px 8px;
-        transition: transform 0.3s ease;
-        border-color: transparent transparent transparent currentColor;
-      }
-
-      &.collapsed::before {
-        transform: rotate(0deg);
-      }
-    }
-
-    a.json-placeholder {
-      padding: 0 0.5em;
-      font-size: $fz12;
-      color: $color-gray;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    .json-object-bracket {
-      color: #6d9331;
-      font-weight: 700;
-    }
-
-    .json-array-bracket {
-      color: #8e9331;
-      font-weight: 700;
-    }
-    /** JSON 格式化样式 END **/
 
     /** 脑图样式 START **/
     #mindBox {
@@ -452,42 +388,15 @@ $dark_tip_color: #4e4e4e;
   }
   /** HTTP 请求弹窗样式 END **/
 
-  /**浅色主题 START **/
-  .light {
-    .json-key {
-      // color: #0451a5;
-      color: #0040cf;
-    }
-
-    .json-string,
-    .json-string a {
-      color: #a31515;
-    }
-
-    .json-bigint,
-    .json-number {
-      color: #0b7500;
-    }
-
-    .json-boolean {
-      color: #0000ff;
-    }
-
-    .json-null {
-      color: #0055ff;
-    }
-  }
-
-  /**浅色主题 END **/
   /** 暗黑主题 START **/
-  body.dark,
-  body.dark_plus {
+  .dark-theme,
+  .dark-plus-theme {
     $color: #464646;
     $color_333: #333333;
     $color_c4: #c4c4c4;
     $bd_color: #64b7ff;
 
-    .format-container {
+    .json-viewer-layout {
       li,
       pre,
       td:first-child {
@@ -561,14 +470,6 @@ $dark_tip_color: #4e4e4e;
         color: #f1d700;
       }
 
-      .json-toggle {
-        opacity: 0.35;
-
-        &:hover {
-          opacity: 0.5;
-        }
-      }
-
       jmnode {
         filter: brightness(2);
       }
@@ -576,137 +477,7 @@ $dark_tip_color: #4e4e4e;
       jmexpander {
         background-color: #dfdfdf;
       }
-
-      .json-tree-table tr:hover {
-        background-color: #353b48;
-      }
-
-      .json-tree-table-arrow {
-        color: #fff;
-        opacity: 0.35;
-
-        &:hover {
-          opacity: 0.5;
-        }
-      }
-    }
-  }
-  body.dark {
-    .tabs-container {
-      background-color: #252526;
-    }
-
-    .json-object-bracket {
-      color: #ce70d6;
-    }
-
-    .json-array-bracket {
-      color: #f1d700;
-    }
-
-    .json-key {
-      color: #9cdcfe;
-    }
-
-    .json-string,
-    .json-string a {
-      color: #ce9178;
-    }
-
-    .json-bigint,
-    .json-number {
-      color: #b5cea8;
-    }
-
-    .json-boolean {
-      color: #358cd6;
-    }
-
-    .json-null {
-      color: #569cd6;
     }
   }
   /** 暗黑主题 END **/
-  /** 第二个暗黑主题 START **/
-  body.dark_plus {
-    .tabs-container {
-      background-color: #1e1f22;
-    }
-
-    .json-object-bracket {
-      color: #bb9667;
-    }
-
-    .json-array-bracket {
-      color: #bbbda3;
-    }
-
-    .json-key {
-      color: #c77dbb;
-    }
-
-    .json-string,
-    .json-string a {
-      color: #6aab73;
-    }
-
-    .json-bigint,
-    .json-number {
-      color: #28aab4;
-    }
-
-    .json-boolean {
-      color: #ce8951;
-    }
-
-    .json-null {
-      color: #c78d61;
-    }
-  }
-  /** 第二个暗黑主题 END **/
-
-  #jsoncrackEmbed {
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-
-  .tippy-box[data-theme~="layer"] {
-    color: #fff;
-    padding: 5px;
-    font-size: $fz12;
-    line-height: 20px;
-    background-color: #2e59a7;
-
-    .tippy-arrow {
-      color: #2e59a7;
-    }
-  }
-
-  .tippy-box[data-theme~="imagebox"] {
-    background-color: #d9d9d9;
-
-    .tippy-arrow {
-      color: #d9d9d9;
-    }
-  }
-
-  /** 移动端 START **/
-  @media screen and (max-width: 640px) {
-    .rightbox {
-      right: 0 !important;
-
-      .tools {
-        display: none !important;
-      }
-    }
-  }
-
-  @media screen and (max-width: 400px) {
-    .searchbox {
-      display: none !important;
-    }
-  }
-
-  /** 移动端 END **/
 }

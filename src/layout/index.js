@@ -2,7 +2,7 @@
  * JSON Viewer 布局
  */
 export default `
-<div class="format-container">
+<div class="json-viewer-layout">
     <div class="panel">
         <div class="tabs">
             <div class="tabs-item btn active" id="viewFormater">JSON 格式化</div>
@@ -38,7 +38,7 @@ export default `
                         <li data-type="theme" data-value="default">默认</li>
                         <li data-type="theme" data-value="light">浅色</li>
                         <li data-type="theme" data-value="dark">暗黑</li>
-                        <li data-type="theme" data-value="dark_plus">暗黑+</li>
+                        <li data-type="theme" data-value="dark-plus">暗黑+</li>
                     </ul>
                 </template>
             </div>
@@ -53,7 +53,7 @@ export default `
             </div>
         </div>
     </div>
-    <div class="tabs-container">
+    <div class="container">
         <div class="active" id="formatBox"></div>
         <div id="mindBox"></div>
         <div id="rawTextBox">

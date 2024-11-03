@@ -1,9 +1,8 @@
-import $ from "jquery";
-import "../lib/jquery-json-viewer";
+import JsonViewer from "../lib/JsonViewer";
 import JsonToTable from "../lib/JsonToTable";
 import evnet from "./evnet";
+import "../lib/json-fromaer.scss";
 
-const $formatBox = $("#formatBox");
 const format_style = {
   /**
    * 切换JSON 格式化风格
@@ -11,7 +10,6 @@ const format_style = {
    * @returns
    */
   changeStyle: function (style) {
-    layer.load(0, { shade: false });
     GM_setValue("style", style);
     this.setStyle();
     return this;
@@ -22,40 +20,36 @@ const format_style = {
    */
   setStyle: function () {
     const style = GM_getValue("style") || "default";
+    const theme = GM_getValue("theme") || "default";
 
-    $("input").val("");
-    $formatBox.empty();
-    try {
-      if (style === "default") {
-        $formatBox.jsonViewer(
-          unsafeWindow.GLOBAL_JSON,
-          unsafeWindow.GLOBAL_JSONP_FUN
-        );
-        return this;
-      }
+    const formatBox = document.querySelector("#formatBox");
+    formatBox.innerHTML = "";
+    document.querySelector(".searchbox input").value = "";
 
-      this.tableFormat();
-    } finally {
-      try {
-        layer.closeAll();
-      } catch (error) {}
+    if (style === "default") {
+      unsafeWindow.JSON_VIEWER = new JsonViewer({
+        theme,
+        json: unsafeWindow.GLOBAL_JSON,
+        container: formatBox,
+      });
+    } else {
+      unsafeWindow.JSON_TO_TABLE = new JsonToTable({
+        theme,
+        json: unsafeWindow.GLOBAL_JSON,
+        container: formatBox,
+      });
     }
-  },
-  /**
-   * JSON 表格格式化
-   */
-  tableFormat: function () {
-    unsafeWindow.JSON_TO_TABLE = new JsonToTable({
-      json: unsafeWindow.GLOBAL_JSON,
-      container: $formatBox[0],
-    });
 
     if (unsafeWindow.GLOBAL_JSONP_FUN) {
-      const jsonp = `<div class="jsonp">${unsafeWindow.GLOBAL_JSONP_FUN}(</div>`;
-      $formatBox.prepend(jsonp);
-      $formatBox.append('<div class="jsonp">)</div>');
-    }
+      const start = document.createElement("div");
+      start.setAttribute("class", "jsonp");
+      start.textContent = `${unsafeWindow.GLOBAL_JSONP_FUN}(`;
+      formatBox.prepend(start);
 
+      const end = start.cloneNode(true);
+      end.textContent = ")";
+      formatBox.append(end);
+    }
     return this;
   },
   init: function () {

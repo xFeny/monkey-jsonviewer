@@ -52,13 +52,8 @@ const tabsEvent = {
    */
   collapseAll: function () {
     if ($formatBox.is(":visible")) {
-      try {
-        $("a.json-toggle").not(".collapsed").trigger("click");
-      } catch (e) {}
-      
-      try {
-        unsafeWindow.JSON_TO_TABLE.collapseAll();
-      } catch (e) {}
+      unsafeWindow?.JSON_VIEWER?.collapseAll();
+      unsafeWindow?.JSON_TO_TABLE?.collapseAll();
       return;
     }
 
@@ -71,13 +66,8 @@ const tabsEvent = {
    */
   expandAll: function () {
     if ($formatBox.is(":visible")) {
-      try {
-        $("a.json-placeholder").trigger("click").remove();
-      } catch (e) {}
-
-      try {
-        unsafeWindow.JSON_TO_TABLE.expandAll();
-      } catch (e) {}
+      unsafeWindow?.JSON_VIEWER?.expandAll();
+      unsafeWindow?.JSON_TO_TABLE?.expandAll();
       return;
     }
 
@@ -158,7 +148,7 @@ const tabsEvent = {
         const clas = "active";
         const index = $(target).index();
         $(target).addClass(clas).siblings().removeClass(clas);
-        $(".tabs-container > div").removeClass(clas).eq(index).addClass(clas);
+        $(".container > div").removeClass(clas).eq(index).addClass(clas);
 
         const beautifyEl = $("#beautify");
         const searchEl = $(".searchbox");

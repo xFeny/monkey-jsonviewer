@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 export default {
   /**
    * 切换主题色
@@ -17,7 +15,8 @@ export default {
    */
   setTheme: function () {
     const theme = GM_getValue("theme") || "default";
-    $(document.body).removeClass().addClass(theme);
+    unsafeWindow?.JSON_VIEWER?.setTheme(theme);
+    unsafeWindow?.JSON_TO_TABLE?.setTheme(theme);
     return this;
   },
   init: function () {

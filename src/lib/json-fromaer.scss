@@ -1,0 +1,211 @@
+/** JsonViewer和JsonToTable样式  **/
+.json-formater-arrow {
+  width: 0;
+  opacity: 0.2;
+  display: inline-block;
+
+  &:hover {
+    opacity: 0.35;
+  }
+
+  &::before {
+    width: 0;
+    height: 0;
+    left: -13px;
+    content: "";
+    cursor: pointer;
+    position: relative;
+    border-style: solid;
+    display: inline-block;
+    vertical-align: middle;
+    transform: rotate(90deg);
+    border-width: 5px 0 5px 8px;
+    transition: transform 0.3s ease;
+    border-color: transparent transparent transparent currentColor;
+  }
+}
+
+.json-formater-closed .json-formater-arrow::before {
+  transform: rotate(0deg);
+}
+
+.json-formater-placeholder {
+  color: #ccc;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 0.5em;
+
+  span:hover {
+    text-decoration: underline;
+  }
+}
+
+.json-color {
+  width: 0.75em;
+  height: 0.75em;
+  margin-right: 0.3em;
+  display: inline-block;
+  vertical-align: middle;
+  border: 1px solid #ccc;
+}
+
+.json-comma {
+  font-family: "Courier New", monospace;
+}
+
+.json-colon,
+.json-comma {
+  margin: 0 0.25em 0 0.1em;
+}
+
+.json-object-bracket {
+  color: #6d9331;
+  font-weight: 700;
+}
+
+.json-array-bracket {
+  color: #8e9331;
+  font-weight: 700;
+}
+
+/** 默认主题色 START **/
+.default-theme {
+  .json-key {
+    color: #910f93;
+    cursor: pointer;
+  }
+
+  .json-string,
+  .json-string a {
+    color: #2e7c16;
+  }
+
+  .json-bigint,
+  .json-number {
+    color: #164ff1;
+  }
+
+  .json-boolean {
+    color: #c41a16;
+  }
+
+  .json-null {
+    color: #228fec;
+  }
+}
+/** 默认主题色 END **/
+
+/** 浅色主题 START **/
+.light-theme {
+  .json-key {
+    color: #0040cf;
+  }
+
+  .json-string,
+  .json-string a {
+    color: #a31515;
+  }
+
+  .json-bigint,
+  .json-number {
+    color: #0b7500;
+  }
+
+  .json-boolean {
+    color: #0000ff;
+  }
+
+  .json-null {
+    color: #0055ff;
+  }
+}
+
+/** 浅色主题 END **/
+.dark-theme,
+.dark-plus-theme {
+  .json-colon,
+  .json-comma {
+    color: #ccc;
+  }
+
+  .json-formater-arrow {
+    color: #fff;
+    opacity: 0.35;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+
+/** 暗黑主题色 START **/
+.dark-theme {
+  background-color: #252526;
+
+  .json-object-bracket {
+    color: #ce70d6;
+  }
+
+  .json-array-bracket {
+    color: #f1d700;
+  }
+
+  .json-key {
+    color: #9cdcfe;
+  }
+
+  .json-string,
+  .json-string a {
+    color: #ce9178;
+  }
+
+  .json-bigint,
+  .json-number {
+    color: #b5cea8;
+  }
+
+  .json-boolean {
+    color: #358cd6;
+  }
+
+  .json-null {
+    color: #569cd6;
+  }
+}
+/** 暗黑主题色 END **/
+
+/** 暗黑+主题色 START **/
+.dark-plus-theme {
+  background-color: #1e1f22;
+
+  .json-object-bracket {
+    color: #bb9667;
+  }
+
+  .json-array-bracket {
+    color: #bbbda3;
+  }
+
+  .json-key {
+    color: #c77dbb;
+  }
+
+  .json-string,
+  .json-string a {
+    color: #6aab73;
+  }
+
+  .json-bigint,
+  .json-number {
+    color: #28aab4;
+  }
+
+  .json-boolean {
+    color: #ce8951;
+  }
+
+  .json-null {
+    color: #c78d61;
+  }
+}
+/** 暗黑+主题色 END **/

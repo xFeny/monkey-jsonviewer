@@ -14,7 +14,7 @@ export default defineConfig({
       build: {
         externalGlobals: {
           jquery: cdn
-            .unpkg("jquery", "dist/jquery.min.js")
+            .unpkg("jquery", "dist/jquery.slim.min.js")
             .concat(util.dataUrl(";window.jquery=jQuery;")),
           jsmind: cdn
             .unpkg("jsmind", "es6/jsmind.js")

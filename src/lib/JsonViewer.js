@@ -1,49 +1,16 @@
-const cssText = `
-.json-tree-table {
-  border-collapse: collapse;
-  width: -webkit-fill-available;
-}
-
-.json-tree-table b {
-  font-weight: normal;
-  margin-right: 0.15em;
-}
-
-.json-tree-table tr.selected,
-.json-tree-table tr.selected td,
-.json-tree-table tr.selected td b,
-.json-tree-table tr.selected td a {
-  color: #fff !important;
-  background-color: #3875d7;
-}
-
-.json-tree-table tr:hover {
-  background-color: #f0f9fe;
-}
-
-.json-tree-table tr td:first-child {
-  width: 120px;
-}
-
-.dark-theme .json-tree-table tr:hover,
-.dark-plus-theme .json-tree-table tr:hover {
-  background-color: #353b48;
-}
-`;
-
-const DEFAULTS = {
-  json: null,
-  theme: "default",
-  container: null,
-  onExpand: null,
-  expander: null,
-  collapser: null,
-  onCollapse: null,
-};
-
-class JsonToTable {
+class JsonViewer {
   constructor(options) {
-    this.options = Object.assign(DEFAULTS, options);
+    const defaults = {
+      json: null,
+      theme: "default",
+      container: null,
+      onExpand: null,
+      expander: null,
+      collapser: null,
+      onCollapse: null,
+    };
+
+    this.options = Object.assign(defaults, options);
     if (!options.container) {
       throw new Error("Container: dom element is required");
     }
@@ -52,12 +19,8 @@ class JsonToTable {
       throw new Error("json: json is required");
     }
 
-    if (typeof options.json !== "object") {
-      throw new Error("json: Need to use JSON.parse conversion");
-    }
-
     this.render();
-    this.bindEvent();
+    this.bind();
     this.setTheme(this.options.theme);
   }
 
@@ -79,101 +42,134 @@ class JsonToTable {
         ? container
         : document.querySelector(container);
 
-    const style = this.createElement("style");
-    style.textContent = cssText;
-    document.head.appendChild(style);
+    this.$box = this.createElement("div");
+    this.$box.setAttribute("class", `json-view-formater`);
 
-    this.$table = this.createElement("table");
-    this.$table.setAttribute("class", `json-tree-table`);
+    this.createNode(this.$box, json, "Root", "Root");
 
-    this.createNode(json, 1, "Root", "Root");
-
-    this.$container.appendChild(this.$table);
+    this.$container.appendChild(this.$box);
   }
 
-  /**
-   * 创建节点
-   * @param {Object} json
-   * @param {Boolean} isRoot 是否根节点
-   * @param {Number} depth 递归层级
-   * @param {String} pChain 上级json-path
-   */
-  createNode(json, depth, pChain, parentId) {
-    for (const key in json) {
-      let value = json[key];
-      const type = this.getType(value);
-      const jsonPath = `${pChain}.${key}`;
-
-      const item = this.createItem(key, value, type, depth, jsonPath, parentId);
-      this.$table.appendChild(item);
-
-      if (this.canIterate(value)) {
-        const nodeId = item.dataset.nodeId;
-        this.createNode(value, depth + 1, jsonPath, nodeId);
-      }
+  createNode(box, json, pChain, pid) {
+    const type = this.getType(json);
+    switch (type) {
+      case "array":
+      case "object":
+        let length = Object.keys(json).length;
+        if (length > 0) {
+          this.createObjectNode(box, type, json, pChain, pid);
+        } else {
+          const emptyNode = this.createEmptyNode(type);
+          box.appendChild(emptyNode);
+        }
+        break;
+      default:
+        const valueNode = this.creatValueNode(type, json);
+        box.appendChild(valueNode);
+        break;
     }
   }
 
-  createItem(key, value, type, depth, jsonPath, parentId) {
-    const id = key + "_" + Math.random();
-    const isIterate = this.isIterate(value);
-    const canIterate = this.canIterate(value);
+  createObjectNode(box, type, json, pChain, pid) {
+    const startBracket = this.createStartBracket(type);
+    box.appendChild(startBracket);
 
-    const node = this.createElement("tr", {
-      "data-type": type,
-      "data-node-id": id,
-      "data-node-pid": parentId,
-      class: "json-formater-opened",
-    });
-
-    const leftNode = this.createLeftNode(key, value, depth, jsonPath);
-    node.appendChild(leftNode);
-
-    if (!isIterate) {
-      const rightNode = this.createRightNode(type, value);
-      node.appendChild(rightNode);
-    }
-
-    if (isIterate && !canIterate) {
-      const rightNode = this.createEmptyRightNode(type);
-      node.appendChild(rightNode);
-    }
-
-    return node;
-  }
-
-  createLeftNode(key, value, depth, jsonPath) {
-    const node = this.createElement("td", {
-      "json-path": jsonPath,
-      colspan: this.canIterate(value) ? 2 : 0,
-      style: `padding-left: ${depth * 20}px`,
-    });
-
-    const b = this.createElement("b", {
-      class: "json-key",
-    });
-    b.textContent = `${key}`;
-    node.appendChild(b);
-
-    const textNode = document.createTextNode(":");
-    node.append(textNode);
-
-    if (this.canIterate(value)) {
-      const icon = this.createElement("span", {
-        class: "json-formater-arrow",
-      });
-      node.prepend(icon);
-
+    if (pChain !== "Root" && this.canIterate(json)) {
       const span = this.createElement("span", {
         class: "json-formater-placeholder",
       });
-      node.appendChild(span);
+
+      span.addEventListener("click", () => {
+        this.show(box);
+      });
+      box.appendChild(span);
     }
-    return node;
+
+    let length = Object.keys(json).length;
+    for (var key in json) {
+      if (Object.prototype.hasOwnProperty.call(json, key)) {
+        const value = json[key];
+        const id = this.random();
+        const canComma = --length > 0;
+        const jsonPath = pChain + "." + key;
+
+        const node = this.createElement("div", {
+          "data-node-id": id,
+          "data-node-pid": pid,
+          "json-path": jsonPath,
+          style: `padding-left: 24px`,
+          "data-type": this.getType(value),
+          class: this.isIterate(value) ? "json-formater-opened" : null,
+        });
+
+        this.createKeyNode(node, key, value);
+
+        this.createNode(node, value, jsonPath, id);
+
+        if (canComma) {
+          const comma = this.createElement("span", {
+            class: "json-comma",
+          });
+          comma.textContent = ",";
+          node.appendChild(comma);
+        }
+
+        box.appendChild(node);
+      }
+    }
+    const endBracket = this.createEndBracket(type);
+    box.appendChild(endBracket);
   }
 
-  createRightNode(type, value) {
-    const node = this.createElement("td", {
+  createStartBracket(type) {
+    const span = this.createElement("span", {
+      class: `json-${type}-bracket`,
+    });
+    span.textContent = type === "array" ? "[" : "{";
+    return span;
+  }
+
+  createEndBracket(type) {
+    const span = this.createElement("span", {
+      class: `json-${type}-bracket`,
+    });
+    span.textContent = type === "array" ? "]" : "}";
+    return span;
+  }
+
+  createBracket() {
+    const span = this.createElement("span", {
+      class: `json-${type}-bracket`,
+    });
+    span.textContent = type === "array" ? "[]" : "{}";
+    return span;
+  }
+
+  createKeyNode(node, key, value) {
+    if (this.canIterate(value)) {
+      const arrow = this.createElement("span", {
+        class: "json-formater-arrow",
+      });
+      node.appendChild(arrow);
+    }
+
+    if (!/^\d+$/.test(key)) {
+      const span = this.createElement("span", {
+        class: "json-key",
+      });
+      span.textContent = `"${key}"`;
+      node.appendChild(span);
+
+      const colon = this.createElement("span", {
+        class: "json-colon",
+      });
+      colon.textContent = ":";
+      node.appendChild(colon);
+    }
+  }
+
+  creatValueNode(type, value) {
+    const node = this.createElement("span", {
       class: `json-${type}`,
     });
     node.textContent = `${value}`;
@@ -204,59 +200,45 @@ class JsonToTable {
     return node;
   }
 
-  createEmptyRightNode(type) {
-    const node = this.createElement("td", {
+  createEmptyNode(type) {
+    const node = this.createElement("span", {
       class: `json-${type}-bracket`,
     });
     node.textContent = type === "array" ? "[]" : "{}";
     return node;
   }
 
-  bindEvent() {
-    this.addEvent(`click`, this.options.expander, () => {
+  bind() {
+    this.addEvent(this.options.expander, `click`, () => {
       this.expandAll();
     });
 
-    this.addEvent(`click`, this.options.collapser, () => {
+    this.addEvent(this.options.collapser, `click`, () => {
       this.collapseAll();
     });
 
-    this.addEvent("click", ".json-formater-arrow", (e) => {
-      const node = this.closest(e.currentTarget, "tr");
+    const { onExpand, onCollapse } = this.options;
+    this.addEvent(".json-formater-arrow", "click", (e) => {
+      const node = e.currentTarget.parentElement;
       if (this.hasClass(node, "json-formater-opened")) {
         this.hide(node);
+        if (onCollapse) onCollapse(node, this);
       } else {
         this.show(node);
+        if (onExpand) onExpand(node, this);
       }
-    });
-
-    this.addEvent("click", ".json-formater-placeholder", (e) => {
-      const node = this.closest(e.currentTarget, "tr");
-      this.show(node);
-    });
-
-    this.addEvent("mousedown", "table tr", function (event) {
-      const { tagName } = event.target;
-      if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
-        return;
-      }
-
-      Array.from(document.querySelectorAll(".selected"))
-        .filter((ele) => ele !== this)
-        .forEach((ele) => ele.classList.remove("selected"));
-      this.classList.toggle("selected");
     });
   }
 
   expandAll() {
     this.nodes().forEach((node) => {
-      this.show(node);
+      this.show(node.parentElement);
     });
   }
 
   collapseAll() {
     this.nodes().forEach((node) => {
-      this.hide(node);
+      this.hide(node.parentElement);
     });
   }
 
@@ -268,23 +250,23 @@ class JsonToTable {
   }
 
   onShow(node) {
-    const placeholder = node.querySelector(".json-formater-placeholder");
+    const nodeId = node.dataset.nodeId;
+    const length = this.findChildren(node).length;
+
+    const placeholder = node.querySelector(
+      `*[data-node-id*=${nodeId}] > .json-formater-placeholder`
+    );
     if (!placeholder) {
       return;
     }
 
-    placeholder.innerHTML = null;
-    const { onExpand } = this.options;
-    if (onExpand) onExpand(node, this);
+    placeholder.textContent = "";
   }
 
   showDescs(node) {
     let children = this.findChildren(node);
     children.forEach((child) => {
       child.style.display = null;
-      if (this.hasClass(child, "json-formater-opened")) {
-        this.showDescs(child);
-      }
     });
   }
 
@@ -297,41 +279,38 @@ class JsonToTable {
 
   onHide(node) {
     const type = node.dataset.type;
-    const placeholder = node.querySelector(".json-formater-placeholder");
+    const nodeId = node.dataset.nodeId;
+    const length = this.findChildren(node).length;
+
+    const placeholder = node.querySelector(
+      `*[data-node-id*=${nodeId}] > .json-formater-placeholder`
+    );
     if (!placeholder) {
       return;
     }
 
-    const length = this.findChildren(node).length;
-    let content = `[ <span>${length}${
-      length > 1 ? " items" : " item"
-    }</span> ]`;
+    placeholder.textContent = `${length}${length > 1 ? " items " : " item "}`;
     if (type === "object") {
-      content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
+      placeholder.textContent = `${length}${length > 1 ? " keys " : " key "}`;
     }
-    placeholder.innerHTML = content;
-
-    const { onCollapse } = this.options;
-    if (onCollapse) onCollapse(node, this);
   }
 
   hideDescs(node) {
     const children = this.findChildren(node);
     children.forEach((child) => {
       child.style.display = "none";
-      this.hideDescs(child);
     });
   }
 
   findChildren(node) {
     const pid = node.dataset.nodeId;
     return this.$container.querySelectorAll(
-      `tr[data-node-pid="${pid}"]:not(.hidden)`
+      `*[data-node-pid="${pid}"]:not(.hidden)`
     );
   }
 
   findByID(id) {
-    return this.$container.querySelector(`tr[data-node-id="${id}"]`);
+    return this.$container.querySelector(`*[data-node-id="${id}"]`);
   }
 
   openByID(id) {
@@ -342,7 +321,7 @@ class JsonToTable {
     this.hide(this.findByID(id));
   }
 
-  addEvent(event, selector, fn) {
+  addEvent(selector, event, fn) {
     document.body.querySelectorAll(selector).forEach((el) => {
       el.addEventListener(event, fn);
     });
@@ -373,7 +352,7 @@ class JsonToTable {
   }
 
   nodes() {
-    return this.$container.querySelectorAll("tr[data-node-id]");
+    return this.$container.querySelectorAll(".json-formater-arrow");
   }
 
   /**
@@ -399,7 +378,7 @@ class JsonToTable {
 
     for (const name in attributes) {
       const value = attributes[name];
-      if (value) element.setAttribute(name, value);
+      if (value) element.setAttribute(name, attributes[name]);
     }
   }
 
@@ -470,6 +449,16 @@ class JsonToTable {
       rgbaRegex.test(colorString)
     );
   }
+
+  random() {
+    let randomString = "";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters.charAt(randomIndex);
+    }
+    return randomString;
+  }
 }
 
-export default JsonToTable;
+export default JsonViewer;

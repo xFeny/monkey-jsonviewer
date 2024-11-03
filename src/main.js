@@ -1,4 +1,3 @@
-import $ from "jquery";
 import JSONbig from "json-bigint";
 import Utils from "./common/Utils";
 import URL from "./common/URL";
@@ -31,17 +30,25 @@ const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL;
     return;
   }
 
-  $("pre").hide();
-  $("html").addClass("monkey-jsonviewer");
+  document.querySelector("pre").style.display = "none";
+  document.querySelector("html").classList.add("monkey-jsonviewer");
 
   window.postMessage({ addStyle: true });
 
-  const viewport =
-    '<meta name="viewport" content="width=device-width",initial-scale=1,maximum-scale=1,user-scalable=no">';
-  $(document.head)
-    .append(`<link href="${LAYUI_CSS}" rel="stylesheet"/>`)
-    .append(`<script src="${LAYUI_JS}" type="text/javascript"></script>`)
-    .append(viewport);
+  const meta = document.createElement("meta");
+  meta.setAttribute("name", "viewport");
+  meta.setAttribute("content", "width=device-width, initial-scale=1.0");
+  document.head.appendChild(meta);
+
+  const link = document.createElement("link");
+  link.setAttribute("href", LAYUI_CSS);
+  link.setAttribute("rel", "stylesheet");
+  document.head.appendChild(link);
+
+  const script = document.createElement("script");
+  script.setAttribute("src", LAYUI_JS);
+  script.setAttribute("type", "text/javascript");
+  document.head.appendChild(script);
 
   // 脑图节点随机颜色
   GM_addStyle(`

@@ -85,33 +85,32 @@ export default {
       }
 
       layer.load(0, { shade: false });
-      $.ajax({
-        type: "POST",
-        url: URL.ONLINE_REQUEST,
-        data: JSON.stringify(form),
-        contentType: "application/json",
-      }).then(
-        (response) => {
-          if (typeof response === "string") {
+      fetch(URL.ONLINE_REQUEST, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      })
+        .then(async (response) => {
+          const result = await response.json();
+          if (typeof result === "string") {
             try {
-              const { rawText, jsonpFun } = Utils.jsonpMatch(response);
+              const { rawText, jsonpFun } = Utils.jsonpMatch(result);
               const json = JSONbig({ useNativeBigInt: true }).parse(rawText);
               that.reload(json, rawText, jsonpFun);
             } catch (e) {
               layer.closeAll();
-              layer.msg("HTTP 请求JSON格式不正确", { time: 1500 });
-              console.log("HTTP 请求JSON格式不正确：", e);
+              console.log("HTTP 请求异常：", e);
             }
           } else {
-            that.reload(response, JSONbig.stringify(response), null);
+            that.reload(result, JSONbig.stringify(result), null);
           }
-        },
-        (error) => {
+        })
+        .catch((e) => {
           layer.closeAll();
-          layer.msg("HTTP 请求异常", { time: 1500 });
-          console.log("HTTP 请求异常：", error);
-        }
-      );
+          console.log("HTTP 请求异常：", e);
+        });
     });
     return this;
   },
