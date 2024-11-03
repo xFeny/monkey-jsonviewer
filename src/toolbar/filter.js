@@ -1,4 +1,5 @@
 import $ from "jquery";
+import Utils from "../common/Utils";
 
 export default {
   /**
@@ -6,7 +7,7 @@ export default {
    * @param {*} filter 过滤值
    * @returns
    */
-  filterJSON: function (filter) {
+  match: function (filter) {
     const style = GM_getValue("style") || "default";
     const allPath = $(`#formatBox *[json-path]`);
     if (!filter) {
@@ -93,11 +94,11 @@ export default {
    */
   input: function () {
     const that = this;
-    $(document.body).on("input", ".searchbox input", function () {
-      const val = $(this).val();
-      $(".clear").attr("hidden", !val);
-      that.filterJSON(val);
-    });
+    const debounceInput = Utils.debounce(function () {
+      that.match(this.value);
+      $(".clear").attr("hidden", !this.value);
+    }, 500);
+    $(document.body).on("input", ".searchbox input", debounceInput);
     return that;
   },
   /**
@@ -107,9 +108,9 @@ export default {
   clear: function () {
     const that = this;
     $(document.body).on("click", ".searchbox .clear", function () {
-      that.filterJSON();
-      $("input").val("");
+      that.match();
       $(this).attr("hidden", true);
+      $(".searchbox input").val("");
     });
     return this;
   },

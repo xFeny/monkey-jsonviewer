@@ -25,6 +25,8 @@ const format_style = {
     const formatBox = document.querySelector("#formatBox");
     formatBox.innerHTML = "";
     document.querySelector(".searchbox input").value = "";
+    const clear = document.querySelector(".searchbox .clear");
+    clear.setAttribute("hidden", true);
 
     if (style === "default") {
       unsafeWindow.JSON_VIEWER = new JsonViewer({

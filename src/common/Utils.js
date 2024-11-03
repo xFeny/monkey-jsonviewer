@@ -106,4 +106,15 @@ export default {
       jsonpFun: null,
     };
   },
+  debounce: function (func, delay = 300) {
+    let timer;
+    return function () {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        func.apply(this, arguments);
+      }, delay);
+    };
+  },
 };
