@@ -69,7 +69,6 @@ const format = {
    * @returns
    */
   filter: function (json, text) {
-    const that = this;
     text = text.toLowerCase();
     function match(json, text) {
       const newJson = Array.isArray(json) ? new Array() : new Object();
@@ -84,7 +83,7 @@ const format = {
           }
 
           if (typeof value === "object") {
-            const result = that.filter(value, text);
+            const result = match(value, text);
             const _result = Utils.stringify(result).toLowerCase();
             if (_key.includes(text) || _result.includes(text)) {
               newJson[key] = result;
