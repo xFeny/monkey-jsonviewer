@@ -43,7 +43,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-mLmAVtYD.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-D8xo4TYz.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-mLmAVtYD.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-mLmAVtYD.js", [], (function (exports, module) {
+System.register("./__monkey.entry-D8xo4TYz.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -2099,7 +2099,7 @@ System.register("./__monkey.entry-mLmAVtYD.js", [], (function (exports, module) 
         setTimeout(() => {
           _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-C8BZ86iz-DUn6v6El.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-Hc-FZWPL-BO86BxYU.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
+          __vitePreload(() => module.import('./index-B4fUg9yy-BnI21yGk.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-Cr2_g5xX-BgAeMomE.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
         });
       })();
 
@@ -2180,7 +2180,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-C8BZ86iz-DUn6v6El.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-mLmAVtYD.js'], (function (exports, module) {
+System.register("./index-B4fUg9yy-BnI21yGk.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-D8xo4TYz.js'], (function (exports, module) {
   'use strict';
   var $, tippy, _GM_setValue, _unsafeWindow, _GM_getValue, Utils, _GM_setClipboard;
   return {
@@ -2240,6 +2240,10 @@ System.register("./index-C8BZ86iz-DUn6v6El.js", ['jquery', './tippy.esm-Ot9MORvr
           });
           this.addEvent(`click`, this.options.collapser, () => {
             this.collapseAll();
+          });
+          this.addEvent("click", ".json-formater-placeholder", (e) => {
+            const node = this.closest(e.currentTarget, ".json-formater-item");
+            this.show(node);
           });
           const { onExpand, onCollapse } = this.options;
           this.addEvent("click", ".json-formater-arrow", (e) => {
@@ -2555,9 +2559,6 @@ System.register("./index-C8BZ86iz-DUn6v6El.js", ['jquery', './tippy.esm-Ot9MORvr
             const span = this.createElement("span", {
               class: "json-formater-placeholder"
             });
-            span.addEventListener("click", () => {
-              this.show(box);
-            });
             box.appendChild(span);
           }
         }
@@ -2749,10 +2750,6 @@ System.register("./index-C8BZ86iz-DUn6v6El.js", ['jquery', './tippy.esm-Ot9MORvr
         }
         bindEvent() {
           super.bindEvent();
-          this.addEvent("click", ".json-formater-placeholder", (e) => {
-            const node = this.closest(e.currentTarget, "tr");
-            this.show(node);
-          });
           this.addEvent("mousedown", "table tr", function(event) {
             const { tagName } = event.target;
             if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
@@ -2990,7 +2987,7 @@ System.register("./index-C8BZ86iz-DUn6v6El.js", ['jquery', './tippy.esm-Ot9MORvr
   };
 }));
 
-System.register("./index-Hc-FZWPL-BO86BxYU.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-mLmAVtYD.js'], (function (exports, module) {
+System.register("./index-Cr2_g5xX-BgAeMomE.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-D8xo4TYz.js'], (function (exports, module) {
   'use strict';
   var $, tippy, require$$0, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
   return {
