@@ -113,9 +113,7 @@ class JsonFormat {
 
   findChildren(node) {
     const pid = node.dataset.nodeId;
-    return this.$container.querySelectorAll(
-      `*[data-node-pid="${pid}"]:not(.hidden)`
-    );
+    return this.$container.querySelectorAll(`*[data-node-pid="${pid}"]`);
   }
 
   findByID(id) {
