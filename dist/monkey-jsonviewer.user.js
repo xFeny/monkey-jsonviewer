@@ -43,7 +43,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-sXnueCYo.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-Ce4NpfTG.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-sXnueCYo.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-sXnueCYo.js", [], (function (exports, module) {
+System.register("./__monkey.entry-Ce4NpfTG.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -1891,11 +1891,11 @@ System.register("./__monkey.entry-sXnueCYo.js", [], (function (exports, module) 
             return false;
           }
         },
-        parse: function(rawText) {
-          return JSON.parse(rawText);
+        parse: function(text, reviver) {
+          return JSON.parse(text, reviver);
         },
-        stringify: function(rawText) {
-          return JSON.stringify(rawText);
+        stringify: function(value, replacer, space) {
+          return JSON.stringify(value, replacer, space);
         },
         /**
          * 获取数据类型，全小写
@@ -2099,7 +2099,7 @@ System.register("./__monkey.entry-sXnueCYo.js", [], (function (exports, module) 
         setTimeout(() => {
           _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-xtoFS2zl-afxhEX6P.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-v2CLxTKk-BPo_SSZb.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
+          __vitePreload(() => module.import('./index-C1x0vUbS-jxwAvDum.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-CxQmw8Mw-DLA9g0qh.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
         });
       })();
 
@@ -2180,7 +2180,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-xtoFS2zl-afxhEX6P.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-sXnueCYo.js'], (function (exports, module) {
+System.register("./index-C1x0vUbS-jxwAvDum.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-Ce4NpfTG.js'], (function (exports, module) {
   'use strict';
   var $, tippy, _GM_setValue, _unsafeWindow, _GM_getValue, Utils, _GM_setClipboard;
   return {
@@ -2986,7 +2986,7 @@ System.register("./index-xtoFS2zl-afxhEX6P.js", ['jquery', './tippy.esm-Ot9MORvr
   };
 }));
 
-System.register("./index-v2CLxTKk-BPo_SSZb.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-sXnueCYo.js'], (function (exports, module) {
+System.register("./index-CxQmw8Mw-DLA9g0qh.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-Ce4NpfTG.js'], (function (exports, module) {
   'use strict';
   var $, tippy, require$$0, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
   return {
@@ -4117,7 +4117,7 @@ System.register("./index-v2CLxTKk-BPo_SSZb.js", ['jquery', './tippy.esm-Ot9MORvr
               headers: {
                 "Content-Type": "application/json"
               },
-              body: JSON.stringify(form)
+              body: Utils.stringify(form)
             }).then(async (response) => {
               const result = await response.json();
               if (typeof result === "string") {
@@ -4130,7 +4130,7 @@ System.register("./index-v2CLxTKk-BPo_SSZb.js", ['jquery', './tippy.esm-Ot9MORvr
                   console.log("HTTP 请求异常：", e);
                 }
               } else {
-                that.reload(result, JSONbig.stringify(result), null);
+                that.reload(result, Utils.stringify(result), null);
               }
             }).catch((e) => {
               layer.closeAll();
