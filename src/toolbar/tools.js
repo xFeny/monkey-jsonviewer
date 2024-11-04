@@ -89,7 +89,7 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: Utils.stringify(form),
       })
         .then(async (response) => {
           const result = await response.json();
@@ -103,7 +103,7 @@ export default {
               console.log("HTTP 请求异常：", e);
             }
           } else {
-            that.reload(result, JSONbig.stringify(result), null);
+            that.reload(result, Utils.stringify(result), null);
           }
         })
         .catch((e) => {

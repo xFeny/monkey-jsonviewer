@@ -25,11 +25,11 @@ export default {
       return false;
     }
   },
-  parse: function (rawText) {
-    return JSON.parse(rawText);
+  parse: function (text, reviver) {
+    return JSON.parse(text, reviver);
   },
-  stringify: function (rawText) {
-    return JSON.stringify(rawText);
+  stringify: function (value, replacer, space) {
+    return JSON.stringify(value, replacer, space);
   },
   /**
    * 获取数据类型，全小写
