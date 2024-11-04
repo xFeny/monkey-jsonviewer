@@ -43,7 +43,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-D8xo4TYz.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-sXnueCYo.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +55,7 @@ System.register("./__entry.js", ['./__monkey.entry-D8xo4TYz.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-D8xo4TYz.js", [], (function (exports, module) {
+System.register("./__monkey.entry-sXnueCYo.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -2099,7 +2099,7 @@ System.register("./__monkey.entry-D8xo4TYz.js", [], (function (exports, module) 
         setTimeout(() => {
           _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-B4fUg9yy-BnI21yGk.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-Cr2_g5xX-BgAeMomE.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
+          __vitePreload(() => module.import('./index-xtoFS2zl-afxhEX6P.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-v2CLxTKk-BPo_SSZb.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
         });
       })();
 
@@ -2180,7 +2180,7 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-B4fUg9yy-BnI21yGk.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-D8xo4TYz.js'], (function (exports, module) {
+System.register("./index-xtoFS2zl-afxhEX6P.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-sXnueCYo.js'], (function (exports, module) {
   'use strict';
   var $, tippy, _GM_setValue, _unsafeWindow, _GM_getValue, Utils, _GM_setClipboard;
   return {
@@ -2912,7 +2912,6 @@ System.register("./index-B4fUg9yy-BnI21yGk.js", ['jquery', './tippy.esm-Ot9MORvr
          * @returns
          */
         filter: function(json, text) {
-          const that = this;
           text = text.toLowerCase();
           function match(json2, text2) {
             const newJson = Array.isArray(json2) ? new Array() : new Object();
@@ -2925,7 +2924,7 @@ System.register("./index-B4fUg9yy-BnI21yGk.js", ['jquery', './tippy.esm-Ot9MORvr
                   continue;
                 }
                 if (typeof value === "object") {
-                  const result = that.filter(value, text2);
+                  const result = match(value, text2);
                   const _result = Utils.stringify(result).toLowerCase();
                   if (_key.includes(text2) || _result.includes(text2)) {
                     newJson[key] = result;
@@ -2987,7 +2986,7 @@ System.register("./index-B4fUg9yy-BnI21yGk.js", ['jquery', './tippy.esm-Ot9MORvr
   };
 }));
 
-System.register("./index-Cr2_g5xX-BgAeMomE.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-D8xo4TYz.js'], (function (exports, module) {
+System.register("./index-v2CLxTKk-BPo_SSZb.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-sXnueCYo.js'], (function (exports, module) {
   'use strict';
   var $, tippy, require$$0, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
   return {
