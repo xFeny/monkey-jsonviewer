@@ -189,11 +189,6 @@ class JsonToTable extends JsonFormat {
   bindEvent() {
     super.bindEvent();
 
-    this.addEvent("click", ".json-formater-placeholder", (e) => {
-      const node = this.closest(e.currentTarget, "tr");
-      this.show(node);
-    });
-
     this.addEvent("mousedown", "table tr", function (event) {
       const { tagName } = event.target;
       if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {

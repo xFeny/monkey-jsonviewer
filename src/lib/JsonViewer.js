@@ -167,10 +167,6 @@ class JsonViewer extends JsonFormat {
       const span = this.createElement("span", {
         class: "json-formater-placeholder",
       });
-
-      span.addEventListener("click", () => {
-        this.show(box);
-      });
       box.appendChild(span);
     }
   }

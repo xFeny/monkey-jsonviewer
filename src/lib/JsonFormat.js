@@ -45,6 +45,11 @@ class JsonFormat {
       this.collapseAll();
     });
 
+    this.addEvent("click", ".json-formater-placeholder", (e) => {
+      const node = this.closest(e.currentTarget, ".json-formater-item");
+      this.show(node);
+    });
+
     const { onExpand, onCollapse } = this.options;
     this.addEvent("click", ".json-formater-arrow", (e) => {
       const node = this.closest(e.currentTarget, ".json-formater-item");
