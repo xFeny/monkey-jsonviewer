@@ -1,5 +1,4 @@
 import $ from "jquery";
-import JSONbig from "json-bigint";
 import jsonMind from "../mind";
 import URL from "../common/URL";
 import Utils from "../common/Utils";
@@ -71,9 +70,9 @@ const tabsEvent = {
       return;
     }
 
-    unsafeWindow.GLOBAL_JSMIND.expand_all();
-    unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(
-      unsafeWindow.GLOBAL_JSMIND.get_root()
+    unsafeWindow?.GLOBAL_JSMIND?.expand_all();
+    unsafeWindow?.GLOBAL_JSMIND?.scroll_node_to_center(
+      unsafeWindow?.GLOBAL_JSMIND?.get_root()
     );
   },
   viewFormater: function () {},
@@ -82,8 +81,8 @@ const tabsEvent = {
    */
   viewMind: function () {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
-    unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(
-      unsafeWindow.GLOBAL_JSMIND.get_root()
+    unsafeWindow?.GLOBAL_JSMIND?.scroll_node_to_center(
+      unsafeWindow?.GLOBAL_JSMIND?.get_root()
     );
   },
   /**
@@ -103,7 +102,7 @@ const tabsEvent = {
   beautify: function () {
     this.isBeautify = !this.isBeautify;
     if (this.isBeautify) {
-      let str = JSONbig.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
+      let str = Utils.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
       if (unsafeWindow.GLOBAL_JSONP_FUN) {
         str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
       }

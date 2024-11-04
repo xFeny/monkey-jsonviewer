@@ -1,4 +1,3 @@
-import JSONbig from "json-bigint";
 import Utils from "./common/Utils";
 import URL from "./common/URL";
 import layout from "./layout";
@@ -57,9 +56,7 @@ const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL;
   `);
 
   setTimeout(() => {
-    unsafeWindow.GLOBAL_JSON = JSONbig({ useNativeBigInt: true }).parse(
-      unsafeWindow.RAW_TEXT
-    );
+    unsafeWindow.GLOBAL_JSON = Utils.parse(unsafeWindow.RAW_TEXT);
     document.body.insertAdjacentHTML("afterbegin", layout);
 
     import("./format")

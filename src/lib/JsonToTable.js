@@ -1,3 +1,5 @@
+import JsonFormat from "./JsonFormat";
+
 const cssText = `
 .json-tree-table {
   border-collapse: collapse;
@@ -30,44 +32,9 @@ const cssText = `
 }
 `;
 
-const DEFAULTS = {
-  json: null,
-  theme: "default",
-  container: null,
-  onExpand: null,
-  expander: null,
-  collapser: null,
-  onCollapse: null,
-};
-
-class JsonToTable {
+class JsonToTable extends JsonFormat {
   constructor(options) {
-    this.options = Object.assign(DEFAULTS, options);
-    if (!options.container) {
-      throw new Error("Container: dom element is required");
-    }
-
-    if (!options.json) {
-      throw new Error("json: json is required");
-    }
-
-    if (typeof options.json !== "object") {
-      throw new Error("json: Need to use JSON.parse conversion");
-    }
-
-    this.render();
-    this.bindEvent();
-    this.setTheme(this.options.theme);
-  }
-
-  setTheme(theme) {
-    const classList = document.body.classList;
-    classList.forEach((clas) => {
-      if (clas.includes("theme")) {
-        classList.remove(clas);
-      }
-    });
-    classList.add(`${theme}-theme`);
+    super(options);
   }
 
   render() {
@@ -83,10 +50,11 @@ class JsonToTable {
     document.head.appendChild(style);
 
     this.$table = this.createElement("table");
-    this.$table.setAttribute("class", `json-tree-table`);
+    this.$table.setAttribute("class", "json-tree-table");
 
     this.createNode(json, 1, "Root", "Root");
 
+    this.$container.innerHTML = "";
     this.$container.appendChild(this.$table);
   }
 
@@ -99,22 +67,26 @@ class JsonToTable {
    */
   createNode(json, depth, pChain, parentId) {
     for (const key in json) {
-      let value = json[key];
-      const type = this.getType(value);
-      const jsonPath = `${pChain}.${key}`;
+      if (Object.prototype.hasOwnProperty.call(json, key)) {
+        let value = json[key];
+        const type = this.getType(value);
+        const jsonPath = `${pChain}.${key}`;
+        const args = { key, value, type, depth, jsonPath, parentId };
 
-      const item = this.createItem(key, value, type, depth, jsonPath, parentId);
-      this.$table.appendChild(item);
+        const item = this.createItem(args);
+        this.$table.appendChild(item);
 
-      if (this.canIterate(value)) {
-        const nodeId = item.dataset.nodeId;
-        this.createNode(value, depth + 1, jsonPath, nodeId);
+        if (this.canIterate(value)) {
+          const nodeId = item.dataset.nodeId;
+          this.createNode(value, depth + 1, jsonPath, nodeId);
+        }
       }
     }
   }
 
-  createItem(key, value, type, depth, jsonPath, parentId) {
-    const id = key + "_" + Math.random();
+  createItem(args) {
+    const { key, value, type, depth, jsonPath, parentId } = args;
+    const id = this.random();
     const isIterate = this.isIterate(value);
     const canIterate = this.canIterate(value);
 
@@ -122,7 +94,7 @@ class JsonToTable {
       "data-type": type,
       "data-node-id": id,
       "data-node-pid": parentId,
-      class: "json-formater-opened",
+      class: "json-formater-item json-formater-opened",
     });
 
     const leftNode = this.createLeftNode(key, value, depth, jsonPath);
@@ -215,22 +187,7 @@ class JsonToTable {
   }
 
   bindEvent() {
-    this.addEvent(`click`, this.options.expander, () => {
-      this.expandAll();
-    });
-
-    this.addEvent(`click`, this.options.collapser, () => {
-      this.collapseAll();
-    });
-
-    this.addEvent("click", ".json-formater-arrow", (e) => {
-      const node = this.closest(e.currentTarget, "tr");
-      if (this.hasClass(node, "json-formater-opened")) {
-        this.hide(node);
-      } else {
-        this.show(node);
-      }
-    });
+    super.bindEvent();
 
     this.addEvent("click", ".json-formater-placeholder", (e) => {
       const node = this.closest(e.currentTarget, "tr");
@@ -250,227 +207,28 @@ class JsonToTable {
     });
   }
 
-  expandAll() {
-    this.nodes().forEach((node) => {
-      this.show(node);
-    });
-  }
-
-  collapseAll() {
-    this.nodes().forEach((node) => {
-      this.hide(node);
-    });
-  }
-
-  show(node) {
-    this.removeClass(node, "json-formater-closed");
-    this.addClass(node, "json-formater-opened");
-    this.showDescs(node);
-    this.onShow(node);
-  }
-
   onShow(node) {
-    const placeholder = node.querySelector(".json-formater-placeholder");
-    if (!placeholder) {
-      return;
-    }
-
-    placeholder.innerHTML = null;
-    const { onExpand } = this.options;
-    if (onExpand) onExpand(node, this);
-  }
-
-  showDescs(node) {
-    let children = this.findChildren(node);
-    children.forEach((child) => {
-      child.style.display = null;
-      if (this.hasClass(child, "json-formater-opened")) {
-        this.showDescs(child);
-      }
-    });
-  }
-
-  hide(node) {
-    this.removeClass(node, "json-formater-opened");
-    this.addClass(node, "json-formater-closed");
-    this.hideDescs(node);
-    this.onHide(node);
+    const desc = node.querySelector(".json-formater-placeholder");
+    if (!desc) return;
+    desc.innerHTML = null;
   }
 
   onHide(node) {
     const type = node.dataset.type;
-    const placeholder = node.querySelector(".json-formater-placeholder");
-    if (!placeholder) {
-      return;
-    }
+    const desc = node.querySelector(".json-formater-placeholder");
+    if (!desc) return;
 
     const length = this.findChildren(node).length;
-    let content = `[ <span>${length}${
-      length > 1 ? " items" : " item"
-    }</span> ]`;
+    let textNode = document.createTextNode(type === "object" ? "{" : "[");
+    desc.appendChild(textNode);
+    const span = this.createElement("span");
+    span.textContent = `${length}${length > 1 ? " items" : " item"}`;
     if (type === "object") {
-      content = `{ <span>${length}${length > 1 ? " keys" : " key"}</span> }`;
+      span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
     }
-    placeholder.innerHTML = content;
-
-    const { onCollapse } = this.options;
-    if (onCollapse) onCollapse(node, this);
-  }
-
-  hideDescs(node) {
-    const children = this.findChildren(node);
-    children.forEach((child) => {
-      child.style.display = "none";
-      this.hideDescs(child);
-    });
-  }
-
-  findChildren(node) {
-    const pid = node.dataset.nodeId;
-    return this.$container.querySelectorAll(
-      `tr[data-node-pid="${pid}"]:not(.hidden)`
-    );
-  }
-
-  findByID(id) {
-    return this.$container.querySelector(`tr[data-node-id="${id}"]`);
-  }
-
-  openByID(id) {
-    this.show(this.findByID(id));
-  }
-
-  closeByID(id) {
-    this.hide(this.findByID(id));
-  }
-
-  addEvent(event, selector, fn) {
-    document.body.querySelectorAll(selector).forEach((el) => {
-      el.addEventListener(event, fn);
-    });
-  }
-
-  closest(element, selector) {
-    while (element) {
-      if (element.matches(selector)) {
-        return element;
-      }
-      element = element.parentElement;
-    }
-    return null;
-  }
-
-  hasClass(element, clas) {
-    return element.classList.contains(clas);
-  }
-
-  removeClass(element, clas) {
-    element.classList.remove(clas);
-    return this;
-  }
-
-  addClass(element, clas) {
-    element.classList.add(clas);
-    return this;
-  }
-
-  nodes() {
-    return this.$container.querySelectorAll("tr[data-node-id]");
-  }
-
-  /**
-   * 创建元素
-   * @param {String} name 元素名称
-   * @param {Object} attributes 属性
-   */
-  createElement(name, attributes) {
-    const element = document.createElement(name);
-    this.setAttributes(element, attributes);
-    return element;
-  }
-
-  /**
-   * 设置属性
-   * @param {HTMLElement} element 元素
-   * @param {Object} attributes 属性
-   */
-  setAttributes(element, attributes) {
-    if (!attributes) {
-      return;
-    }
-
-    for (const name in attributes) {
-      const value = attributes[name];
-      if (value) element.setAttribute(name, value);
-    }
-  }
-
-  /**
-   * 获取数据的类型
-   * @param {Object} value
-   * @return 返回类型 number、object、array、string、null等
-   */
-  getType(value) {
-    return Object.prototype.toString
-      .call(value)
-      .match(/\s(.+)]/)[1]
-      .toLowerCase();
-  }
-
-  isIterate(value) {
-    const type = this.getType(value);
-    return ["array", "object"].includes(type);
-  }
-
-  /**
-   * 是否可迭代
-   * @param {*} value
-   * @returns
-   */
-  canIterate(value) {
-    if (!this.isIterate(value)) {
-      return false;
-    }
-
-    let len = Object.keys(value).length;
-    return len > 0;
-  }
-
-  /**
-   * 是否为Url
-   * @param {*} str
-   * @returns
-   */
-  isUrl(str) {
-    const regexp =
-      /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-    return regexp.test(str);
-  }
-  /**
-   * 转义
-   * @param {*} str
-   * @returns
-   */
-  escape(str) {
-    return str
-      .replace(/\t/g, "\\t")
-      .replace(/\n/g, "\\n")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
-
-  isColor(colorString) {
-    const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-    const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
-    const rgbaRegex =
-      /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
-
-    return (
-      hexCodeRegex.test(colorString) ||
-      rgbRegex.test(colorString) ||
-      rgbaRegex.test(colorString)
-    );
+    desc.appendChild(span);
+    textNode = document.createTextNode(type === "object" ? "}" : "]");
+    desc.appendChild(textNode);
   }
 }
 

@@ -33,10 +33,13 @@
   color: #ccc;
   cursor: pointer;
   font-size: 12px;
-  margin-left: 0.5em;
 
-  span:hover {
-    text-decoration: underline;
+  span {
+    margin: 0 0.5em;
+    
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 

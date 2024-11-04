@@ -1,3 +1,5 @@
+import JSONbig from "json-bigint";
+const JSON = JSONbig({ useNativeBigInt: true });
 export default {
   /**
    * 检查是否为图片链接
@@ -22,6 +24,12 @@ export default {
       console.log("is not json");
       return false;
     }
+  },
+  parse: function (rawText) {
+    return JSON.parse(rawText);
+  },
+  stringify: function (rawText) {
+    return JSON.stringify(rawText);
   },
   /**
    * 获取数据类型，全小写

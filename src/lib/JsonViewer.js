@@ -1,37 +1,9 @@
-class JsonViewer {
+import JsonFormat from "./JsonFormat";
+
+class JsonViewer extends JsonFormat {
   constructor(options) {
-    const defaults = {
-      json: null,
-      theme: "default",
-      container: null,
-      onExpand: null,
-      expander: null,
-      collapser: null,
-      onCollapse: null,
-    };
-
-    this.options = Object.assign(defaults, options);
-    if (!options.container) {
-      throw new Error("Container: dom element is required");
-    }
-
-    if (!options.json) {
-      throw new Error("json: json is required");
-    }
-
-    this.render();
-    this.bind();
-    this.setTheme(this.options.theme);
-  }
-
-  setTheme(theme) {
-    const classList = document.body.classList;
-    classList.forEach((clas) => {
-      if (clas.includes("theme")) {
-        classList.remove(clas);
-      }
-    });
-    classList.add(`${theme}-theme`);
+    options.style = "viewer";
+    super(options);
   }
 
   render() {
@@ -43,30 +15,26 @@ class JsonViewer {
         : document.querySelector(container);
 
     this.$box = this.createElement("div");
-    this.$box.setAttribute("class", `json-view-formater`);
+    this.$box.setAttribute("class", "json-view-formater");
 
     this.createNode(this.$box, json, "Root", "Root");
 
+    this.$container.innerHTML = "";
     this.$container.appendChild(this.$box);
   }
 
   createNode(box, json, pChain, pid) {
     const type = this.getType(json);
-    switch (type) {
-      case "array":
-      case "object":
-        let length = Object.keys(json).length;
-        if (length > 0) {
-          this.createObjectNode(box, type, json, pChain, pid);
-        } else {
-          const emptyNode = this.createEmptyNode(type);
-          box.appendChild(emptyNode);
-        }
-        break;
-      default:
-        const valueNode = this.creatValueNode(type, json);
-        box.appendChild(valueNode);
-        break;
+    const isIterate = this.isIterate(json);
+    const canIterate = this.canIterate(json);
+    if (canIterate) {
+      this.createObjectNode(box, type, json, pChain, pid);
+    } else if (isIterate) {
+      const bracket = this.createBracket(type);
+      box.appendChild(bracket);
+    } else {
+      const valueNode = this.creatValueNode(type, json);
+      box.appendChild(valueNode);
     }
   }
 
@@ -74,16 +42,7 @@ class JsonViewer {
     const startBracket = this.createStartBracket(type);
     box.appendChild(startBracket);
 
-    if (pChain !== "Root" && this.canIterate(json)) {
-      const span = this.createElement("span", {
-        class: "json-formater-placeholder",
-      });
-
-      span.addEventListener("click", () => {
-        this.show(box);
-      });
-      box.appendChild(span);
-    }
+    this.creatPlaceholderNode(box, json);
 
     let length = Object.keys(json).length;
     for (var key in json) {
@@ -99,7 +58,9 @@ class JsonViewer {
           "json-path": jsonPath,
           style: `padding-left: 20px`,
           "data-type": this.getType(value),
-          class: this.isIterate(value) ? "json-formater-opened" : null,
+          class: `json-formater-item ${
+            this.isIterate(value) ? "json-formater-opened" : ""
+          }`,
         });
 
         this.createKeyNode(node, key, value);
@@ -137,17 +98,17 @@ class JsonViewer {
     return span;
   }
 
-  createBracket() {
-    const span = this.createElement("span", {
+  createBracket(type) {
+    const node = this.createElement("span", {
       class: `json-${type}-bracket`,
     });
-    span.textContent = type === "array" ? "[]" : "{}";
-    return span;
+    node.textContent = type === "array" ? "[]" : "{}";
+    return node;
   }
 
   createKeyNode(node, key, value) {
     if (this.canIterate(value)) {
-      const arrow = this.createElement("span", {
+      const arrow = this.createElement("i", {
         class: "json-formater-arrow",
       });
       node.appendChild(arrow);
@@ -200,264 +161,52 @@ class JsonViewer {
     return node;
   }
 
-  createEmptyNode(type) {
-    const node = this.createElement("span", {
-      class: `json-${type}-bracket`,
-    });
-    node.textContent = type === "array" ? "[]" : "{}";
-    return node;
-  }
+  creatPlaceholderNode(box, json) {
+    const nodeId = box.dataset.nodeId;
+    if (nodeId && nodeId !== "Root" && this.canIterate(json)) {
+      const span = this.createElement("span", {
+        class: "json-formater-placeholder",
+      });
 
-  bind() {
-    this.addEvent(this.options.expander, `click`, () => {
-      this.expandAll();
-    });
-
-    this.addEvent(this.options.collapser, `click`, () => {
-      this.collapseAll();
-    });
-
-    const { onExpand, onCollapse } = this.options;
-    this.addEvent(".json-formater-arrow", "click", (e) => {
-      const node = e.currentTarget.parentElement;
-      if (this.hasClass(node, "json-formater-opened")) {
-        this.hide(node);
-        if (onCollapse) onCollapse(node, this);
-      } else {
-        this.show(node);
-        if (onExpand) onExpand(node, this);
-      }
-    });
-  }
-
-  expandAll() {
-    this.nodes().forEach((node) => {
-      this.show(node.parentElement);
-    });
-  }
-
-  collapseAll() {
-    this.nodes().forEach((node) => {
-      this.hide(node.parentElement);
-    });
-  }
-
-  show(node) {
-    this.removeClass(node, "json-formater-closed");
-    this.addClass(node, "json-formater-opened");
-    this.showDescs(node);
-    this.onShow(node);
+      span.addEventListener("click", () => {
+        this.show(box);
+      });
+      box.appendChild(span);
+    }
   }
 
   onShow(node) {
     const nodeId = node.dataset.nodeId;
-    const length = this.findChildren(node).length;
-
-    const placeholder = node.querySelector(
-      `*[data-node-id*=${nodeId}] > .json-formater-placeholder`
+    const desc = node.querySelector(
+      `*[data-node-id=${nodeId}] > .json-formater-placeholder`
     );
-    if (!placeholder) {
-      return;
-    }
-
-    placeholder.textContent = "";
-  }
-
-  showDescs(node) {
-    let children = this.findChildren(node);
-    children.forEach((child) => {
-      child.style.display = null;
-    });
-  }
-
-  hide(node) {
-    this.removeClass(node, "json-formater-opened");
-    this.addClass(node, "json-formater-closed");
-    this.hideDescs(node);
-    this.onHide(node);
+    if (!desc) return;
+    desc.innerHTML = null;
   }
 
   onHide(node) {
+    const id = node.dataset.nodeId;
+    const desc = node.querySelector(
+      `*[data-node-id="${id}"] > .json-formater-placeholder`
+    );
+    if (!desc) return;
+
+    desc.innerHTML = null;
     const type = node.dataset.type;
-    const nodeId = node.dataset.nodeId;
     const length = this.findChildren(node).length;
-
-    const placeholder = node.querySelector(
-      `*[data-node-id*=${nodeId}] > .json-formater-placeholder`
-    );
-    if (!placeholder) {
-      return;
-    }
-
-    placeholder.textContent = `${length}${length > 1 ? " items " : " item "}`;
+    const span = this.createElement("span");
+    span.textContent = `${length}${length > 1 ? " items" : " item"}`;
     if (type === "object") {
-      placeholder.textContent = `${length}${length > 1 ? " keys " : " key "}`;
+      span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
     }
-  }
-
-  hideDescs(node) {
-    const children = this.findChildren(node);
-    children.forEach((child) => {
-      child.style.display = "none";
-    });
-  }
-
-  findChildren(node) {
-    const pid = node.dataset.nodeId;
-    return this.$container.querySelectorAll(
-      `*[data-node-pid="${pid}"]:not(.hidden)`
-    );
-  }
-
-  findByID(id) {
-    return this.$container.querySelector(`*[data-node-id="${id}"]`);
-  }
-
-  openByID(id) {
-    this.show(this.findByID(id));
-  }
-
-  closeByID(id) {
-    this.hide(this.findByID(id));
-  }
-
-  addEvent(selector, event, fn) {
-    document.body.querySelectorAll(selector).forEach((el) => {
-      el.addEventListener(event, fn);
-    });
-  }
-
-  closest(element, selector) {
-    while (element) {
-      if (element.matches(selector)) {
-        return element;
-      }
-      element = element.parentElement;
-    }
-    return null;
-  }
-
-  hasClass(element, clas) {
-    return element.classList.contains(clas);
-  }
-
-  removeClass(element, clas) {
-    element.classList.remove(clas);
-    return this;
-  }
-
-  addClass(element, clas) {
-    element.classList.add(clas);
-    return this;
+    desc.appendChild(span);
   }
 
   nodes() {
-    return this.$container.querySelectorAll(".json-formater-arrow");
-  }
-
-  /**
-   * 创建元素
-   * @param {String} name 元素名称
-   * @param {Object} attributes 属性
-   */
-  createElement(name, attributes) {
-    const element = document.createElement(name);
-    this.setAttributes(element, attributes);
-    return element;
-  }
-
-  /**
-   * 设置属性
-   * @param {HTMLElement} element 元素
-   * @param {Object} attributes 属性
-   */
-  setAttributes(element, attributes) {
-    if (!attributes) {
-      return;
-    }
-
-    for (const name in attributes) {
-      const value = attributes[name];
-      if (value) element.setAttribute(name, attributes[name]);
-    }
-  }
-
-  /**
-   * 获取数据的类型
-   * @param {Object} value
-   * @return 返回类型 number、object、array、string、null等
-   */
-  getType(value) {
-    return Object.prototype.toString
-      .call(value)
-      .match(/\s(.+)]/)[1]
-      .toLowerCase();
-  }
-
-  isIterate(value) {
-    const type = this.getType(value);
-    return ["array", "object"].includes(type);
-  }
-
-  /**
-   * 是否可迭代
-   * @param {*} value
-   * @returns
-   */
-  canIterate(value) {
-    if (!this.isIterate(value)) {
-      return false;
-    }
-
-    let len = Object.keys(value).length;
-    return len > 0;
-  }
-
-  /**
-   * 是否为Url
-   * @param {*} str
-   * @returns
-   */
-  isUrl(str) {
-    const regexp =
-      /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-    return regexp.test(str);
-  }
-  /**
-   * 转义
-   * @param {*} str
-   * @returns
-   */
-  escape(str) {
-    return str
-      .replace(/\t/g, "\\t")
-      .replace(/\n/g, "\\n")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
-
-  isColor(colorString) {
-    const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-    const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
-    const rgbaRegex =
-      /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
-
-    return (
-      hexCodeRegex.test(colorString) ||
-      rgbRegex.test(colorString) ||
-      rgbaRegex.test(colorString)
+    const arrows = this.$container.querySelectorAll(".json-formater-arrow");
+    return Array.from(arrows).map((ele) =>
+      this.closest(ele, ".json-formater-item")
     );
-  }
-
-  random() {
-    let randomString = "";
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      randomString += characters.charAt(randomIndex);
-    }
-    return randomString;
   }
 }
 

@@ -1,5 +1,4 @@
 import $ from "jquery";
-import JSONbig from "json-bigint";
 import URL from "../common/URL";
 import Utils from "../common/Utils";
 import http_form from "../layout/http_form";
@@ -28,7 +27,7 @@ export default {
         // 判断是否为jsonp格式
         const { rawText, jsonpFun } = Utils.jsonpMatch(text);
         try {
-          const json = JSONbig({ useNativeBigInt: true }).parse(rawText);
+          const json = Utils.parse(rawText);
           that.reload(json, rawText, jsonpFun);
         } catch (e) {
           layer.msg("JSON格式不正确", { time: 1500 });
@@ -97,7 +96,7 @@ export default {
           if (typeof result === "string") {
             try {
               const { rawText, jsonpFun } = Utils.jsonpMatch(result);
-              const json = JSONbig({ useNativeBigInt: true }).parse(rawText);
+              const json = Utils.parse(rawText);
               that.reload(json, rawText, jsonpFun);
             } catch (e) {
               layer.closeAll();
