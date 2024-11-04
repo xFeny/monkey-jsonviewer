@@ -36,7 +36,7 @@
 
   span {
     margin: 0 0.5em;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -44,8 +44,8 @@
 }
 
 .json-color {
-  width: 0.75em;
-  height: 0.75em;
+  width: 0.7em;
+  height: 0.7em;
   margin-right: 0.3em;
   display: inline-block;
   vertical-align: middle;
@@ -62,7 +62,7 @@
 
 .json-colon,
 .json-comma {
-  margin: 0 0.25em 0 0.1em;
+  margin: 0 0.3em 0 0.1em;
 }
 
 .json-object-bracket {
