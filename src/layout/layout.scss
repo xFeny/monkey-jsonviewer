@@ -274,9 +274,10 @@ $dark_tip_color: #4e4e4e;
         padding: 5px 8px;
 
         pre {
-          display: block !important;
-          overflow-wrap: break-word;
+          margin: 0;
+          padding: 0;
           white-space: pre-wrap;
+          overflow-wrap: break-word;
         }
       }
     }
