@@ -1,18 +1,17 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      0.9.8
+// @version      1.0.0
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
 // @icon         data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9wvjF8bLX4ZrHZx+XNqlwnmKjH5YUyRvb6kEAd8H058d1b47XV5Ir3eoN++bagaXYrN6KOBn2FfPPx5/aEutX8a+KNWhIubhruZLSNj8u1WMcIOP4QoXOOwNS/wDBM79lDTfjh8YNe+IXj63TxRdeHfKjsE1KMTxtdSbmMmxvlAiVV2IBsUybgAyKR9ZTy6lhsM69Xovm2+iPmKmOqYjEKjT6v5WXU9e8beKrjxZpp/s/xFrfhjWIwWs9X0q42z2kmPlZo2zDcxjqYZ0eNv7obDDf/YL/AG8L745eJNc+G3xCttP0n4qeEWZZ2sVZNP8AENsu0rd2ysS0ZKPG7RMSQsisCcukWd+3x4RtfhpqGk+JNPjS0g1mV7a8iT5UM4XesgHYsofdjglQepJPxwPE1x4V/au8LePtNkeK40ma0lmdDgyorvHMhPo9uxjP+y1bUcHRxmGbS1adn1TXT0/4fcipiqmExCi3pfVdGn19f+GLni/w7ceGf2wPFXga+Vo5rW/vDbI3WWI/v4HA/wBqBg3tk+lfWX7AXia1+F/iDV9B1CRbWHXjFLayyHannpuUxk+rqy4zxlMdWAPQft7fsL33x91nQfiD4DutP0r4oeDXVrT7cWWx1y3UsTZ3LKCyAh5FEigkLLIpHzBk5vwj4JuvE2kLJfeHdY8N6lGAl5pepwBZrOT+JRIuYp0ByBNCzxPg4bIICqYyljMKot62Sa6prr6P/gBDC1MLiHJLS90+jT6ev/Dnmn/BVP8Aaw0nxv4/8P8Aw18KXK69qmk3MlxqEdiRMwuivlpbrtPLopkMnZNy5IIYLyPwa/Z8vvEmv+HtHu4/Ovr+5iS6KDcqAtukwe6om7nuEJxX0XoH7PK/bJG0vRoY5rr/AFslvbLGZf8AfcAf+PGvafgv8CbX4byNqFyI5tWmXYCoytsh6qvqx7t+A4yWiWYUsLhlRpbr72318kVHA1MTiHVqbP7kl0P/2Q==
 // @homepage     https://github.com/xFeny/monkey-jsonviewer
 // @match        *://*/*
-// @require      https://unpkg.com/dom-to-image@2
-// @require      https://unpkg.com/jquery@3.7.1/dist/jquery.slim.min.js
-// @require      data:application/javascript,%3Bwindow.jquery%3DjQuery%3B
 // @require      https://unpkg.com/jsmind@0.8.5/es6/jsmind.js
 // @require      data:application/javascript,%3Bwindow.jsmind%3DjsMind%3B
+// @require      https://unpkg.com/dom-to-image@2
+// @require      data:application/javascript,%3Bwindow.domtoimage%3Ddomtoimage%3B
 // @require      https://unpkg.com/beautifier@0.1.7
 // @require      data:application/javascript,%3Bwindow.beautifier%3Djs_beautify%3Bwindow.js_beautify%3Djs_beautify%3Bwindow.css_beautify%3Dcss_beautify%3B
 // @require      https://unpkg.com/@highlightjs/cdn-assets@11.10.0/highlight.min.js
@@ -29,7 +28,7 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(e=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const o=document.createElement("style");o.textContent=e,document.head.append(o)})})(` @charset "UTF-8";.monkey-jsonviewer body li::marker{content:""}.monkey-jsonviewer body input:focus,.monkey-jsonviewer body select:focus,.monkey-jsonviewer body textarea:focus{outline:0}.monkey-jsonviewer body a:hover{text-decoration:underline}.monkey-jsonviewer .jsonp{color:#93983a}.monkey-jsonviewer .layui-layer-tips{width:auto!important}.monkey-jsonviewer #jsoncrackEmbed{width:100%;height:100%;border:0}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.monkey-jsonviewer .json-viewer-layout{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column}.monkey-jsonviewer .json-viewer-layout .panel{display:flex;line-height:28px;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .json-viewer-layout .tabs,.monkey-jsonviewer .json-viewer-layout .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .json-viewer-layout .tabs>div,.monkey-jsonviewer .json-viewer-layout .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .tabs>div:hover,.monkey-jsonviewer .json-viewer-layout .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .json-viewer-layout .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .json-viewer-layout .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .json-viewer-layout .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .json-viewer-layout .toolbar{line-height:23px}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox:hover{background-color:transparent}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:14px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAipJREFUWEftljuIE1EUhv8zpJB0FqugItiIdmKnnQ+wjPhq3EILRYt1JTDnDvhgUJG55zY+ELO7hRZupYWCCIK6nXYiNoqlrIUKaxes5siFBGKYSSbJTnaLTDMwl/Ofj8Pc/z+ENX5ojftjfQFYay8AuEFEU2VMRlV/A7hujGm09f+bgIj8APCtjOYdmjuZeWsewCMAZwBcYub7qwkiIjMA7gF4zMxnMwHiOK5Wq9UXAA6r6kljzLPVgLDWniCipwDeNJvNWhzHzUwA/zFJku1BEHiIPUS0PwzDD6NAOOf2qep7AJ/SNK1FUfS9Uy/zFojIXgAeYhsRbQ7D8NcwEM65Tar6E8AygBozf+zWyb2GSZIcCYLgORH9DcNw45AAf1R1Q5qmR6Moep2l0dMHrLWniegJgK/MvHsQCBH5AmCXqk4bYxbzavsakYjMArgD4B0zHyoCISJvARwEcJmZ7/aq6Qvgi0XkJoCrqrpgjDnfS9BaO09E5wDcYuZr/YALAbQgHgLwTpnrER13vcHMF/s19+eFAVoQS/7NzAeyxJ1zS6qaez7wT9hdICITgMkEJhOYTMCq6jEimmXmV90+UboRtdzQ7wZ+aW1UKpUr9Xp9pQ0yFoCuXFhW1agdt2MD8BDOOb83zgPYAWAxCILbqvqg1CzIChMRmQPgI3qFiD773Z+ZTxVJwoHTME9URI4TUV1VtwCYYeaXYwUo2mzkOB6l0dA7YRlNOzX/ATTlNjBwsoHnAAAAAElFTkSuQmCC)}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANZJREFUOE+t0zFKg0EQhuEndbpgIVZ26eIJFK1SeQcPYKuWmlJIb6lHkJRpFFKnE2zTpBAknaUgA/+Q5SfBwGaaZWfne3dmdraj0job9Ae4wwAn+MUcn3jCotS0Aad4RW9LYj+4xkuel4ArPO9Y0RlmEZuAY3ygi/cGct6Clf4V+vhOwCNuG0EEXuAB941v1OzfkOAxbhIwwWVxYwoCEhZrCQzfFMMELHHUSjkhCchsMuwLh3sDVJfwXxOj/ihpaxOrnzEaUzVI2dmqUU5I1Wfa8Susw/4A1fw8ES1B6icAAAAASUVORK5CYII=)}.monkey-jsonviewer .json-viewer-layout .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .json-viewer-layout .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li{font-size:12px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .json-viewer-layout .container>div{display:none}.monkey-jsonviewer .json-viewer-layout .container>div.active{display:block}.monkey-jsonviewer .json-viewer-layout .container #formatBox{padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .json-viewer-layout #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .json-viewer-layout #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .json-viewer-layout #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .dark-theme .json-viewer-layout li,.monkey-jsonviewer .dark-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-theme .json-viewer-layout td:first-child,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout td:first-child{color:#ccc}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel>div,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel>div{border-bottom-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .toolbar-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item.active,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox input,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox .clear,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox>div span:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .jsonp,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .jsonp{color:#f1d700}.monkey-jsonviewer .dark-theme .json-viewer-layout jmnode,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmnode{filter:brightness(2)}.monkey-jsonviewer .dark-theme .json-viewer-layout jmexpander,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmexpander{background-color:#dfdfdf}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}div.json-formater-item{border-left:.5px dotted #d9d9d9}.json-formater-arrow{width:0;opacity:.2;display:inline-block}.json-formater-arrow:hover{opacity:.35}.json-formater-arrow:before{width:0;height:0;left:-13px;content:"";cursor:pointer;position:relative;border-style:solid;display:inline-block;vertical-align:middle;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.json-formater-closed .json-formater-arrow:before{transform:rotate(0)}.json-formater-placeholder{color:#ccc;cursor:pointer;font-size:12px}.json-formater-placeholder span{margin:0 .5em}.json-formater-placeholder span:hover{text-decoration:underline}.json-color{width:.7em;height:.7em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.json-key{cursor:pointer}.json-comma{font-family:Courier New,monospace}.json-colon,.json-comma{margin:0 .3em 0 .1em}.json-object-bracket{color:#6d9331;font-weight:700}.json-array-bracket{color:#8e9331;font-weight:700}.default-theme .json-key{color:#910f93}.default-theme .json-string,.default-theme .json-string a{color:#2e7c16}.default-theme .json-bigint,.default-theme .json-number{color:#164ff1}.default-theme .json-boolean{color:#c41a16}.default-theme .json-null{color:#228fec}.light-theme .json-key{color:#0040cf}.light-theme .json-string,.light-theme .json-string a{color:#a31515}.light-theme .json-bigint,.light-theme .json-number{color:#0b7500}.light-theme .json-boolean{color:#00f}.light-theme .json-null{color:#05f}.dark-theme div.json-formater-item,.dark-plus-theme div.json-formater-item{border-left-color:#3a3d40}.dark-theme .json-colon,.dark-theme .json-comma,.dark-plus-theme .json-colon,.dark-plus-theme .json-comma{color:#ccc}.dark-theme .json-formater-arrow,.dark-plus-theme .json-formater-arrow{color:#fff;opacity:.35}.dark-theme .json-formater-arrow:hover,.dark-plus-theme .json-formater-arrow:hover{opacity:.5}.dark-theme{background-color:#252526}.dark-theme .json-object-bracket{color:#ce70d6}.dark-theme .json-array-bracket{color:#f1d700}.dark-theme .json-key{color:#9cdcfe}.dark-theme .json-string,.dark-theme .json-string a{color:#ce9178}.dark-theme .json-bigint,.dark-theme .json-number{color:#b5cea8}.dark-theme .json-boolean{color:#358cd6}.dark-theme .json-null{color:#569cd6}.dark-plus-theme{background-color:#1e1f22}.dark-plus-theme .json-object-bracket{color:#bb9667}.dark-plus-theme .json-array-bracket{color:#bbbda3}.dark-plus-theme .json-key{color:#c77dbb}.dark-plus-theme .json-string,.dark-plus-theme .json-string a{color:#6aab73}.dark-plus-theme .json-bigint,.dark-plus-theme .json-number{color:#28aab4}.dark-plus-theme .json-boolean{color:#ce8951}.dark-plus-theme .json-null{color:#c78d61}/**
+(e=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const o=document.createElement("style");o.textContent=e,document.head.append(o)})})(` @charset "UTF-8";.monkey-jsonviewer body,.monkey-jsonviewer ul{margin:0;padding:0}.monkey-jsonviewer li::marker{content:""}.monkey-jsonviewer input:focus,.monkey-jsonviewer select:focus,.monkey-jsonviewer textarea:focus{outline:0}.monkey-jsonviewer a:hover{text-decoration:underline}.monkey-jsonviewer .jsonp{color:#93983a}.monkey-jsonviewer #jsoncrackEmbed{border:0;width:100%;height:100%}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.monkey-jsonviewer .json-viewer-layout{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column}.monkey-jsonviewer .json-viewer-layout .panel{display:flex;line-height:28px;-webkit-user-select:none;user-select:none;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .json-viewer-layout .tabs,.monkey-jsonviewer .json-viewer-layout .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .json-viewer-layout .tabs>div,.monkey-jsonviewer .json-viewer-layout .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .tabs>div:hover,.monkey-jsonviewer .json-viewer-layout .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .json-viewer-layout .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .json-viewer-layout .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .json-viewer-layout .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .json-viewer-layout .toolbar{line-height:23px}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox:hover{background-color:transparent}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:14px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAipJREFUWEftljuIE1EUhv8zpJB0FqugItiIdmKnnQ+wjPhq3EILRYt1JTDnDvhgUJG55zY+ELO7hRZupYWCCIK6nXYiNoqlrIUKaxes5siFBGKYSSbJTnaLTDMwl/Ofj8Pc/z+ENX5ojftjfQFYay8AuEFEU2VMRlV/A7hujGm09f+bgIj8APCtjOYdmjuZeWsewCMAZwBcYub7qwkiIjMA7gF4zMxnMwHiOK5Wq9UXAA6r6kljzLPVgLDWniCipwDeNJvNWhzHzUwA/zFJku1BEHiIPUS0PwzDD6NAOOf2qep7AJ/SNK1FUfS9Uy/zFojIXgAeYhsRbQ7D8NcwEM65Tar6E8AygBozf+zWyb2GSZIcCYLgORH9DcNw45AAf1R1Q5qmR6Moep2l0dMHrLWniegJgK/MvHsQCBH5AmCXqk4bYxbzavsakYjMArgD4B0zHyoCISJvARwEcJmZ7/aq6Qvgi0XkJoCrqrpgjDnfS9BaO09E5wDcYuZr/YALAbQgHgLwTpnrER13vcHMF/s19+eFAVoQS/7NzAeyxJ1zS6qaez7wT9hdICITgMkEJhOYTMCq6jEimmXmV90+UboRtdzQ7wZ+aW1UKpUr9Xp9pQ0yFoCuXFhW1agdt2MD8BDOOb83zgPYAWAxCILbqvqg1CzIChMRmQPgI3qFiD773Z+ZTxVJwoHTME9URI4TUV1VtwCYYeaXYwUo2mzkOB6l0dA7YRlNOzX/ATTlNjBwsoHnAAAAAElFTkSuQmCC)}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANZJREFUOE+t0zFKg0EQhuEndbpgIVZ26eIJFK1SeQcPYKuWmlJIb6lHkJRpFFKnE2zTpBAknaUgA/+Q5SfBwGaaZWfne3dmdraj0job9Ae4wwAn+MUcn3jCotS0Aad4RW9LYj+4xkuel4ArPO9Y0RlmEZuAY3ygi/cGct6Clf4V+vhOwCNuG0EEXuAB941v1OzfkOAxbhIwwWVxYwoCEhZrCQzfFMMELHHUSjkhCchsMuwLh3sDVJfwXxOj/ihpaxOrnzEaUzVI2dmqUU5I1Wfa8Susw/4A1fw8ES1B6icAAAAASUVORK5CYII=)}.monkey-jsonviewer .json-viewer-layout .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .json-viewer-layout .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li{font-size:12px;padding:5px 20px;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .json-viewer-layout .container>div{display:none}.monkey-jsonviewer .json-viewer-layout .container>div.active{display:block}.monkey-jsonviewer .json-viewer-layout .container #formatBox{padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox pre{display:block!important;overflow-wrap:break-word;white-space:pre-wrap}.monkey-jsonviewer .json-viewer-layout #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:before{content:"";top:50%!important;margin-top:1px;position:absolute;border-radius:50%;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .json-viewer-layout #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .json-viewer-layout #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .dark-theme .json-viewer-layout li,.monkey-jsonviewer .dark-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-theme .json-viewer-layout td:first-child,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout td:first-child{color:#ccc}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel>div,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel>div{border-bottom-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .toolbar-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item.active,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox input,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox .clear,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox>div span:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .jsonp,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .jsonp{color:#f1d700}.monkey-jsonviewer .dark-theme .json-viewer-layout jmnode,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmnode{filter:brightness(2)}.monkey-jsonviewer .dark-theme .json-viewer-layout jmexpander,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmexpander{background-color:#dfdfdf}.js-mind-child-node{width:300px;height:300px;margin:10px;overflow-y:scroll;position:relative;padding:5px 20px;background-color:#f8f9fa}.js-mind-child-node div{color:#475872;line-height:25px}.js-mind-copy{top:5px;right:10px;width:20px;height:20px;cursor:pointer;position:absolute;background-size:20px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;-webkit-user-select:none;user-select:none;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}.format-container{flex-grow:1}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}div.json-formater-item{border-left:.5px dotted #d9d9d9}.json-formater-copy{width:13px;height:13px;cursor:pointer;margin-left:.15em;display:inline-block;background-size:13px;vertical-align:text-bottom;background-repeat:no-repeat;transition:background-image ease .3s;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.json-formater-copy.success{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAhZJREFUWEftlU1IFGEYx//Pu2R0kLrYwUMg7M5EHjwklNUOLoInxYMg7W6HTkEIgkLMLF6CsllDokN4Vfy4SnSqk+7sRghBFBT7IWKHQATFSxCLM09sabjjO/thLnuZ9zjPx//3/t9n3pfQ5EVN1ocP4DvgO9AwB/RMsJNYjAF4wEwz01rukeyXbwjAZEbttpmXAKhHokQ8bN4prLghzhwgkVHCzLQE8JUyMeblpFa411AAIxXshxCLAC6fFOKbZriw3jAA3VKHiLgk3uoS+UWMqKnlX9c8AwkreA0i0GM7vFu0i2svI1v7ld4M3VLuEmEBwLnjeQTsMyiaDOfeetVLZ8BIhz4CdP2w6CuxM2JqG99kTYz3oftwaE4S23Zsij3vza1Wgj8BYKSDvYBwF0khdEt9SMSzEoHvJETUvJ39UO219XBA2QHQ5iougzAsZRyEFxKBHAJONHlr41M18VLc6wgmAXoqafAHgoUYAuOZJP6Z2Il5HVfNQ1hK1NPKKAGvZBAAOiXf1wGOJcOFzVp2/u+CqpRsZNQ4/t5oVRalAkWOT/Xlf1TLrPseSKRDAw7TIhEuyS3kd2gJxM0b2d16xT1nwN1IT4U0IWiegY6yGPObg4sXYjNdX36eRrxmgMOZ6CLQE4AHGdgTjOXzdvvE48jawWnF6wI4EkmsKlfNSD77P6LHa8/8NawXzAfwHfAdaLoDvwHyYK0h/tY7mwAAAABJRU5ErkJggg==)}.json-formater-arrow{width:0;opacity:.2;display:inline-block}.json-formater-arrow:hover{opacity:.35}.json-formater-arrow:before{width:0;height:0;left:-13px;content:"";cursor:pointer;position:relative;border-style:solid;display:inline-block;vertical-align:middle;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.json-formater-closed .json-formater-arrow:before{transform:rotate(0)}.json-formater-placeholder{color:#ccc;cursor:pointer;font-size:12px;-webkit-user-select:none;user-select:none;margin-left:.3em}.json-formater-placeholder span{margin:0 .5em}.json-formater-placeholder span:hover{text-decoration:underline}.json-color{width:.7em;height:.7em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.json-key{cursor:pointer}.json-comma{margin-left:.15em;font-family:Courier New,monospace}.json-colon{margin:0 .3em 0 .15em}.json-object-bracket{color:#6d9331;font-weight:700}.json-array-bracket{color:#8e9331;font-weight:700}.default-theme{background-color:#fefefe}.default-theme .json-key{color:#910f93}.default-theme .json-string,.default-theme .json-string a{color:#2e7c16}.default-theme .json-bigint,.default-theme .json-number{color:#164ff1}.default-theme .json-boolean{color:#c41a16}.default-theme .json-null{color:#228fec}.light-theme{background-color:#fefefe}.light-theme .json-key{color:#0040cf}.light-theme .json-string,.light-theme .json-string a{color:#a31515}.light-theme .json-bigint,.light-theme .json-number{color:#0b7500}.light-theme .json-boolean{color:#00f}.light-theme .json-null{color:#05f}.dark-theme div.json-formater-item,.dark-plus-theme div.json-formater-item{border-left-color:#3a3d40}.dark-theme .json-colon,.dark-theme .json-comma,.dark-plus-theme .json-colon,.dark-plus-theme .json-comma{color:#ccc}.dark-theme .json-formater-arrow,.dark-plus-theme .json-formater-arrow{color:#fff;opacity:.35}.dark-theme .json-formater-arrow:hover,.dark-plus-theme .json-formater-arrow:hover{opacity:.5}.dark-theme{background-color:#252526}.dark-theme .json-object-bracket{color:#ce70d6}.dark-theme .json-array-bracket{color:#f1d700}.dark-theme .json-key{color:#9cdcfe}.dark-theme .json-string,.dark-theme .json-string a{color:#ce9178}.dark-theme .json-bigint,.dark-theme .json-number{color:#b5cea8}.dark-theme .json-boolean{color:#358cd6}.dark-theme .json-null{color:#569cd6}.dark-plus-theme{background-color:#1e1f22}.dark-plus-theme .json-object-bracket{color:#bb9667}.dark-plus-theme .json-array-bracket{color:#bbbda3}.dark-plus-theme .json-key{color:#c77dbb}.dark-plus-theme .json-string,.dark-plus-theme .json-string a{color:#6aab73}.dark-plus-theme .json-bigint,.dark-plus-theme .json-number{color:#28aab4}.dark-plus-theme .json-boolean{color:#ce8951}.dark-plus-theme .json-null{color:#c78d61}/**
 * @license BSD
 * @copyright 2014-2023 hizzgdev@163.com
 * 
@@ -37,13 +36,13 @@
 *   https://github.com/hizzgdev/jsmind/
 */.jsmind-inner{position:relative;overflow:auto;width:100%;height:100%;outline:none}.jsmind-inner{moz-user-select:-moz-none;-moz-user-select:none;-o-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.jsmind-inner canvas{position:absolute}svg.jsmind{position:absolute;z-index:1}canvas.jsmind{position:absolute;z-index:1}jmnodes{position:absolute;z-index:2;background-color:#0000}jmnode{position:absolute;cursor:default;max-width:400px}jmexpander{position:absolute;width:11px;height:11px;display:block;overflow:hidden;line-height:12px;font-size:10px;text-align:center;border-radius:6px;border-width:1px;border-style:solid;cursor:pointer}.jmnode-overflow-wrap jmnodes{min-width:420px}.jmnode-overflow-hidden jmnode{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}jmnode{padding:10px;background-color:#fff;color:#333;border-radius:5px;box-shadow:1px 1px 1px #666;font:16px/1.125 Verdana,Arial,Helvetica,sans-serif}jmnode:hover{box-shadow:2px 2px 8px #000;background-color:#ebebeb;color:#333}jmnode.selected{background-color:#11f;color:#fff;box-shadow:2px 2px 8px #000}jmnode.root{font-size:24px}jmexpander{border-color:gray}jmexpander:hover{border-color:#000}@media screen and (max-device-width: 1024px){jmnode{padding:5px;border-radius:3px;font-size:14px}jmnode.root{font-size:21px}}jmnodes.theme-primary jmnode{background-color:#428bca;color:#fff;border-color:#357ebd}jmnodes.theme-primary jmnode:hover{background-color:#3276b1;border-color:#285e8e}jmnodes.theme-primary jmnode.selected{background-color:#f1c40f;color:#fff}jmnodes.theme-warning jmnode{background-color:#f0ad4e;border-color:#eea236;color:#fff}jmnodes.theme-warning jmnode:hover{background-color:#ed9c28;border-color:#d58512}jmnodes.theme-warning jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-danger jmnode{background-color:#d9534f;border-color:#d43f3a;color:#fff}jmnodes.theme-danger jmnode:hover{background-color:#d2322d;border-color:#ac2925}jmnodes.theme-danger jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-success jmnode{background-color:#5cb85c;border-color:#4cae4c;color:#fff}jmnodes.theme-success jmnode:hover{background-color:#47a447;border-color:#398439}jmnodes.theme-success jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-info jmnode{background-color:#5dc0de;border-color:#46b8da;color:#fff}jmnodes.theme-info jmnode:hover{background-color:#39b3d7;border-color:#269abc}jmnodes.theme-info jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-greensea jmnode{background-color:#1abc9c;color:#fff}jmnodes.theme-greensea jmnode:hover{background-color:#16a085}jmnodes.theme-greensea jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-nephrite jmnode{background-color:#2ecc71;color:#fff}jmnodes.theme-nephrite jmnode:hover{background-color:#27ae60}jmnodes.theme-nephrite jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-belizehole jmnode{background-color:#3498db;color:#fff}jmnodes.theme-belizehole jmnode:hover{background-color:#2980b9}jmnodes.theme-belizehole jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-wisteria jmnode{background-color:#9b59b6;color:#fff}jmnodes.theme-wisteria jmnode:hover{background-color:#8e44ad}jmnodes.theme-wisteria jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-asphalt jmnode{background-color:#34495e;color:#fff}jmnodes.theme-asphalt jmnode:hover{background-color:#2c3e50}jmnodes.theme-asphalt jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-orange jmnode{background-color:#f1c40f;color:#fff}jmnodes.theme-orange jmnode:hover{background-color:#f39c12}jmnodes.theme-orange jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-pumpkin jmnode{background-color:#e67e22;color:#fff}jmnodes.theme-pumpkin jmnode:hover{background-color:#d35400}jmnodes.theme-pumpkin jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-pomegranate jmnode{background-color:#e74c3c;color:#fff}jmnodes.theme-pomegranate jmnode:hover{background-color:#c0392b}jmnodes.theme-pomegranate jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-clouds jmnode{background-color:#ecf0f1;color:#333}jmnodes.theme-clouds jmnode:hover{background-color:#bdc3c7}jmnodes.theme-clouds jmnode.selected{background-color:#11f;color:#fff}jmnodes.theme-asbestos jmnode{background-color:#95a5a6;color:#fff}jmnodes.theme-asbestos jmnode:hover{background-color:#7f8c8d}jmnodes.theme-asbestos jmnode.selected{background-color:#11f;color:#fff}.scroll-top{width:48px;height:48px;z-index:999;position:fixed;right:30px;bottom:30px;display:none;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA39JREFUaEPtmV2ITVEUx39rJjT5KPKC5DPKK6UGZZ7Eq0whNUiKFPfcKW9mnmjm7ssLaSLygEx5xItMESnKC4V8FV4IJUkyS+fMHZ07zjl3733PvT6a+3S6Z629/r+99sfa+wgpPw1YDtxLe9/k/1eI4X5STMkSokXWNlloYjgpMZSmIxPgbxBfS8M4QK0eavT78Qw0uodrtd+wDGjAMqBcEVAQw6NaYnzeNwRAi2xBOQlMrYj6jLJTygz6iMzyyR1Ai+xCGUgMqnTmDZErgBYoIJjMXhY2S4mLeWUiNwAt0INwyEqY0iNleq1saxjlAqAB64BrToKEHVLijJNPgnHdALqPaUziOsoKRzGfaKFD+nng6FdlXj+Ay9AZq1Q5L2W2/jEA3c8sWqOSe3aCiK/A3cr/K4G2FKEbxXDZF6KuDKROXKWXFvqlxJdQmBaZzDDdKZP8thhW/RmAgKfA4qrgSq+U6UkSlAostEuJOz4Q3hnQgPXAld+CCh1pB5DogKTcSBAalhpHmw1wGtgxJuhbMczJEqIBbxLmzFUxbGg2gCYE9AVADF6jwctJDzKd73xI7DG/IQQTmCFH+OiaBT+AAyykhWcpBZv7JA4bGmaRHOV5cwBqX7mc5Qe9coyX0TK6n/m0RnVSV4bA1KuTLCi/DBTYhHCpRm+Fe8Bo/b8JmJxp71lqOwNowB7guGuqLe33iuGEpW1k5gTgVDK7qIjbZmyESU1aA1TOuA99dTn5CQulxAsbH3uAeqpOGyXVNrvEcMrGzR4gIGnjsonhYzMkhg4bx3EAm17ysGlIBh4DSzzE+LgMiGG3jaPLEApv2Q7YNFq3jcOmZg9gt/u6aH8PzEx0aGWu9PHapjFrgKimCaIDTHiQqf4pNxHW2AT8ZaMEiZdgSreUKdm25QRQgRi7nIZzI7xZcPmeNkAL5xjmVpVQx1049HUGiCAKFBH6K8GjFUP3MIW2CGJpjd4bFEPnmM54grA761tYWpteAJXgy1A6w6p09Opcu1nED7ZlAcQP/BqwGZjORAblMO9sh03czhsgLZgW6EL4JoYL0b0RTArPBfFnH6G5ZyAVYKTkGBlWQVR2bxDDgvjzvwQQXqGsDQ/sGkTXKdHzOECsB3LtjdjKMjqE/qMMjJwn5olh+98+hM6gvAqXy0aN+4Yuo/HG/weAPmC1GNrzHDbxtn4Coc0pQNdM3UAAAAAASUVORK5CYII=)} `);
 
-System.addImportMap({ imports: {"highlight.js":"user:highlight.js","beautifier":"user:beautifier","jquery":"user:jquery","jsmind":"user:jsmind"} });
+System.addImportMap({ imports: {"highlight.js":"user:highlight.js","beautifier":"user:beautifier","jsmind":"user:jsmind","dom-to-image":"user:dom-to-image"} });
 System.set("user:highlight.js", (()=>{const _=hljs;('default' in _)||(_.default=_);return _})());
 System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.default=_);return _})());
-System.set("user:jquery", (()=>{const _=jquery;('default' in _)||(_.default=_);return _})());
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
+System.set("user:dom-to-image", (()=>{const _=domtoimage;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-DZ8WfZzp.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-BOyf9HZs.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -55,7 +54,7 @@ System.register("./__entry.js", ['./__monkey.entry-DZ8WfZzp.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) {
+System.register("./__monkey.entry-BOyf9HZs.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -1866,22 +1865,22 @@ System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) 
       jsonBigint.exports.stringify = json_stringify;
       var jsonBigintExports = jsonBigint.exports;
       const JSONbig = /* @__PURE__ */ getDefaultExportFromCjs(jsonBigintExports);
+      var _GM_addStyle = /* @__PURE__ */ (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
+      var _GM_getValue = exports("b", /* @__PURE__ */ (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)());
+      var _GM_openInTab = /* @__PURE__ */ (() => typeof GM_openInTab != "undefined" ? GM_openInTab : void 0)();
+      var _GM_registerMenuCommand = /* @__PURE__ */ (() => typeof GM_registerMenuCommand != "undefined" ? GM_registerMenuCommand : void 0)();
+      var _GM_setClipboard = exports("c", /* @__PURE__ */ (() => typeof GM_setClipboard != "undefined" ? GM_setClipboard : void 0)());
+      var _GM_setValue = exports("_", /* @__PURE__ */ (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)());
+      var _unsafeWindow = exports("a", /* @__PURE__ */ (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)());
       const JSON = JSONbig({ useNativeBigInt: true });
+      NodeList.prototype.filter = Array.prototype.filter;
+      NodeList.prototype.some = Array.prototype.some;
+      NodeList.prototype.map = Array.prototype.map;
       const Utils = exports("U", {
-        /**
-         * 检查是否为图片链接
-         * @param {*} str 字符串
-         * @returns
-         */
         isImg: function(str) {
           const regexp = /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
           return regexp.test(str);
         },
-        /**
-         * 是否为json格式的内容
-         * @param {*} str 字符串
-         * @returns
-         */
         isJSON: function(str) {
           try {
             JSON.parse(str);
@@ -1897,27 +1896,12 @@ System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) 
         stringify: function(value, replacer, space) {
           return JSON.stringify(value, replacer, space);
         },
-        /**
-         * 获取数据类型，全小写
-         * @param {*} v
-         * @returns
-         */
         getType: function(v) {
           return Object.prototype.toString.call(v).match(/\s(.+)]/)[1].toLowerCase();
         },
-        /**
-         * 获取数据类型
-         * @param {*} val
-         * @returns
-         */
         getPrototype: function(val) {
           return Object.prototype.toString.call(val).match(/\s(.+)]/)[1];
         },
-        /**
-         * 获取数组中对象key最多的对象
-         * @param {*} arr 对象数组
-         * @returns
-         */
         findMaxKeysObject: function(arr) {
           let maxKeysCount = 0;
           let maxKeysObject;
@@ -1930,22 +1914,12 @@ System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) 
           }
           return maxKeysObject;
         },
-        /**
-         * 随机rgb颜色
-         * @param {*} opacity 透明度
-         * @returns
-         */
         randomColor: (opacity) => {
           const red = Math.floor(Math.random() * 256);
           const green = Math.floor(Math.random() * 256);
           const blue = Math.floor(Math.random() * 256);
           return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
         },
-        /**
-         * 下载文本内容
-         * @param {*} content 文本内容
-         * @param {*} filename 文件名
-         */
         downloadText: function(content, filename) {
           const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
           const url = URL.createObjectURL(blob);
@@ -1955,12 +1929,7 @@ System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) 
           link.click();
           URL.revokeObjectURL(url);
         },
-        /**
-         * JSONP 数据处理
-         * @param {*} rawText 字符串
-         * @returns
-         */
-        jsonpMatch: function(rawText) {
+        matchJsonp: function(rawText) {
           const tokens = rawText.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
           if (tokens && tokens[1] && tokens[2]) {
             return {
@@ -1973,26 +1942,183 @@ System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) 
             jsonpFun: null
           };
         },
-        debounce: function(func, delay = 300) {
+        debounce: function(fn, delay = 300) {
           let timer;
           return function() {
-            if (timer) {
-              clearTimeout(timer);
-            }
-            timer = setTimeout(() => {
-              func.apply(this, arguments);
-            }, delay);
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, arguments), delay);
           };
+        },
+        setClipboard: function(text) {
+          if (_GM_setClipboard) {
+            _GM_setClipboard(text);
+          } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(text);
+          } else {
+            let textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "absolute";
+            textArea.style.opacity = 0;
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            document.execCommand("copy");
+            textArea.remove();
+          }
+        },
+        addEvent: function(eventType, selector, callback) {
+          const types = eventType.split(" ");
+          types.forEach((type) => {
+            function handler(event) {
+              let target = event.target;
+              if (!target.matches) return;
+              while (!target.matches(selector)) {
+                target = target.parentNode;
+                if (!target || !target.matches) return;
+              }
+              Object.defineProperty(event, "currentTarget", {
+                configurable: true,
+                get: function() {
+                  return target;
+                }
+              });
+              const returnValue = callback.call(target, event);
+              if (returnValue === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              event.stopImmediatePropagation();
+            }
+            document.addEventListener(type, handler, true);
+          });
+        },
+        isVisible: function(ele) {
+          const style = getComputedStyle(ele);
+          const display = style.display;
+          const visibility = style.visibility;
+          const hasWidth = ele.offsetWidth > 0;
+          const hasHeight = ele.offsetHeight > 0;
+          return !Object.is(display, "none") && !Object.is(visibility, "hidden") && hasWidth && hasHeight;
+        },
+        createElement: function(name, attrs) {
+          const element = document.createElement(name);
+          if (attrs) this.attr(element, attrs);
+          return element;
+        },
+        attr: function(ele, attrs, value) {
+          if (!ele) return;
+          if (typeof attrs === "object") {
+            for (const name in attrs) {
+              if (Object.prototype.hasOwnProperty.call(attrs, name)) {
+                ele.setAttribute(name, attrs[name]);
+              }
+            }
+            return;
+          }
+          if (value === void 0) return ele.getAttribute(attrs);
+          if (!value) return ele.removeAttribute(attrs);
+          ele.setAttribute(attrs, value);
+        },
+        query: function(selector, context) {
+          const ctx = context || document;
+          if (selector instanceof HTMLElement) return selector;
+          return ctx.querySelector(selector);
+        },
+        queryAll: function(selector, context) {
+          const ctx = context || document;
+          if (selector instanceof HTMLElement) {
+            return new NodeList(selector);
+          }
+          if (selector instanceof NodeList) {
+            return selector;
+          }
+          return ctx.querySelectorAll(selector);
+        },
+        addClass(ele, className) {
+          if (!ele) return;
+          if (ele instanceof HTMLElement) {
+            return ele.classList.add(className);
+          }
+          if (ele instanceof NodeList || ele instanceof Array) {
+            ele.forEach((el) => this.addClass(el, className));
+          }
+        },
+        removeClass(ele, className) {
+          if (!ele) return;
+          if (ele instanceof HTMLElement) {
+            const classList = ele.classList;
+            if (className === void 0) {
+              while (classList.length > 0) {
+                classList.remove(classList.item(0));
+              }
+              return;
+            }
+            return classList.remove(className);
+          }
+          if (ele instanceof NodeList || ele instanceof Array) {
+            ele.forEach((el) => this.removeClass(el, className));
+          }
+        },
+        toggleClass: function(ele, className) {
+          if (!ele) return;
+          this.hasClass(ele, className) ? this.removeClass(ele, className) : this.addClass(ele, className);
+        },
+        hasClass(ele, className) {
+          if (!ele) return false;
+          if (ele instanceof HTMLElement) {
+            return ele.classList.contains(className);
+          }
+          if (ele instanceof NodeList) {
+            return ele.some((el) => this.hasClass(el, className));
+          }
+        },
+        show: function(ele) {
+          const style = ele.style;
+          if (style.display !== "none") return;
+          style.display = "block";
+          const defaultDisplay = ele.defaultDisplay;
+          if (defaultDisplay && defaultDisplay !== "none") {
+            style.display = defaultDisplay;
+          }
+        },
+        hide: function(ele) {
+          if (!ele.defaultDisplay) {
+            const display = getComputedStyle(ele).display;
+            ele.defaultDisplay = display;
+          }
+          ele.style.display = "none";
         }
       });
       const URL$1 = exports("e", {
         JSON_CRACK_WIDGET: "https://jsoncrack.feny.ink/widget",
         EXAMPLE_JSON: "https://fetch-api.feny.ink/example.json",
         ONLINE_REQUEST: "https://fetch-api.feny.ink/httpRequest",
-        LAYUI_JS: "https://unpkg.com/layui@2.7.6/dist/layui.js",
-        LAYUI_CSS: "https://unpkg.com/layui@2.7.6/dist/css/layui.css"
+        LAYUI_JS: "https://unpkg.com/layui@2.7.6/dist/layui.js"
       });
       const layout = `
+<template data-for="viewFormater">
+    <div class="toolbar-item btn" id="saveJson">保存</div>
+    <div class="toolbar-item btn" id="copyJson">复制</div>
+    <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
+    <div class="toolbar-item btn" id="expandAll">全部展开</div>
+    <div class="searchbox">
+        <input type="text" placeholder="JSON 过滤"/>
+        <button class="clear" hidden></button>
+    </div>
+</template>
+<template data-for="viewMind">
+    <div class="toolbar-item btn" id="saveJson">保存</div>
+    <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
+    <div class="toolbar-item btn" id="expandAll">全部展开</div>
+    <div class="toolbar-item btn" id="jsoncrack">JSON Crack</div>
+</template>
+<template data-for="viewRawText">
+    <div class="toolbar-item btn" id="saveJson">保存</div>
+    <div class="toolbar-item btn" id="copyJson">复制</div>
+    <div class="toolbar-item btn" id="beautify">美化输出</div>
+</template>
 <div class="json-viewer-layout">
     <div class="panel">
         <div class="tabs">
@@ -2005,10 +2131,8 @@ System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) 
             <div class="toolbar-item btn" id="copyJson">复制</div>
             <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
             <div class="toolbar-item btn" id="expandAll">全部展开</div>
-            <div class="toolbar-item btn" id="jsoncrack" style="display: none;">JSON Crack</div>
-            <div class="toolbar-item btn" id="beautify" style="display: none;">美化输出</div>
             <div class="searchbox">
-                <input type="text" placeholder="过滤 JSON "/>
+                <input type="text" placeholder="JSON 过滤"/>
                 <button class="clear" hidden></button>
             </div>
         </div>
@@ -2045,61 +2169,52 @@ System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) 
         </div>
     </div>
     <div class="container">
-        <div class="active" id="formatBox"></div>
-        <div id="mindBox"></div>
-        <div id="rawTextBox">
+        <div class="active" data-for="viewFormater" id="formatBox"></div>
+        <div data-for="viewMind" id="mindBox"></div>
+        <div data-for="viewRawText"  id="rawTextBox">
             <pre></pre>
         </div>
     </div>
 </div>`;
-      var _GM_addStyle = /* @__PURE__ */ (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
-      var _GM_getValue = exports("b", /* @__PURE__ */ (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)());
-      var _GM_openInTab = /* @__PURE__ */ (() => typeof GM_openInTab != "undefined" ? GM_openInTab : void 0)();
-      var _GM_registerMenuCommand = /* @__PURE__ */ (() => typeof GM_registerMenuCommand != "undefined" ? GM_registerMenuCommand : void 0)();
-      var _GM_setClipboard = exports("c", /* @__PURE__ */ (() => typeof GM_setClipboard != "undefined" ? GM_setClipboard : void 0)());
-      var _GM_setValue = exports("_", /* @__PURE__ */ (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)());
-      var _unsafeWindow = exports("a", /* @__PURE__ */ (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)());
-      const { EXAMPLE_JSON, LAYUI_CSS, LAYUI_JS } = URL$1;
+      const { EXAMPLE_JSON, LAYUI_JS } = URL$1;
       (function() {
         const openInTab = () => _GM_openInTab(EXAMPLE_JSON);
         _GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
         window.addEventListener("keydown", function(event) {
           const { key, altKey } = event;
-          if (altKey && (key === "J" || key === "j")) {
-            openInTab();
-          }
+          if (altKey && key.toLowerCase() === "j") openInTab();
         });
         const innerText = document.body.innerText;
-        const { rawText, jsonpFun } = Utils.jsonpMatch(innerText);
+        const { rawText, jsonpFun } = Utils.matchJsonp(innerText);
         _unsafeWindow.RAW_TEXT = rawText;
         _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
         if (!Utils.isJSON(_unsafeWindow.RAW_TEXT)) {
-          __vitePreload(() => module.import('./index-mjXXc9V1-CzTRTL8e.js'), void 0 );
+          __vitePreload(() => module.import('./index-DkZtaPvN-Be9la_OH.js'), void 0 );
           return;
         }
-        document.querySelector("pre").style.display = "none";
-        document.querySelector("html").classList.add("monkey-jsonviewer");
+        Utils.hide(Utils.query("pre"));
+        Utils.addClass(Utils.query("html"), "monkey-jsonviewer");
         window.postMessage({ addStyle: true });
-        const meta = document.createElement("meta");
-        meta.setAttribute("name", "viewport");
-        meta.setAttribute("content", "width=device-width, initial-scale=1.0");
-        document.head.appendChild(meta);
-        const link = document.createElement("link");
-        link.setAttribute("href", LAYUI_CSS);
-        link.setAttribute("rel", "stylesheet");
-        document.head.appendChild(link);
-        const script = document.createElement("script");
-        script.setAttribute("src", LAYUI_JS);
-        script.setAttribute("type", "text/javascript");
-        document.head.appendChild(script);
-        _GM_addStyle(`
-    jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
-    jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
-  `);
         setTimeout(() => {
-          _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
+          const meta = Utils.createElement("meta", {
+            name: "viewport",
+            content: "width=device-width, initial-scale=1.0"
+          });
+          document.head.appendChild(meta);
+          const script = Utils.createElement("script", {
+            src: LAYUI_JS,
+            type: "text/javascript"
+          });
+          document.head.appendChild(script);
+          _GM_addStyle(`
+      jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
+      jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
+    `);
           document.body.insertAdjacentHTML("afterbegin", layout);
-          __vitePreload(() => module.import('./index-4HStOSds-1otWKJ-c.js'), void 0 ).then((format) => format.default.init()).then(() => __vitePreload(() => module.import('./index-CDBrBlvl-gOuIfNoo.js'), void 0 )).then(() => __vitePreload(() => module.import('./index-CZOUlSU2-CskZy1NC.js'), void 0 ));
+          _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
+          __vitePreload(() => module.import('./index-BaGRGkVb-D2geKy17.js'), void 0 );
+          __vitePreload(() => module.import('./index-Btt8fXSQ-DuZkUtAR.js'), void 0 );
+          __vitePreload(() => module.import('./index-DH4sstV0-D5_y4vAd.js'), void 0 );
         });
       })();
 
@@ -2107,15 +2222,17 @@ System.register("./__monkey.entry-DZ8WfZzp.js", [], (function (exports, module) 
   };
 }));
 
-System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], (function (exports, module) {
+System.register("./index-DkZtaPvN-Be9la_OH.js", ['highlight.js', 'beautifier', './__monkey.entry-BOyf9HZs.js'], (function (exports, module) {
   'use strict';
-  var hljs, css_beautify, js_beautify;
+  var hljs, css_beautify, js_beautify, Utils;
   return {
     setters: [module => {
       hljs = module.default;
     }, module => {
       css_beautify = module.css_beautify;
       js_beautify = module.js_beautify;
+    }, module => {
+      Utils = module.U;
     }],
     execute: (function () {
 
@@ -2132,19 +2249,15 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
           "text/css"
         ];
         const contentType = document.contentType;
-        if (!docType.includes(contentType)) {
-          return;
-        }
-        const preElement = document.querySelector("pre");
-        if (!preElement) {
-          return;
-        }
+        if (!docType.includes(contentType)) return;
+        const preElement = Utils.query("pre");
+        if (!preElement) return;
         window.postMessage({ addStyle: true });
-        document.querySelector("html").classList.add("monkey-js-css-beautify");
+        Utils.addClass(Utils.query("html"), "monkey-js-css-beautify");
         setTimeout(() => {
           const rawText = preElement.innerText;
           document.body.insertAdjacentHTML("afterbegin", layout);
-          const checkbox = document.querySelector(".beautify_checkbox input");
+          const checkbox = Utils.query(".beautify_checkbox input");
           checkbox.addEventListener("click", function() {
             if (this.checked) {
               beautifyCode(contentType, preElement, rawText);
@@ -2180,20 +2293,18 @@ System.register("./index-mjXXc9V1-CzTRTL8e.js", ['highlight.js', 'beautifier'], 
   };
 }));
 
-System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-DZ8WfZzp.js'], (function (exports, module) {
+System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
-  var $, tippy, _GM_setValue, _unsafeWindow, _GM_getValue, Utils, _GM_setClipboard;
+  var _GM_setValue, Utils, _unsafeWindow, _GM_getValue, _GM_setClipboard, tippy;
   return {
     setters: [module => {
-      $ = module.default;
-    }, module => {
-      tippy = module.t;
-    }, module => {
       _GM_setValue = module._;
+      Utils = module.U;
       _unsafeWindow = module.a;
       _GM_getValue = module.b;
-      Utils = module.U;
       _GM_setClipboard = module.c;
+    }, module => {
+      tippy = module.t;
     }],
     execute: (function () {
 
@@ -2213,12 +2324,8 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
             onCollapse: null
           });
           this.options = Object.assign(this.DEFAULTS, options);
-          if (!options.container) {
-            throw new Error("Container: dom element is required");
-          }
-          if (!options.json) {
-            throw new Error("json: json is required");
-          }
+          if (!options.container) throw new Error("Container is required");
+          if (!options.json) throw new Error("json is required");
           this.render();
           this.bindEvent();
           this.setTheme(this.options.theme);
@@ -2228,27 +2335,29 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
         setTheme(theme) {
           const classList = document.body.classList;
           classList.forEach((clas) => {
-            if (clas.includes("theme")) {
-              classList.remove(clas);
-            }
+            if (clas.includes("theme")) classList.remove(clas);
           });
           classList.add(`${theme}-theme`);
         }
         bindEvent() {
-          this.addEvent(`click`, this.options.expander, () => {
-            this.expandAll();
-          });
-          this.addEvent(`click`, this.options.collapser, () => {
-            this.collapseAll();
+          const { expander, collapser, onExpand, onCollapse } = this.options;
+          if (expander) this.addEvent(`click`, expander, () => this.expandAll());
+          if (collapser) this.addEvent(`click`, collapser, () => this.collapseAll());
+          this.addEvent("click", ".json-formater-copy", (e) => {
+            const target = e.currentTarget;
+            const className = "success";
+            if (!target.json || Utils.hasClass(target, className)) return;
+            Utils.setClipboard(Utils.stringify(target.json, null, 2));
+            Utils.addClass(target, className);
+            setTimeout(() => Utils.removeClass(target, className), 1500);
           });
           this.addEvent("click", ".json-formater-placeholder", (e) => {
             const node = this.closest(e.currentTarget, ".json-formater-item");
             this.show(node);
           });
-          const { onExpand, onCollapse } = this.options;
           this.addEvent("click", ".json-formater-arrow", (e) => {
             const node = this.closest(e.currentTarget, ".json-formater-item");
-            if (this.hasClass(node, "json-formater-opened")) {
+            if (Utils.hasClass(node, "json-formater-opened")) {
               this.hide(node);
               if (onCollapse) onCollapse(node, this);
             } else {
@@ -2258,35 +2367,32 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           });
         }
         expandAll() {
-          this.nodes().forEach((node) => {
-            this.show(node);
-          });
+          this.nodes().forEach((node) => this.show(node));
         }
         collapseAll() {
-          this.nodes().forEach((node) => {
-            this.hide(node);
-          });
+          this.nodes().forEach((node) => this.hide(node));
         }
         show(node) {
-          this.removeClass(node, "json-formater-closed");
-          this.addClass(node, "json-formater-opened");
+          Utils.removeClass(node, "json-formater-closed");
+          Utils.addClass(node, "json-formater-opened");
           this.showDescs(node);
           this.onShow(node);
         }
         showDescs(node) {
+          const type = this.options.style;
           let children = this.findChildren(node);
           children.forEach((child) => {
             child.style.display = null;
-            if (this.hasClass(child, "json-formater-opened")) {
-              if (this.options.style === "table") this.showDescs(child);
+            if (type === "table" && Utils.hasClass(child, "json-formater-opened")) {
+              this.showDescs(child);
             }
           });
         }
         onShow(node) {
         }
         hide(node) {
-          this.removeClass(node, "json-formater-opened");
-          this.addClass(node, "json-formater-closed");
+          Utils.removeClass(node, "json-formater-opened");
+          Utils.addClass(node, "json-formater-closed");
           this.hideDescs(node);
           this.onHide(node);
         }
@@ -2301,10 +2407,10 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
         }
         findChildren(node) {
           const pid = node.dataset.nodeId;
-          return this.$container.querySelectorAll(`*[data-node-pid="${pid}"]`);
+          return Utils.queryAll(`*[data-node-pid="${pid}"]`, this.$container);
         }
         findByID(id) {
-          return this.$container.querySelector(`*[data-node-id="${id}"]`);
+          return Utils.query(`*[data-node-id="${id}"]`, this.$container);
         }
         openByID(id) {
           this.show(this.findByID(id));
@@ -2313,62 +2419,29 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           this.hide(this.findByID(id));
         }
         nodes() {
-          return this.$container.querySelectorAll("*[data-node-id]");
+          return Utils.queryAll("*[data-node-id]", this.$container);
         }
-        /**
-         * 创建元素
-         * @param {String} name 元素名称
-         * @param {Object} attributes 属性
-         */
-        createElement(name, attributes) {
-          const element = document.createElement(name);
-          this.setAttributes(element, attributes);
-          return element;
+        createElement(name, attrs) {
+          return Utils.createElement(name, attrs);
         }
-        /**
-         * 设置属性
-         * @param {HTMLElement} element 元素
-         * @param {Object} attributes 属性
-         */
-        setAttributes(element, attributes) {
-          if (!attributes) {
-            return;
-          }
-          for (const name in attributes) {
-            const value = attributes[name];
-            if (value) element.setAttribute(name, attributes[name]);
-          }
-        }
-        addEvent(event, selector, fn) {
-          document.body.querySelectorAll(selector).forEach((el) => {
-            el.addEventListener(event, fn);
-          });
+        addEvent(type, selector, fn) {
+          Utils.queryAll(selector).forEach((el) => el.addEventListener(type, fn));
         }
         closest(element, selector) {
           while (element) {
-            if (element.matches(selector)) {
-              return element;
-            }
+            if (element.matches(selector)) return element;
             element = element.parentElement;
           }
           return null;
         }
-        hasClass(element, clas) {
-          return element.classList.contains(clas);
+        JSONPath(path, key) {
+          if (this.isNumber(key)) return `${path}[${key}]`;
+          if (key.includes(".")) return `${path}["${key}"]`;
+          return path + "." + key;
         }
-        removeClass(element, clas) {
-          element.classList.remove(clas);
-          return this;
+        isNumber(str) {
+          return /^\d+$/.test(str);
         }
-        addClass(element, clas) {
-          element.classList.add(clas);
-          return this;
-        }
-        /**
-         * 获取数据的类型
-         * @param {Object} value
-         * @return 返回类型 number、object、array、string、null等
-         */
         getType(value) {
           return Object.prototype.toString.call(value).match(/\s(.+)]/)[1].toLowerCase();
         }
@@ -2376,32 +2449,14 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           const type = this.getType(value);
           return ["array", "object"].includes(type);
         }
-        /**
-         * 是否可迭代
-         * @param {*} value
-         * @returns
-         */
         canIterate(value) {
-          if (!this.isIterate(value)) {
-            return false;
-          }
-          let len = Object.keys(value).length;
-          return len > 0;
+          if (!this.isIterate(value)) return false;
+          return Object.keys(value).length > 0;
         }
-        /**
-         * 是否为Url
-         * @param {*} str
-         * @returns
-         */
         isUrl(str) {
           const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
           return regexp.test(str);
         }
-        /**
-         * 转义
-         * @param {*} str
-         * @returns
-         */
         escape(str) {
           return str.replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
@@ -2428,19 +2483,20 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
         }
         render() {
           const { json, container } = this.options;
-          this.$container = container instanceof HTMLElement ? container : document.querySelector(container);
-          this.$box = this.createElement("div");
-          this.$box.setAttribute("class", "json-view-formater");
-          this.createNode(this.$box, json, "Root", "Root");
+          this.$container = Utils.query(container);
           this.$container.innerHTML = "";
+          this.$box = this.createElement("div", {
+            class: "json-view-formater"
+          });
+          this.createNode(this.$box, json, "Root", "Root");
           this.$container.appendChild(this.$box);
         }
-        createNode(box, json, pChain, pid) {
+        createNode(box, json, JSONPath, pid) {
           const type = this.getType(json);
           const isIterate = this.isIterate(json);
           const canIterate = this.canIterate(json);
           if (canIterate) {
-            this.createObjectNode(box, type, json, pChain, pid);
+            this.createObjectNode(box, type, json, JSONPath, pid);
           } else if (isIterate) {
             const bracket = this.createBracket(type);
             box.appendChild(bracket);
@@ -2449,7 +2505,7 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
             box.appendChild(valueNode);
           }
         }
-        createObjectNode(box, type, json, pChain, pid) {
+        createObjectNode(box, type, json, path, pid) {
           const startBracket = this.createStartBracket(type);
           box.appendChild(startBracket);
           this.creatPlaceholderNode(box, json);
@@ -2459,17 +2515,17 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
               const value = json[key];
               const id = this.random();
               const canComma = --length > 0;
-              const jsonPath = pChain + "." + key;
+              const JSONPath = this.JSONPath(path, key);
               const node = this.createElement("div", {
+                JSONPath,
                 "data-node-id": id,
                 "data-node-pid": pid,
-                "json-path": jsonPath,
                 style: `padding-left: 20px`,
                 "data-type": this.getType(value),
                 class: `json-formater-item ${this.isIterate(value) ? "json-formater-opened" : ""}`
               });
               this.createKeyNode(node, key, value);
-              this.createNode(node, value, jsonPath, id);
+              this.createNode(node, value, JSONPath, id);
               if (canComma) {
                 const comma = this.createElement("span", {
                   class: "json-comma"
@@ -2506,12 +2562,12 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
         }
         createKeyNode(node, key, value) {
           if (this.canIterate(value)) {
-            const arrow = this.createElement("i", {
+            const arrow = this.createElement("span", {
               class: "json-formater-arrow"
             });
             node.appendChild(arrow);
           }
-          if (!/^\d+$/.test(key)) {
+          if (!this.isNumber(key)) {
             const span = this.createElement("span", {
               class: "json-key"
             });
@@ -2551,30 +2607,34 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           }
           return node;
         }
-        creatPlaceholderNode(box, json) {
-          const nodeId = box.dataset.nodeId;
+        creatPlaceholderNode(node, json) {
+          const nodeId = node.dataset.nodeId;
           if (nodeId && nodeId !== "Root" && this.canIterate(json)) {
+            const copy = this.createElement("span", {
+              title: "复制",
+              class: "json-formater-copy"
+            });
+            copy.json = json;
+            node.appendChild(copy);
             const span = this.createElement("span", {
               class: "json-formater-placeholder"
             });
-            box.appendChild(span);
+            node.appendChild(span);
           }
         }
         onShow(node) {
           const nodeId = node.dataset.nodeId;
-          const desc = node.querySelector(
-            `*[data-node-id=${nodeId}] > .json-formater-placeholder`
-          );
+          const selector = `*[data-node-id=${nodeId}] > .json-formater-placeholder`;
+          const desc = Utils.query(selector, node);
           if (!desc) return;
           desc.innerHTML = null;
         }
         onHide(node) {
           const id = node.dataset.nodeId;
-          const desc = node.querySelector(
-            `*[data-node-id="${id}"] > .json-formater-placeholder`
-          );
+          const selector = `*[data-node-id="${id}"] > .json-formater-placeholder`;
+          const desc = Utils.query(selector, node);
           if (!desc) return;
-          desc.innerHTML = null;
+          if (desc.innerHTML) return;
           const type = node.dataset.type;
           const length = this.findChildren(node).length;
           const span = this.createElement("span");
@@ -2585,10 +2645,8 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           desc.appendChild(span);
         }
         nodes() {
-          const arrows = this.$container.querySelectorAll(".json-formater-arrow");
-          return Array.from(arrows).map(
-            (ele) => this.closest(ele, ".json-formater-item")
-          );
+          const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
+          return arrows.map((ele) => this.closest(ele, ".json-formater-item"));
         }
       }
       const cssText = `
@@ -2597,14 +2655,7 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
   width: -webkit-fill-available;
 }
 
-.json-tree-table b {
-  font-weight: normal;
-}
-
-.json-tree-table tr.selected,
-.json-tree-table tr.selected td,
-.json-tree-table tr.selected td b,
-.json-tree-table tr.selected td a {
+.json-tree-table tr.selected * {
   color: #fff !important;
   background-color: #3875d7;
 }
@@ -2628,51 +2679,45 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
         }
         render() {
           const { json, container } = this.options;
-          this.$container = container instanceof HTMLElement ? container : document.querySelector(container);
+          this.$container = Utils.query(container);
+          this.$container.innerHTML = "";
           const style = this.createElement("style");
           style.textContent = cssText;
           document.head.appendChild(style);
-          this.$table = this.createElement("table");
-          this.$table.setAttribute("class", "json-tree-table");
+          this.$table = this.createElement("table", {
+            class: "json-tree-table"
+          });
           this.createNode(json, 1, "Root", "Root");
-          this.$container.innerHTML = "";
           this.$container.appendChild(this.$table);
         }
-        /**
-         * 创建节点
-         * @param {Object} json
-         * @param {Boolean} isRoot 是否根节点
-         * @param {Number} depth 递归层级
-         * @param {String} pChain 上级json-path
-         */
-        createNode(json, depth, pChain, parentId) {
+        createNode(json, depth, path, pid) {
           for (const key in json) {
             if (Object.prototype.hasOwnProperty.call(json, key)) {
               let value = json[key];
               const type = this.getType(value);
-              const jsonPath = `${pChain}.${key}`;
-              const args = { key, value, type, depth, jsonPath, parentId };
+              const JSONPath = this.JSONPath(path, key);
+              const args = { key, value, type, depth, JSONPath, pid };
               const item = this.createItem(args);
               this.$table.appendChild(item);
               if (this.canIterate(value)) {
                 const nodeId = item.dataset.nodeId;
-                this.createNode(value, depth + 1, jsonPath, nodeId);
+                this.createNode(value, depth + 1, JSONPath, nodeId);
               }
             }
           }
         }
         createItem(args) {
-          const { key, value, type, depth, jsonPath, parentId } = args;
+          const { key, value, type, depth, JSONPath, pid } = args;
           const id = this.random();
           const isIterate = this.isIterate(value);
           const canIterate = this.canIterate(value);
           const node = this.createElement("tr", {
             "data-type": type,
             "data-node-id": id,
-            "data-node-pid": parentId,
+            "data-node-pid": pid,
             class: "json-formater-item json-formater-opened"
           });
-          const leftNode = this.createLeftNode(key, value, depth, jsonPath);
+          const leftNode = this.createLeftNode(key, value, depth, JSONPath);
           node.appendChild(leftNode);
           if (!isIterate) {
             const rightNode = this.createRightNode(type, value);
@@ -2684,13 +2729,13 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           }
           return node;
         }
-        createLeftNode(key, value, depth, jsonPath) {
+        createLeftNode(key, value, depth, JSONPath) {
           const node = this.createElement("td", {
-            "json-path": jsonPath,
+            JSONPath,
             colspan: this.canIterate(value) ? 2 : 0,
             style: `padding-left: ${depth * 20}px`
           });
-          const b = this.createElement("b", {
+          const b = this.createElement("span", {
             class: "json-key"
           });
           b.textContent = `${key}`;
@@ -2705,6 +2750,12 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
               class: "json-formater-arrow"
             });
             node.prepend(icon);
+            const copy = this.createElement("span", {
+              title: "复制",
+              class: "json-formater-copy"
+            });
+            copy.json = value;
+            node.appendChild(copy);
             const span = this.createElement("span", {
               class: "json-formater-placeholder"
             });
@@ -2749,23 +2800,25 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
         bindEvent() {
           super.bindEvent();
           this.addEvent("mousedown", "table tr", function(event) {
-            const { tagName } = event.target;
-            if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
+            const { tagName, className } = event.target;
+            if (event.ctrlKey || tagName === "A" || tagName === "SPAN" && className !== "json-key") {
               return;
             }
-            Array.from(document.querySelectorAll(".selected")).filter((ele) => ele !== this).forEach((ele) => ele.classList.remove("selected"));
-            this.classList.toggle("selected");
+            const filter = Utils.queryAll(".selected").filter((ele) => ele !== this);
+            Utils.removeClass(filter, "selected");
+            Utils.toggleClass(this, "selected");
           });
         }
         onShow(node) {
-          const desc = node.querySelector(".json-formater-placeholder");
+          const desc = Utils.query(".json-formater-placeholder", node);
           if (!desc) return;
           desc.innerHTML = null;
         }
         onHide(node) {
           const type = node.dataset.type;
-          const desc = node.querySelector(".json-formater-placeholder");
+          const desc = Utils.query(".json-formater-placeholder", node);
           if (!desc) return;
+          if (desc.innerHTML) return;
           const length = this.findChildren(node).length;
           let textNode = document.createTextNode(type === "object" ? "{" : "[");
           desc.appendChild(textNode);
@@ -2779,136 +2832,87 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           desc.appendChild(textNode);
         }
       }
+      class FormaterFactory {
+        static getInstance(options) {
+          return options.style && options.style === "table" ? new JsonToTable(options) : new JsonViewer(options);
+        }
+      }
       const evnet = {
-        /**
-         * a标签鼠标移入，看是否是图片，是图片生成预览图
-         * @returns this
-         */
         urlHover: function() {
-          $(document.body).on("mouseenter", "a[href]", function() {
-            const href = $(this).attr("href");
-            if (Utils.isImg(href)) {
-              tippy(this, {
-                duration: 800,
-                content: `<img style="max-width: 500px;" src="${href}" />`,
-                allowHTML: true,
-                theme: "imagebox"
-              }).show();
-            }
+          Utils.addEvent("mouseenter", "a[href]", function() {
+            const href = Utils.attr(this, "href");
+            if (!Utils.isImg(href)) return;
+            tippy(this, {
+              duration: 800,
+              content: `<img style="max-width: 500px;" src="${href}" />`,
+              allowHTML: true,
+              theme: "imagebox"
+            }).show();
           });
           return this;
         },
-        /**
-         * 鼠标移入key提示JSONPath
-         * @returns this
-         */
         tipsJsonPath: function() {
-          const that = this;
-          $(document.body).on("mouseenter", ".json-key", function() {
-            const jsonPath = that.getJsonPath(this);
-            const content = `<b>ctrl + 点击复制</b><br/>${jsonPath}`;
-            tippy(this, {
+          Utils.addEvent("mouseenter", ".json-key", (event) => {
+            const target = event.target;
+            const jsonPath = this.getJsonPath(target);
+            const content = `<i>ctrl＋click 复制</i><br/><b>路径：</b>${jsonPath}`;
+            tippy(target, {
               content,
               duration: 800,
               allowHTML: true,
               theme: "layer"
             }).show();
           });
-          return that;
+          return this;
         },
-        /**
-         * 复制key的JSONPath
-         * @returns
-         */
         copyJsonPath: function() {
-          const that = this;
-          $(document.body).on("click", ".json-key", function(event) {
-            if (event.ctrlKey) {
-              const jsonPath = that.getJsonPath(this);
-              _GM_setClipboard(jsonPath);
-              layer.msg("复制成功", { time: 1500 });
-            }
+          Utils.addEvent("click", ".json-key", (event) => {
+            if (!event.ctrlKey) return;
+            const jsonPath = this.getJsonPath(event.target);
+            _GM_setClipboard(jsonPath);
+            layer.msg("复制成功", { time: 1500 });
           });
-          return that;
+          return this;
         },
-        /**
-         * 给定HtmlElement获取JSONPath
-         * @param {*} element
-         * @returns
-         */
-        getJsonPath: function(element) {
-          const jsonPath = $(element).parent().attr("json-path");
-          const split = jsonPath.split(".");
-          const splice = (prev, next) => {
-            return /^\d+$/.test(next) ? prev + `[${next}]` : prev + "." + next;
-          };
-          return split.reduce(splice);
+        getJsonPath: function(ele) {
+          return Utils.attr(ele.parentElement, "JSONPath");
         },
         init: function() {
           this.urlHover().tipsJsonPath().copyJsonPath();
         }
       };
-      const formatBox = document.querySelector("#formatBox");
-      const $input = document.querySelector(".searchbox input");
-      const $clear = document.querySelector(".searchbox .clear");
       const format = exports("default", {
-        /**
-         * 切换JSON 格式化风格
-         * @param {*} style 格式化风格，default/table
-         * @returns
-         */
         changeStyle: function(style) {
           _GM_setValue("style", style);
           this.setStyle();
           return this;
         },
-        /**
-         * 设置JSON 格式化风格
-         * @returns
-         */
         setStyle: function() {
-          $input.value = "";
-          $clear.setAttribute("hidden", true);
+          const input = Utils.query(".searchbox input");
+          if (input) input.value = "";
+          const clear = Utils.query(".searchbox .clear");
+          Utils.attr(clear, "hidden", true);
           this.render(_unsafeWindow.GLOBAL_JSON);
           return this;
         },
-        /**
-         * 渲染
-         * @param {Object} json
-         * @returns
-         */
         render: function(json) {
+          const container = Utils.query("#formatBox");
           const style = _GM_getValue("style") || "default";
           const theme = _GM_getValue("theme") || "default";
-          const options = {
-            json,
-            theme,
-            container: formatBox
-          };
-          if (style === "default") {
-            _unsafeWindow.JSON_TO_TABLE = null;
-            _unsafeWindow.JSON_VIEWER = new JsonViewer(options);
-          } else {
-            _unsafeWindow.JSON_VIEWER = null;
-            _unsafeWindow.JSON_TO_TABLE = new JsonToTable(options);
-          }
+          const options = { json, style, theme, container };
+          _unsafeWindow.JSON_FORMATER = FormaterFactory.getInstance(options);
           if (_unsafeWindow.GLOBAL_JSONP_FUN) {
-            const start = document.createElement("div");
-            start.setAttribute("class", "jsonp");
+            const start = Utils.createElement("div", {
+              class: "jsonp"
+            });
             start.textContent = `${_unsafeWindow.GLOBAL_JSONP_FUN}(`;
-            formatBox.prepend(start);
+            container.prepend(start);
             const end = start.cloneNode(true);
             end.textContent = ")";
-            formatBox.append(end);
+            container.append(end);
           }
           return this;
         },
-        /**
-         * JSON 过滤
-         * @param {Object} json 要过滤的JOSN
-         * @param {String} text 过滤值
-         * @returns
-         */
         filter: function(json, text) {
           text = text.toLowerCase();
           function match(json2, text2) {
@@ -2916,12 +2920,13 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
             for (const key in json2) {
               if (Object.prototype.hasOwnProperty.call(json2, key)) {
                 const value = json2[key];
+                const type = Utils.getType(value);
                 const _key = key.toLowerCase();
                 const _value = Utils.stringify(value).toLowerCase();
                 if (!_key.includes(text2) && !_value.includes(text2)) {
                   continue;
                 }
-                if (typeof value === "object") {
+                if (["array", "object"].includes(type)) {
                   const result = match(value, text2);
                   const _result = Utils.stringify(result).toLowerCase();
                   if (_key.includes(text2) || _result.includes(text2)) {
@@ -2936,27 +2941,24 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           }
           return match(json, text);
         },
-        /**
-         * JSON 过滤输入事件
-         * @returns
-         */
         input: function() {
           const that = this;
           const debounceInput = Utils.debounce(function() {
             const value = this.value;
-            value ? $clear.removeAttribute("hidden") : $clear.setAttribute("hidden", true);
+            _unsafeWindow.FILTER_VALUE = value;
+            const clear = Utils.query(".searchbox .clear");
+            Utils.attr(clear, "hidden", !value);
             const newJson = that.filter(_unsafeWindow.GLOBAL_JSON, value);
             that.render(newJson);
           }, 400);
-          $input.addEventListener("input", debounceInput);
+          Utils.addEvent("input", ".searchbox input", debounceInput);
           return that;
         },
-        /**
-         * 清空过滤值
-         * @returns
-         */
         clear: function() {
-          $clear.addEventListener("click", () => this.setStyle());
+          Utils.addEvent("click", ".searchbox .clear", () => {
+            this.setStyle();
+            _unsafeWindow.FILTER_VALUE = "";
+          });
           return this;
         },
         init: function() {
@@ -2964,619 +2966,40 @@ System.register("./index-4HStOSds-1otWKJ-c.js", ['jquery', './tippy.esm-Ot9MORvr
           evnet.init();
         }
       });
+      format.init();
       window.addEventListener("message", function(event) {
         const { data } = event;
-        if (!data) {
-          return;
-        }
-        if (data.reload) {
-          format.setStyle();
-          return;
-        }
+        if (!data) return;
+        if (data.reload) return format.setStyle();
         const { type, value } = data;
-        if (type === "style") {
-          format.changeStyle(value);
-          return;
-        }
+        if (type === "style") format.changeStyle(value);
       });
 
     })
   };
 }));
 
-System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-DZ8WfZzp.js'], (function (exports, module) {
+System.register("./index-Btt8fXSQ-DuZkUtAR.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-BOyf9HZs.js', 'dom-to-image'], (function (exports, module) {
   'use strict';
-  var $, tippy, require$$0, commonjsGlobal, _unsafeWindow, Utils, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue;
+  var tippy, require$$0, commonjsGlobal, Utils, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue, require$$1;
   return {
     setters: [module => {
-      $ = module.default;
-    }, module => {
       tippy = module.t;
     }, module => {
       require$$0 = module.default;
     }, module => {
       commonjsGlobal = module.d;
-      _unsafeWindow = module.a;
       Utils = module.U;
+      _unsafeWindow = module.a;
       _GM_setClipboard = module.c;
       _GM_getValue = module.b;
       URL$1 = module.e;
       _GM_setValue = module._;
+    }, module => {
+      require$$1 = module.default;
     }],
     execute: (function () {
 
-      var domToImage = { exports: {} };
-      var hasRequiredDomToImage;
-      function requireDomToImage() {
-        if (hasRequiredDomToImage) return domToImage.exports;
-        hasRequiredDomToImage = 1;
-        (function(module) {
-          (function(global) {
-            var util = newUtil();
-            var inliner = newInliner();
-            var fontFaces = newFontFaces();
-            var images = newImages();
-            var defaultOptions = {
-              // Default is to fail on error, no placeholder
-              imagePlaceholder: void 0,
-              // Default cache bust is false, it will use the cache
-              cacheBust: false
-            };
-            var domtoimage = {
-              toSvg,
-              toPng,
-              toJpeg,
-              toBlob,
-              toPixelData,
-              impl: {
-                fontFaces,
-                images,
-                util,
-                inliner,
-                options: {}
-              }
-            };
-            module.exports = domtoimage;
-            function toSvg(node, options) {
-              options = options || {};
-              copyOptions(options);
-              return Promise.resolve(node).then(function(node2) {
-                return cloneNode(node2, options.filter, true);
-              }).then(embedFonts).then(inlineImages).then(applyOptions).then(function(clone) {
-                return makeSvgDataUri(
-                  clone,
-                  options.width || util.width(node),
-                  options.height || util.height(node)
-                );
-              });
-              function applyOptions(clone) {
-                if (options.bgcolor) clone.style.backgroundColor = options.bgcolor;
-                if (options.width) clone.style.width = options.width + "px";
-                if (options.height) clone.style.height = options.height + "px";
-                if (options.style)
-                  Object.keys(options.style).forEach(function(property) {
-                    clone.style[property] = options.style[property];
-                  });
-                return clone;
-              }
-            }
-            function toPixelData(node, options) {
-              return draw(node, options || {}).then(function(canvas) {
-                return canvas.getContext("2d").getImageData(
-                  0,
-                  0,
-                  util.width(node),
-                  util.height(node)
-                ).data;
-              });
-            }
-            function toPng(node, options) {
-              return draw(node, options || {}).then(function(canvas) {
-                return canvas.toDataURL();
-              });
-            }
-            function toJpeg(node, options) {
-              options = options || {};
-              return draw(node, options).then(function(canvas) {
-                return canvas.toDataURL("image/jpeg", options.quality || 1);
-              });
-            }
-            function toBlob(node, options) {
-              return draw(node, options || {}).then(util.canvasToBlob);
-            }
-            function copyOptions(options) {
-              if (typeof options.imagePlaceholder === "undefined") {
-                domtoimage.impl.options.imagePlaceholder = defaultOptions.imagePlaceholder;
-              } else {
-                domtoimage.impl.options.imagePlaceholder = options.imagePlaceholder;
-              }
-              if (typeof options.cacheBust === "undefined") {
-                domtoimage.impl.options.cacheBust = defaultOptions.cacheBust;
-              } else {
-                domtoimage.impl.options.cacheBust = options.cacheBust;
-              }
-            }
-            function draw(domNode, options) {
-              return toSvg(domNode, options).then(util.makeImage).then(util.delay(100)).then(function(image) {
-                var canvas = newCanvas(domNode);
-                canvas.getContext("2d").drawImage(image, 0, 0);
-                return canvas;
-              });
-              function newCanvas(domNode2) {
-                var canvas = document.createElement("canvas");
-                canvas.width = options.width || util.width(domNode2);
-                canvas.height = options.height || util.height(domNode2);
-                if (options.bgcolor) {
-                  var ctx = canvas.getContext("2d");
-                  ctx.fillStyle = options.bgcolor;
-                  ctx.fillRect(0, 0, canvas.width, canvas.height);
-                }
-                return canvas;
-              }
-            }
-            function cloneNode(node, filter, root) {
-              if (!root && filter && !filter(node)) return Promise.resolve();
-              return Promise.resolve(node).then(makeNodeCopy).then(function(clone) {
-                return cloneChildren(node, clone, filter);
-              }).then(function(clone) {
-                return processClone(node, clone);
-              });
-              function makeNodeCopy(node2) {
-                if (node2 instanceof HTMLCanvasElement) return util.makeImage(node2.toDataURL());
-                return node2.cloneNode(false);
-              }
-              function cloneChildren(original, clone, filter2) {
-                var children = original.childNodes;
-                if (children.length === 0) return Promise.resolve(clone);
-                return cloneChildrenInOrder(clone, util.asArray(children), filter2).then(function() {
-                  return clone;
-                });
-                function cloneChildrenInOrder(parent, children2, filter3) {
-                  var done = Promise.resolve();
-                  children2.forEach(function(child) {
-                    done = done.then(function() {
-                      return cloneNode(child, filter3);
-                    }).then(function(childClone) {
-                      if (childClone) parent.appendChild(childClone);
-                    });
-                  });
-                  return done;
-                }
-              }
-              function processClone(original, clone) {
-                if (!(clone instanceof Element)) return clone;
-                return Promise.resolve().then(cloneStyle).then(clonePseudoElements).then(copyUserInput).then(fixSvg).then(function() {
-                  return clone;
-                });
-                function cloneStyle() {
-                  copyStyle(window.getComputedStyle(original), clone.style);
-                  function copyStyle(source, target) {
-                    if (source.cssText) target.cssText = source.cssText;
-                    else copyProperties(source, target);
-                    function copyProperties(source2, target2) {
-                      util.asArray(source2).forEach(function(name) {
-                        target2.setProperty(
-                          name,
-                          source2.getPropertyValue(name),
-                          source2.getPropertyPriority(name)
-                        );
-                      });
-                    }
-                  }
-                }
-                function clonePseudoElements() {
-                  [":before", ":after"].forEach(function(element) {
-                    clonePseudoElement(element);
-                  });
-                  function clonePseudoElement(element) {
-                    var style = window.getComputedStyle(original, element);
-                    var content = style.getPropertyValue("content");
-                    if (content === "" || content === "none") return;
-                    var className = util.uid();
-                    clone.className = clone.className + " " + className;
-                    var styleElement = document.createElement("style");
-                    styleElement.appendChild(formatPseudoElementStyle(className, element, style));
-                    clone.appendChild(styleElement);
-                    function formatPseudoElementStyle(className2, element2, style2) {
-                      var selector = "." + className2 + ":" + element2;
-                      var cssText = style2.cssText ? formatCssText(style2) : formatCssProperties(style2);
-                      return document.createTextNode(selector + "{" + cssText + "}");
-                      function formatCssText(style3) {
-                        var content2 = style3.getPropertyValue("content");
-                        return style3.cssText + " content: " + content2 + ";";
-                      }
-                      function formatCssProperties(style3) {
-                        return util.asArray(style3).map(formatProperty).join("; ") + ";";
-                        function formatProperty(name) {
-                          return name + ": " + style3.getPropertyValue(name) + (style3.getPropertyPriority(name) ? " !important" : "");
-                        }
-                      }
-                    }
-                  }
-                }
-                function copyUserInput() {
-                  if (original instanceof HTMLTextAreaElement) clone.innerHTML = original.value;
-                  if (original instanceof HTMLInputElement) clone.setAttribute("value", original.value);
-                }
-                function fixSvg() {
-                  if (!(clone instanceof SVGElement)) return;
-                  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-                  if (!(clone instanceof SVGRectElement)) return;
-                  ["width", "height"].forEach(function(attribute) {
-                    var value = clone.getAttribute(attribute);
-                    if (!value) return;
-                    clone.style.setProperty(attribute, value);
-                  });
-                }
-              }
-            }
-            function embedFonts(node) {
-              return fontFaces.resolveAll().then(function(cssText) {
-                var styleNode = document.createElement("style");
-                node.appendChild(styleNode);
-                styleNode.appendChild(document.createTextNode(cssText));
-                return node;
-              });
-            }
-            function inlineImages(node) {
-              return images.inlineAll(node).then(function() {
-                return node;
-              });
-            }
-            function makeSvgDataUri(node, width, height) {
-              return Promise.resolve(node).then(function(node2) {
-                node2.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-                return new XMLSerializer().serializeToString(node2);
-              }).then(util.escapeXhtml).then(function(xhtml) {
-                return '<foreignObject x="0" y="0" width="100%" height="100%">' + xhtml + "</foreignObject>";
-              }).then(function(foreignObject) {
-                return '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">' + foreignObject + "</svg>";
-              }).then(function(svg) {
-                return "data:image/svg+xml;charset=utf-8," + svg;
-              });
-            }
-            function newUtil() {
-              return {
-                escape,
-                parseExtension,
-                mimeType,
-                dataAsUrl,
-                isDataUrl,
-                canvasToBlob,
-                resolveUrl,
-                getAndEncode,
-                uid: uid(),
-                delay,
-                asArray,
-                escapeXhtml,
-                makeImage,
-                width,
-                height
-              };
-              function mimes() {
-                var WOFF = "application/font-woff";
-                var JPEG = "image/jpeg";
-                return {
-                  "woff": WOFF,
-                  "woff2": WOFF,
-                  "ttf": "application/font-truetype",
-                  "eot": "application/vnd.ms-fontobject",
-                  "png": "image/png",
-                  "jpg": JPEG,
-                  "jpeg": JPEG,
-                  "gif": "image/gif",
-                  "tiff": "image/tiff",
-                  "svg": "image/svg+xml"
-                };
-              }
-              function parseExtension(url) {
-                var match = /\.([^\.\/]*?)$/g.exec(url);
-                if (match) return match[1];
-                else return "";
-              }
-              function mimeType(url) {
-                var extension = parseExtension(url).toLowerCase();
-                return mimes()[extension] || "";
-              }
-              function isDataUrl(url) {
-                return url.search(/^(data:)/) !== -1;
-              }
-              function toBlob2(canvas) {
-                return new Promise(function(resolve) {
-                  var binaryString = window.atob(canvas.toDataURL().split(",")[1]);
-                  var length = binaryString.length;
-                  var binaryArray = new Uint8Array(length);
-                  for (var i = 0; i < length; i++)
-                    binaryArray[i] = binaryString.charCodeAt(i);
-                  resolve(new Blob([binaryArray], {
-                    type: "image/png"
-                  }));
-                });
-              }
-              function canvasToBlob(canvas) {
-                if (canvas.toBlob)
-                  return new Promise(function(resolve) {
-                    canvas.toBlob(resolve);
-                  });
-                return toBlob2(canvas);
-              }
-              function resolveUrl(url, baseUrl) {
-                var doc = document.implementation.createHTMLDocument();
-                var base = doc.createElement("base");
-                doc.head.appendChild(base);
-                var a = doc.createElement("a");
-                doc.body.appendChild(a);
-                base.href = baseUrl;
-                a.href = url;
-                return a.href;
-              }
-              function uid() {
-                var index = 0;
-                return function() {
-                  return "u" + fourRandomChars() + index++;
-                  function fourRandomChars() {
-                    return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
-                  }
-                };
-              }
-              function makeImage(uri) {
-                return new Promise(function(resolve, reject) {
-                  var image = new Image();
-                  image.onload = function() {
-                    resolve(image);
-                  };
-                  image.onerror = reject;
-                  image.src = uri;
-                });
-              }
-              function getAndEncode(url) {
-                var TIMEOUT = 3e4;
-                if (domtoimage.impl.options.cacheBust) {
-                  url += (/\?/.test(url) ? "&" : "?") + (/* @__PURE__ */ new Date()).getTime();
-                }
-                return new Promise(function(resolve) {
-                  var request = new XMLHttpRequest();
-                  request.onreadystatechange = done;
-                  request.ontimeout = timeout;
-                  request.responseType = "blob";
-                  request.timeout = TIMEOUT;
-                  request.open("GET", url, true);
-                  request.send();
-                  var placeholder;
-                  if (domtoimage.impl.options.imagePlaceholder) {
-                    var split = domtoimage.impl.options.imagePlaceholder.split(/,/);
-                    if (split && split[1]) {
-                      placeholder = split[1];
-                    }
-                  }
-                  function done() {
-                    if (request.readyState !== 4) return;
-                    if (request.status !== 200) {
-                      if (placeholder) {
-                        resolve(placeholder);
-                      } else {
-                        fail("cannot fetch resource: " + url + ", status: " + request.status);
-                      }
-                      return;
-                    }
-                    var encoder = new FileReader();
-                    encoder.onloadend = function() {
-                      var content = encoder.result.split(/,/)[1];
-                      resolve(content);
-                    };
-                    encoder.readAsDataURL(request.response);
-                  }
-                  function timeout() {
-                    if (placeholder) {
-                      resolve(placeholder);
-                    } else {
-                      fail("timeout of " + TIMEOUT + "ms occured while fetching resource: " + url);
-                    }
-                  }
-                  function fail(message) {
-                    console.error(message);
-                    resolve("");
-                  }
-                });
-              }
-              function dataAsUrl(content, type) {
-                return "data:" + type + ";base64," + content;
-              }
-              function escape(string) {
-                return string.replace(/([.*+?^${}()|\[\]\/\\])/g, "\\$1");
-              }
-              function delay(ms) {
-                return function(arg) {
-                  return new Promise(function(resolve) {
-                    setTimeout(function() {
-                      resolve(arg);
-                    }, ms);
-                  });
-                };
-              }
-              function asArray(arrayLike) {
-                var array = [];
-                var length = arrayLike.length;
-                for (var i = 0; i < length; i++) array.push(arrayLike[i]);
-                return array;
-              }
-              function escapeXhtml(string) {
-                return string.replace(/#/g, "%23").replace(/\n/g, "%0A");
-              }
-              function width(node) {
-                var leftBorder = px(node, "border-left-width");
-                var rightBorder = px(node, "border-right-width");
-                return node.scrollWidth + leftBorder + rightBorder;
-              }
-              function height(node) {
-                var topBorder = px(node, "border-top-width");
-                var bottomBorder = px(node, "border-bottom-width");
-                return node.scrollHeight + topBorder + bottomBorder;
-              }
-              function px(node, styleProperty) {
-                var value = window.getComputedStyle(node).getPropertyValue(styleProperty);
-                return parseFloat(value.replace("px", ""));
-              }
-            }
-            function newInliner() {
-              var URL_REGEX = /url\(['"]?([^'"]+?)['"]?\)/g;
-              return {
-                inlineAll,
-                shouldProcess,
-                impl: {
-                  readUrls,
-                  inline
-                }
-              };
-              function shouldProcess(string) {
-                return string.search(URL_REGEX) !== -1;
-              }
-              function readUrls(string) {
-                var result = [];
-                var match;
-                while ((match = URL_REGEX.exec(string)) !== null) {
-                  result.push(match[1]);
-                }
-                return result.filter(function(url) {
-                  return !util.isDataUrl(url);
-                });
-              }
-              function inline(string, url, baseUrl, get) {
-                return Promise.resolve(url).then(function(url2) {
-                  return baseUrl ? util.resolveUrl(url2, baseUrl) : url2;
-                }).then(get || util.getAndEncode).then(function(data) {
-                  return util.dataAsUrl(data, util.mimeType(url));
-                }).then(function(dataUrl) {
-                  return string.replace(urlAsRegex(url), "$1" + dataUrl + "$3");
-                });
-                function urlAsRegex(url2) {
-                  return new RegExp(`(url\\(['"]?)(` + util.escape(url2) + `)(['"]?\\))`, "g");
-                }
-              }
-              function inlineAll(string, baseUrl, get) {
-                if (nothingToInline()) return Promise.resolve(string);
-                return Promise.resolve(string).then(readUrls).then(function(urls) {
-                  var done = Promise.resolve(string);
-                  urls.forEach(function(url) {
-                    done = done.then(function(string2) {
-                      return inline(string2, url, baseUrl, get);
-                    });
-                  });
-                  return done;
-                });
-                function nothingToInline() {
-                  return !shouldProcess(string);
-                }
-              }
-            }
-            function newFontFaces() {
-              return {
-                resolveAll,
-                impl: {
-                  readAll
-                }
-              };
-              function resolveAll() {
-                return readAll().then(function(webFonts) {
-                  return Promise.all(
-                    webFonts.map(function(webFont) {
-                      return webFont.resolve();
-                    })
-                  );
-                }).then(function(cssStrings) {
-                  return cssStrings.join("\n");
-                });
-              }
-              function readAll() {
-                return Promise.resolve(util.asArray(document.styleSheets)).then(getCssRules).then(selectWebFontRules).then(function(rules) {
-                  return rules.map(newWebFont);
-                });
-                function selectWebFontRules(cssRules) {
-                  return cssRules.filter(function(rule) {
-                    return rule.type === CSSRule.FONT_FACE_RULE;
-                  }).filter(function(rule) {
-                    return inliner.shouldProcess(rule.style.getPropertyValue("src"));
-                  });
-                }
-                function getCssRules(styleSheets) {
-                  var cssRules = [];
-                  styleSheets.forEach(function(sheet) {
-                    try {
-                      util.asArray(sheet.cssRules || []).forEach(cssRules.push.bind(cssRules));
-                    } catch (e) {
-                      console.log("Error while reading CSS rules from " + sheet.href, e.toString());
-                    }
-                  });
-                  return cssRules;
-                }
-                function newWebFont(webFontRule) {
-                  return {
-                    resolve: function resolve() {
-                      var baseUrl = (webFontRule.parentStyleSheet || {}).href;
-                      return inliner.inlineAll(webFontRule.cssText, baseUrl);
-                    },
-                    src: function() {
-                      return webFontRule.style.getPropertyValue("src");
-                    }
-                  };
-                }
-              }
-            }
-            function newImages() {
-              return {
-                inlineAll,
-                impl: {
-                  newImage
-                }
-              };
-              function newImage(element) {
-                return {
-                  inline
-                };
-                function inline(get) {
-                  if (util.isDataUrl(element.src)) return Promise.resolve();
-                  return Promise.resolve(element.src).then(get || util.getAndEncode).then(function(data) {
-                    return util.dataAsUrl(data, util.mimeType(element.src));
-                  }).then(function(dataUrl) {
-                    return new Promise(function(resolve, reject) {
-                      element.onload = resolve;
-                      element.onerror = reject;
-                      element.src = dataUrl;
-                    });
-                  });
-                }
-              }
-              function inlineAll(node) {
-                if (!(node instanceof Element)) return Promise.resolve(node);
-                return inlineBackground(node).then(function() {
-                  if (node instanceof HTMLImageElement)
-                    return newImage(node).inline();
-                  else
-                    return Promise.all(
-                      util.asArray(node.childNodes).map(function(child) {
-                        return inlineAll(child);
-                      })
-                    );
-                });
-                function inlineBackground(node2) {
-                  var background = node2.style.getPropertyValue("background");
-                  if (!background) return Promise.resolve(node2);
-                  return inliner.inlineAll(background).then(function(inlined) {
-                    node2.style.setProperty(
-                      "background",
-                      inlined,
-                      node2.style.getPropertyPriority("background")
-                    );
-                  }).then(function() {
-                    return node2;
-                  });
-                }
-              }
-            }
-          })();
-        })(domToImage);
-        return domToImage.exports;
-      }
       /**
       * @license BSD-3-Clause
       * @copyright 2014-2023 hizzgdev@163.com
@@ -3586,7 +3009,7 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
       */
       (function(module, exports) {
         !function(e, t) {
-          t(require$$0, requireDomToImage());
+          t(require$$0, require$$1);
         }(commonjsGlobal, function(e, t) {
           function i(e2) {
             return e2 && "object" == typeof e2 && "default" in e2 ? e2 : { default: e2 };
@@ -3667,63 +3090,46 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
       })();
       const jsonMind = {
         isFirst: true,
-        /**
-         * JSON数据转换为jsMind所需要的数据结构
-         * @param {*} json JSON 数据
-         * @returns
-         */
-        convert: function(json) {
+        transform: function(json) {
           const children = [];
           if (typeof json === "object") {
             for (const key in json) {
-              let val = json[key], isArray = Array.isArray(val);
+              let val = json[key];
+              const isArray = Array.isArray(val);
               const type = Utils.getPrototype(val);
-              if (isArray && val.length > 0) {
-                val = Utils.findMaxKeysObject(val);
-              }
+              if (isArray && val.length > 0) val = Utils.findMaxKeysObject(val);
+              const keys = Utils.getType(val) === "object" ? Object.keys(val) : null;
               children.push({
+                keys,
                 isArray,
                 chain: key,
                 id: key + "_" + Math.random(),
                 topic: `${key}<span class="datatype">${type}</span>`,
-                children: this.convert(val)
+                children: this.transform(val)
               });
             }
           }
           return children;
         },
-        /**
-         * 脑图节点调用链
-         * @param {*} node 脑图节点对象
-         * @returns
-         */
-        mindChain: function(node) {
+        getChain: function(node) {
           let chain = node.data.chain;
-          if (!node.parent) {
-            return chain;
-          }
+          if (!node.parent) return chain;
           const parent = node.parent;
-          const parentChain = this.mindChain(parent);
-          chain = parent.data.isArray ? `${parentChain}[i].${chain}` : `${parentChain}.${chain}`;
-          return chain;
+          const parentChain = this.getChain(parent);
+          if (parent.data.isArray) return `${parentChain}[i].${chain}`;
+          if (chain.includes(".")) return `${parentChain}["${chain}"]`;
+          return `${parentChain}.${chain}`;
         },
-        /**
-         * 显示脑图
-         * @param {*} json JSON 数据
-         * @returns
-         */
         show: function(json) {
-          let isArr = Array.isArray(json);
-          if (isArr) {
+          let isArray = Array.isArray(json);
+          if (isArray) {
             if (typeof json[0] !== "object") {
-              layer.msg("数据结构无法生成脑图", { time: 1e3 });
+              layer.msg("无法生成脑图", { time: 1e3 });
               return this;
             }
             json = Utils.findMaxKeysObject(json);
           }
-          if (!this.isFirst) {
-            return this;
-          }
+          if (!this.isFirst) return this;
           _unsafeWindow.GLOBAL_JSMIND.show({
             meta: {
               version: "1.0",
@@ -3733,34 +3139,36 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
             format: "node_tree",
             /* 数据内容 */
             data: {
+              isArray,
               id: "root",
+              chain: "Root",
               topic: "Root",
               direction: "left",
-              children: this.convert(json),
-              chain: isArr ? "Root[i]" : "Root"
+              keys: Object.keys(json),
+              children: this.transform(json)
             }
           });
           this.isFirst = false;
           return this;
         },
-        /**
-         * 脑图节点事件
-         * @returns
-         */
         event: function() {
-          const jsonMind2 = this;
-          $(document.body).on("dblclick mouseover", "jmnode", function(event) {
-            const nodeid = $(this).attr("nodeid");
+          const that = this;
+          Utils.addEvent("click mouseover", "jmnode", handler);
+          function handler(event) {
+            const nodeid = Utils.attr(this, "nodeid");
             const node = _unsafeWindow.GLOBAL_JSMIND.get_node(nodeid);
-            if (!node.parent) {
-              return;
-            }
-            if (event.type === "dblclick") {
-              _GM_setClipboard(jsonMind2.mindChain(node));
-              layer.msg("节点路径复制成功", { time: 1500 });
+            const chain = that.getChain(node);
+            if (event.type === "click") {
+              if (event.ctrlKey) {
+                _GM_setClipboard(chain);
+                layer.msg("复制成功", { time: 1500 });
+                return;
+              }
+              const keys = node.data.keys;
+              if (!keys || keys.length === 0) return;
+              that.popup(chain, keys);
             } else {
-              const chain = jsonMind2.mindChain(node);
-              const content = `<b>节点路径（双击复制）</b><br/>${chain}`;
+              const content = `<i>ctrl＋click 复制</i><br/><b>路径：</b>${chain}`;
               tippy(this, {
                 content,
                 duration: 800,
@@ -3768,122 +3176,110 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
                 theme: "layer"
               }).show();
             }
-          });
+          }
           return this;
         },
+        popup(chain, keys) {
+          layer.open({
+            type: 1,
+            move: false,
+            shadeClose: true,
+            title: " 节点",
+            content: function() {
+              const chain2 = Utils.createElement("div");
+              const chainCon = Utils.createElement("div");
+              chain2.appendChild(chainCon);
+              const copy = Utils.createElement("div", {
+                title: "复制",
+                class: "js-mind-copy"
+              });
+              const content = Utils.createElement("div", {
+                class: "js-mind-child-node"
+              });
+              content.appendChild(copy);
+              keys.forEach((i) => {
+                const child = Utils.createElement("div");
+                child.textContent = i;
+                content.appendChild(child);
+              });
+              return content.outerHTML;
+            }(),
+            success: function(layero) {
+              layero.on("click", ".js-mind-copy", function() {
+                _GM_setClipboard(chain + "\n\n" + keys.join("\n"));
+                layer.msg("复制成功", { time: 1500 });
+              });
+            }
+          });
+        },
         init: function(json) {
-          if (!_unsafeWindow.GLOBAL_JSMIND) {
-            _unsafeWindow.GLOBAL_JSMIND = new require$$0({
-              mode: "side",
-              editable: false,
-              container: "mindBox",
-              view: {
-                hmargin: 50,
-                // 思维导图距容器外框的最小水平距离
-                vmargin: 50,
-                // 思维导图距容器外框的最小垂直距离
-                engine: "svg",
-                // 思维导图各节点之间线条的绘制引擎
-                draggable: true,
-                // 当容器不能完全容纳思维导图时，是否允许拖动画布代替鼠标滚动
-                support_html: false,
-                line_color: "#C4C9D0"
-              },
-              zoom: {
-                // 配置缩放
-                min: 0.1,
-                // 最小的缩放比例
-                max: 2.1,
-                // 最大的缩放比例
-                step: 0.1
-                // 缩放比例间隔
-              },
-              layout: {
-                vspace: 7,
-                // 节点之间的垂直间距
-                hspace: 150
-                // 节点之间的水平空间
-              }
-            });
-          }
+          if (_unsafeWindow.GLOBAL_JSMIND) return;
+          _unsafeWindow.GLOBAL_JSMIND = new require$$0({
+            mode: "side",
+            editable: false,
+            container: "mindBox",
+            view: {
+              hmargin: 50,
+              vmargin: 50,
+              engine: "svg",
+              draggable: true,
+              support_html: false,
+              line_color: "#C4C9D0"
+            },
+            layout: {
+              vspace: 5,
+              hspace: 130
+            }
+          });
           this.show(json).event();
         }
       };
-      const $mindBox = $("#mindBox");
-      const $formatBox = $("#formatBox");
-      const $rawTextBox = $("#rawTextBox");
-      const tabsEvent = {
+      const $mindBox = Utils.query("#mindBox");
+      const $formatBox = Utils.query("#formatBox");
+      const $rawTextBox = Utils.query("#rawTextBox");
+      const $rawTextPre = Utils.query("pre", $rawTextBox);
+      const tabs = {
         firstFormat: true,
         isBeautify: false,
-        $rawTextPre: $rawTextBox.find("pre"),
-        /**
-         * 原始数据
-         */
         _setRawText: function() {
           let rawText = _unsafeWindow.RAW_TEXT;
           if (_unsafeWindow.GLOBAL_JSONP_FUN) {
             rawText = `${_unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
           }
-          this.$rawTextPre.text(rawText);
+          $rawTextPre.textContent = rawText;
         },
-        /**
-         * 保存为文件
-         * 如果是JSON 格式化可见，保存JSON数据为.json文件
-         * 如果是JSON 脑图可见，保存脑图为图片
-         */
         saveJson: function() {
-          if ($mindBox.is(":visible")) {
-            _unsafeWindow.GLOBAL_JSMIND.shoot();
-            return;
-          }
-          const content = this.$rawTextPre.text() || _unsafeWindow.RAW_TEXT;
+          if (Utils.isVisible($mindBox)) return _unsafeWindow.GLOBAL_JSMIND.shoot();
+          const content = $rawTextPre.textContent || _unsafeWindow.RAW_TEXT;
           const filename = (/* @__PURE__ */ new Date()).getTime() + ".json";
           Utils.downloadText(content, filename);
         },
-        /**
-         * 复制JSON文本内容
-         */
         copyJson: function() {
-          const content = this.$rawTextPre.text() || _unsafeWindow.RAW_TEXT;
+          const content = $rawTextPre.textContent || _unsafeWindow.RAW_TEXT;
           _GM_setClipboard(content);
           layer.msg("复制成功", { time: 1500 });
         },
-        /**
-         * 点击了`全部折叠`
-         * 如果是JSON 格式化可见，折叠JSON
-         * 如果是JSON 脑图可见，折叠脑图节点
-         */
         collapseAll: function() {
-          var _a, _b, _c, _d;
-          if ($formatBox.is(":visible")) {
-            (_b = (_a = _unsafeWindow) == null ? void 0 : _a.JSON_VIEWER) == null ? void 0 : _b.collapseAll();
-            (_d = (_c = _unsafeWindow) == null ? void 0 : _c.JSON_TO_TABLE) == null ? void 0 : _d.collapseAll();
-            return;
-          }
-          _unsafeWindow.GLOBAL_JSMIND.collapse_all();
+          var _a, _b;
+          Utils.isVisible($formatBox) ? (_b = (_a = _unsafeWindow) == null ? void 0 : _a.JSON_FORMATER) == null ? void 0 : _b.collapseAll() : _unsafeWindow.GLOBAL_JSMIND.collapse_all();
         },
-        /**
-         * 点击了`全部展开`
-         * 如果是JSON 格式化可见，展开JSON
-         * 如果是JSON 脑图可见，展开脑图节点
-         */
         expandAll: function() {
-          var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
-          if ($formatBox.is(":visible")) {
-            (_b = (_a = _unsafeWindow) == null ? void 0 : _a.JSON_VIEWER) == null ? void 0 : _b.expandAll();
-            (_d = (_c = _unsafeWindow) == null ? void 0 : _c.JSON_TO_TABLE) == null ? void 0 : _d.expandAll();
+          var _a, _b, _c, _d, _e, _f, _g, _h;
+          if (Utils.isVisible($formatBox)) {
+            (_b = (_a = _unsafeWindow) == null ? void 0 : _a.JSON_FORMATER) == null ? void 0 : _b.expandAll();
             return;
           }
-          (_f = (_e = _unsafeWindow) == null ? void 0 : _e.GLOBAL_JSMIND) == null ? void 0 : _f.expand_all();
-          (_j = (_g = _unsafeWindow) == null ? void 0 : _g.GLOBAL_JSMIND) == null ? void 0 : _j.scroll_node_to_center(
-            (_i = (_h = _unsafeWindow) == null ? void 0 : _h.GLOBAL_JSMIND) == null ? void 0 : _i.get_root()
+          (_d = (_c = _unsafeWindow) == null ? void 0 : _c.GLOBAL_JSMIND) == null ? void 0 : _d.expand_all();
+          (_h = (_e = _unsafeWindow) == null ? void 0 : _e.GLOBAL_JSMIND) == null ? void 0 : _h.scroll_node_to_center(
+            (_g = (_f = _unsafeWindow) == null ? void 0 : _f.GLOBAL_JSMIND) == null ? void 0 : _g.get_root()
           );
         },
         viewFormater: function() {
+          const value = _unsafeWindow.FILTER_VALUE || "";
+          Utils.query(".searchbox input").value = value;
+          const clear = Utils.query(".searchbox .clear");
+          Utils.attr(clear, "hidden", !value);
         },
-        /**
-         * tabs点击了`JSON 脑图`
-         */
         viewMind: function() {
           var _a, _b, _c, _d;
           jsonMind.init(_unsafeWindow.GLOBAL_JSON);
@@ -3891,133 +3287,78 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
             (_c = (_b = _unsafeWindow) == null ? void 0 : _b.GLOBAL_JSMIND) == null ? void 0 : _c.get_root()
           );
         },
-        /**
-         * tabs点击了`原始数据`
-         */
         viewRawText: function() {
-          if (!this.firstFormat) {
-            return;
-          }
+          if (!this.firstFormat) return;
           this.firstFormat = false;
           this._setRawText();
         },
-        /**
-         * 点击了`美化输出`
-         */
         beautify: function() {
           this.isBeautify = !this.isBeautify;
-          if (this.isBeautify) {
-            let str = Utils.stringify(_unsafeWindow.GLOBAL_JSON, null, 2);
-            if (_unsafeWindow.GLOBAL_JSONP_FUN) {
-              str = `${_unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
-            }
-            this.$rawTextPre.text(str);
-            return;
+          if (!this.isBeautify) return this._setRawText();
+          let str = Utils.stringify(_unsafeWindow.GLOBAL_JSON, null, 2);
+          if (_unsafeWindow.GLOBAL_JSONP_FUN) {
+            str = `${_unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
           }
-          this._setRawText();
+          $rawTextPre.textContent = str;
         },
-        /**
-         * 点击了`JSON Crack`
-         */
         jsoncrack: function() {
-          let theme2 = _GM_getValue("theme") || "light";
-          theme2 = theme2.replace(/_.*/, "");
+          const theme2 = (_GM_getValue("theme") || "light").replace(/-.*/, "");
           layer.closeAll();
           layer.open({
             type: 1,
+            move: false,
             title: false,
             area: ["100vw", "100vh"],
             content: `<iframe id="jsoncrackEmbed" src="${URL$1.JSON_CRACK_WIDGET}"></iframe>`,
-            success: function(layero) {
-              const jsonCrackEmbed = layero.find("#jsoncrackEmbed")[0];
+            success: function() {
+              const jsonCrackEmbed = Utils.query("#jsoncrackEmbed");
               window == null ? void 0 : window.addEventListener("message", () => {
                 var _a;
-                (_a = jsonCrackEmbed == null ? void 0 : jsonCrackEmbed.contentWindow) == null ? void 0 : _a.postMessage(
-                  {
-                    options: { theme: theme2 },
-                    json: _unsafeWindow.RAW_TEXT
-                  },
-                  "*"
-                );
+                const msg = {
+                  options: { theme: theme2 },
+                  json: _unsafeWindow.RAW_TEXT
+                };
+                (_a = jsonCrackEmbed == null ? void 0 : jsonCrackEmbed.contentWindow) == null ? void 0 : _a.postMessage(msg, "*");
               });
             }
           });
         },
         init: function() {
-          $(document.body).on("click", ".btn", (e) => {
+          Utils.addEvent("click", ".btn", (e) => {
             const target = e.target;
             const id = target.id;
-            if (target.classList.contains("tabs-item")) {
+            if (Utils.hasClass(target, "tabs-item")) {
               const clas = "active";
-              const index = $(target).index();
-              $(target).addClass(clas).siblings().removeClass(clas);
-              $(".container > div").removeClass(clas).eq(index).addClass(clas);
-              const beautifyEl = $("#beautify");
-              const searchEl = $(".searchbox");
-              const copyEl = $("#copyJson");
-              const jsoncrackEl = $("#jsoncrack");
-              const aEl = $("#collapseAll, #expandAll");
-              id === "viewFormater" ? searchEl.show() : searchEl.hide();
-              id === "viewMind" ? copyEl.hide() && jsoncrackEl.show() : copyEl.show() && jsoncrackEl.hide();
-              id === "viewRawText" ? beautifyEl.show() && aEl.hide() : beautifyEl.hide() && aEl.show();
+              Utils.removeClass(Utils.queryAll(".tabs-item"), clas);
+              Utils.addClass(target, clas);
+              Utils.removeClass(Utils.queryAll("div[data-for]"), clas);
+              Utils.addClass(Utils.query(`div[data-for="${id}"]`), clas);
+              const template = Utils.query(`template[data-for='${id}']`);
+              Utils.query(".toolbar").innerHTML = template.innerHTML;
             }
             this[id](target);
           });
-          return this;
         }
       };
       window.addEventListener("message", function(event) {
         const { data } = event;
-        if (!(data == null ? void 0 : data.reload)) {
-          return;
-        }
-        $mindBox.empty();
+        if (!(data == null ? void 0 : data.reload)) return;
+        $mindBox.innerHTML = "";
         jsonMind.isFirst = true;
-        tabsEvent.isBeautify = false;
-        tabsEvent.firstFormat = true;
+        tabs.isBeautify = false;
+        tabs.firstFormat = true;
         _unsafeWindow.GLOBAL_JSMIND = void 0;
-        if ($rawTextBox.is(":visible")) {
-          tabsEvent.viewRawText();
-        }
-        if ($mindBox.is(":visible")) {
-          jsonMind.init(_unsafeWindow.GLOBAL_JSON);
-        }
+        if (Utils.isVisible($rawTextBox)) return tabs.viewRawText();
+        if (Utils.isVisible($mindBox)) return jsonMind.init(_unsafeWindow.GLOBAL_JSON);
       });
       const theme = {
-        /**
-         * 切换主题色
-         * @param {*} theme  主题色：default、light、dark、dark_plus
-         * @returns
-         */
-        changeTheme: function(theme2) {
+        changeTheme(theme2) {
           _GM_setValue("theme", theme2);
           this.setTheme();
-          return this;
         },
-        /**
-         * 设置主题
-         * @returns
-         */
-        setTheme: function() {
-          var _a, _b, _c, _d;
+        setTheme() {
           const theme2 = _GM_getValue("theme") || "default";
-          (_b = (_a = _unsafeWindow) == null ? void 0 : _a.JSON_VIEWER) == null ? void 0 : _b.setTheme(theme2);
-          (_d = (_c = _unsafeWindow) == null ? void 0 : _c.JSON_TO_TABLE) == null ? void 0 : _d.setTheme(theme2);
-          return this;
-        },
-        init: function() {
-          const that = this;
-          that.setTheme();
-          window.addEventListener("message", function(event) {
-            const { data } = event;
-            if (!data) {
-              return;
-            }
-            const { type, value } = data;
-            if (type === "theme") {
-              that.changeTheme(value);
-            }
-          });
+          _unsafeWindow.JSON_FORMATER.setTheme(theme2);
         }
       };
       const http_form = `
@@ -4046,19 +3387,17 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
           const that = this;
           layer.prompt(
             {
-              title: "JSON 输入",
+              move: false,
               formType: 2,
               btn: ["确认"],
               shadeClose: true,
+              title: "JSON 输入",
               maxlength: 1e6,
               area: ["400px", "300px"]
             },
             function(text) {
-              if (!text) {
-                layer.msg("内容不能为空", { time: 1500 });
-                return;
-              }
-              const { rawText, jsonpFun } = Utils.jsonpMatch(text);
+              if (!text) return layer.msg("内容不能为空", { time: 1500 });
+              const { rawText, jsonpFun } = Utils.matchJsonp(text);
               try {
                 const json = Utils.parse(rawText);
                 that.reload(json, rawText, jsonpFun);
@@ -4077,37 +3416,33 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
             closeBtn: 0,
             shadeClose: true,
             title: "HTTP 请求",
-            content: http_form
+            content: http_form,
+            success: function() {
+              const form = Utils.query("form");
+              form.addEventListener("submit", function(event) {
+                handler(event, form);
+              });
+            }
           });
-          $("form").on("submit", function(event) {
+          function handler(event, formEl) {
             event.preventDefault();
-            const serialize = $(this).serializeArray();
+            const formData = new FormData(formEl);
             const form = {};
-            for (const key in serialize) {
-              const it = serialize[key];
-              form[it.name] = it.value;
+            for (const [name, value] of formData) {
+              form[name] = value;
             }
-            if (form.url === "") {
-              layer.msg("请求URL不能为空");
-              return;
-            }
+            if (form.url === "") return layer.msg("请求URL不能为空");
             let headers = form.headers;
             let params = form.params;
             try {
-              if (headers) {
-                headers = JSON.parse(headers);
-              }
+              if (headers) headers = JSON.parse(headers);
             } catch (e) {
-              layer.msg("请求头格式不合法");
-              return;
+              return layer.msg("请求头格式不合法");
             }
             try {
-              if (params) {
-                params = JSON.parse(params);
-              }
+              if (params) params = JSON.parse(params);
             } catch (e) {
-              layer.msg("请求参数格式不合法");
-              return;
+              return layer.msg("请求参数格式不合法");
             }
             layer.load(0, { shade: false });
             fetch(URL$1.ONLINE_REQUEST, {
@@ -4120,7 +3455,7 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
               const result = await response.json();
               if (typeof result === "string") {
                 try {
-                  const { rawText, jsonpFun } = Utils.jsonpMatch(result);
+                  const { rawText, jsonpFun } = Utils.matchJsonp(result);
                   const json = Utils.parse(rawText);
                   that.reload(json, rawText, jsonpFun);
                 } catch (e) {
@@ -4134,7 +3469,7 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
               layer.closeAll();
               console.log("HTTP 请求异常：", e);
             });
-          });
+          }
           return this;
         },
         reload: function(json, rawText, jsonpFun) {
@@ -4143,26 +3478,11 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
           _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
           window.postMessage({ reload: true });
           layer.closeAll();
-        },
-        init: function() {
-          window.addEventListener("message", (event) => {
-            const { data } = event;
-            if (!data) {
-              return;
-            }
-            const { type, value } = data;
-            if (type === "tools") {
-              this[value]();
-            }
-          });
         }
       };
+      const active = "active";
       const handleBar = {
-        instance: null,
-        /**
-         * 对右侧操作栏的点击事件初始化
-         * @returns
-         */
+        currentTippy: null,
         handle: function() {
           const that = this;
           const tagName = "span";
@@ -4172,49 +3492,40 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
               allowHTML: true,
               interactive: true,
               trigger: "click",
-              appendTo: document.querySelector(selector).parentNode,
+              appendTo: Utils.query(selector).parentNode,
               onTrigger: function(instance) {
-                const tools2 = $(instance.reference);
-                tools2.siblings().find(tagName).removeClass();
-                tools2.find(tagName).addClass("active");
-                const template = tools2.find("template");
-                const type = template.data("type");
+                that.currentTippy = instance;
+                const target = instance.reference;
+                Utils.addClass(Utils.query(tagName, target), active);
+                const template = Utils.query("template", target);
+                const ul = template.content.cloneNode(true);
+                const type = template.dataset.type;
                 const value = _GM_getValue(type) || "default";
-                const ul = template.contents();
-                ul.find("li").removeClass();
-                ul.find(`li[data-value=${value}]`).addClass("active");
-                instance.setContent(template.html());
-                that.instance = instance;
+                const current = Utils.query(`li[data-value=${value}]`, ul);
+                Utils.addClass(current, active);
+                const tempDiv = Utils.createElement("div");
+                while (ul.firstChild) tempDiv.appendChild(ul.firstChild);
+                instance.setContent(tempDiv.innerHTML);
               },
               onHide: function(instance) {
-                const tools2 = $(instance.reference);
-                tools2.find(tagName).removeClass();
+                const target = instance.reference;
+                Utils.removeClass(Utils.query(tagName, target));
               }
             });
           });
           return this;
         },
-        /**
-         * 点击了对应选项
-         * 如点击了`主题`-`暗黑`，通过window.postMessage进行主题色更新
-         * @returns
-         */
         checked: function() {
-          const that = this;
-          $(document.body).on("click", ".rightbox li", function() {
-            const el = $(this);
-            const hasClass = el.hasClass("active");
-            if (hasClass) {
-              return;
-            }
-            const type = el.data("type");
-            const value = el.data("value");
-            if (type !== "tools") {
-              el.addClass("active").siblings().removeClass();
-            } else {
-              that.instance.hide();
-            }
+          const selector = ".rightbox li";
+          Utils.addEvent("click", selector, (event) => {
+            const target = event.target;
+            if (Utils.hasClass(target, active)) return;
+            const type = target.dataset.type;
+            const value = target.dataset.value;
             window.postMessage({ type, value });
+            if (Object.is(type, "tools")) return this.currentTippy.hide();
+            Utils.removeClass(Utils.queryAll(selector));
+            Utils.addClass(target, active);
           });
           return this;
         },
@@ -4222,10 +3533,17 @@ System.register("./index-CDBrBlvl-gOuIfNoo.js", ['jquery', './tippy.esm-Ot9MORvr
           this.handle().checked();
         }
       };
-      tabsEvent.init();
-      theme.init();
-      tools.init();
+      tabs.init();
+      theme.setTheme();
       handleBar.init();
+      window.addEventListener("message", function(event) {
+        const { data } = event;
+        if (!data) return;
+        const { type, value } = data;
+        if (!type) return;
+        if (type === "tools") return tools[value]();
+        if (type === "theme") return theme.changeTheme(value);
+      });
 
     })
   };
@@ -6754,18 +6072,22 @@ System.register("./tippy.esm-Ot9MORvr-DNGa7Opj.js", [], (function (exports, modu
   };
 }));
 
-System.register("./index-CZOUlSU2-CskZy1NC.js", [], (function (exports, module) {
+System.register("./index-DH4sstV0-D5_y4vAd.js", ['./__monkey.entry-BOyf9HZs.js'], (function (exports, module) {
   'use strict';
+  var Utils;
   return {
+    setters: [module => {
+      Utils = module.U;
+    }],
     execute: (function () {
 
-      const scroll = document.createElement("div");
-      scroll.setAttribute("class", "scroll-top");
+      const scroll = Utils.createElement("div", {
+        class: "scroll-top"
+      });
       document.body.appendChild(scroll);
-      const style = scroll.style;
-      const $container = document.querySelector(".container");
+      const $container = Utils.query(".container");
       $container.addEventListener("scroll", function() {
-        this.scrollTop > 500 ? style.display = "block" : style.display = "none";
+        this.scrollTop > 500 ? Utils.show(scroll) : Utils.hide(scroll);
       });
       scroll.addEventListener("click", function() {
         $container.scrollTop = 0;
