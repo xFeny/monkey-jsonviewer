@@ -2,6 +2,27 @@
  * JSON Viewer 布局
  */
 export default `
+<template data-for="viewFormater">
+    <div class="toolbar-item btn" id="saveJson">保存</div>
+    <div class="toolbar-item btn" id="copyJson">复制</div>
+    <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
+    <div class="toolbar-item btn" id="expandAll">全部展开</div>
+    <div class="searchbox">
+        <input type="text" placeholder="JSON 过滤"/>
+        <button class="clear" hidden></button>
+    </div>
+</template>
+<template data-for="viewMind">
+    <div class="toolbar-item btn" id="saveJson">保存</div>
+    <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
+    <div class="toolbar-item btn" id="expandAll">全部展开</div>
+    <div class="toolbar-item btn" id="jsoncrack">JSON Crack</div>
+</template>
+<template data-for="viewRawText">
+    <div class="toolbar-item btn" id="saveJson">保存</div>
+    <div class="toolbar-item btn" id="copyJson">复制</div>
+    <div class="toolbar-item btn" id="beautify">美化输出</div>
+</template>
 <div class="json-viewer-layout">
     <div class="panel">
         <div class="tabs">
@@ -14,10 +35,8 @@ export default `
             <div class="toolbar-item btn" id="copyJson">复制</div>
             <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
             <div class="toolbar-item btn" id="expandAll">全部展开</div>
-            <div class="toolbar-item btn" id="jsoncrack" style="display: none;">JSON Crack</div>
-            <div class="toolbar-item btn" id="beautify" style="display: none;">美化输出</div>
             <div class="searchbox">
-                <input type="text" placeholder="过滤 JSON "/>
+                <input type="text" placeholder="JSON 过滤"/>
                 <button class="clear" hidden></button>
             </div>
         </div>
@@ -54,9 +73,9 @@ export default `
         </div>
     </div>
     <div class="container">
-        <div class="active" id="formatBox"></div>
-        <div id="mindBox"></div>
-        <div id="rawTextBox">
+        <div class="active" data-for="viewFormater" id="formatBox"></div>
+        <div data-for="viewMind" id="mindBox"></div>
+        <div data-for="viewRawText"  id="rawTextBox">
             <pre></pre>
         </div>
     </div>

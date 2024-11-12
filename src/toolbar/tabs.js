@@ -1,72 +1,40 @@
-import $ from "jquery";
 import jsonMind from "../mind";
 import URL from "../common/URL";
 import Utils from "../common/Utils";
 
-const $mindBox = $("#mindBox");
-const $formatBox = $("#formatBox");
-const $rawTextBox = $("#rawTextBox");
-
-const tabsEvent = {
+const $mindBox = Utils.query("#mindBox");
+const $formatBox = Utils.query("#formatBox");
+const $rawTextBox = Utils.query("#rawTextBox");
+const $rawTextPre = Utils.query("pre", $rawTextBox);
+const tabs = {
   firstFormat: true,
   isBeautify: false,
-  $rawTextPre: $rawTextBox.find("pre"),
-  /**
-   * 原始数据
-   */
   _setRawText: function () {
     let rawText = unsafeWindow.RAW_TEXT;
     if (unsafeWindow.GLOBAL_JSONP_FUN) {
       rawText = `${unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
     }
-    this.$rawTextPre.text(rawText);
+    $rawTextPre.textContent = rawText;
   },
-  /**
-   * 保存为文件
-   * 如果是JSON 格式化可见，保存JSON数据为.json文件
-   * 如果是JSON 脑图可见，保存脑图为图片
-   */
   saveJson: function () {
-    if ($mindBox.is(":visible")) {
-      unsafeWindow.GLOBAL_JSMIND.shoot();
-      return;
-    }
-
-    const content = this.$rawTextPre.text() || unsafeWindow.RAW_TEXT;
+    if (Utils.isVisible($mindBox)) return unsafeWindow.GLOBAL_JSMIND.shoot();
+    const content = $rawTextPre.textContent || unsafeWindow.RAW_TEXT;
     const filename = new Date().getTime() + ".json";
     Utils.downloadText(content, filename);
   },
-  /**
-   * 复制JSON文本内容
-   */
   copyJson: function () {
-    const content = this.$rawTextPre.text() || unsafeWindow.RAW_TEXT;
+    const content = $rawTextPre.textContent || unsafeWindow.RAW_TEXT;
     GM_setClipboard(content);
     layer.msg("复制成功", { time: 1500 });
   },
-  /**
-   * 点击了`全部折叠`
-   * 如果是JSON 格式化可见，折叠JSON
-   * 如果是JSON 脑图可见，折叠脑图节点
-   */
   collapseAll: function () {
-    if ($formatBox.is(":visible")) {
-      unsafeWindow?.JSON_VIEWER?.collapseAll();
-      unsafeWindow?.JSON_TO_TABLE?.collapseAll();
-      return;
-    }
-
-    unsafeWindow.GLOBAL_JSMIND.collapse_all();
+    Utils.isVisible($formatBox)
+      ? unsafeWindow?.JSON_FORMATER?.collapseAll()
+      : unsafeWindow.GLOBAL_JSMIND.collapse_all();
   },
-  /**
-   * 点击了`全部展开`
-   * 如果是JSON 格式化可见，展开JSON
-   * 如果是JSON 脑图可见，展开脑图节点
-   */
   expandAll: function () {
-    if ($formatBox.is(":visible")) {
-      unsafeWindow?.JSON_VIEWER?.expandAll();
-      unsafeWindow?.JSON_TO_TABLE?.expandAll();
+    if (Utils.isVisible($formatBox)) {
+      unsafeWindow?.JSON_FORMATER?.expandAll();
       return;
     }
 
@@ -75,124 +43,81 @@ const tabsEvent = {
       unsafeWindow?.GLOBAL_JSMIND?.get_root()
     );
   },
-  viewFormater: function () {},
-  /**
-   * tabs点击了`JSON 脑图`
-   */
+  viewFormater: function () {
+    const value = unsafeWindow.FILTER_VALUE || "";
+    Utils.query(".searchbox input").value = value;
+    const clear = Utils.query(".searchbox .clear");
+    Utils.attr(clear, "hidden", !value);
+  },
   viewMind: function () {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
     unsafeWindow?.GLOBAL_JSMIND?.scroll_node_to_center(
       unsafeWindow?.GLOBAL_JSMIND?.get_root()
     );
   },
-  /**
-   * tabs点击了`原始数据`
-   */
   viewRawText: function () {
-    if (!this.firstFormat) {
-      return;
-    }
-
+    if (!this.firstFormat) return;
     this.firstFormat = false;
     this._setRawText();
   },
-  /**
-   * 点击了`美化输出`
-   */
   beautify: function () {
     this.isBeautify = !this.isBeautify;
-    if (this.isBeautify) {
-      let str = Utils.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
-      if (unsafeWindow.GLOBAL_JSONP_FUN) {
-        str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
-      }
-
-      this.$rawTextPre.text(str);
-      return;
+    if (!this.isBeautify) return this._setRawText();
+    let str = Utils.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
+    if (unsafeWindow.GLOBAL_JSONP_FUN) {
+      str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
     }
-
-    this._setRawText();
+    $rawTextPre.textContent = str;
   },
-  /**
-   * 点击了`JSON Crack`
-   */
   jsoncrack: function () {
-    let theme = GM_getValue("theme") || "light";
-    theme = theme.replace(/_.*/, "");
+    const theme = (GM_getValue("theme") || "light").replace(/-.*/, "");
     layer.closeAll();
     layer.open({
       type: 1,
+      move: false,
       title: false,
       area: ["100vw", "100vh"],
       content: `<iframe id="jsoncrackEmbed" src="${URL.JSON_CRACK_WIDGET}"></iframe>`,
-      success: function (layero) {
-        const jsonCrackEmbed = layero.find("#jsoncrackEmbed")[0];
+      success: function () {
+        const jsonCrackEmbed = Utils.query("#jsoncrackEmbed");
         window?.addEventListener("message", () => {
-          jsonCrackEmbed?.contentWindow?.postMessage(
-            {
-              options: { theme },
-              json: unsafeWindow.RAW_TEXT,
-            },
-            "*"
-          );
+          const msg = {
+            options: { theme },
+            json: unsafeWindow.RAW_TEXT,
+          };
+          jsonCrackEmbed?.contentWindow?.postMessage(msg, "*");
         });
       },
     });
   },
   init: function () {
-    $(document.body).on("click", ".btn", (e) => {
+    Utils.addEvent("click", ".btn", (e) => {
       const target = e.target;
       const id = target.id;
-      if (target.classList.contains("tabs-item")) {
+      if (Utils.hasClass(target, "tabs-item")) {
         const clas = "active";
-        const index = $(target).index();
-        $(target).addClass(clas).siblings().removeClass(clas);
-        $(".container > div").removeClass(clas).eq(index).addClass(clas);
-
-        const beautifyEl = $("#beautify");
-        const searchEl = $(".searchbox");
-        const copyEl = $("#copyJson");
-        const jsoncrackEl = $("#jsoncrack");
-        const aEl = $("#collapseAll, #expandAll");
-
-        id === "viewFormater" ? searchEl.show() : searchEl.hide();
-        id === "viewMind"
-          ? copyEl.hide() && jsoncrackEl.show()
-          : copyEl.show() && jsoncrackEl.hide();
-        id === "viewRawText"
-          ? beautifyEl.show() && aEl.hide()
-          : beautifyEl.hide() && aEl.show();
+        Utils.removeClass(Utils.queryAll(".tabs-item"), clas);
+        Utils.addClass(target, clas);
+        Utils.removeClass(Utils.queryAll("div[data-for]"), clas);
+        Utils.addClass(Utils.query(`div[data-for="${id}"]`), clas);
+        const template = Utils.query(`template[data-for='${id}']`);
+        Utils.query(".toolbar").innerHTML = template.innerHTML;
       }
-
       this[id](target);
     });
-
-    return this;
   },
 };
 
-/**
- * 数据发生变更
- */
 window.addEventListener("message", function (event) {
   const { data } = event;
-  if (!data?.reload) {
-    return;
-  }
-
-  $mindBox.empty();
+  if (!data?.reload) return;
+  $mindBox.innerHTML = "";
   jsonMind.isFirst = true;
-  tabsEvent.isBeautify = false;
-  tabsEvent.firstFormat = true;
+  tabs.isBeautify = false;
+  tabs.firstFormat = true;
   unsafeWindow.GLOBAL_JSMIND = undefined;
-
-  if ($rawTextBox.is(":visible")) {
-    tabsEvent.viewRawText();
-  }
-
-  if ($mindBox.is(":visible")) {
-    jsonMind.init(unsafeWindow.GLOBAL_JSON);
-  }
+  if (Utils.isVisible($rawTextBox)) return tabs.viewRawText();
+  if (Utils.isVisible($mindBox)) return jsonMind.init(unsafeWindow.GLOBAL_JSON);
 });
 
-export default tabsEvent;
+export default tabs;

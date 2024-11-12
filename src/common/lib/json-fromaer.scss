@@ -3,6 +3,23 @@ div.json-formater-item {
   border-left: 0.5px dotted #d9d9d9;
 }
 
+.json-formater-copy {
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  margin-left: 0.15em;
+  display: inline-block;
+  background-size: 13px;
+  vertical-align: text-bottom;
+  background-repeat: no-repeat;
+  transition: background-image ease 300ms;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=);
+
+  &.success {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAhZJREFUWEftlU1IFGEYx//Pu2R0kLrYwUMg7M5EHjwklNUOLoInxYMg7W6HTkEIgkLMLF6CsllDokN4Vfy4SnSqk+7sRghBFBT7IWKHQATFSxCLM09sabjjO/thLnuZ9zjPx//3/t9n3pfQ5EVN1ocP4DvgO9AwB/RMsJNYjAF4wEwz01rukeyXbwjAZEbttpmXAKhHokQ8bN4prLghzhwgkVHCzLQE8JUyMeblpFa411AAIxXshxCLAC6fFOKbZriw3jAA3VKHiLgk3uoS+UWMqKnlX9c8AwkreA0i0GM7vFu0i2svI1v7ld4M3VLuEmEBwLnjeQTsMyiaDOfeetVLZ8BIhz4CdP2w6CuxM2JqG99kTYz3oftwaE4S23Zsij3vza1Wgj8BYKSDvYBwF0khdEt9SMSzEoHvJETUvJ39UO219XBA2QHQ5iougzAsZRyEFxKBHAJONHlr41M18VLc6wgmAXoqafAHgoUYAuOZJP6Z2Il5HVfNQ1hK1NPKKAGvZBAAOiXf1wGOJcOFzVp2/u+CqpRsZNQ4/t5oVRalAkWOT/Xlf1TLrPseSKRDAw7TIhEuyS3kd2gJxM0b2d16xT1nwN1IT4U0IWiegY6yGPObg4sXYjNdX36eRrxmgMOZ6CLQE4AHGdgTjOXzdvvE48jawWnF6wI4EkmsKlfNSD77P6LHa8/8NawXzAfwHfAdaLoDvwHyYK0h/tY7mwAAAABJRU5ErkJggg==);
+  }
+}
+
 .json-formater-arrow {
   width: 0;
   opacity: 0.2;
@@ -37,6 +54,8 @@ div.json-formater-item {
   color: #ccc;
   cursor: pointer;
   font-size: 12px;
+  user-select: none;
+  margin-left: 0.3em;
 
   span {
     margin: 0 0.5em;
@@ -61,12 +80,12 @@ div.json-formater-item {
 }
 
 .json-comma {
+  margin-left: 0.15em;
   font-family: "Courier New", monospace;
 }
 
-.json-colon,
-.json-comma {
-  margin: 0 0.3em 0 0.1em;
+.json-colon {
+  margin: 0 0.3em 0 0.15em;
 }
 
 .json-object-bracket {
@@ -81,6 +100,8 @@ div.json-formater-item {
 
 /** 默认主题色 START **/
 .default-theme {
+  background-color: #fefefe;
+
   .json-key {
     color: #910f93;
   }
@@ -107,6 +128,8 @@ div.json-formater-item {
 
 /** 浅色主题 START **/
 .light-theme {
+  background-color: #fefefe;
+
   .json-key {
     color: #0040cf;
   }

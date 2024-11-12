@@ -1,74 +1,45 @@
-import $ from "jquery";
 import tippy from "tippy.js";
 import Utils from "../common/Utils";
 
-/**
- * JSON 格式化容器内事件
- */
 export default {
-  /**
-   * a标签鼠标移入，看是否是图片，是图片生成预览图
-   * @returns this
-   */
   urlHover: function () {
-    $(document.body).on("mouseenter", "a[href]", function () {
-      const href = $(this).attr("href");
-      if (Utils.isImg(href)) {
-        tippy(this, {
-          duration: 800,
-          content: `<img style="max-width: 500px;" src="${href}" />`,
-          allowHTML: true,
-          theme: "imagebox",
-        }).show();
-      }
+    Utils.addEvent("mouseenter", "a[href]", function () {
+      const href = Utils.attr(this, "href");
+      if (!Utils.isImg(href)) return;
+      tippy(this, {
+        duration: 800,
+        content: `<img style="max-width: 500px;" src="${href}" />`,
+        allowHTML: true,
+        theme: "imagebox",
+      }).show();
     });
     return this;
   },
-  /**
-   * 鼠标移入key提示JSONPath
-   * @returns this
-   */
   tipsJsonPath: function () {
-    const that = this;
-    $(document.body).on("mouseenter", ".json-key", function () {
-      const jsonPath = that.getJsonPath(this);
-      const content = `<b>ctrl + 点击复制</b><br/>${jsonPath}`;
-      tippy(this, {
+    Utils.addEvent("mouseenter", ".json-key", (event) => {
+      const target = event.target;
+      const jsonPath = this.getJsonPath(target);
+      const content = `<i>ctrl＋click 复制</i><br/><b>路径：</b>${jsonPath}`;
+      tippy(target, {
         content,
         duration: 800,
         allowHTML: true,
         theme: "layer",
       }).show();
     });
-    return that;
+    return this;
   },
-  /**
-   * 复制key的JSONPath
-   * @returns
-   */
   copyJsonPath: function () {
-    const that = this;
-    $(document.body).on("click", ".json-key", function (event) {
-      if (event.ctrlKey) {
-        const jsonPath = that.getJsonPath(this);
-        GM_setClipboard(jsonPath);
-        layer.msg("复制成功", { time: 1500 });
-      }
+    Utils.addEvent("click", ".json-key", (event) => {
+      if (!event.ctrlKey) return;
+      const jsonPath = this.getJsonPath(event.target);
+      GM_setClipboard(jsonPath);
+      layer.msg("复制成功", { time: 1500 });
     });
-    return that;
+    return this;
   },
-  /**
-   * 给定HtmlElement获取JSONPath
-   * @param {*} element
-   * @returns
-   */
-  getJsonPath: function (element) {
-    const jsonPath = $(element).parent().attr("json-path");
-    const split = jsonPath.split(".");
-    const splice = (prev, next) => {
-      return /^\d+$/.test(next) ? prev + `[${next}]` : prev + "." + next;
-    };
-    return split.reduce(splice);
+  getJsonPath: function (ele) {
+    return Utils.attr(ele.parentElement, "JSONPath");
   },
   init: function () {
     this.urlHover().tipsJsonPath().copyJsonPath();

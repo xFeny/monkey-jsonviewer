@@ -1,3 +1,4 @@
+import Utils from "../Utils";
 import JsonFormat from "./JsonFormat";
 
 class JsonViewer extends JsonFormat {
@@ -8,27 +9,21 @@ class JsonViewer extends JsonFormat {
 
   render() {
     const { json, container } = this.options;
-
-    this.$container =
-      container instanceof HTMLElement
-        ? container
-        : document.querySelector(container);
-
-    this.$box = this.createElement("div");
-    this.$box.setAttribute("class", "json-view-formater");
-
-    this.createNode(this.$box, json, "Root", "Root");
-
+    this.$container = Utils.query(container);
     this.$container.innerHTML = "";
+    this.$box = this.createElement("div", {
+      class: "json-view-formater",
+    });
+    this.createNode(this.$box, json, "Root", "Root");
     this.$container.appendChild(this.$box);
   }
 
-  createNode(box, json, pChain, pid) {
+  createNode(box, json, JSONPath, pid) {
     const type = this.getType(json);
     const isIterate = this.isIterate(json);
     const canIterate = this.canIterate(json);
     if (canIterate) {
-      this.createObjectNode(box, type, json, pChain, pid);
+      this.createObjectNode(box, type, json, JSONPath, pid);
     } else if (isIterate) {
       const bracket = this.createBracket(type);
       box.appendChild(bracket);
@@ -38,7 +33,7 @@ class JsonViewer extends JsonFormat {
     }
   }
 
-  createObjectNode(box, type, json, pChain, pid) {
+  createObjectNode(box, type, json, path, pid) {
     const startBracket = this.createStartBracket(type);
     box.appendChild(startBracket);
 
@@ -50,12 +45,12 @@ class JsonViewer extends JsonFormat {
         const value = json[key];
         const id = this.random();
         const canComma = --length > 0;
-        const jsonPath = pChain + "." + key;
+        const JSONPath = this.JSONPath(path, key);
 
         const node = this.createElement("div", {
+          JSONPath,
           "data-node-id": id,
           "data-node-pid": pid,
-          "json-path": jsonPath,
           style: `padding-left: 20px`,
           "data-type": this.getType(value),
           class: `json-formater-item ${
@@ -64,8 +59,7 @@ class JsonViewer extends JsonFormat {
         });
 
         this.createKeyNode(node, key, value);
-
-        this.createNode(node, value, jsonPath, id);
+        this.createNode(node, value, JSONPath, id);
 
         if (canComma) {
           const comma = this.createElement("span", {
@@ -74,7 +68,6 @@ class JsonViewer extends JsonFormat {
           comma.textContent = ",";
           node.appendChild(comma);
         }
-
         box.appendChild(node);
       }
     }
@@ -108,13 +101,13 @@ class JsonViewer extends JsonFormat {
 
   createKeyNode(node, key, value) {
     if (this.canIterate(value)) {
-      const arrow = this.createElement("i", {
+      const arrow = this.createElement("span", {
         class: "json-formater-arrow",
       });
       node.appendChild(arrow);
     }
 
-    if (!/^\d+$/.test(key)) {
+    if (!this.isNumber(key)) {
       const span = this.createElement("span", {
         class: "json-key",
       });
@@ -161,33 +154,38 @@ class JsonViewer extends JsonFormat {
     return node;
   }
 
-  creatPlaceholderNode(box, json) {
-    const nodeId = box.dataset.nodeId;
+  creatPlaceholderNode(node, json) {
+    const nodeId = node.dataset.nodeId;
     if (nodeId && nodeId !== "Root" && this.canIterate(json)) {
+      const copy = this.createElement("span", {
+        title: "复制",
+        class: "json-formater-copy",
+      });
+      copy.json = json;
+      node.appendChild(copy);
+
       const span = this.createElement("span", {
         class: "json-formater-placeholder",
       });
-      box.appendChild(span);
+      node.appendChild(span);
     }
   }
 
   onShow(node) {
     const nodeId = node.dataset.nodeId;
-    const desc = node.querySelector(
-      `*[data-node-id=${nodeId}] > .json-formater-placeholder`
-    );
+    const selector = `*[data-node-id=${nodeId}] > .json-formater-placeholder`;
+    const desc = Utils.query(selector, node);
     if (!desc) return;
     desc.innerHTML = null;
   }
 
   onHide(node) {
     const id = node.dataset.nodeId;
-    const desc = node.querySelector(
-      `*[data-node-id="${id}"] > .json-formater-placeholder`
-    );
+    const selector = `*[data-node-id="${id}"] > .json-formater-placeholder`;
+    const desc = Utils.query(selector, node);
     if (!desc) return;
+    if (desc.innerHTML) return;
 
-    desc.innerHTML = null;
     const type = node.dataset.type;
     const length = this.findChildren(node).length;
     const span = this.createElement("span");
@@ -199,10 +197,8 @@ class JsonViewer extends JsonFormat {
   }
 
   nodes() {
-    const arrows = this.$container.querySelectorAll(".json-formater-arrow");
-    return Array.from(arrows).map((ele) =>
-      this.closest(ele, ".json-formater-item")
-    );
+    const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
+    return arrows.map((ele) => this.closest(ele, ".json-formater-item"));
   }
 }
 

@@ -3,6 +3,7 @@ import hljs from "highlight.js";
 import { js_beautify, css_beautify } from "beautifier";
 import layout from "../layout/beautify";
 import "highlight.js/styles/xcode.min.css";
+import Utils from "../common/Utils";
 
 /**
  * 对JS、CSS美化
@@ -15,24 +16,16 @@ import "highlight.js/styles/xcode.min.css";
     "text/css",
   ];
   const contentType = document.contentType;
-  if (!docType.includes(contentType)) {
-    return;
-  }
-
-  const preElement = document.querySelector("pre");
-  if (!preElement) {
-    return;
-  }
+  if (!docType.includes(contentType)) return;
+  const preElement = Utils.query("pre");
+  if (!preElement) return;
 
   window.postMessage({ addStyle: true });
-  document.querySelector("html").classList.add("monkey-js-css-beautify");
-
+  Utils.addClass(Utils.query("html"), "monkey-js-css-beautify");
   setTimeout(() => {
     const rawText = preElement.innerText;
-
     document.body.insertAdjacentHTML("afterbegin", layout);
-
-    const checkbox = document.querySelector(".beautify_checkbox input");
+    const checkbox = Utils.query(".beautify_checkbox input");
     checkbox.addEventListener("click", function () {
       if (this.checked) {
         beautifyCode(contentType, preElement, rawText);
@@ -43,13 +36,6 @@ import "highlight.js/styles/xcode.min.css";
   });
 })();
 
-/**
- * JS、CSS美化
- * @param {*} contentType 文档类型
- * @param {*} element <pre></pre>标签
- * @param {*} rawText 原始数据
- * @returns
- */
 function beautifyCode(contentType, element, rawText) {
   const language = contentType.substring(contentType.indexOf("/") + 1);
   if (!["css", "javascript", "x-javascript"].includes(language)) {

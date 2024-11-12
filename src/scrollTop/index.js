@@ -1,16 +1,14 @@
+import Utils from "../common/Utils";
 import "./scroll-top.css";
 
-const scroll = document.createElement("div");
-scroll.setAttribute("class", "scroll-top");
-document.body.appendChild(scroll);
-
-const style = scroll.style;
-
-const $container = document.querySelector(".container");
-$container.addEventListener("scroll", function () {
-  this.scrollTop > 500 ? (style.display = "block") : (style.display = "none");
+const scroll = Utils.createElement("div", {
+  class: "scroll-top",
 });
-
+document.body.appendChild(scroll);
+const $container = Utils.query(".container");
+$container.addEventListener("scroll", function () {
+  this.scrollTop > 500 ? Utils.show(scroll) : Utils.hide(scroll);
+});
 scroll.addEventListener("click", function () {
   $container.scrollTop = 0;
 });

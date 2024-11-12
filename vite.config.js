@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import monkey, { util, cdn } from "vite-plugin-monkey";
 import AutoImport from "unplugin-auto-import/vite";
 import userscript from "./src/userscript.meta";
+import tippy from "tippy.js";
 
 export default defineConfig({
   plugins: [
@@ -13,12 +14,13 @@ export default defineConfig({
       entry: "src/main.js",
       build: {
         externalGlobals: {
-          jquery: cdn
-            .unpkg("jquery", "dist/jquery.slim.min.js")
-            .concat(util.dataUrl(";window.jquery=jQuery;")),
           jsmind: cdn
             .unpkg("jsmind", "es6/jsmind.js")
             .concat(util.dataUrl(";window.jsmind=jsMind;")),
+          "dom-to-image": [
+            "domtoimage",
+            () => "https://unpkg.com/dom-to-image@2",
+          ].concat(util.dataUrl(";window.domtoimage=domtoimage;")),
           beautifier: cdn
             .unpkg("beautifier")
             .concat(

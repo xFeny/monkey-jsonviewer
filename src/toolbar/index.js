@@ -4,6 +4,13 @@ import tools from "./tools";
 import handleBar from "./handleBar";
 
 tabs.init();
-theme.init();
-tools.init();
+theme.setTheme();
 handleBar.init();
+window.addEventListener("message", function (event) {
+  const { data } = event;
+  if (!data) return;
+  const { type, value } = data;
+  if (!type) return;
+  if (type === "tools") return tools[value]();
+  if (type === "theme") return theme.changeTheme(value);
+});

@@ -12,7 +12,6 @@
     "beautifier": "^0.1.7",
     "dom-to-image": "^2.6.0",
     "highlight.js": "^11.10.0",
-    "jquery": "^3.7.1",
     "jsmind": "^0.8.5",
     "json-bigint": "^1.0.0",
     "sass": "^1.79.5",

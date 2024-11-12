@@ -1,3 +1,4 @@
+import Utils from "../Utils";
 import JsonFormat from "./JsonFormat";
 
 const cssText = `
@@ -6,14 +7,7 @@ const cssText = `
   width: -webkit-fill-available;
 }
 
-.json-tree-table b {
-  font-weight: normal;
-}
-
-.json-tree-table tr.selected,
-.json-tree-table tr.selected td,
-.json-tree-table tr.selected td b,
-.json-tree-table tr.selected td a {
+.json-tree-table tr.selected * {
   color: #fff !important;
   background-color: #3875d7;
 }
@@ -39,53 +33,38 @@ class JsonToTable extends JsonFormat {
 
   render() {
     const { json, container } = this.options;
-
-    this.$container =
-      container instanceof HTMLElement
-        ? container
-        : document.querySelector(container);
-
+    this.$container = Utils.query(container);
+    this.$container.innerHTML = "";
     const style = this.createElement("style");
     style.textContent = cssText;
     document.head.appendChild(style);
-
-    this.$table = this.createElement("table");
-    this.$table.setAttribute("class", "json-tree-table");
-
+    this.$table = this.createElement("table", {
+      class: "json-tree-table",
+    });
     this.createNode(json, 1, "Root", "Root");
-
-    this.$container.innerHTML = "";
     this.$container.appendChild(this.$table);
   }
 
-  /**
-   * 创建节点
-   * @param {Object} json
-   * @param {Boolean} isRoot 是否根节点
-   * @param {Number} depth 递归层级
-   * @param {String} pChain 上级json-path
-   */
-  createNode(json, depth, pChain, parentId) {
+  createNode(json, depth, path, pid) {
     for (const key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
         let value = json[key];
         const type = this.getType(value);
-        const jsonPath = `${pChain}.${key}`;
-        const args = { key, value, type, depth, jsonPath, parentId };
+        const JSONPath = this.JSONPath(path, key);
+        const args = { key, value, type, depth, JSONPath, pid };
 
         const item = this.createItem(args);
         this.$table.appendChild(item);
-
         if (this.canIterate(value)) {
           const nodeId = item.dataset.nodeId;
-          this.createNode(value, depth + 1, jsonPath, nodeId);
+          this.createNode(value, depth + 1, JSONPath, nodeId);
         }
       }
     }
   }
 
   createItem(args) {
-    const { key, value, type, depth, jsonPath, parentId } = args;
+    const { key, value, type, depth, JSONPath, pid } = args;
     const id = this.random();
     const isIterate = this.isIterate(value);
     const canIterate = this.canIterate(value);
@@ -93,11 +72,11 @@ class JsonToTable extends JsonFormat {
     const node = this.createElement("tr", {
       "data-type": type,
       "data-node-id": id,
-      "data-node-pid": parentId,
+      "data-node-pid": pid,
       class: "json-formater-item json-formater-opened",
     });
 
-    const leftNode = this.createLeftNode(key, value, depth, jsonPath);
+    const leftNode = this.createLeftNode(key, value, depth, JSONPath);
     node.appendChild(leftNode);
 
     if (!isIterate) {
@@ -109,18 +88,17 @@ class JsonToTable extends JsonFormat {
       const rightNode = this.createEmptyRightNode(type);
       node.appendChild(rightNode);
     }
-
     return node;
   }
 
-  createLeftNode(key, value, depth, jsonPath) {
+  createLeftNode(key, value, depth, JSONPath) {
     const node = this.createElement("td", {
-      "json-path": jsonPath,
+      JSONPath,
       colspan: this.canIterate(value) ? 2 : 0,
       style: `padding-left: ${depth * 20}px`,
     });
 
-    const b = this.createElement("b", {
+    const b = this.createElement("span", {
       class: "json-key",
     });
     b.textContent = `${key}`;
@@ -137,6 +115,13 @@ class JsonToTable extends JsonFormat {
         class: "json-formater-arrow",
       });
       node.prepend(icon);
+
+      const copy = this.createElement("span", {
+        title: "复制",
+        class: "json-formater-copy",
+      });
+      copy.json = value;
+      node.appendChild(copy);
 
       const span = this.createElement("span", {
         class: "json-formater-placeholder",
@@ -188,30 +173,32 @@ class JsonToTable extends JsonFormat {
 
   bindEvent() {
     super.bindEvent();
-
     this.addEvent("mousedown", "table tr", function (event) {
-      const { tagName } = event.target;
-      if (tagName === "A" || tagName === "SPAN" || event.ctrlKey) {
+      const { tagName, className } = event.target;
+      if (
+        event.ctrlKey ||
+        tagName === "A" ||
+        (tagName === "SPAN" && className !== "json-key")
+      ) {
         return;
       }
-
-      Array.from(document.querySelectorAll(".selected"))
-        .filter((ele) => ele !== this)
-        .forEach((ele) => ele.classList.remove("selected"));
-      this.classList.toggle("selected");
+      const filter = Utils.queryAll(".selected").filter((ele) => ele !== this);
+      Utils.removeClass(filter, "selected");
+      Utils.toggleClass(this, "selected");
     });
   }
 
   onShow(node) {
-    const desc = node.querySelector(".json-formater-placeholder");
+    const desc = Utils.query(".json-formater-placeholder", node);
     if (!desc) return;
     desc.innerHTML = null;
   }
 
   onHide(node) {
     const type = node.dataset.type;
-    const desc = node.querySelector(".json-formater-placeholder");
+    const desc = Utils.query(".json-formater-placeholder", node);
     if (!desc) return;
+    if (desc.innerHTML) return;
 
     const length = this.findChildren(node).length;
     let textNode = document.createTextNode(type === "object" ? "{" : "[");

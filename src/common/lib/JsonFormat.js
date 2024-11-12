@@ -1,3 +1,5 @@
+import Utils from "../Utils";
+
 class JsonFormat {
   DEFAULTS = {
     json: null,
@@ -12,37 +14,35 @@ class JsonFormat {
 
   constructor(options) {
     this.options = Object.assign(this.DEFAULTS, options);
-    if (!options.container) {
-      throw new Error("Container: dom element is required");
-    }
-
-    if (!options.json) {
-      throw new Error("json: json is required");
-    }
-
+    if (!options.container) throw new Error("Container is required");
+    if (!options.json) throw new Error("json is required");
     this.render();
     this.bindEvent();
     this.setTheme(this.options.theme);
   }
+
   render() {}
 
   setTheme(theme) {
     const classList = document.body.classList;
     classList.forEach((clas) => {
-      if (clas.includes("theme")) {
-        classList.remove(clas);
-      }
+      if (clas.includes("theme")) classList.remove(clas);
     });
     classList.add(`${theme}-theme`);
   }
 
   bindEvent() {
-    this.addEvent(`click`, this.options.expander, () => {
-      this.expandAll();
-    });
+    const { expander, collapser, onExpand, onCollapse } = this.options;
+    if (expander) this.addEvent(`click`, expander, () => this.expandAll());
+    if (collapser) this.addEvent(`click`, collapser, () => this.collapseAll());
 
-    this.addEvent(`click`, this.options.collapser, () => {
-      this.collapseAll();
+    this.addEvent("click", ".json-formater-copy", (e) => {
+      const target = e.currentTarget;
+      const className = "success";
+      if (!target.json || Utils.hasClass(target, className)) return;
+      Utils.setClipboard(Utils.stringify(target.json, null, 2));
+      Utils.addClass(target, className);
+      setTimeout(() => Utils.removeClass(target, className), 1500);
     });
 
     this.addEvent("click", ".json-formater-placeholder", (e) => {
@@ -50,10 +50,9 @@ class JsonFormat {
       this.show(node);
     });
 
-    const { onExpand, onCollapse } = this.options;
     this.addEvent("click", ".json-formater-arrow", (e) => {
       const node = this.closest(e.currentTarget, ".json-formater-item");
-      if (this.hasClass(node, "json-formater-opened")) {
+      if (Utils.hasClass(node, "json-formater-opened")) {
         this.hide(node);
         if (onCollapse) onCollapse(node, this);
       } else {
@@ -64,30 +63,27 @@ class JsonFormat {
   }
 
   expandAll() {
-    this.nodes().forEach((node) => {
-      this.show(node);
-    });
+    this.nodes().forEach((node) => this.show(node));
   }
 
   collapseAll() {
-    this.nodes().forEach((node) => {
-      this.hide(node);
-    });
+    this.nodes().forEach((node) => this.hide(node));
   }
 
   show(node) {
-    this.removeClass(node, "json-formater-closed");
-    this.addClass(node, "json-formater-opened");
+    Utils.removeClass(node, "json-formater-closed");
+    Utils.addClass(node, "json-formater-opened");
     this.showDescs(node);
     this.onShow(node);
   }
 
   showDescs(node) {
+    const type = this.options.style;
     let children = this.findChildren(node);
     children.forEach((child) => {
       child.style.display = null;
-      if (this.hasClass(child, "json-formater-opened")) {
-        if (this.options.style === "table") this.showDescs(child);
+      if (type === "table" && Utils.hasClass(child, "json-formater-opened")) {
+        this.showDescs(child);
       }
     });
   }
@@ -95,8 +91,8 @@ class JsonFormat {
   onShow(node) {}
 
   hide(node) {
-    this.removeClass(node, "json-formater-opened");
-    this.addClass(node, "json-formater-closed");
+    Utils.removeClass(node, "json-formater-opened");
+    Utils.addClass(node, "json-formater-closed");
     this.hideDescs(node);
     this.onHide(node);
   }
@@ -113,11 +109,11 @@ class JsonFormat {
 
   findChildren(node) {
     const pid = node.dataset.nodeId;
-    return this.$container.querySelectorAll(`*[data-node-pid="${pid}"]`);
+    return Utils.queryAll(`*[data-node-pid="${pid}"]`, this.$container);
   }
 
   findByID(id) {
-    return this.$container.querySelector(`*[data-node-id="${id}"]`);
+    return Utils.query(`*[data-node-id="${id}"]`, this.$container);
   }
 
   openByID(id) {
@@ -129,70 +125,35 @@ class JsonFormat {
   }
 
   nodes() {
-    return this.$container.querySelectorAll("*[data-node-id]");
-  }
-  /**
-   * 创建元素
-   * @param {String} name 元素名称
-   * @param {Object} attributes 属性
-   */
-  createElement(name, attributes) {
-    const element = document.createElement(name);
-    this.setAttributes(element, attributes);
-    return element;
+    return Utils.queryAll("*[data-node-id]", this.$container);
   }
 
-  /**
-   * 设置属性
-   * @param {HTMLElement} element 元素
-   * @param {Object} attributes 属性
-   */
-  setAttributes(element, attributes) {
-    if (!attributes) {
-      return;
-    }
-
-    for (const name in attributes) {
-      const value = attributes[name];
-      if (value) element.setAttribute(name, attributes[name]);
-    }
+  createElement(name, attrs) {
+    return Utils.createElement(name, attrs);
   }
 
-  addEvent(event, selector, fn) {
-    document.body.querySelectorAll(selector).forEach((el) => {
-      el.addEventListener(event, fn);
-    });
+  addEvent(type, selector, fn) {
+    Utils.queryAll(selector).forEach((el) => el.addEventListener(type, fn));
   }
 
   closest(element, selector) {
     while (element) {
-      if (element.matches(selector)) {
-        return element;
-      }
+      if (element.matches(selector)) return element;
       element = element.parentElement;
     }
     return null;
   }
 
-  hasClass(element, clas) {
-    return element.classList.contains(clas);
+  JSONPath(path, key) {
+    if (this.isNumber(key)) return `${path}[${key}]`;
+    if (key.includes(".")) return `${path}["${key}"]`;
+    return path + "." + key;
   }
 
-  removeClass(element, clas) {
-    element.classList.remove(clas);
-    return this;
+  isNumber(str) {
+    return /^\d+$/.test(str);
   }
 
-  addClass(element, clas) {
-    element.classList.add(clas);
-    return this;
-  }
-
-  /**
-   * 获取数据的类型
-   * @param {Object} value
-   * @return 返回类型 number、object、array、string、null等
-   */
   getType(value) {
     return Object.prototype.toString
       .call(value)
@@ -205,35 +166,17 @@ class JsonFormat {
     return ["array", "object"].includes(type);
   }
 
-  /**
-   * 是否可迭代
-   * @param {*} value
-   * @returns
-   */
   canIterate(value) {
-    if (!this.isIterate(value)) {
-      return false;
-    }
-
-    let len = Object.keys(value).length;
-    return len > 0;
+    if (!this.isIterate(value)) return false;
+    return Object.keys(value).length > 0;
   }
 
-  /**
-   * 是否为Url
-   * @param {*} str
-   * @returns
-   */
   isUrl(str) {
     const regexp =
       /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     return regexp.test(str);
   }
-  /**
-   * 转义
-   * @param {*} str
-   * @returns
-   */
+
   escape(str) {
     return str
       .replace(/\t/g, "\\t")
