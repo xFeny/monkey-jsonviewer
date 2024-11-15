@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -42,7 +42,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:dom-to-image", (()=>{const _=domtoimage;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-BOyf9HZs.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-D_yLiqbY.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -54,7 +54,7 @@ System.register("./__entry.js", ['./__monkey.entry-BOyf9HZs.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-BOyf9HZs.js", [], (function (exports, module) {
+System.register("./__monkey.entry-D_yLiqbY.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -2074,14 +2074,15 @@ System.register("./__monkey.entry-BOyf9HZs.js", [], (function (exports, module) 
             return ele.some((el) => this.hasClass(el, className));
           }
         },
-        show: function(ele) {
+        show: function(ele, value) {
           const style = ele.style;
           if (style.display !== "none") return;
-          style.display = "block";
+          if (value !== void 0) return style.display = value;
           const defaultDisplay = ele.defaultDisplay;
-          if (defaultDisplay && defaultDisplay !== "none") {
-            style.display = defaultDisplay;
+          if (!Object.is(defaultDisplay, "none")) {
+            return style.display = defaultDisplay;
           }
+          style.display = "block";
         },
         hide: function(ele) {
           if (!ele.defaultDisplay) {
@@ -2189,7 +2190,7 @@ System.register("./__monkey.entry-BOyf9HZs.js", [], (function (exports, module) 
         _unsafeWindow.RAW_TEXT = rawText;
         _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
         if (!Utils.isJSON(_unsafeWindow.RAW_TEXT)) {
-          __vitePreload(() => module.import('./index-DkZtaPvN-Be9la_OH.js'), void 0 );
+          __vitePreload(() => module.import('./index-C4CN_9oV-B8F0fLSe.js'), void 0 );
           return;
         }
         Utils.hide(Utils.query("pre"));
@@ -2212,9 +2213,9 @@ System.register("./__monkey.entry-BOyf9HZs.js", [], (function (exports, module) 
     `);
           document.body.insertAdjacentHTML("afterbegin", layout);
           _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
-          __vitePreload(() => module.import('./index-BaGRGkVb-D2geKy17.js'), void 0 );
-          __vitePreload(() => module.import('./index-Btt8fXSQ-DuZkUtAR.js'), void 0 );
-          __vitePreload(() => module.import('./index-DH4sstV0-D5_y4vAd.js'), void 0 );
+          __vitePreload(() => module.import('./index-CCu_RzT_-BznibuEv.js'), void 0 );
+          __vitePreload(() => module.import('./index-BGEHC8qs-D3eGlmwk.js'), void 0 );
+          __vitePreload(() => module.import('./index-D9_2a8Jo-BDS3510H.js'), void 0 );
         });
       })();
 
@@ -2222,7 +2223,7 @@ System.register("./__monkey.entry-BOyf9HZs.js", [], (function (exports, module) 
   };
 }));
 
-System.register("./index-DkZtaPvN-Be9la_OH.js", ['highlight.js', 'beautifier', './__monkey.entry-BOyf9HZs.js'], (function (exports, module) {
+System.register("./index-C4CN_9oV-B8F0fLSe.js", ['highlight.js', 'beautifier', './__monkey.entry-D_yLiqbY.js'], (function (exports, module) {
   'use strict';
   var hljs, css_beautify, js_beautify, Utils;
   return {
@@ -2293,7 +2294,7 @@ System.register("./index-DkZtaPvN-Be9la_OH.js", ['highlight.js', 'beautifier', '
   };
 }));
 
-System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-CCu_RzT_-BznibuEv.js", ['./__monkey.entry-D_yLiqbY.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var _GM_setValue, Utils, _unsafeWindow, _GM_getValue, _GM_setClipboard, tippy;
   return {
@@ -2310,12 +2311,12 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
 
       var __defProp = Object.defineProperty;
       var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-      var __publicField = (obj, key, value) => __defNormalProp(obj, key + "" , value);
-      class JsonFormat {
+      var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+      const _JsonFormat = class _JsonFormat {
         constructor(options) {
           __publicField(this, "DEFAULTS", {
             json: null,
-            style: "table",
+            style: null,
             theme: "default",
             container: null,
             expander: null,
@@ -2338,6 +2339,40 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
             if (clas.includes("theme")) classList.remove(clas);
           });
           classList.add(`${theme}-theme`);
+        }
+        creatValueNode(type, value) {
+          const node = this.createElement("span", {
+            class: `json-${type}`
+          });
+          node.textContent = `${value}`;
+          if (type === "string") {
+            value = this.escape(value);
+            node.textContent = `"${value}"`;
+          }
+          if (this.isUrl(value)) {
+            node.textContent = "";
+            const a = this.createElement("a", {
+              target: "_blank",
+              href: value
+            });
+            a.textContent = `"${value}"`;
+            node.appendChild(a);
+          }
+          if (this.isColor(value)) {
+            const span = this.createElement("span", {
+              class: "json-color",
+              style: `background-color: ${value}`
+            });
+            node.prepend(span);
+          }
+          return node;
+        }
+        createBracket(type) {
+          const node = this.createElement("span", {
+            class: `json-${type}-bracket`
+          });
+          node.textContent = Object.is(type, "array") ? "[]" : "{}";
+          return node;
         }
         bindEvent() {
           const { expander, collapser, onExpand, onCollapse } = this.options;
@@ -2379,16 +2414,20 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
           this.onShow(node);
         }
         showDescs(node) {
-          const type = this.options.style;
           let children = this.findChildren(node);
           children.forEach((child) => {
-            child.style.display = null;
-            if (type === "table" && Utils.hasClass(child, "json-formater-opened")) {
+            Utils.show(child, null);
+            if (this.options.style === _JsonFormat.STYLE.table && Utils.hasClass(child, "json-formater-opened")) {
               this.showDescs(child);
             }
           });
         }
         onShow(node) {
+          const nodeId = node.dataset.nodeId;
+          const selector = `*[data-node-id=${nodeId}] .json-formater-placeholder`;
+          const desc = Utils.query(selector, node);
+          if (!desc) return;
+          desc.innerHTML = null;
         }
         hide(node) {
           Utils.removeClass(node, "json-formater-opened");
@@ -2399,11 +2438,30 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
         hideDescs(node) {
           const children = this.findChildren(node);
           children.forEach((child) => {
-            child.style.display = "none";
-            if (this.options.style === "table") this.hideDescs(child);
+            Utils.hide(child);
+            if (this.options.style === _JsonFormat.STYLE.table) this.hideDescs(child);
           });
         }
         onHide(node) {
+          const id = node.dataset.nodeId;
+          const selector = `*[data-node-id="${id}"] .json-formater-placeholder`;
+          const desc = Utils.query(selector, node);
+          if (!desc) return;
+          if (desc.innerHTML) return;
+          const type = node.dataset.type;
+          const length = this.findChildren(node).length;
+          const span = this.createElement("span");
+          span.textContent = `${length}${length > 1 ? " items" : " item"}`;
+          if (Object.is(type, "object")) {
+            span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
+          }
+          desc.appendChild(span);
+          if (this.options.style === _JsonFormat.STYLE.table) {
+            let text = document.createTextNode(Object.is(type, "object") ? "{" : "[");
+            desc.prepend(text);
+            text = document.createTextNode(Object.is(type, "object") ? "}" : "]");
+            desc.appendChild(text);
+          }
         }
         findChildren(node) {
           const pid = node.dataset.nodeId;
@@ -2419,7 +2477,8 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
           this.hide(this.findByID(id));
         }
         nodes() {
-          return Utils.queryAll("*[data-node-id]", this.$container);
+          const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
+          return arrows.map((ele) => this.closest(ele, ".json-formater-item"));
         }
         createElement(name, attrs) {
           return Utils.createElement(name, attrs);
@@ -2437,7 +2496,7 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
         JSONPath(path, key) {
           if (this.isNumber(key)) return `${path}[${key}]`;
           if (key.includes(".")) return `${path}["${key}"]`;
-          return path + "." + key;
+          return `${path}.${key}`;
         }
         isNumber(str) {
           return /^\d+$/.test(str);
@@ -2475,10 +2534,15 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
           }
           return randomString;
         }
-      }
+      };
+      __publicField(_JsonFormat, "STYLE", {
+        table: "table",
+        viewer: "viewer"
+      });
+      let JsonFormat = _JsonFormat;
       class JsonViewer extends JsonFormat {
         constructor(options) {
-          options.style = "viewer";
+          options.style = JsonFormat.STYLE.viewer;
           super(options);
         }
         render() {
@@ -2496,7 +2560,7 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
           const isIterate = this.isIterate(json);
           const canIterate = this.canIterate(json);
           if (canIterate) {
-            this.createObjectNode(box, type, json, JSONPath, pid);
+            this.depthNode(box, type, json, JSONPath, pid);
           } else if (isIterate) {
             const bracket = this.createBracket(type);
             box.appendChild(bracket);
@@ -2505,10 +2569,10 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
             box.appendChild(valueNode);
           }
         }
-        createObjectNode(box, type, json, path, pid) {
-          const startBracket = this.createStartBracket(type);
+        depthNode(box, type, json, path, pid) {
+          const startBracket = this.startBracket(type);
           box.appendChild(startBracket);
-          this.creatPlaceholderNode(box, json);
+          this.otherNode(box, json);
           let length = Object.keys(json).length;
           for (var key in json) {
             if (Object.prototype.hasOwnProperty.call(json, key)) {
@@ -2536,29 +2600,22 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
               box.appendChild(node);
             }
           }
-          const endBracket = this.createEndBracket(type);
+          const endBracket = this.endBracket(type);
           box.appendChild(endBracket);
         }
-        createStartBracket(type) {
+        startBracket(type) {
           const span = this.createElement("span", {
             class: `json-${type}-bracket`
           });
-          span.textContent = type === "array" ? "[" : "{";
+          span.textContent = Object.is(type, "array") ? "[" : "{";
           return span;
         }
-        createEndBracket(type) {
+        endBracket(type) {
           const span = this.createElement("span", {
             class: `json-${type}-bracket`
           });
-          span.textContent = type === "array" ? "]" : "}";
+          span.textContent = Object.is(type, "array") ? "]" : "}";
           return span;
-        }
-        createBracket(type) {
-          const node = this.createElement("span", {
-            class: `json-${type}-bracket`
-          });
-          node.textContent = type === "array" ? "[]" : "{}";
-          return node;
         }
         createKeyNode(node, key, value) {
           if (this.canIterate(value)) {
@@ -2580,34 +2637,7 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
             node.appendChild(colon);
           }
         }
-        creatValueNode(type, value) {
-          const node = this.createElement("span", {
-            class: `json-${type}`
-          });
-          node.textContent = `${value}`;
-          if (type === "string") {
-            value = this.escape(value);
-            node.textContent = `"${value}"`;
-          }
-          if (this.isUrl(value)) {
-            node.textContent = "";
-            const a = this.createElement("a", {
-              target: "_blank",
-              href: value
-            });
-            a.textContent = `"${value}"`;
-            node.appendChild(a);
-          }
-          if (this.isColor(value)) {
-            const span = this.createElement("span", {
-              class: "json-color",
-              style: `background-color: ${value}`
-            });
-            node.prepend(span);
-          }
-          return node;
-        }
-        creatPlaceholderNode(node, json) {
+        otherNode(node, json) {
           const nodeId = node.dataset.nodeId;
           if (nodeId && nodeId !== "Root" && this.canIterate(json)) {
             const copy = this.createElement("span", {
@@ -2621,32 +2651,6 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
             });
             node.appendChild(span);
           }
-        }
-        onShow(node) {
-          const nodeId = node.dataset.nodeId;
-          const selector = `*[data-node-id=${nodeId}] > .json-formater-placeholder`;
-          const desc = Utils.query(selector, node);
-          if (!desc) return;
-          desc.innerHTML = null;
-        }
-        onHide(node) {
-          const id = node.dataset.nodeId;
-          const selector = `*[data-node-id="${id}"] > .json-formater-placeholder`;
-          const desc = Utils.query(selector, node);
-          if (!desc) return;
-          if (desc.innerHTML) return;
-          const type = node.dataset.type;
-          const length = this.findChildren(node).length;
-          const span = this.createElement("span");
-          span.textContent = `${length}${length > 1 ? " items" : " item"}`;
-          if (type === "object") {
-            span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
-          }
-          desc.appendChild(span);
-        }
-        nodes() {
-          const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
-          return arrows.map((ele) => this.closest(ele, ".json-formater-item"));
         }
       }
       const cssText = `
@@ -2675,6 +2679,7 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
 `;
       class JsonToTable extends JsonFormat {
         constructor(options) {
+          options.style = JsonFormat.STYLE.table;
           super(options);
         }
         render() {
@@ -2717,29 +2722,30 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
             "data-node-pid": pid,
             class: "json-formater-item json-formater-opened"
           });
-          const leftNode = this.createLeftNode(key, value, depth, JSONPath);
-          node.appendChild(leftNode);
+          const keyNode = this.createKeyNode(key, value, depth, JSONPath);
+          node.appendChild(keyNode);
+          const td = this.createElement("td");
           if (!isIterate) {
-            const rightNode = this.createRightNode(type, value);
-            node.appendChild(rightNode);
+            td.appendChild(this.creatValueNode(type, value));
+            node.appendChild(td);
           }
           if (isIterate && !canIterate) {
-            const rightNode = this.createEmptyRightNode(type);
-            node.appendChild(rightNode);
+            td.appendChild(this.createBracket(type));
+            node.appendChild(td);
           }
           return node;
         }
-        createLeftNode(key, value, depth, JSONPath) {
+        createKeyNode(key, value, depth, JSONPath) {
           const node = this.createElement("td", {
             JSONPath,
             colspan: this.canIterate(value) ? 2 : 0,
             style: `padding-left: ${depth * 20}px`
           });
-          const b = this.createElement("span", {
+          const k = this.createElement("span", {
             class: "json-key"
           });
-          b.textContent = `${key}`;
-          node.appendChild(b);
+          k.textContent = `${key}`;
+          node.appendChild(k);
           const colon = this.createElement("span", {
             class: "json-colon"
           });
@@ -2763,40 +2769,6 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
           }
           return node;
         }
-        createRightNode(type, value) {
-          const node = this.createElement("td", {
-            class: `json-${type}`
-          });
-          node.textContent = `${value}`;
-          if (type === "string") {
-            value = this.escape(value);
-            node.textContent = `"${value}"`;
-          }
-          if (this.isUrl(value)) {
-            node.textContent = "";
-            const a = this.createElement("a", {
-              target: "_blank",
-              href: value
-            });
-            a.textContent = `"${value}"`;
-            node.appendChild(a);
-          }
-          if (this.isColor(value)) {
-            const span = this.createElement("span", {
-              class: "json-color",
-              style: `background-color: ${value}`
-            });
-            node.prepend(span);
-          }
-          return node;
-        }
-        createEmptyRightNode(type) {
-          const node = this.createElement("td", {
-            class: `json-${type}-bracket`
-          });
-          node.textContent = type === "array" ? "[]" : "{}";
-          return node;
-        }
         bindEvent() {
           super.bindEvent();
           this.addEvent("mousedown", "table tr", function(event) {
@@ -2809,32 +2781,10 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
             Utils.toggleClass(this, "selected");
           });
         }
-        onShow(node) {
-          const desc = Utils.query(".json-formater-placeholder", node);
-          if (!desc) return;
-          desc.innerHTML = null;
-        }
-        onHide(node) {
-          const type = node.dataset.type;
-          const desc = Utils.query(".json-formater-placeholder", node);
-          if (!desc) return;
-          if (desc.innerHTML) return;
-          const length = this.findChildren(node).length;
-          let textNode = document.createTextNode(type === "object" ? "{" : "[");
-          desc.appendChild(textNode);
-          const span = this.createElement("span");
-          span.textContent = `${length}${length > 1 ? " items" : " item"}`;
-          if (type === "object") {
-            span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
-          }
-          desc.appendChild(span);
-          textNode = document.createTextNode(type === "object" ? "}" : "]");
-          desc.appendChild(textNode);
-        }
       }
       class FormaterFactory {
         static getInstance(options) {
-          return options.style && options.style === "table" ? new JsonToTable(options) : new JsonViewer(options);
+          return Object.is(JsonToTable.STYLE.table, options.style) ? new JsonToTable(options) : new JsonViewer(options);
         }
       }
       const evnet = {
@@ -2979,7 +2929,7 @@ System.register("./index-BaGRGkVb-D2geKy17.js", ['./__monkey.entry-BOyf9HZs.js',
   };
 }));
 
-System.register("./index-Btt8fXSQ-DuZkUtAR.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-BOyf9HZs.js', 'dom-to-image'], (function (exports, module) {
+System.register("./index-BGEHC8qs-D3eGlmwk.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-D_yLiqbY.js', 'dom-to-image'], (function (exports, module) {
   'use strict';
   var tippy, require$$0, commonjsGlobal, Utils, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue, require$$1;
   return {
@@ -3098,7 +3048,8 @@ System.register("./index-Btt8fXSQ-DuZkUtAR.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
               const isArray = Array.isArray(val);
               const type = Utils.getPrototype(val);
               if (isArray && val.length > 0) val = Utils.findMaxKeysObject(val);
-              const keys = Utils.getType(val) === "object" ? Object.keys(val) : null;
+              const isObject = Object.is(Utils.getType(val), "object");
+              const keys = isObject ? Object.keys(val) : null;
               children.push({
                 keys,
                 isArray,
@@ -6072,7 +6023,7 @@ System.register("./tippy.esm-Ot9MORvr-DNGa7Opj.js", [], (function (exports, modu
   };
 }));
 
-System.register("./index-DH4sstV0-D5_y4vAd.js", ['./__monkey.entry-BOyf9HZs.js'], (function (exports, module) {
+System.register("./index-D9_2a8Jo-BDS3510H.js", ['./__monkey.entry-D_yLiqbY.js'], (function (exports, module) {
   'use strict';
   var Utils;
   return {
