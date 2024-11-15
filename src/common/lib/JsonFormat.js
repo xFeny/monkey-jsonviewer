@@ -1,9 +1,14 @@
 import Utils from "../Utils";
 
 class JsonFormat {
+  static STYLE = {
+    table: "table",
+    viewer: "viewer",
+  };
+
   DEFAULTS = {
     json: null,
-    style: "table",
+    style: null,
     theme: "default",
     container: null,
     expander: null,
@@ -29,6 +34,46 @@ class JsonFormat {
       if (clas.includes("theme")) classList.remove(clas);
     });
     classList.add(`${theme}-theme`);
+  }
+
+  creatValueNode(type, value) {
+    const node = this.createElement("span", {
+      class: `json-${type}`,
+    });
+    node.textContent = `${value}`;
+
+    if (type === "string") {
+      value = this.escape(value);
+      node.textContent = `"${value}"`;
+    }
+
+    if (this.isUrl(value)) {
+      node.textContent = "";
+      const a = this.createElement("a", {
+        target: "_blank",
+        href: value,
+      });
+      a.textContent = `"${value}"`;
+      node.appendChild(a);
+    }
+
+    if (this.isColor(value)) {
+      const span = this.createElement("span", {
+        class: "json-color",
+        style: `background-color: ${value}`,
+      });
+      node.prepend(span);
+    }
+
+    return node;
+  }
+
+  createBracket(type) {
+    const node = this.createElement("span", {
+      class: `json-${type}-bracket`,
+    });
+    node.textContent = Object.is(type, "array") ? "[]" : "{}";
+    return node;
   }
 
   bindEvent() {
@@ -78,17 +123,25 @@ class JsonFormat {
   }
 
   showDescs(node) {
-    const type = this.options.style;
     let children = this.findChildren(node);
     children.forEach((child) => {
-      child.style.display = null;
-      if (type === "table" && Utils.hasClass(child, "json-formater-opened")) {
+      Utils.show(child, null);
+      if (
+        this.options.style === JsonFormat.STYLE.table &&
+        Utils.hasClass(child, "json-formater-opened")
+      ) {
         this.showDescs(child);
       }
     });
   }
 
-  onShow(node) {}
+  onShow(node) {
+    const nodeId = node.dataset.nodeId;
+    const selector = `*[data-node-id=${nodeId}] .json-formater-placeholder`;
+    const desc = Utils.query(selector, node);
+    if (!desc) return;
+    desc.innerHTML = null;
+  }
 
   hide(node) {
     Utils.removeClass(node, "json-formater-opened");
@@ -100,12 +153,34 @@ class JsonFormat {
   hideDescs(node) {
     const children = this.findChildren(node);
     children.forEach((child) => {
-      child.style.display = "none";
-      if (this.options.style === "table") this.hideDescs(child);
+      Utils.hide(child);
+      if (this.options.style === JsonFormat.STYLE.table) this.hideDescs(child);
     });
   }
 
-  onHide(node) {}
+  onHide(node) {
+    const id = node.dataset.nodeId;
+    const selector = `*[data-node-id="${id}"] .json-formater-placeholder`;
+    const desc = Utils.query(selector, node);
+    if (!desc) return;
+    if (desc.innerHTML) return;
+
+    const type = node.dataset.type;
+    const length = this.findChildren(node).length;
+    const span = this.createElement("span");
+    span.textContent = `${length}${length > 1 ? " items" : " item"}`;
+    if (Object.is(type, "object")) {
+      span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
+    }
+    desc.appendChild(span);
+
+    if (this.options.style === JsonFormat.STYLE.table) {
+      let text = document.createTextNode(Object.is(type, "object") ? "{" : "[");
+      desc.prepend(text);
+      text = document.createTextNode(Object.is(type, "object") ? "}" : "]");
+      desc.appendChild(text);
+    }
+  }
 
   findChildren(node) {
     const pid = node.dataset.nodeId;
@@ -125,7 +200,8 @@ class JsonFormat {
   }
 
   nodes() {
-    return Utils.queryAll("*[data-node-id]", this.$container);
+    const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
+    return arrows.map((ele) => this.closest(ele, ".json-formater-item"));
   }
 
   createElement(name, attrs) {
@@ -147,7 +223,7 @@ class JsonFormat {
   JSONPath(path, key) {
     if (this.isNumber(key)) return `${path}[${key}]`;
     if (key.includes(".")) return `${path}["${key}"]`;
-    return path + "." + key;
+    return `${path}.${key}`;
   }
 
   isNumber(str) {

@@ -14,7 +14,8 @@ export default {
         const isArray = Array.isArray(val);
         const type = Utils.getPrototype(val);
         if (isArray && val.length > 0) val = Utils.findMaxKeysObject(val);
-        const keys = Utils.getType(val) === "object" ? Object.keys(val) : null;
+        const isObject = Object.is(Utils.getType(val), "object");
+        const keys = isObject ? Object.keys(val) : null;
         children.push({
           keys,
           isArray,

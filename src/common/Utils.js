@@ -222,14 +222,15 @@ export default {
       return ele.some((el) => this.hasClass(el, className));
     }
   },
-  show: function (ele) {
+  show: function (ele, value) {
     const style = ele.style;
     if (style.display !== "none") return;
-    style.display = "block";
+    if (value !== undefined) return (style.display = value);
     const defaultDisplay = ele.defaultDisplay;
-    if (defaultDisplay && defaultDisplay !== "none") {
-      style.display = defaultDisplay;
+    if (!Object.is(defaultDisplay, "none")) {
+      return (style.display = defaultDisplay);
     }
+    style.display = "block";
   },
   hide: function (ele) {
     if (!ele.defaultDisplay) {

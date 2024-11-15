@@ -3,7 +3,7 @@ import JsonFormat from "./JsonFormat";
 
 class JsonViewer extends JsonFormat {
   constructor(options) {
-    options.style = "viewer";
+    options.style = JsonFormat.STYLE.viewer;
     super(options);
   }
 
@@ -23,7 +23,7 @@ class JsonViewer extends JsonFormat {
     const isIterate = this.isIterate(json);
     const canIterate = this.canIterate(json);
     if (canIterate) {
-      this.createObjectNode(box, type, json, JSONPath, pid);
+      this.depthNode(box, type, json, JSONPath, pid);
     } else if (isIterate) {
       const bracket = this.createBracket(type);
       box.appendChild(bracket);
@@ -33,12 +33,10 @@ class JsonViewer extends JsonFormat {
     }
   }
 
-  createObjectNode(box, type, json, path, pid) {
-    const startBracket = this.createStartBracket(type);
+  depthNode(box, type, json, path, pid) {
+    const startBracket = this.startBracket(type);
     box.appendChild(startBracket);
-
-    this.creatPlaceholderNode(box, json);
-
+    this.otherNode(box, json);
     let length = Object.keys(json).length;
     for (var key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
@@ -71,32 +69,24 @@ class JsonViewer extends JsonFormat {
         box.appendChild(node);
       }
     }
-    const endBracket = this.createEndBracket(type);
+    const endBracket = this.endBracket(type);
     box.appendChild(endBracket);
   }
 
-  createStartBracket(type) {
+  startBracket(type) {
     const span = this.createElement("span", {
       class: `json-${type}-bracket`,
     });
-    span.textContent = type === "array" ? "[" : "{";
+    span.textContent = Object.is(type, "array") ? "[" : "{";
     return span;
   }
 
-  createEndBracket(type) {
+  endBracket(type) {
     const span = this.createElement("span", {
       class: `json-${type}-bracket`,
     });
-    span.textContent = type === "array" ? "]" : "}";
+    span.textContent = Object.is(type, "array") ? "]" : "}";
     return span;
-  }
-
-  createBracket(type) {
-    const node = this.createElement("span", {
-      class: `json-${type}-bracket`,
-    });
-    node.textContent = type === "array" ? "[]" : "{}";
-    return node;
   }
 
   createKeyNode(node, key, value) {
@@ -122,39 +112,7 @@ class JsonViewer extends JsonFormat {
     }
   }
 
-  creatValueNode(type, value) {
-    const node = this.createElement("span", {
-      class: `json-${type}`,
-    });
-    node.textContent = `${value}`;
-
-    if (type === "string") {
-      value = this.escape(value);
-      node.textContent = `"${value}"`;
-    }
-
-    if (this.isUrl(value)) {
-      node.textContent = "";
-      const a = this.createElement("a", {
-        target: "_blank",
-        href: value,
-      });
-      a.textContent = `"${value}"`;
-      node.appendChild(a);
-    }
-
-    if (this.isColor(value)) {
-      const span = this.createElement("span", {
-        class: "json-color",
-        style: `background-color: ${value}`,
-      });
-      node.prepend(span);
-    }
-
-    return node;
-  }
-
-  creatPlaceholderNode(node, json) {
+  otherNode(node, json) {
     const nodeId = node.dataset.nodeId;
     if (nodeId && nodeId !== "Root" && this.canIterate(json)) {
       const copy = this.createElement("span", {
@@ -169,36 +127,6 @@ class JsonViewer extends JsonFormat {
       });
       node.appendChild(span);
     }
-  }
-
-  onShow(node) {
-    const nodeId = node.dataset.nodeId;
-    const selector = `*[data-node-id=${nodeId}] > .json-formater-placeholder`;
-    const desc = Utils.query(selector, node);
-    if (!desc) return;
-    desc.innerHTML = null;
-  }
-
-  onHide(node) {
-    const id = node.dataset.nodeId;
-    const selector = `*[data-node-id="${id}"] > .json-formater-placeholder`;
-    const desc = Utils.query(selector, node);
-    if (!desc) return;
-    if (desc.innerHTML) return;
-
-    const type = node.dataset.type;
-    const length = this.findChildren(node).length;
-    const span = this.createElement("span");
-    span.textContent = `${length}${length > 1 ? " items" : " item"}`;
-    if (type === "object") {
-      span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
-    }
-    desc.appendChild(span);
-  }
-
-  nodes() {
-    const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
-    return arrows.map((ele) => this.closest(ele, ".json-formater-item"));
   }
 }
 

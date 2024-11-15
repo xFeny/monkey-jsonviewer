@@ -28,6 +28,7 @@ const cssText = `
 
 class JsonToTable extends JsonFormat {
   constructor(options) {
+    options.style = JsonFormat.STYLE.table;
     super(options);
   }
 
@@ -76,33 +77,35 @@ class JsonToTable extends JsonFormat {
       class: "json-formater-item json-formater-opened",
     });
 
-    const leftNode = this.createLeftNode(key, value, depth, JSONPath);
-    node.appendChild(leftNode);
-
+    // JSON key
+    const keyNode = this.createKeyNode(key, value, depth, JSONPath);
+    node.appendChild(keyNode);
+    // JSON value
+    const td = this.createElement("td");
     if (!isIterate) {
-      const rightNode = this.createRightNode(type, value);
-      node.appendChild(rightNode);
+      td.appendChild(this.creatValueNode(type, value));
+      node.appendChild(td);
     }
-
+    // empty bracket
     if (isIterate && !canIterate) {
-      const rightNode = this.createEmptyRightNode(type);
-      node.appendChild(rightNode);
+      td.appendChild(this.createBracket(type));
+      node.appendChild(td);
     }
     return node;
   }
 
-  createLeftNode(key, value, depth, JSONPath) {
+  createKeyNode(key, value, depth, JSONPath) {
     const node = this.createElement("td", {
       JSONPath,
       colspan: this.canIterate(value) ? 2 : 0,
       style: `padding-left: ${depth * 20}px`,
     });
 
-    const b = this.createElement("span", {
+    const k = this.createElement("span", {
       class: "json-key",
     });
-    b.textContent = `${key}`;
-    node.appendChild(b);
+    k.textContent = `${key}`;
+    node.appendChild(k);
 
     const colon = this.createElement("span", {
       class: "json-colon",
@@ -131,46 +134,6 @@ class JsonToTable extends JsonFormat {
     return node;
   }
 
-  createRightNode(type, value) {
-    const node = this.createElement("td", {
-      class: `json-${type}`,
-    });
-    node.textContent = `${value}`;
-
-    if (type === "string") {
-      value = this.escape(value);
-      node.textContent = `"${value}"`;
-    }
-
-    if (this.isUrl(value)) {
-      node.textContent = "";
-      const a = this.createElement("a", {
-        target: "_blank",
-        href: value,
-      });
-      a.textContent = `"${value}"`;
-      node.appendChild(a);
-    }
-
-    if (this.isColor(value)) {
-      const span = this.createElement("span", {
-        class: "json-color",
-        style: `background-color: ${value}`,
-      });
-      node.prepend(span);
-    }
-
-    return node;
-  }
-
-  createEmptyRightNode(type) {
-    const node = this.createElement("td", {
-      class: `json-${type}-bracket`,
-    });
-    node.textContent = type === "array" ? "[]" : "{}";
-    return node;
-  }
-
   bindEvent() {
     super.bindEvent();
     this.addEvent("mousedown", "table tr", function (event) {
@@ -186,31 +149,6 @@ class JsonToTable extends JsonFormat {
       Utils.removeClass(filter, "selected");
       Utils.toggleClass(this, "selected");
     });
-  }
-
-  onShow(node) {
-    const desc = Utils.query(".json-formater-placeholder", node);
-    if (!desc) return;
-    desc.innerHTML = null;
-  }
-
-  onHide(node) {
-    const type = node.dataset.type;
-    const desc = Utils.query(".json-formater-placeholder", node);
-    if (!desc) return;
-    if (desc.innerHTML) return;
-
-    const length = this.findChildren(node).length;
-    let textNode = document.createTextNode(type === "object" ? "{" : "[");
-    desc.appendChild(textNode);
-    const span = this.createElement("span");
-    span.textContent = `${length}${length > 1 ? " items" : " item"}`;
-    if (type === "object") {
-      span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
-    }
-    desc.appendChild(span);
-    textNode = document.createTextNode(type === "object" ? "}" : "]");
-    desc.appendChild(textNode);
   }
 }
 
