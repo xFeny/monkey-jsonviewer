@@ -4,18 +4,7 @@ import JsonFormat from "./JsonFormat";
 class JsonViewer extends JsonFormat {
   constructor(options) {
     options.style = JsonFormat.STYLE.viewer;
-    super(options);
-  }
-
-  render() {
-    const { json, container } = this.options;
-    this.$container = Utils.query(container);
-    this.$container.innerHTML = "";
-    this.$box = this.createElement("div", {
-      class: "json-view-formater",
-    });
-    this.createNode(this.$box, json, "Root", "Root");
-    this.$container.appendChild(this.$box);
+    super(options, "div", "json-view-formater");
   }
 
   createNode(box, json, JSONPath, pid) {
@@ -51,8 +40,8 @@ class JsonViewer extends JsonFormat {
           "data-node-pid": pid,
           style: `padding-left: 20px`,
           "data-type": this.getType(value),
-          class: `json-formater-item ${
-            this.isIterate(value) ? "json-formater-opened" : ""
+          class: `json-formater-item${
+            this.canIterate(value) ? " json-formater-opened" : ""
           }`,
         });
 
@@ -122,10 +111,8 @@ class JsonViewer extends JsonFormat {
       copy.json = json;
       node.appendChild(copy);
 
-      const span = this.createElement("span", {
-        class: "json-formater-placeholder",
-      });
-      node.appendChild(span);
+      const placeholder = this.creatPlaceholder(json);
+      node.appendChild(placeholder);
     }
   }
 }

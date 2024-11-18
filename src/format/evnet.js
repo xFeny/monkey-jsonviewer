@@ -2,7 +2,7 @@ import tippy from "tippy.js";
 import Utils from "../common/Utils";
 
 export default {
-  urlHover: function () {
+  urlHover() {
     Utils.addEvent("mouseenter", "a[href]", function () {
       const href = Utils.attr(this, "href");
       if (!Utils.isImg(href)) return;
@@ -15,7 +15,7 @@ export default {
     });
     return this;
   },
-  tipsJsonPath: function () {
+  tipsJsonPath() {
     Utils.addEvent("mouseenter", ".json-key", (event) => {
       const target = event.target;
       const jsonPath = this.getJsonPath(target);
@@ -29,7 +29,7 @@ export default {
     });
     return this;
   },
-  copyJsonPath: function () {
+  copyJsonPath() {
     Utils.addEvent("click", ".json-key", (event) => {
       if (!event.ctrlKey) return;
       const jsonPath = this.getJsonPath(event.target);
@@ -38,10 +38,10 @@ export default {
     });
     return this;
   },
-  getJsonPath: function (ele) {
+  getJsonPath(ele) {
     return Utils.attr(ele.parentElement, "JSONPath");
   },
-  init: function () {
+  init() {
     this.urlHover().tipsJsonPath().copyJsonPath();
   },
 };

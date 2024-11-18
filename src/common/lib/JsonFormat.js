@@ -17,16 +17,22 @@ class JsonFormat {
     onCollapse: null,
   };
 
-  constructor(options) {
+  constructor(options, tag, clazz) {
     this.options = Object.assign(this.DEFAULTS, options);
     if (!options.container) throw new Error("Container is required");
     if (!options.json) throw new Error("json is required");
-    this.render();
+    this.render(tag, clazz);
     this.bindEvent();
     this.setTheme(this.options.theme);
   }
 
-  render() {}
+  render(tag, clazz) {
+    this.$container = Utils.query(this.options.container);
+    this.$container.innerHTML = "";
+    const box = this.createElement(tag, { class: clazz });
+    this.createNode(box, this.options.json, "Root", "Root", 1);
+    this.$container.appendChild(box);
+  }
 
   setTheme(theme) {
     const classList = document.body.classList;
@@ -66,6 +72,29 @@ class JsonFormat {
     }
 
     return node;
+  }
+
+  creatPlaceholder(json) {
+    const placeholder = this.createElement("span", {
+      class: "json-formater-placeholder",
+    });
+
+    const type = this.getType(json);
+    const length = Object.keys(json).length;
+    const span = this.createElement("span");
+    span.textContent = `${length}${length > 1 ? " items" : " item"}`;
+    if (Object.is(type, "object")) {
+      span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
+    }
+    placeholder.appendChild(span);
+
+    if (JsonFormat.STYLE.table === this.options.style) {
+      let text = document.createTextNode(Object.is(type, "object") ? "{" : "[");
+      placeholder.prepend(text);
+      text = document.createTextNode(Object.is(type, "object") ? "}" : "]");
+      placeholder.appendChild(text);
+    }
+    return placeholder;
   }
 
   createBracket(type) {
@@ -119,67 +148,49 @@ class JsonFormat {
     Utils.removeClass(node, "json-formater-closed");
     Utils.addClass(node, "json-formater-opened");
     this.showDescs(node);
-    this.onShow(node);
+    this.showAfter(node);
   }
 
   showDescs(node) {
-    let children = this.findChildren(node);
+    const children = this.findChildren(node);
+    if (children.length === 0) return;
     children.forEach((child) => {
-      Utils.show(child, null);
-      if (
-        this.options.style === JsonFormat.STYLE.table &&
-        Utils.hasClass(child, "json-formater-opened")
-      ) {
-        this.showDescs(child);
-      }
+      Utils.show(child);
+      const isTable = Object.is(JsonFormat.STYLE.table, this.options.style);
+      const hasClass = Utils.hasClass(child, "json-formater-opened");
+      if (isTable && hasClass) this.showDescs(child);
     });
   }
 
-  onShow(node) {
+  showAfter(node) {
     const nodeId = node.dataset.nodeId;
     const selector = `*[data-node-id=${nodeId}] .json-formater-placeholder`;
     const desc = Utils.query(selector, node);
-    if (!desc) return;
-    desc.innerHTML = null;
+    if (desc) Utils.hide(desc);
   }
 
   hide(node) {
     Utils.removeClass(node, "json-formater-opened");
     Utils.addClass(node, "json-formater-closed");
     this.hideDescs(node);
-    this.onHide(node);
+    this.hideAfter(node);
   }
 
   hideDescs(node) {
     const children = this.findChildren(node);
+    if (children.length === 0) return;
     children.forEach((child) => {
       Utils.hide(child);
-      if (this.options.style === JsonFormat.STYLE.table) this.hideDescs(child);
+      const isTable = Object.is(JsonFormat.STYLE.table, this.options.style);
+      if (isTable) this.hideDescs(child);
     });
   }
 
-  onHide(node) {
+  hideAfter(node) {
     const id = node.dataset.nodeId;
     const selector = `*[data-node-id="${id}"] .json-formater-placeholder`;
     const desc = Utils.query(selector, node);
-    if (!desc) return;
-    if (desc.innerHTML) return;
-
-    const type = node.dataset.type;
-    const length = this.findChildren(node).length;
-    const span = this.createElement("span");
-    span.textContent = `${length}${length > 1 ? " items" : " item"}`;
-    if (Object.is(type, "object")) {
-      span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
-    }
-    desc.appendChild(span);
-
-    if (this.options.style === JsonFormat.STYLE.table) {
-      let text = document.createTextNode(Object.is(type, "object") ? "{" : "[");
-      desc.prepend(text);
-      text = document.createTextNode(Object.is(type, "object") ? "}" : "]");
-      desc.appendChild(text);
-    }
+    if (desc) Utils.show(desc);
   }
 
   findChildren(node) {
@@ -283,6 +294,19 @@ class JsonFormat {
       randomString += characters.charAt(randomIndex);
     }
     return randomString;
+  }
+
+  splitArray(arr, num) {
+    const result = [];
+    const partSize = Math.ceil(arr.length / num);
+    let start = 0;
+    for (let i = 0; i < num; i++) {
+      const end = Math.min(start + partSize, arr.length);
+      const slice = arr.slice(start, end);
+      if (slice.length !== 0) result.push(slice);
+      start = end;
+    }
+    return result;
   }
 }
 

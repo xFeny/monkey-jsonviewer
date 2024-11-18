@@ -49,8 +49,9 @@ const { EXAMPLE_JSON, LAYUI_JS } = URL;
 
     document.body.insertAdjacentHTML("afterbegin", layout);
     unsafeWindow.GLOBAL_JSON = Utils.parse(unsafeWindow.RAW_TEXT);
-    import("./format");
-    import("./toolbar");
-    import("./scrollTop");
+    import("./format").then(() => {
+      import("./toolbar");
+      import("./scrollTop");
+    });
   });
 })();

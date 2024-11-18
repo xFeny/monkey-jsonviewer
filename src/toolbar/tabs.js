@@ -9,30 +9,30 @@ const $rawTextPre = Utils.query("pre", $rawTextBox);
 const tabs = {
   firstFormat: true,
   isBeautify: false,
-  _setRawText: function () {
+  _setRawText() {
     let rawText = unsafeWindow.RAW_TEXT;
     if (unsafeWindow.GLOBAL_JSONP_FUN) {
       rawText = `${unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
     }
     $rawTextPre.textContent = rawText;
   },
-  saveJson: function () {
+  saveJson() {
     if (Utils.isVisible($mindBox)) return unsafeWindow.GLOBAL_JSMIND.shoot();
     const content = $rawTextPre.textContent || unsafeWindow.RAW_TEXT;
     const filename = new Date().getTime() + ".json";
     Utils.downloadText(content, filename);
   },
-  copyJson: function () {
+  copyJson() {
     const content = $rawTextPre.textContent || unsafeWindow.RAW_TEXT;
     GM_setClipboard(content);
     layer.msg("复制成功", { time: 1500 });
   },
-  collapseAll: function () {
+  collapseAll() {
     Utils.isVisible($formatBox)
       ? unsafeWindow?.JSON_FORMATER?.collapseAll()
       : unsafeWindow.GLOBAL_JSMIND.collapse_all();
   },
-  expandAll: function () {
+  expandAll() {
     if (Utils.isVisible($formatBox)) {
       unsafeWindow?.JSON_FORMATER?.expandAll();
       return;
@@ -43,24 +43,24 @@ const tabs = {
       unsafeWindow?.GLOBAL_JSMIND?.get_root()
     );
   },
-  viewFormater: function () {
+  viewFormater() {
     const value = unsafeWindow.FILTER_VALUE || "";
     Utils.query(".searchbox input").value = value;
     const clear = Utils.query(".searchbox .clear");
     Utils.attr(clear, "hidden", !value);
   },
-  viewMind: function () {
+  viewMind() {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
     unsafeWindow?.GLOBAL_JSMIND?.scroll_node_to_center(
       unsafeWindow?.GLOBAL_JSMIND?.get_root()
     );
   },
-  viewRawText: function () {
+  viewRawText() {
     if (!this.firstFormat) return;
     this.firstFormat = false;
     this._setRawText();
   },
-  beautify: function () {
+  beautify() {
     this.isBeautify = !this.isBeautify;
     if (!this.isBeautify) return this._setRawText();
     let str = Utils.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
@@ -69,7 +69,7 @@ const tabs = {
     }
     $rawTextPre.textContent = str;
   },
-  jsoncrack: function () {
+  jsoncrack() {
     const theme = (GM_getValue("theme") || "light").replace(/-.*/, "");
     layer.closeAll();
     layer.open({
@@ -78,7 +78,7 @@ const tabs = {
       title: false,
       area: ["100vw", "100vh"],
       content: `<iframe id="jsoncrackEmbed" src="${URL.JSON_CRACK_WIDGET}"></iframe>`,
-      success: function () {
+      success() {
         const jsonCrackEmbed = Utils.query("#jsoncrackEmbed");
         window?.addEventListener("message", () => {
           const msg = {
@@ -90,7 +90,7 @@ const tabs = {
       },
     });
   },
-  init: function () {
+  init() {
     Utils.addEvent("click", ".btn", (e) => {
       const target = e.target;
       const id = target.id;

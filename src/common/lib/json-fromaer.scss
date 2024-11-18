@@ -1,4 +1,3 @@
-/** JsonViewer和JsonToTable样式  **/
 div.json-formater-item {
   border-left: 0.5px dotted #d9d9d9;
 }
@@ -51,6 +50,7 @@ div.json-formater-item {
 }
 
 .json-formater-placeholder {
+  display: none;
   color: #ccc;
   cursor: pointer;
   font-size: 12px;
@@ -246,3 +246,27 @@ div.json-formater-item {
   }
 }
 /** 暗黑+主题色 END **/
+/** 表格样式 START **/
+.json-tree-table {
+  border-collapse: collapse;
+  width: -webkit-fill-available;
+}
+
+.json-tree-table tr.selected * {
+  color: #fff !important;
+  background-color: #3875d7;
+}
+
+.json-tree-table tr:hover {
+  background-color: #f0f9fe;
+}
+
+.json-tree-table tr td:first-child {
+  width: 120px;
+}
+
+.dark-theme .json-tree-table tr:hover,
+.dark-plus-theme .json-tree-table tr:hover {
+  background-color: #353b48;
+}
+/** 表格样式 END **/

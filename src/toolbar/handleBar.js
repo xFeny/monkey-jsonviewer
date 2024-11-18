@@ -4,7 +4,7 @@ import Utils from "../common/Utils";
 const active = "active";
 export default {
   currentTippy: null,
-  handle: function () {
+  handle() {
     const that = this;
     const tagName = "span";
     [".style", ".theme", ".tools"].forEach((selector) => {
@@ -14,7 +14,7 @@ export default {
         interactive: true,
         trigger: "click",
         appendTo: Utils.query(selector).parentNode,
-        onTrigger: function (instance) {
+        onTrigger(instance) {
           that.currentTippy = instance;
           const target = instance.reference;
           Utils.addClass(Utils.query(tagName, target), active);
@@ -28,7 +28,7 @@ export default {
           while (ul.firstChild) tempDiv.appendChild(ul.firstChild);
           instance.setContent(tempDiv.innerHTML);
         },
-        onHide: function (instance) {
+        onHide(instance) {
           const target = instance.reference;
           Utils.removeClass(Utils.query(tagName, target));
         },
@@ -36,7 +36,7 @@ export default {
     });
     return this;
   },
-  checked: function () {
+  checked() {
     const selector = ".rightbox li";
     Utils.addEvent("click", selector, (event) => {
       const target = event.target;
@@ -50,7 +50,7 @@ export default {
     });
     return this;
   },
-  init: function () {
+  init() {
     this.handle().checked();
   },
 };

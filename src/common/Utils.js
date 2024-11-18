@@ -1,17 +1,34 @@
 import JSONbig from "json-bigint";
-
 const JSON = JSONbig({ useNativeBigInt: true });
+
 NodeList.prototype.filter = Array.prototype.filter;
 NodeList.prototype.some = Array.prototype.some;
 NodeList.prototype.map = Array.prototype.map;
 
+function getDefaultDisplay(ele) {
+  let temp,
+    display = ele.defaultDisplay;
+  const doc = ele.ownerDocument,
+    nodeName = ele.nodeName;
+
+  if (display) return display;
+  temp = doc.body.appendChild(doc.createElement(nodeName));
+  display = getComputedStyle(temp).display;
+  temp.parentNode.removeChild(temp);
+  if (display === "none") {
+    display = "block";
+  }
+  ele.defaultDisplay = display;
+  return display;
+}
+
 export default {
-  isImg: function (str) {
+  isImg(str) {
     const regexp =
       /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
     return regexp.test(str);
   },
-  isJSON: function (str) {
+  isJSON(str) {
     try {
       JSON.parse(str);
       return true;
@@ -20,22 +37,22 @@ export default {
       return false;
     }
   },
-  parse: function (text, reviver) {
+  parse(text, reviver) {
     return JSON.parse(text, reviver);
   },
-  stringify: function (value, replacer, space) {
+  stringify(value, replacer, space) {
     return JSON.stringify(value, replacer, space);
   },
-  getType: function (v) {
+  getType(v) {
     return Object.prototype.toString
       .call(v)
       .match(/\s(.+)]/)[1]
       .toLowerCase();
   },
-  getPrototype: function (val) {
+  getPrototype(val) {
     return Object.prototype.toString.call(val).match(/\s(.+)]/)[1];
   },
-  findMaxKeysObject: function (arr) {
+  findMaxKeysObject(arr) {
     let maxKeysCount = 0;
     let maxKeysObject;
     for (const obj of arr) {
@@ -53,7 +70,7 @@ export default {
     const blue = Math.floor(Math.random() * 256);
     return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
   },
-  downloadText: function (content, filename) {
+  downloadText(content, filename) {
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -62,7 +79,7 @@ export default {
     link.click();
     URL.revokeObjectURL(url);
   },
-  matchJsonp: function (rawText) {
+  matchJsonp(rawText) {
     const tokens = rawText.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
     if (tokens && tokens[1] && tokens[2]) {
       return {
@@ -76,14 +93,14 @@ export default {
       jsonpFun: null,
     };
   },
-  debounce: function (fn, delay = 300) {
+  debounce(fn, delay = 300) {
     let timer;
     return function () {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => fn.apply(this, arguments), delay);
     };
   },
-  setClipboard: function (text) {
+  setClipboard(text) {
     if (GM_setClipboard) {
       GM_setClipboard(text);
     } else if (navigator.clipboard) {
@@ -102,7 +119,7 @@ export default {
       textArea.remove();
     }
   },
-  addEvent: function (eventType, selector, callback) {
+  addEvent(eventType, selector, callback) {
     const types = eventType.split(" ");
     if (!selector) {
       new Error("selector is required");
@@ -120,7 +137,7 @@ export default {
 
         Object.defineProperty(event, "currentTarget", {
           configurable: true,
-          get: function () {
+          get() {
             return target;
           },
         });
@@ -135,44 +152,34 @@ export default {
       document.addEventListener(type, handler, true);
     });
   },
-  isVisible: function (ele) {
-    const style = getComputedStyle(ele);
-    const display = style.display;
-    const visibility = style.visibility;
-    const hasWidth = ele.offsetWidth > 0;
-    const hasHeight = ele.offsetHeight > 0;
-    return (
-      !Object.is(display, "none") &&
-      !Object.is(visibility, "hidden") &&
-      hasWidth &&
-      hasHeight
+  isVisible(ele) {
+    return !!(
+      ele.offsetWidth ||
+      ele.offsetHeight ||
+      ele.getClientRects().length
     );
   },
-  createElement: function (name, attrs) {
+  createElement(name, attrs) {
     const element = document.createElement(name);
     if (attrs) this.attr(element, attrs);
     return element;
   },
-  attr: function (ele, attrs, value) {
+  attr(ele, attrs, value) {
     if (!ele) return;
     if (typeof attrs === "object") {
-      for (const name in attrs) {
-        if (Object.prototype.hasOwnProperty.call(attrs, name)) {
-          ele.setAttribute(name, attrs[name]);
-        }
-      }
+      for (const name in attrs) ele.setAttribute(name, attrs[name]);
       return;
     }
     if (value === undefined) return ele.getAttribute(attrs);
-    if (!value) return ele.removeAttribute(attrs);
+    if (value === false || value === null) return ele.removeAttribute(attrs);
     ele.setAttribute(attrs, value);
   },
-  query: function (selector, context) {
+  query(selector, context) {
     const ctx = context || document;
     if (selector instanceof HTMLElement) return selector;
     return ctx.querySelector(selector);
   },
-  queryAll: function (selector, context) {
+  queryAll(selector, context) {
     const ctx = context || document;
     if (selector instanceof HTMLElement) {
       return new NodeList(selector);
@@ -207,7 +214,7 @@ export default {
       ele.forEach((el) => this.removeClass(el, className));
     }
   },
-  toggleClass: function (ele, className) {
+  toggleClass(ele, className) {
     if (!ele) return;
     this.hasClass(ele, className)
       ? this.removeClass(ele, className)
@@ -222,20 +229,20 @@ export default {
       return ele.some((el) => this.hasClass(el, className));
     }
   },
-  show: function (ele, value) {
+  show(ele) {
     const style = ele.style;
-    if (style.display !== "none") return;
-    if (value !== undefined) return (style.display = value);
-    const defaultDisplay = ele.defaultDisplay;
-    if (!Object.is(defaultDisplay, "none")) {
-      return (style.display = defaultDisplay);
+    const display = getComputedStyle(ele).display;
+    if (style.display === "none") style.display = "";
+    if (style.display === "" && display === "none") {
+      style.display = getDefaultDisplay(ele);
     }
-    style.display = "block";
   },
-  hide: function (ele) {
-    if (!ele.defaultDisplay) {
-      const display = getComputedStyle(ele).display;
-      ele.defaultDisplay = display;
+  hide(ele) {
+    if (ele.defaultDisplay === undefined) {
+      const computedDisplay = getComputedStyle(ele).display;
+      if (!Object.is(computedDisplay, "none")) {
+        ele.defaultDisplay = computedDisplay;
+      }
     }
     ele.style.display = "none";
   },

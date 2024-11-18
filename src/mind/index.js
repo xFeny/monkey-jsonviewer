@@ -6,7 +6,7 @@ import Utils from "../common/Utils";
 
 export default {
   isFirst: true,
-  transform: function (json) {
+  transform(json) {
     const children = [];
     if (typeof json === "object") {
       for (const key in json) {
@@ -28,7 +28,7 @@ export default {
     }
     return children;
   },
-  getChain: function (node) {
+  getChain(node) {
     let chain = node.data.chain;
     if (!node.parent) return chain;
     const parent = node.parent;
@@ -37,7 +37,7 @@ export default {
     if (chain.includes(".")) return `${parentChain}["${chain}"]`;
     return `${parentChain}.${chain}`;
   },
-  show: function (json) {
+  show(json) {
     let isArray = Array.isArray(json);
     if (isArray) {
       if (typeof json[0] !== "object") {
@@ -69,7 +69,7 @@ export default {
     this.isFirst = false;
     return this;
   },
-  event: function () {
+  event() {
     const that = this;
     Utils.addEvent("click mouseover", "jmnode", handler);
     function handler(event) {
@@ -124,7 +124,7 @@ export default {
         });
         return content.outerHTML;
       })(),
-      success: function (layero) {
+      success(layero) {
         layero.on("click", ".js-mind-copy", function () {
           GM_setClipboard(chain + "\n\n" + keys.join("\n"));
           layer.msg("复制成功", { time: 1500 });
@@ -132,7 +132,7 @@ export default {
       },
     });
   },
-  init: function (json) {
+  init(json) {
     if (unsafeWindow.GLOBAL_JSMIND) return;
     unsafeWindow.GLOBAL_JSMIND = new jsMind({
       mode: "side",

@@ -1,52 +1,13 @@
 import Utils from "../Utils";
 import JsonFormat from "./JsonFormat";
 
-const cssText = `
-.json-tree-table {
-  border-collapse: collapse;
-  width: -webkit-fill-available;
-}
-
-.json-tree-table tr.selected * {
-  color: #fff !important;
-  background-color: #3875d7;
-}
-
-.json-tree-table tr:hover {
-  background-color: #f0f9fe;
-}
-
-.json-tree-table tr td:first-child {
-  width: 120px;
-}
-
-.dark-theme .json-tree-table tr:hover,
-.dark-plus-theme .json-tree-table tr:hover {
-  background-color: #353b48;
-}
-`;
-
 class JsonToTable extends JsonFormat {
   constructor(options) {
     options.style = JsonFormat.STYLE.table;
-    super(options);
+    super(options, "table", "json-tree-table");
   }
 
-  render() {
-    const { json, container } = this.options;
-    this.$container = Utils.query(container);
-    this.$container.innerHTML = "";
-    const style = this.createElement("style");
-    style.textContent = cssText;
-    document.head.appendChild(style);
-    this.$table = this.createElement("table", {
-      class: "json-tree-table",
-    });
-    this.createNode(json, 1, "Root", "Root");
-    this.$container.appendChild(this.$table);
-  }
-
-  createNode(json, depth, path, pid) {
+  createNode(table, json, path, pid, depth) {
     for (const key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
         let value = json[key];
@@ -55,10 +16,10 @@ class JsonToTable extends JsonFormat {
         const args = { key, value, type, depth, JSONPath, pid };
 
         const item = this.createItem(args);
-        this.$table.appendChild(item);
+        table.appendChild(item);
         if (this.canIterate(value)) {
           const nodeId = item.dataset.nodeId;
-          this.createNode(value, depth + 1, JSONPath, nodeId);
+          this.createNode(table, value, JSONPath, nodeId, depth + 1);
         }
       }
     }
@@ -74,7 +35,9 @@ class JsonToTable extends JsonFormat {
       "data-type": type,
       "data-node-id": id,
       "data-node-pid": pid,
-      class: "json-formater-item json-formater-opened",
+      class: `json-formater-item${
+        this.canIterate(value) ? " json-formater-opened" : ""
+      }`,
     });
 
     // JSON key
@@ -126,10 +89,8 @@ class JsonToTable extends JsonFormat {
       copy.json = value;
       node.appendChild(copy);
 
-      const span = this.createElement("span", {
-        class: "json-formater-placeholder",
-      });
-      node.appendChild(span);
+      const placeholder = this.creatPlaceholder(value);
+      node.appendChild(placeholder);
     }
     return node;
   }

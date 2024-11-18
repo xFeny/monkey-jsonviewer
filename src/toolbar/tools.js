@@ -5,7 +5,7 @@ import http_form from "../layout/http_form";
  * toolbar右侧JOSN输入和HTTP请求功能操作
  */
 export default {
-  inputJson: function () {
+  inputJson() {
     const that = this;
     layer.prompt(
       {
@@ -31,7 +31,7 @@ export default {
     );
     return this;
   },
-  fetchApi: function () {
+  fetchApi() {
     const that = this;
     layer.open({
       type: 1,
@@ -39,7 +39,7 @@ export default {
       shadeClose: true,
       title: "HTTP 请求",
       content: http_form,
-      success: function () {
+      success() {
         const form = Utils.query("form");
         form.addEventListener("submit", function (event) {
           handler(event, form);
@@ -98,7 +98,7 @@ export default {
     }
     return this;
   },
-  reload: function (json, rawText, jsonpFun) {
+  reload(json, rawText, jsonpFun) {
     unsafeWindow.GLOBAL_JSON = json;
     unsafeWindow.RAW_TEXT = rawText;
     unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;

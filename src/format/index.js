@@ -4,12 +4,12 @@ import Utils from "../common/Utils";
 import evnet from "./evnet";
 
 const format = {
-  changeStyle: function (style) {
+  changeStyle(style) {
     GM_setValue("style", style);
     this.setStyle();
     return this;
   },
-  setStyle: function () {
+  setStyle() {
     const input = Utils.query(".searchbox input");
     if (input) input.value = "";
     const clear = Utils.query(".searchbox .clear");
@@ -17,7 +17,7 @@ const format = {
     this.render(unsafeWindow.GLOBAL_JSON);
     return this;
   },
-  render: function (json) {
+  render(json) {
     const container = Utils.query("#formatBox");
     const style = GM_getValue("style") || "default";
     const theme = GM_getValue("theme") || "default";
@@ -35,7 +35,7 @@ const format = {
     }
     return this;
   },
-  filter: function (json, text) {
+  filter(json, text) {
     text = text.toLowerCase();
     function match(json, text) {
       const newJson = Array.isArray(json) ? new Array() : new Object();
@@ -65,7 +65,7 @@ const format = {
     }
     return match(json, text);
   },
-  input: function () {
+  input() {
     const that = this;
     const debounceInput = Utils.debounce(function () {
       const value = this.value;
@@ -78,14 +78,14 @@ const format = {
     Utils.addEvent("input", ".searchbox input", debounceInput);
     return that;
   },
-  clear: function () {
+  clear() {
     Utils.addEvent("click", ".searchbox .clear", () => {
       this.setStyle();
       unsafeWindow.FILTER_VALUE = "";
     });
     return this;
   },
-  init: function () {
+  init() {
     this.setStyle().input().clear();
     evnet.init();
   },
