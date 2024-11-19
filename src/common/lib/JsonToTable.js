@@ -8,6 +8,7 @@ class JsonToTable extends JsonFormat {
   }
 
   createNode(table, json, path, pid, depth) {
+    json = this.keySort(json);
     for (const key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
         let value = json[key];
@@ -35,9 +36,7 @@ class JsonToTable extends JsonFormat {
       "data-type": type,
       "data-node-id": id,
       "data-node-pid": pid,
-      class: `json-formater-item${
-        this.canIterate(value) ? " json-formater-opened" : ""
-      }`,
+      class: `json-formater-item${this.canIterate(value) ? " json-formater-opened" : ""}`,
     });
 
     // JSON key
@@ -99,11 +98,7 @@ class JsonToTable extends JsonFormat {
     super.bindEvent();
     this.addEvent("mousedown", "table tr", function (event) {
       const { tagName, className } = event.target;
-      if (
-        event.ctrlKey ||
-        tagName === "A" ||
-        (tagName === "SPAN" && className !== "json-key")
-      ) {
+      if (event.ctrlKey || tagName === "A" || (tagName === "SPAN" && className !== "json-key")) {
         return;
       }
       const filter = Utils.queryAll(".selected").filter((ele) => ele !== this);

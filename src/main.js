@@ -49,6 +49,8 @@ const { EXAMPLE_JSON, LAYUI_JS } = URL;
 
     document.body.insertAdjacentHTML("afterbegin", layout);
     unsafeWindow.GLOBAL_JSON = Utils.parse(unsafeWindow.RAW_TEXT);
+    const temp = Utils.query('template[data-for="viewFormater"]');
+    Utils.query(".toolbar").innerHTML = temp.innerHTML;
     import("./format").then(() => {
       import("./toolbar");
       import("./scrollTop");

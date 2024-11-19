@@ -6,7 +6,13 @@ class JsonFormat {
     viewer: "viewer",
   };
 
+  static SORT = {
+    ASC: "ASC",
+    DESC: "DESC",
+  };
+
   DEFAULTS = {
+    sort: null,
     json: null,
     style: null,
     theme: "default",
@@ -42,6 +48,44 @@ class JsonFormat {
     classList.add(`${theme}-theme`);
   }
 
+  keySort(json) {
+    const { sort } = this.options;
+    const ASC = JsonFormat.SORT.ASC;
+    if (sort == null) return json;
+    if (Array.isArray(json)) return json;
+    const entries = Object.entries(json);
+    const asc = ([prev], [next]) => prev.localeCompare(next);
+    const desc = ([prev], [next]) => next.localeCompare(prev);
+    const result = Object.is(ASC, sort) ? entries.sort(asc) : entries.sort(desc);
+    return Object.fromEntries(result);
+  }
+
+  sort() {
+    if (this.options.sort === null) {
+      this.options.sort = JsonFormat.SORT.ASC;
+      this.reload();
+      return "升序";
+    }
+    if (this.options.sort === JsonFormat.SORT.ASC) {
+      this.options.sort = JsonFormat.SORT.DESC;
+      this.reload();
+      return "降序";
+    }
+    if (this.options.sort === JsonFormat.SORT.DESC) {
+      this.options.sort = null;
+      this.reload();
+      return "排序";
+    }
+  }
+
+  reload() {
+    const box = this.$container.firstChild;
+    box.innerHTML = null;
+    this.createNode(box, this.options.json, "Root", "Root", 1);
+    this.$container.appendChild(box);
+    this.bindEvent();
+  }
+
   creatValueNode(type, value) {
     const node = this.createElement("span", {
       class: `json-${type}`,
@@ -70,7 +114,6 @@ class JsonFormat {
       });
       node.prepend(span);
     }
-
     return node;
   }
 
@@ -259,8 +302,7 @@ class JsonFormat {
   }
 
   isUrl(str) {
-    const regexp =
-      /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     return regexp.test(str);
   }
 
@@ -276,14 +318,9 @@ class JsonFormat {
   isColor(colorString) {
     const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
     const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
-    const rgbaRegex =
-      /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
+    const rgbaRegex = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
 
-    return (
-      hexCodeRegex.test(colorString) ||
-      rgbRegex.test(colorString) ||
-      rgbaRegex.test(colorString)
-    );
+    return hexCodeRegex.test(colorString) || rgbRegex.test(colorString) || rgbaRegex.test(colorString);
   }
 
   random() {

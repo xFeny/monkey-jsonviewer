@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import monkey, { util, cdn } from "vite-plugin-monkey";
 import AutoImport from "unplugin-auto-import/vite";
 import userscript from "./src/userscript.meta";
-import tippy from "tippy.js";
 
 export default defineConfig({
   plugins: [
@@ -17,10 +16,9 @@ export default defineConfig({
           jsmind: cdn
             .unpkg("jsmind", "es6/jsmind.js")
             .concat(util.dataUrl(";window.jsmind=jsMind;")),
-          "dom-to-image": [
-            "domtoimage",
-            () => "https://unpkg.com/dom-to-image@2",
-          ].concat(util.dataUrl(";window.domtoimage=domtoimage;")),
+          "dom-to-image": ["domtoimage", () => "https://unpkg.com/dom-to-image@2"].concat(
+            util.dataUrl(";window.domtoimage=domtoimage;")
+          ),
           beautifier: cdn
             .unpkg("beautifier")
             .concat(
@@ -30,8 +28,7 @@ export default defineConfig({
             ),
           "highlight.js": [
             "hljs",
-            (version) =>
-              `https://unpkg.com/@highlightjs/cdn-assets@${version}/highlight.min.js`,
+            (version) => `https://unpkg.com/@highlightjs/cdn-assets@${version}/highlight.min.js`,
           ].concat(util.dataUrl(";window.hljs=hljs;")),
         },
         systemjs: cdn.unpkg()[1],

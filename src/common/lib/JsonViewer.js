@@ -23,6 +23,7 @@ class JsonViewer extends JsonFormat {
   }
 
   depthNode(box, type, json, path, pid) {
+    json = this.keySort(json);
     const startBracket = this.startBracket(type);
     box.appendChild(startBracket);
     this.otherNode(box, json);
@@ -40,9 +41,7 @@ class JsonViewer extends JsonFormat {
           "data-node-pid": pid,
           style: `padding-left: 20px`,
           "data-type": this.getType(value),
-          class: `json-formater-item${
-            this.canIterate(value) ? " json-formater-opened" : ""
-          }`,
+          class: `json-formater-item${this.canIterate(value) ? " json-formater-opened" : ""}`,
         });
 
         this.createKeyNode(node, key, value);

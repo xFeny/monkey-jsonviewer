@@ -27,21 +27,23 @@ const tabs = {
     GM_setClipboard(content);
     layer.msg("复制成功", { time: 1500 });
   },
+  sort(el) {
+    const text = unsafeWindow.JSON_FORMATER.sort();
+    el.textContent = text;
+  },
   collapseAll() {
     Utils.isVisible($formatBox)
-      ? unsafeWindow?.JSON_FORMATER?.collapseAll()
+      ? unsafeWindow.JSON_FORMATER.collapseAll()
       : unsafeWindow.GLOBAL_JSMIND.collapse_all();
   },
   expandAll() {
     if (Utils.isVisible($formatBox)) {
-      unsafeWindow?.JSON_FORMATER?.expandAll();
+      unsafeWindow.JSON_FORMATER.expandAll();
       return;
     }
 
-    unsafeWindow?.GLOBAL_JSMIND?.expand_all();
-    unsafeWindow?.GLOBAL_JSMIND?.scroll_node_to_center(
-      unsafeWindow?.GLOBAL_JSMIND?.get_root()
-    );
+    unsafeWindow.GLOBAL_JSMIND.expand_all();
+    unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(unsafeWindow.GLOBAL_JSMIND?.get_root());
   },
   viewFormater() {
     const value = unsafeWindow.FILTER_VALUE || "";
@@ -51,9 +53,7 @@ const tabs = {
   },
   viewMind() {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
-    unsafeWindow?.GLOBAL_JSMIND?.scroll_node_to_center(
-      unsafeWindow?.GLOBAL_JSMIND?.get_root()
-    );
+    unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(unsafeWindow.GLOBAL_JSMIND.get_root());
   },
   viewRawText() {
     if (!this.firstFormat) return;

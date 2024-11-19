@@ -5,6 +5,7 @@ export default `
 <template data-for="viewFormater">
     <div class="toolbar-item btn" id="saveJson">保存</div>
     <div class="toolbar-item btn" id="copyJson">复制</div>
+    <div class="toolbar-item btn" id="sort">排序</div>
     <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
     <div class="toolbar-item btn" id="expandAll">全部展开</div>
     <div class="searchbox">
@@ -30,16 +31,7 @@ export default `
             <div class="tabs-item btn" id="viewMind">JSON 脑图</div>
             <div class="tabs-item btn" id="viewRawText">原始数据</div>
         </div>
-        <div class="toolbar">
-            <div class="toolbar-item btn" id="saveJson">保存</div>
-            <div class="toolbar-item btn" id="copyJson">复制</div>
-            <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
-            <div class="toolbar-item btn" id="expandAll">全部展开</div>
-            <div class="searchbox">
-                <input type="text" placeholder="JSON 过滤"/>
-                <button class="clear" hidden></button>
-            </div>
-        </div>
+        <div class="toolbar"></div>
         <div class="rightbox">
             <div class="style">
                 <span>风格</span>

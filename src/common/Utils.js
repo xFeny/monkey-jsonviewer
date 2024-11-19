@@ -24,8 +24,7 @@ function getDefaultDisplay(ele) {
 
 export default {
   isImg(str) {
-    const regexp =
-      /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
+    const regexp = /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
     return regexp.test(str);
   },
   isJSON(str) {
@@ -153,11 +152,7 @@ export default {
     });
   },
   isVisible(ele) {
-    return !!(
-      ele.offsetWidth ||
-      ele.offsetHeight ||
-      ele.getClientRects().length
-    );
+    return !!(ele.offsetWidth || ele.offsetHeight || ele.getClientRects().length);
   },
   createElement(name, attrs) {
     const element = document.createElement(name);
@@ -216,9 +211,7 @@ export default {
   },
   toggleClass(ele, className) {
     if (!ele) return;
-    this.hasClass(ele, className)
-      ? this.removeClass(ele, className)
-      : this.addClass(ele, className);
+    this.hasClass(ele, className) ? this.removeClass(ele, className) : this.addClass(ele, className);
   },
   hasClass(ele, className) {
     if (!ele) return false;
