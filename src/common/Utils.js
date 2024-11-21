@@ -15,16 +15,15 @@ function getDefaultDisplay(ele) {
   temp = doc.body.appendChild(doc.createElement(nodeName));
   display = getComputedStyle(temp).display;
   temp.parentNode.removeChild(temp);
-  if (display === "none") {
-    display = "block";
-  }
+  if (display === "none") display = "block";
   ele.defaultDisplay = display;
   return display;
 }
 
 export default {
   isImg(str) {
-    const regexp = /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
+    const regexp =
+      /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
     return regexp.test(str);
   },
   isJSON(str) {
@@ -32,7 +31,6 @@ export default {
       JSON.parse(str);
       return true;
     } catch (e) {
-      console.log("is not json");
       return false;
     }
   },
@@ -42,13 +40,13 @@ export default {
   stringify(value, replacer, space) {
     return JSON.stringify(value, replacer, space);
   },
-  getType(v) {
-    return Object.prototype.toString
-      .call(v)
-      .match(/\s(.+)]/)[1]
-      .toLowerCase();
+  isObject(obj) {
+    return Object.is(typeof obj, "object");
   },
-  getPrototype(val) {
+  getType(v) {
+    return this.getPropType(v).toLowerCase();
+  },
+  getPropType(val) {
     return Object.prototype.toString.call(val).match(/\s(.+)]/)[1];
   },
   findMaxKeysObject(arr) {
@@ -86,11 +84,7 @@ export default {
         jsonpFun: tokens[1],
       };
     }
-
-    return {
-      rawText,
-      jsonpFun: null,
-    };
+    return { rawText, jsonpFun: null };
   },
   debounce(fn, delay = 300) {
     let timer;
@@ -128,7 +122,6 @@ export default {
       function handler(event) {
         let target = event.target;
         if (!target.matches) return;
-
         while (!target.matches(selector)) {
           target = target.parentNode;
           if (!target || !target.matches) return;
@@ -176,19 +169,13 @@ export default {
   },
   queryAll(selector, context) {
     const ctx = context || document;
-    if (selector instanceof HTMLElement) {
-      return new NodeList(selector);
-    }
-    if (selector instanceof NodeList) {
-      return selector;
-    }
+    if (selector instanceof HTMLElement) return new NodeList(selector);
+    if (selector instanceof NodeList) return selector;
     return ctx.querySelectorAll(selector);
   },
   addClass(ele, className) {
     if (!ele) return;
-    if (ele instanceof HTMLElement) {
-      return ele.classList.add(className);
-    }
+    if (ele instanceof HTMLElement) return ele.classList.add(className);
     if (ele instanceof NodeList || ele instanceof Array) {
       ele.forEach((el) => this.addClass(el, className));
     }
@@ -211,13 +198,13 @@ export default {
   },
   toggleClass(ele, className) {
     if (!ele) return;
-    this.hasClass(ele, className) ? this.removeClass(ele, className) : this.addClass(ele, className);
+    this.hasClass(ele, className)
+      ? this.removeClass(ele, className)
+      : this.addClass(ele, className);
   },
   hasClass(ele, className) {
     if (!ele) return false;
-    if (ele instanceof HTMLElement) {
-      return ele.classList.contains(className);
-    }
+    if (ele instanceof HTMLElement) return ele.classList.contains(className);
     if (ele instanceof NodeList) {
       return ele.some((el) => this.hasClass(el, className));
     }

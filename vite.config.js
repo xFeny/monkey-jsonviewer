@@ -12,13 +12,15 @@ export default defineConfig({
       userscript,
       entry: "src/main.js",
       build: {
+        systemjs: "inline",
         externalGlobals: {
           jsmind: cdn
             .unpkg("jsmind", "es6/jsmind.js")
             .concat(util.dataUrl(";window.jsmind=jsMind;")),
-          "dom-to-image": ["domtoimage", () => "https://unpkg.com/dom-to-image@2"].concat(
-            util.dataUrl(";window.domtoimage=domtoimage;")
-          ),
+          "dom-to-image": [
+            "domtoimage",
+            () => `https://unpkg.com/dom-to-image@2.6.0/src/dom-to-image.js`,
+          ].concat(util.dataUrl(";window.domtoimage=domtoimage;")),
           beautifier: cdn
             .unpkg("beautifier")
             .concat(
@@ -28,24 +30,16 @@ export default defineConfig({
             ),
           "highlight.js": [
             "hljs",
-            (version) => `https://unpkg.com/@highlightjs/cdn-assets@${version}/highlight.min.js`,
+            () => `https://unpkg.com/@highlightjs/cdn-assets@11.10.0/highlight.min.js`,
           ].concat(util.dataUrl(";window.hljs=hljs;")),
         },
-        systemjs: cdn.unpkg()[1],
         cssSideEffects: () => {
           return (e) => {
             // 是否向document.head插入样式
             window.addEventListener("message", (event) => {
               const { data } = event;
-              if (!data?.addStyle) {
-                return;
-              }
-
-              if (typeof GM_addStyle == "function") {
-                GM_addStyle(e);
-                return;
-              }
-
+              if (!data?.addStyle) return;
+              if (typeof GM_addStyle === "function") return GM_addStyle(e);
               const o = document.createElement("style");
               o.textContent = e;
               document.head.append(o);

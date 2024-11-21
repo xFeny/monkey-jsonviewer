@@ -5,7 +5,6 @@ const active = "active";
 export default {
   currentTippy: null,
   handle() {
-    const that = this;
     const tagName = "span";
     [".style", ".theme", ".tools"].forEach((selector) => {
       tippy(selector, {
@@ -14,8 +13,8 @@ export default {
         interactive: true,
         trigger: "click",
         appendTo: Utils.query(selector).parentNode,
-        onTrigger(instance) {
-          that.currentTippy = instance;
+        onTrigger: (instance) => {
+          this.currentTippy = instance;
           const target = instance.reference;
           Utils.addClass(Utils.query(tagName, target), active);
           const template = Utils.query("template", target);
@@ -29,8 +28,7 @@ export default {
           instance.setContent(tempDiv.innerHTML);
         },
         onHide(instance) {
-          const target = instance.reference;
-          Utils.removeClass(Utils.query(tagName, target));
+          Utils.removeClass(Utils.query(tagName, instance.reference));
         },
       });
     });

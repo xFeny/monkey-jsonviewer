@@ -41,7 +41,6 @@ const { EXAMPLE_JSON, LAYUI_JS } = URL;
     });
     document.head.appendChild(script);
 
-    // 脑图节点随机颜色
     GM_addStyle(`
       jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
       jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}

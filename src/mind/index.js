@@ -8,11 +8,11 @@ export default {
   isFirst: true,
   transform(json) {
     const children = [];
-    if (typeof json === "object") {
+    if (Utils.isObject(json)) {
       for (const key in json) {
         let val = json[key];
         const isArray = Array.isArray(val);
-        const type = Utils.getPrototype(val);
+        const type = Utils.getPropType(val);
         if (isArray && val.length > 0) val = Utils.findMaxKeysObject(val);
         const isObject = Object.is(Utils.getType(val), "object");
         const keys = isObject ? Object.keys(val) : null;
@@ -55,7 +55,6 @@ export default {
         author: "1220301855@qq.com",
       },
       format: "node_tree",
-      /* 数据内容 */
       data: {
         isArray,
         id: "root",

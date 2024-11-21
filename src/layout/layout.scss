@@ -10,13 +10,14 @@ $dark_tip_color: #4e4e4e;
 
 .monkey-jsonviewer {
   body,
+  iframe,
   ul {
     margin: 0;
     padding: 0;
   }
 
-  li::marker {
-    content: "";
+  iframe {
+    border: 0;
   }
 
   input:focus,
@@ -25,12 +26,8 @@ $dark_tip_color: #4e4e4e;
     outline: 0;
   }
 
-  a:hover {
-    text-decoration: underline;
-  }
-
   .jsonp {
-    color: #93983a;
+    color: #657b83;
   }
 
   #jsoncrackEmbed {
@@ -217,6 +214,7 @@ $dark_tip_color: #4e4e4e;
           li {
             font-size: $fz12;
             padding: 5px 20px;
+            list-style-type: none;
             background-color: $tip_color;
             transition: background-color 0.2s ease;
 
@@ -258,6 +256,7 @@ $dark_tip_color: #4e4e4e;
       font-family: monospace;
 
       > div {
+        height: 100%;
         display: none;
 
         &.active {
@@ -463,10 +462,6 @@ $dark_tip_color: #4e4e4e;
             }
           }
         }
-      }
-
-      .jsonp {
-        color: #f1d700;
       }
 
       jmnode {

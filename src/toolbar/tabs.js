@@ -2,28 +2,27 @@ import jsonMind from "../mind";
 import URL from "../common/URL";
 import Utils from "../common/Utils";
 
-const $mindBox = Utils.query("#mindBox");
-const $formatBox = Utils.query("#formatBox");
-const $rawTextBox = Utils.query("#rawTextBox");
-const $rawTextPre = Utils.query("pre", $rawTextBox);
+const mindBox = Utils.query("#mindBox");
+const formatBox = Utils.query("#formatBox");
+const rawTextBox = Utils.query("#rawTextBox");
+const rawTextPre = Utils.query("pre", rawTextBox);
 const tabs = {
   firstFormat: true,
   isBeautify: false,
-  _setRawText() {
-    let rawText = unsafeWindow.RAW_TEXT;
-    if (unsafeWindow.GLOBAL_JSONP_FUN) {
-      rawText = `${unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
-    }
-    $rawTextPre.textContent = rawText;
+  viewFormater() {
+    const value = unsafeWindow.FILTER_VALUE || "";
+    Utils.query(".searchbox input").value = value;
+    const clear = Utils.query(".searchbox .clear");
+    Utils.attr(clear, "hidden", !value);
   },
   saveJson() {
-    if (Utils.isVisible($mindBox)) return unsafeWindow.GLOBAL_JSMIND.shoot();
-    const content = $rawTextPre.textContent || unsafeWindow.RAW_TEXT;
+    if (Utils.isVisible(mindBox)) return unsafeWindow.GLOBAL_JSMIND.shoot();
+    const content = rawTextPre.textContent || unsafeWindow.RAW_TEXT;
     const filename = new Date().getTime() + ".json";
     Utils.downloadText(content, filename);
   },
   copyJson() {
-    const content = $rawTextPre.textContent || unsafeWindow.RAW_TEXT;
+    const content = rawTextPre.textContent || unsafeWindow.RAW_TEXT;
     GM_setClipboard(content);
     layer.msg("复制成功", { time: 1500 });
   },
@@ -32,42 +31,18 @@ const tabs = {
     el.textContent = text;
   },
   collapseAll() {
-    Utils.isVisible($formatBox)
+    Utils.isVisible(formatBox)
       ? unsafeWindow.JSON_FORMATER.collapseAll()
       : unsafeWindow.GLOBAL_JSMIND.collapse_all();
   },
   expandAll() {
-    if (Utils.isVisible($formatBox)) {
-      unsafeWindow.JSON_FORMATER.expandAll();
-      return;
-    }
-
+    if (Utils.isVisible(formatBox)) return unsafeWindow.JSON_FORMATER.expandAll();
     unsafeWindow.GLOBAL_JSMIND.expand_all();
     unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(unsafeWindow.GLOBAL_JSMIND?.get_root());
-  },
-  viewFormater() {
-    const value = unsafeWindow.FILTER_VALUE || "";
-    Utils.query(".searchbox input").value = value;
-    const clear = Utils.query(".searchbox .clear");
-    Utils.attr(clear, "hidden", !value);
   },
   viewMind() {
     jsonMind.init(unsafeWindow.GLOBAL_JSON);
     unsafeWindow.GLOBAL_JSMIND.scroll_node_to_center(unsafeWindow.GLOBAL_JSMIND.get_root());
-  },
-  viewRawText() {
-    if (!this.firstFormat) return;
-    this.firstFormat = false;
-    this._setRawText();
-  },
-  beautify() {
-    this.isBeautify = !this.isBeautify;
-    if (!this.isBeautify) return this._setRawText();
-    let str = Utils.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
-    if (unsafeWindow.GLOBAL_JSONP_FUN) {
-      str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
-    }
-    $rawTextPre.textContent = str;
   },
   jsoncrack() {
     const theme = (GM_getValue("theme") || "light").replace(/-.*/, "");
@@ -81,14 +56,32 @@ const tabs = {
       success() {
         const jsonCrackEmbed = Utils.query("#jsoncrackEmbed");
         window?.addEventListener("message", () => {
-          const msg = {
-            options: { theme },
-            json: unsafeWindow.RAW_TEXT,
-          };
+          const msg = { options: { theme }, json: unsafeWindow.RAW_TEXT };
           jsonCrackEmbed?.contentWindow?.postMessage(msg, "*");
         });
       },
     });
+  },
+  _setRawText() {
+    let rawText = unsafeWindow.RAW_TEXT;
+    if (unsafeWindow.GLOBAL_JSONP_FUN) {
+      rawText = `${unsafeWindow.GLOBAL_JSONP_FUN}(${rawText})`;
+    }
+    rawTextPre.textContent = rawText;
+  },
+  viewRawText() {
+    if (!this.firstFormat) return;
+    this.firstFormat = false;
+    this._setRawText();
+  },
+  beautify() {
+    this.isBeautify = !this.isBeautify;
+    if (!this.isBeautify) return this._setRawText();
+    let str = Utils.stringify(unsafeWindow.GLOBAL_JSON, null, 2);
+    if (unsafeWindow.GLOBAL_JSONP_FUN) {
+      str = `${unsafeWindow.GLOBAL_JSONP_FUN}(${str})`;
+    }
+    rawTextPre.textContent = str;
   },
   init() {
     Utils.addEvent("click", ".btn", (e) => {
@@ -111,13 +104,13 @@ const tabs = {
 window.addEventListener("message", function (event) {
   const { data } = event;
   if (!data?.reload) return;
-  $mindBox.innerHTML = "";
   jsonMind.isFirst = true;
   tabs.isBeautify = false;
   tabs.firstFormat = true;
+  mindBox.innerHTML = null;
   unsafeWindow.GLOBAL_JSMIND = undefined;
-  if (Utils.isVisible($rawTextBox)) return tabs.viewRawText();
-  if (Utils.isVisible($mindBox)) return jsonMind.init(unsafeWindow.GLOBAL_JSON);
+  if (Utils.isVisible(rawTextBox)) return tabs.viewRawText();
+  if (Utils.isVisible(mindBox)) return jsonMind.init(unsafeWindow.GLOBAL_JSON);
 });
 
 export default tabs;

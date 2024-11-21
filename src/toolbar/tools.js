@@ -1,9 +1,7 @@
 import URL from "../common/URL";
 import Utils from "../common/Utils";
 import http_form from "../layout/http_form";
-/**
- * toolbar右侧JOSN输入和HTTP请求功能操作
- */
+
 export default {
   inputJson() {
     const that = this;
@@ -31,76 +29,61 @@ export default {
     );
     return this;
   },
-  fetchApi() {
-    const that = this;
+  fetchJson() {
+    const success = () => {
+      const formElem = Utils.query("form");
+      formElem.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(formElem);
+        const submitData = {};
+        for (const [name, value] of formData) {
+          submitData[name] = value;
+        }
+        this._submit(submitData);
+      });
+    };
     layer.open({
+      success,
       type: 1,
-      closeBtn: 0,
       shadeClose: true,
       title: "HTTP 请求",
       content: http_form,
-      success() {
-        const form = Utils.query("form");
-        form.addEventListener("submit", function (event) {
-          handler(event, form);
-        });
-      },
     });
-
-    function handler(event, formEl) {
-      event.preventDefault();
-      const formData = new FormData(formEl);
-      const form = {};
-      for (const [name, value] of formData) {
-        form[name] = value;
-      }
-      if (form.url === "") return layer.msg("请求URL不能为空");
-      let headers = form.headers;
-      let params = form.params;
-      try {
-        if (headers) headers = JSON.parse(headers);
-      } catch (e) {
-        return layer.msg("请求头格式不合法");
-      }
-      try {
-        if (params) params = JSON.parse(params);
-      } catch (e) {
-        return layer.msg("请求参数格式不合法");
-      }
-
-      layer.load(0, { shade: false });
-      fetch(URL.ONLINE_REQUEST, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: Utils.stringify(form),
-      })
-        .then(async (response) => {
-          const result = await response.json();
-          if (typeof result === "string") {
-            try {
-              const { rawText, jsonpFun } = Utils.matchJsonp(result);
-              const json = Utils.parse(rawText);
-              that.reload(json, rawText, jsonpFun);
-            } catch (e) {
-              layer.closeAll();
-              console.log("HTTP 请求异常：", e);
-            }
-          } else {
-            that.reload(result, Utils.stringify(result), null);
-          }
-        })
-        .catch((e) => {
-          layer.closeAll();
-          console.log("HTTP 请求异常：", e);
-        });
-    }
     return this;
   },
+  async _submit(submitData) {
+    if (!submitData.url) return layer.msg("请求地址不能为空");
+    let params = submitData.params;
+    let headers = submitData.headers;
+    if (headers && !(headers.startsWith("{") && headers.endsWith("}"))) {
+      return layer.msg("请求头 格式不合法");
+    }
+
+    if (params && !(params.startsWith("{") && params.endsWith("}"))) {
+      return layer.msg("请求参数 格式不合法");
+    }
+
+    try {
+      layer.load();
+      const response = await fetch(URL.ONLINE_REQUEST, {
+        method: "POST",
+        body: Utils.stringify(submitData),
+        headers: { "Content-Type": "application/json" },
+      });
+      let result = await response.json();
+      if (Utils.isObject(result)) result = Utils.stringify(result);
+      const { rawText, jsonpFun } = Utils.matchJsonp(result);
+      const json = Utils.parse(rawText);
+      this.reload(json, rawText, jsonpFun);
+    } catch (e) {
+      layer.closeAll();
+      layer.msg("请求异常：" + e.message);
+      console.log("HTTP 请求异常：", e);
+    }
+  },
   reload(json, rawText, jsonpFun) {
-    unsafeWindow.GLOBAL_JSON = json;
     unsafeWindow.RAW_TEXT = rawText;
+    unsafeWindow.GLOBAL_JSON = json;
     unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
     window.postMessage({ reload: true });
     layer.closeAll();

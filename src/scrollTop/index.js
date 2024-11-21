@@ -2,6 +2,7 @@ import Utils from "../common/Utils";
 import "./scroll-top.css";
 
 const scroll = Utils.createElement("div", {
+  titile: "返回顶部",
   class: "scroll-top",
 });
 document.body.appendChild(scroll);

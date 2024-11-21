@@ -46,10 +46,7 @@ const format = {
           const _key = key.toLowerCase();
           const _value = Utils.stringify(value).toLowerCase();
 
-          if (!_key.includes(text) && !_value.includes(text)) {
-            continue;
-          }
-
+          if (!_key.includes(text) && !_value.includes(text)) continue;
           if (["array", "object"].includes(type)) {
             const result = match(value, text);
             const _result = Utils.stringify(result).toLowerCase();
@@ -97,6 +94,6 @@ window.addEventListener("message", function (event) {
   if (!data) return;
   if (data.reload) return format.setStyle();
   const { type, value } = data;
-  if (type === "style") format.changeStyle(value);
+  if (Object.is(type, "style")) format.changeStyle(value);
 });
 export default format;
