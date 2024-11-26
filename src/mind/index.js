@@ -108,13 +108,8 @@ export default {
         const chain = Utils.createElement("div");
         const chainCon = Utils.createElement("div");
         chain.appendChild(chainCon);
-        const copy = Utils.createElement("div", {
-          title: "复制",
-          class: "js-mind-copy",
-        });
-        const content = Utils.createElement("div", {
-          class: "js-mind-child-node",
-        });
+        const content = Utils.createElement("div", { class: "js-mind-child-node" });
+        const copy = Utils.createElement("div", { title: "复制", class: "js-mind-copy" });
         content.appendChild(copy);
         keys.forEach((i) => {
           const child = Utils.createElement("div");

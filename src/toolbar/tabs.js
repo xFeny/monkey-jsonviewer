@@ -26,8 +26,8 @@ const tabs = {
     GM_setClipboard(content);
     layer.msg("复制成功", { time: 1500 });
   },
-  sort(el) {
-    const text = unsafeWindow.JSON_FORMATER.sort();
+  sorted(el) {
+    const text = unsafeWindow.JSON_FORMATER.sorted();
     el.textContent = text;
   },
   collapseAll() {

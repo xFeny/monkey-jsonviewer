@@ -40,14 +40,14 @@ export default {
   stringify(value, replacer, space) {
     return JSON.stringify(value, replacer, space);
   },
-  isObject(obj) {
-    return Object.is(typeof obj, "object");
+  isObject(o) {
+    return Object.is(typeof o, "object");
   },
-  getType(v) {
-    return this.getPropType(v).toLowerCase();
+  getType(o) {
+    return this.getPropType(o).toLowerCase();
   },
-  getPropType(val) {
-    return Object.prototype.toString.call(val).match(/\s(.+)]/)[1];
+  getPropType(o) {
+    return Object.prototype.toString.call(o).match(/\s(.+)]/)[1];
   },
   findMaxKeysObject(arr) {
     let maxKeysCount = 0;
@@ -61,28 +61,16 @@ export default {
     }
     return maxKeysObject;
   },
-  randomColor: (opacity) => {
-    const red = Math.floor(Math.random() * 256);
-    const green = Math.floor(Math.random() * 256);
-    const blue = Math.floor(Math.random() * 256);
-    return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
-  },
   downloadText(content, filename) {
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const blob = new Blob([content], { type: "application/json;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    link.click();
+    this.createElement("a", { href: url, download: filename }).click();
     URL.revokeObjectURL(url);
   },
   matchJsonp(rawText) {
     const tokens = rawText.match(/^([^\s(]*)\s*\(([\s\S]*)\)\s*;?$/);
     if (tokens && tokens[1] && tokens[2]) {
-      return {
-        rawText: tokens[2],
-        jsonpFun: tokens[1],
-      };
+      return { rawText: tokens[2], jsonpFun: tokens[1] };
     }
     return { rawText, jsonpFun: null };
   },
@@ -210,6 +198,7 @@ export default {
     }
   },
   show(ele) {
+    if (!ele) return;
     const style = ele.style;
     const display = getComputedStyle(ele).display;
     if (style.display === "none") style.display = "";

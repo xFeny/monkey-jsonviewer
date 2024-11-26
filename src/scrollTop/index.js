@@ -1,10 +1,7 @@
 import Utils from "../common/Utils";
 import "./scroll-top.css";
 
-const scroll = Utils.createElement("div", {
-  titile: "返回顶部",
-  class: "scroll-top",
-});
+const scroll = Utils.createElement("div", { titile: "返回顶部", class: "scroll-top" });
 document.body.appendChild(scroll);
 const $container = Utils.query(".container");
 $container.addEventListener("scroll", function () {

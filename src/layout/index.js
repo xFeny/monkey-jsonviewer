@@ -5,7 +5,7 @@ export default `
 <template data-for="viewFormater">
   <div class="toolbar-item btn" id="saveJson">保存</div>
   <div class="toolbar-item btn" id="copyJson">复制</div>
-  <div class="toolbar-item btn" id="sort">排序</div>
+  <div class="toolbar-item btn" id="sorted">排序</div>
   <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
   <div class="toolbar-item btn" id="expandAll">全部展开</div>
   <div class="searchbox">

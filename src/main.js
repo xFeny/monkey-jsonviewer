@@ -35,16 +35,8 @@ const { EXAMPLE_JSON, LAYUI_JS } = URL;
     });
     document.head.appendChild(meta);
 
-    const script = Utils.createElement("script", {
-      src: LAYUI_JS,
-      type: "text/javascript",
-    });
+    const script = Utils.createElement("script", { src: LAYUI_JS, type: "text/javascript" });
     document.head.appendChild(script);
-
-    GM_addStyle(`
-      jmnode.root::before{background-color: ${Utils.randomColor(0.5)}}
-      jmnode:not(.root)::before{background-color: ${Utils.randomColor(0.5)}}
-    `);
 
     document.body.insertAdjacentHTML("afterbegin", layout);
     unsafeWindow.GLOBAL_JSON = Utils.parse(unsafeWindow.RAW_TEXT);

@@ -3,7 +3,7 @@ import JsonFormat from "./JsonFormat";
 
 class JsonToTable extends JsonFormat {
   constructor(options) {
-    options.style = JsonFormat.STYLE.table;
+    options.style = JsonFormat.STYLE.TABLE;
     super(options, "table", "json-tree-table");
   }
 
@@ -12,7 +12,7 @@ class JsonToTable extends JsonFormat {
     for (const key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
         let value = json[key];
-        const type = this.getType(value);
+        const type = Utils.getType(value);
         const JSONPath = this.JSONPath(path, key);
         const args = { key, value, type, depth, JSONPath, pid };
 
@@ -32,7 +32,7 @@ class JsonToTable extends JsonFormat {
     const isIterate = this.isIterate(value);
     const canIterate = this.canIterate(value);
 
-    const node = this.createElement("tr", {
+    const node = Utils.createElement("tr", {
       "data-type": type,
       "data-node-id": id,
       "data-node-pid": pid,
@@ -43,7 +43,7 @@ class JsonToTable extends JsonFormat {
     const keyNode = this.createKeyNode(key, value, depth, JSONPath);
     node.appendChild(keyNode);
     // JSON value
-    const td = this.createElement("td");
+    const td = Utils.createElement("td");
     if (!isIterate) {
       td.appendChild(this.creatValueNode(type, value));
       node.appendChild(td);
@@ -57,46 +57,27 @@ class JsonToTable extends JsonFormat {
   }
 
   createKeyNode(key, value, depth, JSONPath) {
-    const node = this.createElement("td", {
+    const node = Utils.createElement("td", {
       JSONPath,
       colspan: this.canIterate(value) ? 2 : 0,
       style: `padding-left: ${depth * 20}px`,
     });
 
-    const k = this.createElement("span", {
-      class: "json-key",
-    });
-    k.textContent = `${key}`;
-    node.appendChild(k);
+    const span = Utils.createElement("span", { class: "json-key" });
+    span.textContent = `${key}`;
+    node.appendChild(span);
 
-    const colon = this.createElement("span", {
-      class: "json-colon",
-    });
+    const colon = Utils.createElement("span", { class: "json-colon" });
     colon.textContent = ":";
     node.appendChild(colon);
 
-    if (this.canIterate(value)) {
-      const icon = this.createElement("span", {
-        class: "json-formater-arrow",
-      });
-      node.prepend(icon);
-
-      const copy = this.createElement("span", {
-        title: "复制",
-        class: "json-formater-copy",
-      });
-      copy.json = value;
-      node.appendChild(copy);
-
-      const placeholder = this.creatPlaceholder(value);
-      node.appendChild(placeholder);
-    }
+    this.creatOtherNodes(node, value);
     return node;
   }
 
   bindEvent() {
     super.bindEvent();
-    this.addEvent("mousedown", "table tr", function (event) {
+    Utils.addEvent("mousedown", "table tr", function (event) {
       const { tagName, className } = event.target;
       if (event.ctrlKey || tagName === "A" || (tagName === "SPAN" && className !== "json-key")) {
         return;

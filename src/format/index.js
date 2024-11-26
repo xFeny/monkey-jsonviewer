@@ -24,9 +24,7 @@ const format = {
     const options = { json, style, theme, container };
     unsafeWindow.JSON_FORMATER = FormaterFactory.getInstance(options);
     if (unsafeWindow.GLOBAL_JSONP_FUN) {
-      const start = Utils.createElement("div", {
-        class: "jsonp",
-      });
+      const start = Utils.createElement("div", { class: "jsonp" });
       start.textContent = `${unsafeWindow.GLOBAL_JSONP_FUN}(`;
       container.prepend(start);
       const end = start.cloneNode(true);

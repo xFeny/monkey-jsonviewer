@@ -302,10 +302,10 @@ $dark_tip_color: #4e4e4e;
 
         &::before {
           content: "";
-          top: 50% !important;
           margin-top: 1px;
           position: absolute;
           border-radius: 50%;
+          top: 50% !important;
           transform: translateY(-50%);
           background-color: rgba(129, 73, 191, 0.5);
         }
