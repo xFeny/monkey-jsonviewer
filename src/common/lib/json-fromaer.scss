@@ -1,3 +1,40 @@
+@mixin theme($bg, $ob, $ab, $key, $str, $num, $bool, $null) {
+  background-color: $bg;
+
+  .json-object-bracket {
+    color: $ob;
+    font-weight: 700;
+  }
+
+  .json-array-bracket {
+    color: $ab;
+    font-weight: 700;
+  }
+
+  .json-key {
+    color: $key;
+    cursor: pointer;
+  }
+
+  .json-string,
+  .json-string a {
+    color: $str;
+  }
+
+  .json-bigint,
+  .json-number {
+    color: $num;
+  }
+
+  .json-boolean {
+    color: $bool;
+  }
+
+  .json-null {
+    color: $null;
+  }
+}
+
 div.json-formater-item {
   border-left: 0.5px dotted #d9d9d9;
 }
@@ -75,10 +112,6 @@ div.json-formater-item {
   border: 1px solid #ccc;
 }
 
-.json-key {
-  cursor: pointer;
-}
-
 .json-comma {
   margin-left: 0.15em;
   font-family: "Courier New", monospace;
@@ -88,72 +121,29 @@ div.json-formater-item {
   margin: 0 0.3em 0 0.15em;
 }
 
-.json-object-bracket {
-  color: #6d9331;
-  font-weight: 700;
-}
-
-.json-array-bracket {
-  color: #8e9331;
-  font-weight: 700;
-}
-
 /** 默认主题色 START **/
 .default-theme {
-  background-color: #fefefe;
-
-  .json-key {
-    color: #910f93;
-  }
-
-  .json-string,
-  .json-string a {
-    color: #2e7c16;
-  }
-
-  .json-bigint,
-  .json-number {
-    color: #164ff1;
-  }
-
-  .json-boolean {
-    color: #c41a16;
-  }
-
-  .json-null {
-    color: #228fec;
-  }
+  @include theme(#fefefe, #6d9331, #8e9331, #910f93, #2e7c16, #164ff1, #c41a16, #228fec);
 }
 /** 默认主题色 END **/
 
 /** 浅色主题 START **/
 .light-theme {
-  background-color: #fefefe;
-
-  .json-key {
-    color: #0040cf;
-  }
-
-  .json-string,
-  .json-string a {
-    color: #a31515;
-  }
-
-  .json-bigint,
-  .json-number {
-    color: #0b7500;
-  }
-
-  .json-boolean {
-    color: #0000ff;
-  }
-
-  .json-null {
-    color: #0055ff;
-  }
+  @include theme(#fefefe, #6d9331, #8e9331, #0040cf, #a31515, #0b7500, #0000ff, #0055ff);
 }
 
 /** 浅色主题 END **/
+/** 暗黑主题色 START **/
+.dark-theme {
+  @include theme(#252526, #ce70d6, #f1d700, #9cdcfe, #ce9178, #b5cea8, #358cd6, #569cd6);
+}
+/** 暗黑主题色 END **/
+
+/** 暗黑+主题色 START **/
+.dark-plus-theme {
+  @include theme(#1e1f22, #bb9667, #bbbda3, #c77dbb, #6aab73, #28aab4, #ce8951, #c78d61);
+}
+/** 暗黑+主题色 END **/
 .dark-theme,
 .dark-plus-theme {
   div.json-formater-item {
@@ -174,78 +164,6 @@ div.json-formater-item {
     }
   }
 }
-
-/** 暗黑主题色 START **/
-.dark-theme {
-  background-color: #252526;
-
-  .json-object-bracket {
-    color: #ce70d6;
-  }
-
-  .json-array-bracket {
-    color: #f1d700;
-  }
-
-  .json-key {
-    color: #9cdcfe;
-  }
-
-  .json-string,
-  .json-string a {
-    color: #ce9178;
-  }
-
-  .json-bigint,
-  .json-number {
-    color: #b5cea8;
-  }
-
-  .json-boolean {
-    color: #358cd6;
-  }
-
-  .json-null {
-    color: #569cd6;
-  }
-}
-/** 暗黑主题色 END **/
-
-/** 暗黑+主题色 START **/
-.dark-plus-theme {
-  background-color: #1e1f22;
-
-  .json-object-bracket {
-    color: #bb9667;
-  }
-
-  .json-array-bracket {
-    color: #bbbda3;
-  }
-
-  .json-key {
-    color: #c77dbb;
-  }
-
-  .json-string,
-  .json-string a {
-    color: #6aab73;
-  }
-
-  .json-bigint,
-  .json-number {
-    color: #28aab4;
-  }
-
-  .json-boolean {
-    color: #ce8951;
-  }
-
-  .json-null {
-    color: #c78d61;
-  }
-}
-/** 暗黑+主题色 END **/
 /** 表格样式 START **/
 .json-tree-table {
   border-collapse: collapse;
