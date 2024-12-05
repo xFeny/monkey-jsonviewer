@@ -17,29 +17,27 @@ const { EXAMPLE_JSON, LAYUI_JS } = URL;
 
   const innerText = document.body.innerText;
   const { rawText, jsonpFun } = Utils.matchJsonp(innerText);
+  if (!Utils.isJSON(rawText)) return import("./js_css_beautify");
+
   unsafeWindow.RAW_TEXT = rawText;
   unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
-  if (!Utils.isJSON(unsafeWindow.RAW_TEXT)) {
-    import("./js_css_beautify");
-    return;
-  }
+  unsafeWindow.GLOBAL_JSON = Utils.parse(unsafeWindow.RAW_TEXT);
 
   Utils.hide(Utils.query("pre"));
   Utils.addClass(Utils.query("html"), "monkey-jsonviewer");
   window.postMessage({ addStyle: true });
 
+  const meta = Utils.createElement("meta", {
+    name: "viewport",
+    content: "width=device-width, initial-scale=1.0",
+  });
+  document.head.appendChild(meta);
+
+  const script = Utils.createElement("script", { src: LAYUI_JS, type: "text/javascript" });
+  document.head.appendChild(script);
+
   setTimeout(() => {
-    const meta = Utils.createElement("meta", {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1.0",
-    });
-    document.head.appendChild(meta);
-
-    const script = Utils.createElement("script", { src: LAYUI_JS, type: "text/javascript" });
-    document.head.appendChild(script);
-
     document.body.insertAdjacentHTML("afterbegin", layout);
-    unsafeWindow.GLOBAL_JSON = Utils.parse(unsafeWindow.RAW_TEXT);
     const temp = Utils.query('template[data-for="viewFormater"]');
     Utils.query(".toolbar").innerHTML = temp.innerHTML;
     import("./format").then(() => {

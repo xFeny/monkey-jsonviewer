@@ -7,13 +7,10 @@ const formatBox = Utils.query("#formatBox");
 const rawTextBox = Utils.query("#rawTextBox");
 const rawTextPre = Utils.query("pre", rawTextBox);
 const tabs = {
-  firstFormat: true,
-  isBeautify: false,
   viewFormater() {
     const value = unsafeWindow.FILTER_VALUE || "";
-    Utils.query(".searchbox input").value = value;
-    const clear = Utils.query(".searchbox .clear");
-    Utils.attr(clear, "hidden", !value);
+    Utils.query(".filter").value = value;
+    Utils.attr(Utils.query(".clear"), "hidden", !value);
   },
   saveJson() {
     if (Utils.isVisible(mindBox)) return unsafeWindow.GLOBAL_JSMIND.shoot();
@@ -69,11 +66,13 @@ const tabs = {
     }
     rawTextPre.textContent = rawText;
   },
+  firstFormat: true,
   viewRawText() {
     if (!this.firstFormat) return;
     this.firstFormat = false;
     this._setRawText();
   },
+  isBeautify: false,
   beautify() {
     this.isBeautify = !this.isBeautify;
     if (!this.isBeautify) return this._setRawText();

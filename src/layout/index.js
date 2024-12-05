@@ -9,7 +9,7 @@ export default `
   <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
   <div class="toolbar-item btn" id="expandAll">全部展开</div>
   <div class="searchbox">
-    <input type="text" placeholder="JSON 过滤" />
+    <input class="filter" type="text" placeholder="JSON 过滤" />
     <button class="clear" hidden></button>
   </div>
 </template>

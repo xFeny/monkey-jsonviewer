@@ -69,12 +69,11 @@ export default {
     return this;
   },
   event() {
-    const that = this;
-    Utils.addEvent("click mouseover", "jmnode", handler);
-    function handler(event) {
-      const nodeid = Utils.attr(this, "nodeid");
+    Utils.addEvent("click mouseover", "jmnode", (event) => {
+      const target = event.target;
+      const nodeid = Utils.attr(target, "nodeid");
       const node = unsafeWindow.GLOBAL_JSMIND.get_node(nodeid);
-      const chain = that.getChain(node);
+      const chain = this.getChain(node);
 
       if (event.type === "click") {
         if (event.ctrlKey) {
@@ -85,17 +84,17 @@ export default {
 
         const keys = node.data.keys;
         if (!keys || keys.length === 0) return;
-        that.popup(chain, keys);
+        this.popup(chain, keys);
       } else {
         const content = `<i>ctrl＋click 复制</i><br/><b>路径：</b>${chain}`;
-        tippy(this, {
+        tippy(target, {
           content,
           duration: 800,
           allowHTML: true,
           theme: "layer",
         }).show();
       }
-    }
+    });
     return this;
   },
   popup(chain, keys) {

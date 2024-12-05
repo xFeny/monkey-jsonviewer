@@ -5,15 +5,13 @@ import evnet from "./evnet";
 
 const format = {
   changeStyle(style) {
-    GM_setValue("style", style);
-    this.setStyle();
+    GM_setValue("style", style) & this.setStyle();
     return this;
   },
   setStyle() {
-    const input = Utils.query(".searchbox input");
-    if (input) input.value = "";
-    const clear = Utils.query(".searchbox .clear");
-    Utils.attr(clear, "hidden", true);
+    unsafeWindow.FILTER_VALUE = "";
+    Utils.query(".filter").value = "";
+    Utils.attr(Utils.query(".clear"), "hidden", true);
     this.render(unsafeWindow.GLOBAL_JSON);
     return this;
   },
@@ -61,23 +59,19 @@ const format = {
     return match(json, text);
   },
   input() {
-    const that = this;
-    const debounceInput = Utils.debounce(function () {
-      const value = this.value;
+    const debounceInput = Utils.debounce((event) => {
+      const value = event.target.value;
       unsafeWindow.FILTER_VALUE = value;
-      const clear = Utils.query(".searchbox .clear");
+      const clear = Utils.query(".clear");
       Utils.attr(clear, "hidden", !value);
-      const newJson = that.filter(unsafeWindow.GLOBAL_JSON, value);
-      that.render(newJson);
+      const newJson = this.filter(unsafeWindow.GLOBAL_JSON, value);
+      this.render(newJson);
     }, 400);
-    Utils.addEvent("input", ".searchbox input", debounceInput);
-    return that;
+    Utils.addEvent("input", ".filter", debounceInput);
+    return this;
   },
   clear() {
-    Utils.addEvent("click", ".searchbox .clear", () => {
-      this.setStyle();
-      unsafeWindow.FILTER_VALUE = "";
-    });
+    Utils.addEvent("click", ".clear", () => this.setStyle());
     return this;
   },
   init() {
@@ -85,7 +79,6 @@ const format = {
     evnet.init();
   },
 };
-format.init();
 
 window.addEventListener("message", function (event) {
   const { data } = event;
@@ -94,4 +87,6 @@ window.addEventListener("message", function (event) {
   const { type, value } = data;
   if (Object.is(type, "style")) format.changeStyle(value);
 });
+
+format.init();
 export default format;

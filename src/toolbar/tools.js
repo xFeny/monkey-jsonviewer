@@ -4,7 +4,6 @@ import http_form from "../layout/http_form";
 
 export default {
   inputJson() {
-    const that = this;
     layer.prompt(
       {
         move: false,
@@ -12,15 +11,15 @@ export default {
         btn: ["确认"],
         shadeClose: true,
         title: "JSON 输入",
-        maxlength: 1000000,
         area: ["400px", "300px"],
+        maxlength: Number.MAX_VALUE,
       },
-      function (text) {
+      (text) => {
         if (!text) return layer.msg("内容不能为空", { time: 1500 });
         const { rawText, jsonpFun } = Utils.matchJsonp(text);
         try {
           const json = Utils.parse(rawText);
-          that.reload(json, rawText, jsonpFun);
+          this.reload(json, rawText, jsonpFun);
         } catch (e) {
           layer.msg("JSON格式不正确", { time: 1500 });
           console.log("格式化异常: ", e);
@@ -82,10 +81,10 @@ export default {
     }
   },
   reload(json, rawText, jsonpFun) {
+    layer.closeAll();
     unsafeWindow.RAW_TEXT = rawText;
     unsafeWindow.GLOBAL_JSON = json;
     unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
     window.postMessage({ reload: true });
-    layer.closeAll();
   },
 };
