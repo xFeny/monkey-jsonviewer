@@ -42,7 +42,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:dom-to-image", (()=>{const _=domtoimage;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-BIdUPisC.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-DCdoKu52.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -54,7 +54,7 @@ System.register("./__entry.js", ['./__monkey.entry-BIdUPisC.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-BIdUPisC.js", [], (function (exports, module) {
+System.register("./__monkey.entry-DCdoKu52.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -2087,7 +2087,7 @@ System.register("./__monkey.entry-BIdUPisC.js", [], (function (exports, module) 
   <div class="toolbar-item btn" id="collapseAll">全部折叠</div>
   <div class="toolbar-item btn" id="expandAll">全部展开</div>
   <div class="searchbox">
-    <input type="text" placeholder="JSON 过滤" />
+    <input class="filter" type="text" placeholder="JSON 过滤" />
     <button class="clear" hidden></button>
   </div>
 </template>
@@ -2161,30 +2161,27 @@ System.register("./__monkey.entry-BIdUPisC.js", [], (function (exports, module) 
         });
         const innerText = document.body.innerText;
         const { rawText, jsonpFun } = Utils.matchJsonp(innerText);
+        if (!Utils.isJSON(rawText)) return __vitePreload(() => module.import('./index-E2iQcjBA-i7WydowI.js'), void 0 );
         _unsafeWindow.RAW_TEXT = rawText;
         _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
-        if (!Utils.isJSON(_unsafeWindow.RAW_TEXT)) {
-          __vitePreload(() => module.import('./index-CVuS67uF-yZNQts5k.js'), void 0 );
-          return;
-        }
+        _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
         Utils.hide(Utils.query("pre"));
         Utils.addClass(Utils.query("html"), "monkey-jsonviewer");
         window.postMessage({ addStyle: true });
+        const meta = Utils.createElement("meta", {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1.0"
+        });
+        document.head.appendChild(meta);
+        const script = Utils.createElement("script", { src: LAYUI_JS, type: "text/javascript" });
+        document.head.appendChild(script);
         setTimeout(() => {
-          const meta = Utils.createElement("meta", {
-            name: "viewport",
-            content: "width=device-width, initial-scale=1.0"
-          });
-          document.head.appendChild(meta);
-          const script = Utils.createElement("script", { src: LAYUI_JS, type: "text/javascript" });
-          document.head.appendChild(script);
           document.body.insertAdjacentHTML("afterbegin", layout);
-          _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
           const temp = Utils.query('template[data-for="viewFormater"]');
           Utils.query(".toolbar").innerHTML = temp.innerHTML;
-          __vitePreload(() => module.import('./index-DkziHcQw-4eRzUZZv.js'), void 0 ).then(() => {
-            __vitePreload(() => module.import('./index-Dzkkwv2F-DMI9QLVN.js'), void 0 );
-            __vitePreload(() => module.import('./index-BfUaIe4f-DGqe2snA.js'), void 0 );
+          __vitePreload(() => module.import('./index-BH0IjtGg-Dmyu4vWX.js'), void 0 ).then(() => {
+            __vitePreload(() => module.import('./index-Dzd9Egs5-CFSrgXgq.js'), void 0 );
+            __vitePreload(() => module.import('./index-CA4s7Voq-Ca0GwYyV.js'), void 0 );
           });
         });
       })();
@@ -2193,7 +2190,7 @@ System.register("./__monkey.entry-BIdUPisC.js", [], (function (exports, module) 
   };
 }));
 
-System.register("./index-CVuS67uF-yZNQts5k.js", ['highlight.js', 'beautifier', './__monkey.entry-BIdUPisC.js'], (function (exports, module) {
+System.register("./index-E2iQcjBA-i7WydowI.js", ['highlight.js', 'beautifier', './__monkey.entry-DCdoKu52.js'], (function (exports, module) {
   'use strict';
   var hljs, css_beautify, js_beautify, Utils;
   return {
@@ -2265,14 +2262,14 @@ System.register("./index-CVuS67uF-yZNQts5k.js", ['highlight.js', 'beautifier', '
   };
 }));
 
-System.register("./index-DkziHcQw-4eRzUZZv.js", ['./__monkey.entry-BIdUPisC.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-BH0IjtGg-Dmyu4vWX.js", ['./__monkey.entry-DCdoKu52.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
-  var _GM_setValue, Utils, _unsafeWindow, _GM_getValue, _GM_setClipboard, tippy;
+  var _GM_setValue, _unsafeWindow, Utils, _GM_getValue, _GM_setClipboard, tippy;
   return {
     setters: [module => {
       _GM_setValue = module._;
-      Utils = module.U;
       _unsafeWindow = module.a;
+      Utils = module.U;
       _GM_getValue = module.b;
       _GM_setClipboard = module.c;
     }, module => {
@@ -2710,54 +2707,42 @@ System.register("./index-DkziHcQw-4eRzUZZv.js", ['./__monkey.entry-BIdUPisC.js',
             if (!Utils.isImg(href)) return;
             tippy(this, {
               duration: 800,
-              content: `<img style="max-width: 500px;" src="${href}" />`,
               allowHTML: true,
-              theme: "imagebox"
+              theme: "imagebox",
+              content: `<img style="max-width: 500px;" src="${href}" />`
             }).show();
           });
           return this;
         },
-        tipsJsonPath() {
-          Utils.addEvent("mouseenter", ".json-key", (event) => {
+        eventPath() {
+          Utils.addEvent("click mouseenter", ".json-key", (event) => {
             const target = event.target;
-            const jsonPath = this.getJsonPath(target);
-            const content = `<i>ctrl＋click 复制</i><br/><b>路径：</b>${jsonPath}`;
+            const JSONPath = Utils.attr(target.parentElement, "JSONPath");
+            if (Object.is(event.type, "click") && event.ctrlKey) {
+              return _GM_setClipboard(JSONPath) & layer.msg("复制成功", { time: 1500 });
+            }
             tippy(target, {
-              content,
               duration: 800,
+              theme: "layer",
               allowHTML: true,
-              theme: "layer"
+              content: `<i>ctrl＋click 复制</i><br/><b>路径：</b>${JSONPath}`
             }).show();
           });
           return this;
-        },
-        copyJsonPath() {
-          Utils.addEvent("click", ".json-key", (event) => {
-            if (!event.ctrlKey) return;
-            const jsonPath = this.getJsonPath(event.target);
-            _GM_setClipboard(jsonPath);
-            layer.msg("复制成功", { time: 1500 });
-          });
-          return this;
-        },
-        getJsonPath(ele) {
-          return Utils.attr(ele.parentElement, "JSONPath");
         },
         init() {
-          this.urlHover().tipsJsonPath().copyJsonPath();
+          this.urlHover().eventPath();
         }
       };
       const format = exports("default", {
         changeStyle(style) {
-          _GM_setValue("style", style);
-          this.setStyle();
+          _GM_setValue("style", style) & this.setStyle();
           return this;
         },
         setStyle() {
-          const input = Utils.query(".searchbox input");
-          if (input) input.value = "";
-          const clear = Utils.query(".searchbox .clear");
-          Utils.attr(clear, "hidden", true);
+          _unsafeWindow.FILTER_VALUE = "";
+          Utils.query(".filter").value = "";
+          Utils.attr(Utils.query(".clear"), "hidden", true);
           this.render(_unsafeWindow.GLOBAL_JSON);
           return this;
         },
@@ -2804,23 +2789,19 @@ System.register("./index-DkziHcQw-4eRzUZZv.js", ['./__monkey.entry-BIdUPisC.js',
           return match(json, text);
         },
         input() {
-          const that = this;
-          const debounceInput = Utils.debounce(function() {
-            const value = this.value;
+          const debounceInput = Utils.debounce((event) => {
+            const value = event.target.value;
             _unsafeWindow.FILTER_VALUE = value;
-            const clear = Utils.query(".searchbox .clear");
+            const clear = Utils.query(".clear");
             Utils.attr(clear, "hidden", !value);
-            const newJson = that.filter(_unsafeWindow.GLOBAL_JSON, value);
-            that.render(newJson);
+            const newJson = this.filter(_unsafeWindow.GLOBAL_JSON, value);
+            this.render(newJson);
           }, 400);
-          Utils.addEvent("input", ".searchbox input", debounceInput);
-          return that;
+          Utils.addEvent("input", ".filter", debounceInput);
+          return this;
         },
         clear() {
-          Utils.addEvent("click", ".searchbox .clear", () => {
-            this.setStyle();
-            _unsafeWindow.FILTER_VALUE = "";
-          });
+          Utils.addEvent("click", ".clear", () => this.setStyle());
           return this;
         },
         init() {
@@ -2828,7 +2809,6 @@ System.register("./index-DkziHcQw-4eRzUZZv.js", ['./__monkey.entry-BIdUPisC.js',
           evnet.init();
         }
       });
-      format.init();
       window.addEventListener("message", function(event) {
         const { data } = event;
         if (!data) return;
@@ -2836,12 +2816,13 @@ System.register("./index-DkziHcQw-4eRzUZZv.js", ['./__monkey.entry-BIdUPisC.js',
         const { type, value } = data;
         if (Object.is(type, "style")) format.changeStyle(value);
       });
+      format.init();
 
     })
   };
 }));
 
-System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-BIdUPisC.js', 'dom-to-image'], (function (exports, module) {
+System.register("./index-Dzd9Egs5-CFSrgXgq.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-DCdoKu52.js', 'dom-to-image'], (function (exports, module) {
   'use strict';
   var tippy, require$$0, commonjsGlobal, Utils, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue, require$$1;
   return {
@@ -3014,12 +2995,11 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
           return this;
         },
         event() {
-          const that = this;
-          Utils.addEvent("click mouseover", "jmnode", handler);
-          function handler(event) {
-            const nodeid = Utils.attr(this, "nodeid");
+          Utils.addEvent("click mouseover", "jmnode", (event) => {
+            const target = event.target;
+            const nodeid = Utils.attr(target, "nodeid");
             const node = _unsafeWindow.GLOBAL_JSMIND.get_node(nodeid);
-            const chain = that.getChain(node);
+            const chain = this.getChain(node);
             if (event.type === "click") {
               if (event.ctrlKey) {
                 _GM_setClipboard(chain);
@@ -3028,17 +3008,17 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
               }
               const keys = node.data.keys;
               if (!keys || keys.length === 0) return;
-              that.popup(chain, keys);
+              this.popup(chain, keys);
             } else {
               const content = `<i>ctrl＋click 复制</i><br/><b>路径：</b>${chain}`;
-              tippy(this, {
+              tippy(target, {
                 content,
                 duration: 800,
                 allowHTML: true,
                 theme: "layer"
               }).show();
             }
-          }
+          });
           return this;
         },
         popup(chain, keys) {
@@ -3096,13 +3076,10 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
       const rawTextBox = Utils.query("#rawTextBox");
       const rawTextPre = Utils.query("pre", rawTextBox);
       const tabs = {
-        firstFormat: true,
-        isBeautify: false,
         viewFormater() {
           const value = _unsafeWindow.FILTER_VALUE || "";
-          Utils.query(".searchbox input").value = value;
-          const clear = Utils.query(".searchbox .clear");
-          Utils.attr(clear, "hidden", !value);
+          Utils.query(".filter").value = value;
+          Utils.attr(Utils.query(".clear"), "hidden", !value);
         },
         saveJson() {
           if (Utils.isVisible(mindBox)) return _unsafeWindow.GLOBAL_JSMIND.shoot();
@@ -3158,11 +3135,13 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
           }
           rawTextPre.textContent = rawText;
         },
+        firstFormat: true,
         viewRawText() {
           if (!this.firstFormat) return;
           this.firstFormat = false;
           this._setRawText();
         },
+        isBeautify: false,
         beautify() {
           this.isBeautify = !this.isBeautify;
           if (!this.isBeautify) return this._setRawText();
@@ -3202,8 +3181,7 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
       });
       const theme = {
         changeTheme(theme2) {
-          _GM_setValue("theme", theme2);
-          this.setTheme();
+          _GM_setValue("theme", theme2) & this.setTheme();
         },
         setTheme() {
           const theme2 = _GM_getValue("theme") || "default";
@@ -3234,7 +3212,6 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
 `;
       const tools = {
         inputJson() {
-          const that = this;
           layer.prompt(
             {
               move: false,
@@ -3242,15 +3219,15 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
               btn: ["确认"],
               shadeClose: true,
               title: "JSON 输入",
-              maxlength: 1e6,
-              area: ["400px", "300px"]
+              area: ["400px", "300px"],
+              maxlength: Number.MAX_VALUE
             },
-            function(text) {
+            (text) => {
               if (!text) return layer.msg("内容不能为空", { time: 1500 });
               const { rawText, jsonpFun } = Utils.matchJsonp(text);
               try {
                 const json = Utils.parse(rawText);
-                that.reload(json, rawText, jsonpFun);
+                this.reload(json, rawText, jsonpFun);
               } catch (e) {
                 layer.msg("JSON格式不正确", { time: 1500 });
                 console.log("格式化异常: ", e);
@@ -3310,11 +3287,11 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
           }
         },
         reload(json, rawText, jsonpFun) {
+          layer.closeAll();
           _unsafeWindow.RAW_TEXT = rawText;
           _unsafeWindow.GLOBAL_JSON = json;
           _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
           window.postMessage({ reload: true });
-          layer.closeAll();
         }
       };
       const active = "active";
@@ -3375,7 +3352,7 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
         const { data } = event;
         if (!data) return;
         const { type, value } = data;
-        if (!type) return;
+        if (!type && !value) return;
         if (Object.is(type, "tools")) return tools[value]();
         if (Object.is(type, "theme")) return theme.changeTheme(value);
       });
@@ -3384,7 +3361,7 @@ System.register("./index-Dzkkwv2F-DMI9QLVN.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
   };
 }));
 
-System.register("./index-BfUaIe4f-DGqe2snA.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-BIdUPisC.js'], (function (exports, module) {
+System.register("./index-CA4s7Voq-Ca0GwYyV.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-DCdoKu52.js'], (function (exports, module) {
   'use strict';
   var tippy, Utils;
   return {
