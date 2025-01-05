@@ -28,9 +28,7 @@ const tabs = {
     el.textContent = text;
   },
   collapseAll() {
-    Utils.isVisible(formatBox)
-      ? unsafeWindow.JSON_FORMATER.collapseAll()
-      : unsafeWindow.GLOBAL_JSMIND.collapse_all();
+    Utils.isVisible(formatBox) ? unsafeWindow.JSON_FORMATER.collapseAll() : unsafeWindow.GLOBAL_JSMIND.collapse_all();
   },
   expandAll() {
     if (Utils.isVisible(formatBox)) return unsafeWindow.JSON_FORMATER.expandAll();

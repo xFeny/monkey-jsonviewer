@@ -9,12 +9,7 @@ import Utils from "../common/Utils";
  * 对JS、CSS美化
  */
 (function () {
-  const docType = [
-    "application/x-javascript",
-    "application/javascript",
-    "text/javascript",
-    "text/css",
-  ];
+  const docType = ["application/x-javascript", "application/javascript", "text/javascript", "text/css"];
   const contentType = document.contentType;
   if (!docType.includes(contentType)) return;
   const preElement = Utils.query("pre");

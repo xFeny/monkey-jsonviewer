@@ -4,6 +4,9 @@ import AutoImport from "unplugin-auto-import/vite";
 import userscript from "./src/userscript.meta";
 
 export default defineConfig({
+  build: {
+    target: "es2020",
+  },
   plugins: [
     AutoImport({
       imports: [util.unimportPreset],
@@ -14,13 +17,10 @@ export default defineConfig({
       build: {
         systemjs: "inline",
         externalGlobals: {
-          jsmind: cdn
-            .unpkg("jsmind", "es6/jsmind.js")
-            .concat(util.dataUrl(";window.jsmind=jsMind;")),
-          "dom-to-image": [
-            "domtoimage",
-            () => `https://unpkg.com/dom-to-image@2.6.0/src/dom-to-image.js`,
-          ].concat(util.dataUrl(";window.domtoimage=domtoimage;")),
+          jsmind: cdn.unpkg("jsmind", "es6/jsmind.js").concat(util.dataUrl(";window.jsmind=jsMind;")),
+          "dom-to-image": ["domtoimage", () => `https://unpkg.com/dom-to-image@2.6.0/src/dom-to-image.js`].concat(
+            util.dataUrl(";window.domtoimage=domtoimage;")
+          ),
           beautifier: cdn
             .unpkg("beautifier")
             .concat(
@@ -28,10 +28,9 @@ export default defineConfig({
                 ";window.beautifier=js_beautify;window.js_beautify=js_beautify;window.css_beautify=css_beautify;"
               )
             ),
-          "highlight.js": [
-            "hljs",
-            () => `https://unpkg.com/@highlightjs/cdn-assets@11.10.0/highlight.min.js`,
-          ].concat(util.dataUrl(";window.hljs=hljs;")),
+          "highlight.js": ["hljs", () => `https://unpkg.com/@highlightjs/cdn-assets@11.10.0/highlight.min.js`].concat(
+            util.dataUrl(";window.hljs=hljs;")
+          ),
         },
         cssSideEffects: () => {
           return (e) => {
