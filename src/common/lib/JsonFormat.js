@@ -2,18 +2,26 @@ import Utils from "../Utils";
 
 const SORTED = { ASC: "ASC", DESC: "DESC" };
 const STYLE = { TABLE: "table", VIEWER: "viewer" };
+const findChildren = {
+  [STYLE.TABLE]: (node, context) => {
+    const path = Utils.attr(node, "path");
+    const selector = `*[path^='${path}']:not(*[path='${path}']):not(*[class*='hidden'])`;
+    return Utils.queryAll(selector, context);
+  },
+  [STYLE.VIEWER]: (node, context) => {
+    const selector = `*[data-node-pid="${node.dataset.nodeId}"]`;
+    return Utils.queryAll(selector, context);
+  },
+};
 class JsonFormat {
   static STYLE = STYLE;
+  Root = "Root";
   DEFAULTS = {
     sort: null,
     json: null,
     style: null,
-    theme: "default",
     container: null,
-    expander: null,
-    onExpand: null,
-    collapser: null,
-    onCollapse: null,
+    theme: "default",
   };
 
   constructor(options, tag, clazz) {
@@ -21,15 +29,15 @@ class JsonFormat {
     if (!options.container) throw new Error("Container is required");
     if (!options.json) throw new Error("json is required");
     this.render(tag, clazz);
-    this.bindEvent();
     this.setTheme(this.options.theme);
+    this.bindEvent();
   }
 
   render(tag, clazz) {
     this.$container = Utils.query(this.options.container);
     this.$container.innerHTML = "";
     const box = Utils.createElement(tag, { class: clazz });
-    this.createNode(box, this.options.json, "Root", "Root", 1);
+    this.createNode(box, this.options.json, this.Root, this.Root, 1);
     this.$container.appendChild(box);
   }
 
@@ -72,8 +80,8 @@ class JsonFormat {
 
   reload() {
     const box = this.$container.firstChild;
-    box.innerHTML = null;
-    this.createNode(box, this.options.json, "Root", "Root", 1);
+    box.innerHTML = "";
+    this.createNode(box, this.options.json, this.Root, this.Root, 1);
     this.$container.appendChild(box);
     this.bindEvent();
   }
@@ -104,17 +112,21 @@ class JsonFormat {
     return node;
   }
 
-  creatOtherNodes(node, value) {
-    if (!this.canIterate(value)) return;
-    const arrow = Utils.createElement("span", { class: "json-formater-arrow" });
-    node.prepend(arrow);
+  creatOtherNodes(node, json) {
+    if (!this.canIterate(json)) return;
+    node.prepend(this.creatArrowElement());
+    node.appendChild(this.creatCopyElement(json));
+    node.appendChild(this.creatPlaceholder(json));
+  }
 
+  creatArrowElement() {
+    return Utils.createElement("span", { class: "json-formater-arrow" });
+  }
+
+  creatCopyElement(json) {
     const copy = Utils.createElement("span", { title: "复制", class: "json-formater-copy" });
-    copy.json = value;
-    node.appendChild(copy);
-
-    const placeholder = this.creatPlaceholder(value);
-    node.appendChild(placeholder);
+    copy.json = json;
+    return copy;
   }
 
   creatPlaceholder(json) {
@@ -145,10 +157,6 @@ class JsonFormat {
   }
 
   bindEvent() {
-    const { expander, collapser, onExpand, onCollapse } = this.options;
-    if (expander) this.addEvent(`click`, expander, () => this.expandAll());
-    if (collapser) this.addEvent(`click`, collapser, () => this.collapseAll());
-
     this.addEvent("click", ".json-formater-copy", (e) => {
       const className = "success";
       const target = e.currentTarget;
@@ -159,82 +167,69 @@ class JsonFormat {
     });
 
     this.addEvent("click", ".json-formater-placeholder", (e) => {
-      const node = this.closest(e.currentTarget, ".json-formater-item");
+      const node = Utils.closest(e.currentTarget, ".json-formater-item");
       this.show(node);
     });
 
     this.addEvent("click", ".json-formater-arrow", (e) => {
-      const node = this.closest(e.currentTarget, ".json-formater-item");
-      if (Utils.hasClass(node, "json-formater-opened")) {
-        this.hide(node);
-        if (onCollapse) onCollapse(node, this);
-      } else {
-        this.show(node);
-        if (onExpand) onExpand(node, this);
-      }
+      const node = Utils.closest(e.currentTarget, ".json-formater-item");
+      const isExpand = Utils.hasClass(node, "json-formater-opened");
+      isExpand ? this.hide(node) : this.show(node);
     });
   }
 
   expandAll() {
-    this.nodes().forEach((node) => this.show(node));
+    const nodes = this.nodes();
+    for (const node of nodes) {
+      if (Utils.hasClass(node, "json-formater-closed")) this.show(node);
+    }
   }
 
   collapseAll() {
-    this.nodes().forEach((node) => this.hide(node));
+    const nodes = this.nodes();
+    for (const node of nodes) {
+      if (Utils.hasClass(node, "json-formater-opened")) this.hide(node);
+    }
   }
 
   show(node) {
+    this.showDescs(node);
+    Utils.hide(this.getPlaceNode(node));
     Utils.addClass(node, "json-formater-opened");
     Utils.removeClass(node, "json-formater-closed");
-    this.showDescs(node);
-    this.showAfter(node);
-  }
-
-  showDescs(node) {
-    const children = this.findChildren(node);
-    if (children.length === 0) return;
-    children.forEach((child) => {
-      Utils.show(child);
-      const hasClass = Utils.hasClass(child, "json-formater-opened");
-      const isTable = Object.is(STYLE.TABLE, this.options.style);
-      if (isTable && hasClass) this.showDescs(child);
-    });
-  }
-
-  showAfter(node) {
-    Utils.hide(this.queryPlaceholder(node));
   }
 
   hide(node) {
+    this.hideDescs(node);
+    Utils.show(this.getPlaceNode(node));
     Utils.addClass(node, "json-formater-closed");
     Utils.removeClass(node, "json-formater-opened");
-    this.hideDescs(node);
-    this.hideAfter(node);
+  }
+
+  showDescs(node) {
+    const queue = [node];
+    while (queue.length > 0) {
+      const currentNode = queue.shift();
+      const children = this.findChildren(currentNode);
+      for (const child of children) {
+        Utils.removeClass(child, "hidden");
+        const hasClass = Utils.hasClass(child, "json-formater-opened");
+        if (hasClass) queue.push(child);
+      }
+    }
   }
 
   hideDescs(node) {
-    const children = this.findChildren(node);
-    if (children.length === 0) return;
-    children.forEach((child) => {
-      Utils.hide(child);
-      const isTable = Object.is(STYLE.TABLE, this.options.style);
-      if (isTable) this.hideDescs(child);
-    });
+    const children = findChildren[this.options.style](node, this.$container);
+    for (const child of children) Utils.addClass(child, "hidden");
   }
 
-  hideAfter(node) {
-    Utils.show(this.queryPlaceholder(node));
-  }
-
-  queryPlaceholder(node) {
-    const id = node.dataset.nodeId;
-    const selector = `*[data-node-id="${id}"] .json-formater-placeholder`;
-    return Utils.query(selector, node);
+  getPlaceNode(node) {
+    return Utils.query(`*[data-node-id="${node.dataset.nodeId}"] .json-formater-placeholder`, node);
   }
 
   findChildren(node) {
-    const pid = node.dataset.nodeId;
-    return Utils.queryAll(`*[data-node-pid="${pid}"]`, this.$container);
+    return Utils.queryAll(`*[data-node-pid="${node.dataset.nodeId}"]`, this.$container);
   }
 
   findByID(id) {
@@ -251,19 +246,11 @@ class JsonFormat {
 
   nodes() {
     const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
-    return arrows.map((ele) => this.closest(ele, ".json-formater-item"));
+    return arrows.map((ele) => Utils.closest(ele, ".json-formater-item"));
   }
 
   addEvent(type, selector, fn) {
     Utils.queryAll(selector).forEach((el) => el.addEventListener(type, fn));
-  }
-
-  closest(element, selector) {
-    while (element) {
-      if (element.matches(selector)) return element;
-      element = element.parentElement;
-    }
-    return null;
   }
 
   JSONPath(path, key) {
@@ -276,14 +263,14 @@ class JsonFormat {
     return /^\d+$/.test(str);
   }
 
-  isIterate(value) {
-    const type = Utils.getType(value);
+  isIterate(data) {
+    const type = Utils.getType(data);
     return ["array", "object"].includes(type);
   }
 
-  canIterate(value) {
-    if (!this.isIterate(value)) return false;
-    return Object.keys(value).length > 0;
+  canIterate(data) {
+    if (!this.isIterate(data)) return false;
+    return Object.keys(data).length > 0;
   }
 
   isUrl(str) {
@@ -308,13 +295,13 @@ class JsonFormat {
   }
 
   random() {
-    let randomString = "";
+    let randomStr = "";
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     for (let i = 0; i < 10; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
-      randomString += characters.charAt(randomIndex);
+      randomStr += characters.charAt(randomIndex);
     }
-    return randomString;
+    return randomStr;
   }
 }
 

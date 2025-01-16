@@ -6,13 +6,11 @@ NodeList.prototype.some = Array.prototype.some;
 NodeList.prototype.map = Array.prototype.map;
 
 function getDefaultDisplay(ele) {
-  let temp,
-    display = ele.defaultDisplay;
-  const doc = ele.ownerDocument,
-    nodeName = ele.nodeName;
+  let display = ele.defaultDisplay;
+  const doc = ele.ownerDocument;
 
   if (display) return display;
-  temp = doc.body.appendChild(doc.createElement(nodeName));
+  const temp = doc.body.appendChild(doc.createElement(ele.nodeName));
   display = getComputedStyle(temp).display;
   temp.parentNode.removeChild(temp);
   if (display === "none") display = "block";
@@ -86,17 +84,7 @@ export default {
     } else if (navigator.clipboard) {
       navigator.clipboard.writeText(text);
     } else {
-      let textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "absolute";
-      textArea.style.opacity = 0;
-      textArea.style.left = "-999999px";
-      textArea.style.top = "-999999px";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      document.execCommand("copy");
-      textArea.remove();
+      console.error("复制内容失败");
     }
   },
   addEvent(eventType, selector, callback) {
@@ -159,6 +147,13 @@ export default {
     if (selector instanceof HTMLElement) return new NodeList(selector);
     if (selector instanceof NodeList) return selector;
     return ctx.querySelectorAll(selector);
+  },
+  closest(element, selector) {
+    while (element) {
+      if (element.matches(selector)) return element;
+      element = element.parentElement;
+    }
+    return null;
   },
   addClass(ele, className) {
     if (!ele) return;

@@ -35,6 +35,10 @@
   }
 }
 
+.hidden {
+  display: none !important;
+}
+
 div.json-formater-item {
   border-left: 0.5px dotted #d9d9d9;
 }

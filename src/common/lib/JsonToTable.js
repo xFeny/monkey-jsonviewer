@@ -1,5 +1,5 @@
 import Utils from "../Utils";
-import JsonFormat from "./JsonFormat";
+import JsonFormat from "./JsonFormat.js";
 
 class JsonToTable extends JsonFormat {
   constructor(options) {
@@ -9,6 +9,8 @@ class JsonToTable extends JsonFormat {
 
   createNode(table, json, path, pid, depth) {
     json = this.keySort(json);
+    // 创建文档片段
+    const fragment = document.createDocumentFragment();
     for (const key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
         let value = json[key];
@@ -17,13 +19,17 @@ class JsonToTable extends JsonFormat {
         const args = { key, value, type, depth, JSONPath, pid };
 
         const item = this.createItem(args);
-        table.appendChild(item);
+        // 将元素添加到文档片段
+        fragment.appendChild(item);
         if (this.canIterate(value)) {
           const nodeId = item.dataset.nodeId;
-          this.createNode(table, value, JSONPath, nodeId, depth + 1);
+          // 传递 fragment 而不是 table 进行递归调用
+          this.createNode(fragment, value, JSONPath, nodeId, depth + 1);
         }
       }
     }
+    // 最后将文档片段添加到 table 元素中
+    table.appendChild(fragment);
   }
 
   createItem(args) {
@@ -33,6 +39,7 @@ class JsonToTable extends JsonFormat {
     const canIterate = this.canIterate(value);
 
     const node = Utils.createElement("tr", {
+      path: JSONPath,
       "data-type": type,
       "data-node-id": id,
       "data-node-pid": pid,
@@ -40,7 +47,7 @@ class JsonToTable extends JsonFormat {
     });
 
     // JSON key
-    const keyNode = this.createKeyNode(key, value, depth, JSONPath);
+    const keyNode = this.createKeyNode(key, value, depth);
     node.appendChild(keyNode);
     // JSON value
     const td = Utils.createElement("td");
@@ -56,9 +63,8 @@ class JsonToTable extends JsonFormat {
     return node;
   }
 
-  createKeyNode(key, value, depth, JSONPath) {
+  createKeyNode(key, value, depth) {
     const node = Utils.createElement("td", {
-      JSONPath,
       colspan: this.canIterate(value) ? 2 : 0,
       style: `padding-left: ${depth * 20}px`,
     });

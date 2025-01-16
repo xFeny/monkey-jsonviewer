@@ -18,16 +18,16 @@ export default {
   eventPath() {
     Utils.addEvent("click mouseenter", ".json-key", (event) => {
       const target = event.target;
-      const JSONPath = Utils.attr(target.parentElement, "JSONPath");
+      const path = Utils.closest(target, ".json-formater-item").getAttribute("path");
       if (Object.is(event.type, "click") && event.ctrlKey) {
-        return GM_setClipboard(JSONPath) & layer.msg("复制成功", { time: 1500 });
+        return GM_setClipboard(path) & layer.msg("复制成功", { time: 1500 });
       }
 
       tippy(target, {
         duration: 800,
         theme: "layer",
         allowHTML: true,
-        content: `<i>ctrl＋click 复制</i><br/><b>路径：</b>${JSONPath}`,
+        content: `<i>ctrl＋click 复制</i><br/><b>路径：</b>${path}`,
       }).show();
     });
     return this;

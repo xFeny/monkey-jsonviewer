@@ -101,10 +101,10 @@ const tabs = {
 window.addEventListener("message", function (event) {
   const { data } = event;
   if (!data?.reload) return;
+  mindBox.innerHTML = "";
   jsonMind.isFirst = true;
   tabs.isBeautify = false;
   tabs.firstFormat = true;
-  mindBox.innerHTML = null;
   unsafeWindow.GLOBAL_JSMIND = undefined;
   if (Utils.isVisible(rawTextBox)) return tabs.viewRawText();
   if (Utils.isVisible(mindBox)) return jsonMind.init(unsafeWindow.GLOBAL_JSON);

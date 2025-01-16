@@ -29,8 +29,8 @@ export default {
     return children;
   },
   getChain(node) {
-    let chain = node.data.chain;
-    if (!node.parent) return chain;
+    let chain = node?.data?.chain;
+    if (!node?.parent) return chain;
     const parent = node.parent;
     const parentChain = this.getChain(parent);
     if (parent.data.isArray) return `${parentChain}[i].${chain}`;
@@ -74,7 +74,7 @@ export default {
       const nodeid = Utils.attr(target, "nodeid");
       const node = unsafeWindow.GLOBAL_JSMIND.get_node(nodeid);
       const chain = this.getChain(node);
-
+      if (!chain) return;
       if (event.type === "click") {
         if (event.ctrlKey) {
           GM_setClipboard(chain);

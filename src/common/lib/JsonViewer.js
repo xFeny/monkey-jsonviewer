@@ -12,7 +12,9 @@ class JsonViewer extends JsonFormat {
     const isIterate = this.isIterate(json);
     const canIterate = this.canIterate(json);
     if (canIterate) {
-      this.depthNode(box, type, json, JSONPath, pid);
+      if (this.Root !== pid) box.prepend(this.creatArrowElement());
+      const fragment = this.depthNode(json, JSONPath, pid);
+      box.appendChild(fragment);
     } else if (isIterate) {
       const bracket = this.createBracket(type);
       box.appendChild(bracket);
@@ -22,10 +24,15 @@ class JsonViewer extends JsonFormat {
     }
   }
 
-  depthNode(box, type, json, path, pid) {
+  depthNode(json, path, pid) {
     json = this.keySort(json);
-    box.appendChild(this.startBracket(type));
-    this.creatOther(box, json);
+    // 创建文档片段
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(this.startBracket(Utils.getType(json)));
+    if (this.Root !== pid) {
+      fragment.appendChild(this.creatCopyElement(json));
+      fragment.appendChild(this.creatPlaceholder(json));
+    }
     let length = Object.keys(json).length;
     for (var key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
@@ -35,7 +42,7 @@ class JsonViewer extends JsonFormat {
         const JSONPath = this.JSONPath(path, key);
 
         const node = Utils.createElement("div", {
-          JSONPath,
+          path: JSONPath,
           "data-node-id": id,
           "data-node-pid": pid,
           style: `padding-left: 20px`,
@@ -51,10 +58,12 @@ class JsonViewer extends JsonFormat {
           comma.textContent = ",";
           node.appendChild(comma);
         }
-        box.appendChild(node);
+        // 将节点添加到文档片段
+        fragment.appendChild(node);
       }
     }
-    box.appendChild(this.endBracket(type));
+    fragment.appendChild(this.endBracket(Utils.getType(json)));
+    return fragment;
   }
 
   startBracket(type) {
