@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      1.0.4
+// @version      1.0.6
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -25,7 +25,7 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(e=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function")return GM_addStyle(e);const o=document.createElement("style");o.textContent=e,document.head.append(o)})})(` @charset "UTF-8";.monkey-jsonviewer body,.monkey-jsonviewer iframe,.monkey-jsonviewer ul{margin:0;padding:0}.monkey-jsonviewer iframe{border:0}.monkey-jsonviewer input:focus,.monkey-jsonviewer select:focus,.monkey-jsonviewer textarea:focus{outline:0}.monkey-jsonviewer .jsonp{color:#657b83}.monkey-jsonviewer #jsoncrackEmbed{border:0;width:100%;height:100%}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.monkey-jsonviewer .json-viewer-layout{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column}.monkey-jsonviewer .json-viewer-layout .panel{display:flex;line-height:28px;user-select:none;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .json-viewer-layout .tabs,.monkey-jsonviewer .json-viewer-layout .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .json-viewer-layout .tabs>div,.monkey-jsonviewer .json-viewer-layout .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .tabs>div:hover,.monkey-jsonviewer .json-viewer-layout .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .json-viewer-layout .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .json-viewer-layout .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .json-viewer-layout .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .json-viewer-layout .toolbar{line-height:23px}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox:hover{background-color:transparent}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:14px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAipJREFUWEftljuIE1EUhv8zpJB0FqugItiIdmKnnQ+wjPhq3EILRYt1JTDnDvhgUJG55zY+ELO7hRZupYWCCIK6nXYiNoqlrIUKaxes5siFBGKYSSbJTnaLTDMwl/Ofj8Pc/z+ENX5ojftjfQFYay8AuEFEU2VMRlV/A7hujGm09f+bgIj8APCtjOYdmjuZeWsewCMAZwBcYub7qwkiIjMA7gF4zMxnMwHiOK5Wq9UXAA6r6kljzLPVgLDWniCipwDeNJvNWhzHzUwA/zFJku1BEHiIPUS0PwzDD6NAOOf2qep7AJ/SNK1FUfS9Uy/zFojIXgAeYhsRbQ7D8NcwEM65Tar6E8AygBozf+zWyb2GSZIcCYLgORH9DcNw45AAf1R1Q5qmR6Moep2l0dMHrLWniegJgK/MvHsQCBH5AmCXqk4bYxbzavsakYjMArgD4B0zHyoCISJvARwEcJmZ7/aq6Qvgi0XkJoCrqrpgjDnfS9BaO09E5wDcYuZr/YALAbQgHgLwTpnrER13vcHMF/s19+eFAVoQS/7NzAeyxJ1zS6qaez7wT9hdICITgMkEJhOYTMCq6jEimmXmV90+UboRtdzQ7wZ+aW1UKpUr9Xp9pQ0yFoCuXFhW1agdt2MD8BDOOb83zgPYAWAxCILbqvqg1CzIChMRmQPgI3qFiD773Z+ZTxVJwoHTME9URI4TUV1VtwCYYeaXYwUo2mzkOB6l0dA7YRlNOzX/ATTlNjBwsoHnAAAAAElFTkSuQmCC)}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANZJREFUOE+t0zFKg0EQhuEndbpgIVZ26eIJFK1SeQcPYKuWmlJIb6lHkJRpFFKnE2zTpBAknaUgA/+Q5SfBwGaaZWfne3dmdraj0job9Ae4wwAn+MUcn3jCotS0Aad4RW9LYj+4xkuel4ArPO9Y0RlmEZuAY3ygi/cGct6Clf4V+vhOwCNuG0EEXuAB941v1OzfkOAxbhIwwWVxYwoCEhZrCQzfFMMELHHUSjkhCchsMuwLh3sDVJfwXxOj/ihpaxOrnzEaUzVI2dmqUU5I1Wfa8Susw/4A1fw8ES1B6icAAAAASUVORK5CYII=)}.monkey-jsonviewer .json-viewer-layout .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .json-viewer-layout .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li{font-size:12px;padding:5px 20px;list-style-type:none;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .json-viewer-layout .container>div{height:100%;display:none}.monkey-jsonviewer .json-viewer-layout .container>div.active{display:block}.monkey-jsonviewer .json-viewer-layout .container #formatBox{padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox pre{margin:0;padding:0;white-space:pre-wrap;overflow-wrap:break-word}.monkey-jsonviewer .json-viewer-layout #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:before{content:"";margin-top:1px;position:absolute;border-radius:50%;top:50%!important;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .json-viewer-layout #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .json-viewer-layout #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .dark-theme .json-viewer-layout li,.monkey-jsonviewer .dark-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-theme .json-viewer-layout td:first-child,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout td:first-child{color:#ccc}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel>div,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel>div{border-bottom-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .toolbar-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item.active,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox input,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox .clear,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox>div span:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer .dark-theme .json-viewer-layout jmnode,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmnode{filter:brightness(2)}.monkey-jsonviewer .dark-theme .json-viewer-layout jmexpander,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmexpander{background-color:#dfdfdf}.js-mind-child-node{width:300px;height:300px;margin:10px;overflow-y:scroll;position:relative;padding:5px 20px;background-color:#f8f9fa}.js-mind-child-node div{color:#475872;line-height:25px}.js-mind-copy{top:5px;right:10px;width:20px;height:20px;cursor:pointer;position:absolute;background-size:20px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;user-select:none;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}.format-container{flex-grow:1}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}div.json-formater-item{border-left:.5px dotted #d9d9d9}.json-formater-copy{width:13px;height:13px;cursor:pointer;margin-left:.15em;display:inline-block;background-size:13px;vertical-align:text-bottom;background-repeat:no-repeat;transition:background-image ease .3s;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.json-formater-copy.success{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAhZJREFUWEftlU1IFGEYx//Pu2R0kLrYwUMg7M5EHjwklNUOLoInxYMg7W6HTkEIgkLMLF6CsllDokN4Vfy4SnSqk+7sRghBFBT7IWKHQATFSxCLM09sabjjO/thLnuZ9zjPx//3/t9n3pfQ5EVN1ocP4DvgO9AwB/RMsJNYjAF4wEwz01rukeyXbwjAZEbttpmXAKhHokQ8bN4prLghzhwgkVHCzLQE8JUyMeblpFa411AAIxXshxCLAC6fFOKbZriw3jAA3VKHiLgk3uoS+UWMqKnlX9c8AwkreA0i0GM7vFu0i2svI1v7ld4M3VLuEmEBwLnjeQTsMyiaDOfeetVLZ8BIhz4CdP2w6CuxM2JqG99kTYz3oftwaE4S23Zsij3vza1Wgj8BYKSDvYBwF0khdEt9SMSzEoHvJETUvJ39UO219XBA2QHQ5iougzAsZRyEFxKBHAJONHlr41M18VLc6wgmAXoqafAHgoUYAuOZJP6Z2Il5HVfNQ1hK1NPKKAGvZBAAOiXf1wGOJcOFzVp2/u+CqpRsZNQ4/t5oVRalAkWOT/Xlf1TLrPseSKRDAw7TIhEuyS3kd2gJxM0b2d16xT1nwN1IT4U0IWiegY6yGPObg4sXYjNdX36eRrxmgMOZ6CLQE4AHGdgTjOXzdvvE48jawWnF6wI4EkmsKlfNSD77P6LHa8/8NawXzAfwHfAdaLoDvwHyYK0h/tY7mwAAAABJRU5ErkJggg==)}.json-formater-arrow{width:0;opacity:.2;display:inline-block}.json-formater-arrow:hover{opacity:.35}.json-formater-arrow:before{width:0;height:0;left:-13px;content:"";cursor:pointer;position:relative;border-style:solid;display:inline-block;vertical-align:middle;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.json-formater-closed .json-formater-arrow:before{transform:rotate(0)}.json-formater-placeholder{display:none;cursor:pointer;font-size:12px;color:#859900;user-select:none;margin-left:.3em}.json-formater-placeholder span{margin:0 .5em}.json-formater-placeholder span:hover{text-decoration:underline}.json-color{width:.7em;height:.7em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.json-comma{margin-left:.15em;font-family:Courier New,monospace}.json-colon{margin:0 .3em 0 .15em}.default-theme{background-color:#fefefe}.default-theme .json-object-bracket{color:#6d9331;font-weight:700}.default-theme .json-array-bracket{color:#8e9331;font-weight:700}.default-theme .json-key{color:#910f93;cursor:pointer}.default-theme .json-string,.default-theme .json-string a{color:#2e7c16}.default-theme .json-bigint,.default-theme .json-number{color:#164ff1}.default-theme .json-boolean{color:#c41a16}.default-theme .json-null{color:#228fec}.light-theme{background-color:#fefefe}.light-theme .json-object-bracket{color:#6d9331;font-weight:700}.light-theme .json-array-bracket{color:#8e9331;font-weight:700}.light-theme .json-key{color:#0040cf;cursor:pointer}.light-theme .json-string,.light-theme .json-string a{color:#a31515}.light-theme .json-bigint,.light-theme .json-number{color:#0b7500}.light-theme .json-boolean{color:#00f}.light-theme .json-null{color:#05f}.dark-theme{background-color:#252526}.dark-theme .json-object-bracket{color:#ce70d6;font-weight:700}.dark-theme .json-array-bracket{color:#f1d700;font-weight:700}.dark-theme .json-key{color:#9cdcfe;cursor:pointer}.dark-theme .json-string,.dark-theme .json-string a{color:#ce9178}.dark-theme .json-bigint,.dark-theme .json-number{color:#b5cea8}.dark-theme .json-boolean{color:#358cd6}.dark-theme .json-null{color:#569cd6}.dark-plus-theme{background-color:#1e1f22}.dark-plus-theme .json-object-bracket{color:#bb9667;font-weight:700}.dark-plus-theme .json-array-bracket{color:#bbbda3;font-weight:700}.dark-plus-theme .json-key{color:#c77dbb;cursor:pointer}.dark-plus-theme .json-string,.dark-plus-theme .json-string a{color:#6aab73}.dark-plus-theme .json-bigint,.dark-plus-theme .json-number{color:#28aab4}.dark-plus-theme .json-boolean{color:#ce8951}.dark-plus-theme .json-null{color:#c78d61}.dark-theme div.json-formater-item,.dark-plus-theme div.json-formater-item{border-left-color:#3a3d40}.dark-theme .json-colon,.dark-theme .json-comma,.dark-plus-theme .json-colon,.dark-plus-theme .json-comma{color:#ccc}.dark-theme .json-formater-arrow,.dark-plus-theme .json-formater-arrow{color:#fff;opacity:.35}.dark-theme .json-formater-arrow:hover,.dark-plus-theme .json-formater-arrow:hover{opacity:.5}.json-tree-table{border-collapse:collapse;width:-webkit-fill-available}.json-tree-table tr.selected *{color:#fff!important;background-color:#3875d7}.json-tree-table tr:hover{background-color:#f0f9fe}.json-tree-table tr td:first-child{width:120px}.dark-theme .json-tree-table tr:hover,.dark-plus-theme .json-tree-table tr:hover{background-color:#353b48}/**
+(e=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function")return GM_addStyle(e);const o=document.createElement("style");o.textContent=e,document.head.append(o)})})(` @charset "UTF-8";.monkey-jsonviewer body,.monkey-jsonviewer iframe,.monkey-jsonviewer ul{margin:0;padding:0}.monkey-jsonviewer iframe{border:0}.monkey-jsonviewer input:focus,.monkey-jsonviewer select:focus,.monkey-jsonviewer textarea:focus{outline:0}.monkey-jsonviewer .jsonp{color:#657b83}.monkey-jsonviewer #jsoncrackEmbed{border:0;width:100%;height:100%}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.monkey-jsonviewer .json-viewer-layout{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column}.monkey-jsonviewer .json-viewer-layout .panel{display:flex;line-height:28px;user-select:none;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .json-viewer-layout .tabs,.monkey-jsonviewer .json-viewer-layout .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .json-viewer-layout .tabs>div,.monkey-jsonviewer .json-viewer-layout .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .tabs>div:hover,.monkey-jsonviewer .json-viewer-layout .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .json-viewer-layout .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .json-viewer-layout .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .json-viewer-layout .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .json-viewer-layout .toolbar{line-height:23px}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox:hover{background-color:transparent}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:14px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAipJREFUWEftljuIE1EUhv8zpJB0FqugItiIdmKnnQ+wjPhq3EILRYt1JTDnDvhgUJG55zY+ELO7hRZupYWCCIK6nXYiNoqlrIUKaxes5siFBGKYSSbJTnaLTDMwl/Ofj8Pc/z+ENX5ojftjfQFYay8AuEFEU2VMRlV/A7hujGm09f+bgIj8APCtjOYdmjuZeWsewCMAZwBcYub7qwkiIjMA7gF4zMxnMwHiOK5Wq9UXAA6r6kljzLPVgLDWniCipwDeNJvNWhzHzUwA/zFJku1BEHiIPUS0PwzDD6NAOOf2qep7AJ/SNK1FUfS9Uy/zFojIXgAeYhsRbQ7D8NcwEM65Tar6E8AygBozf+zWyb2GSZIcCYLgORH9DcNw45AAf1R1Q5qmR6Moep2l0dMHrLWniegJgK/MvHsQCBH5AmCXqk4bYxbzavsakYjMArgD4B0zHyoCISJvARwEcJmZ7/aq6Qvgi0XkJoCrqrpgjDnfS9BaO09E5wDcYuZr/YALAbQgHgLwTpnrER13vcHMF/s19+eFAVoQS/7NzAeyxJ1zS6qaez7wT9hdICITgMkEJhOYTMCq6jEimmXmV90+UboRtdzQ7wZ+aW1UKpUr9Xp9pQ0yFoCuXFhW1agdt2MD8BDOOb83zgPYAWAxCILbqvqg1CzIChMRmQPgI3qFiD773Z+ZTxVJwoHTME9URI4TUV1VtwCYYeaXYwUo2mzkOB6l0dA7YRlNOzX/ATTlNjBwsoHnAAAAAElFTkSuQmCC)}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANZJREFUOE+t0zFKg0EQhuEndbpgIVZ26eIJFK1SeQcPYKuWmlJIb6lHkJRpFFKnE2zTpBAknaUgA/+Q5SfBwGaaZWfne3dmdraj0job9Ae4wwAn+MUcn3jCotS0Aad4RW9LYj+4xkuel4ArPO9Y0RlmEZuAY3ygi/cGct6Clf4V+vhOwCNuG0EEXuAB941v1OzfkOAxbhIwwWVxYwoCEhZrCQzfFMMELHHUSjkhCchsMuwLh3sDVJfwXxOj/ihpaxOrnzEaUzVI2dmqUU5I1Wfa8Susw/4A1fw8ES1B6icAAAAASUVORK5CYII=)}.monkey-jsonviewer .json-viewer-layout .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .json-viewer-layout .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li{font-size:12px;padding:5px 20px;list-style-type:none;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .json-viewer-layout .container>div{height:100%;display:none}.monkey-jsonviewer .json-viewer-layout .container>div.active{display:block}.monkey-jsonviewer .json-viewer-layout .container #formatBox{padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox pre{margin:0;padding:0;white-space:pre-wrap;overflow-wrap:break-word}.monkey-jsonviewer .json-viewer-layout #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:before{content:"";margin-top:1px;position:absolute;border-radius:50%;top:50%!important;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .json-viewer-layout #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .json-viewer-layout #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .dark-theme .json-viewer-layout li,.monkey-jsonviewer .dark-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-theme .json-viewer-layout td:first-child,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout td:first-child{color:#ccc}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel>div,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel>div{border-bottom-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .toolbar-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item.active,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox input,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox .clear,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox>div span:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer .dark-theme .json-viewer-layout jmnode,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmnode{filter:brightness(2)}.monkey-jsonviewer .dark-theme .json-viewer-layout jmexpander,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmexpander{background-color:#dfdfdf}.js-mind-child-node{width:300px;height:300px;margin:10px;overflow-y:scroll;position:relative;padding:5px 20px;background-color:#f8f9fa}.js-mind-child-node div{color:#475872;line-height:25px}.js-mind-copy{top:5px;right:10px;width:20px;height:20px;cursor:pointer;position:absolute;background-size:20px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;user-select:none;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}.format-container{flex-grow:1}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.hidden{display:none!important}div.json-formater-item{border-left:.5px dotted #d9d9d9}.json-formater-copy{width:13px;height:13px;cursor:pointer;margin-left:.15em;display:inline-block;background-size:13px;vertical-align:text-bottom;background-repeat:no-repeat;transition:background-image ease .3s;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.json-formater-copy.success{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAhZJREFUWEftlU1IFGEYx//Pu2R0kLrYwUMg7M5EHjwklNUOLoInxYMg7W6HTkEIgkLMLF6CsllDokN4Vfy4SnSqk+7sRghBFBT7IWKHQATFSxCLM09sabjjO/thLnuZ9zjPx//3/t9n3pfQ5EVN1ocP4DvgO9AwB/RMsJNYjAF4wEwz01rukeyXbwjAZEbttpmXAKhHokQ8bN4prLghzhwgkVHCzLQE8JUyMeblpFa411AAIxXshxCLAC6fFOKbZriw3jAA3VKHiLgk3uoS+UWMqKnlX9c8AwkreA0i0GM7vFu0i2svI1v7ld4M3VLuEmEBwLnjeQTsMyiaDOfeetVLZ8BIhz4CdP2w6CuxM2JqG99kTYz3oftwaE4S23Zsij3vza1Wgj8BYKSDvYBwF0khdEt9SMSzEoHvJETUvJ39UO219XBA2QHQ5iougzAsZRyEFxKBHAJONHlr41M18VLc6wgmAXoqafAHgoUYAuOZJP6Z2Il5HVfNQ1hK1NPKKAGvZBAAOiXf1wGOJcOFzVp2/u+CqpRsZNQ4/t5oVRalAkWOT/Xlf1TLrPseSKRDAw7TIhEuyS3kd2gJxM0b2d16xT1nwN1IT4U0IWiegY6yGPObg4sXYjNdX36eRrxmgMOZ6CLQE4AHGdgTjOXzdvvE48jawWnF6wI4EkmsKlfNSD77P6LHa8/8NawXzAfwHfAdaLoDvwHyYK0h/tY7mwAAAABJRU5ErkJggg==)}.json-formater-arrow{width:0;opacity:.2;display:inline-block}.json-formater-arrow:hover{opacity:.35}.json-formater-arrow:before{width:0;height:0;left:-13px;content:"";cursor:pointer;position:relative;border-style:solid;display:inline-block;vertical-align:middle;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.json-formater-closed .json-formater-arrow:before{transform:rotate(0)}.json-formater-placeholder{display:none;cursor:pointer;font-size:12px;color:#859900;user-select:none;margin-left:.3em}.json-formater-placeholder span{margin:0 .5em}.json-formater-placeholder span:hover{text-decoration:underline}.json-color{width:.7em;height:.7em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.json-comma{margin-left:.15em;font-family:Courier New,monospace}.json-colon{margin:0 .3em 0 .15em}.default-theme{background-color:#fefefe}.default-theme .json-object-bracket{color:#6d9331;font-weight:700}.default-theme .json-array-bracket{color:#8e9331;font-weight:700}.default-theme .json-key{color:#910f93;cursor:pointer}.default-theme .json-string,.default-theme .json-string a{color:#2e7c16}.default-theme .json-bigint,.default-theme .json-number{color:#164ff1}.default-theme .json-boolean{color:#c41a16}.default-theme .json-null{color:#228fec}.light-theme{background-color:#fefefe}.light-theme .json-object-bracket{color:#6d9331;font-weight:700}.light-theme .json-array-bracket{color:#8e9331;font-weight:700}.light-theme .json-key{color:#0040cf;cursor:pointer}.light-theme .json-string,.light-theme .json-string a{color:#a31515}.light-theme .json-bigint,.light-theme .json-number{color:#0b7500}.light-theme .json-boolean{color:#00f}.light-theme .json-null{color:#05f}.dark-theme{background-color:#252526}.dark-theme .json-object-bracket{color:#ce70d6;font-weight:700}.dark-theme .json-array-bracket{color:#f1d700;font-weight:700}.dark-theme .json-key{color:#9cdcfe;cursor:pointer}.dark-theme .json-string,.dark-theme .json-string a{color:#ce9178}.dark-theme .json-bigint,.dark-theme .json-number{color:#b5cea8}.dark-theme .json-boolean{color:#358cd6}.dark-theme .json-null{color:#569cd6}.dark-plus-theme{background-color:#1e1f22}.dark-plus-theme .json-object-bracket{color:#bb9667;font-weight:700}.dark-plus-theme .json-array-bracket{color:#bbbda3;font-weight:700}.dark-plus-theme .json-key{color:#c77dbb;cursor:pointer}.dark-plus-theme .json-string,.dark-plus-theme .json-string a{color:#6aab73}.dark-plus-theme .json-bigint,.dark-plus-theme .json-number{color:#28aab4}.dark-plus-theme .json-boolean{color:#ce8951}.dark-plus-theme .json-null{color:#c78d61}.dark-theme div.json-formater-item,.dark-plus-theme div.json-formater-item{border-left-color:#3a3d40}.dark-theme .json-colon,.dark-theme .json-comma,.dark-plus-theme .json-colon,.dark-plus-theme .json-comma{color:#ccc}.dark-theme .json-formater-arrow,.dark-plus-theme .json-formater-arrow{color:#fff;opacity:.35}.dark-theme .json-formater-arrow:hover,.dark-plus-theme .json-formater-arrow:hover{opacity:.5}.json-tree-table{border-collapse:collapse;width:-webkit-fill-available}.json-tree-table tr.selected *{color:#fff!important;background-color:#3875d7}.json-tree-table tr:hover{background-color:#f0f9fe}.json-tree-table tr td:first-child{width:120px}.dark-theme .json-tree-table tr:hover,.dark-plus-theme .json-tree-table tr:hover{background-color:#353b48}/**
 * @license BSD
 * @copyright 2014-2023 hizzgdev@163.com
 * 
@@ -42,7 +42,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:dom-to-image", (()=>{const _=domtoimage;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-BchYAXNu.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-DWQJ8sLB.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -54,7 +54,7 @@ System.register("./__entry.js", ['./__monkey.entry-BchYAXNu.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-BchYAXNu.js", [], (function (exports, module) {
+System.register("./__monkey.entry-DWQJ8sLB.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -1876,10 +1876,10 @@ System.register("./__monkey.entry-BchYAXNu.js", [], (function (exports, module) 
       NodeList.prototype.some = Array.prototype.some;
       NodeList.prototype.map = Array.prototype.map;
       function getDefaultDisplay(ele) {
-        let temp, display = ele.defaultDisplay;
-        const doc = ele.ownerDocument, nodeName = ele.nodeName;
+        let display = ele.defaultDisplay;
+        const doc = ele.ownerDocument;
         if (display) return display;
-        temp = doc.body.appendChild(doc.createElement(nodeName));
+        const temp = doc.body.appendChild(doc.createElement(ele.nodeName));
         display = getComputedStyle(temp).display;
         temp.parentNode.removeChild(temp);
         if (display === "none") display = "block";
@@ -1952,17 +1952,7 @@ System.register("./__monkey.entry-BchYAXNu.js", [], (function (exports, module) 
           } else if (navigator.clipboard) {
             navigator.clipboard.writeText(text);
           } else {
-            let textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "absolute";
-            textArea.style.opacity = 0;
-            textArea.style.left = "-999999px";
-            textArea.style.top = "-999999px";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            document.execCommand("copy");
-            textArea.remove();
+            console.error("复制内容失败");
           }
         },
         addEvent(eventType, selector, callback) {
@@ -2019,6 +2009,13 @@ System.register("./__monkey.entry-BchYAXNu.js", [], (function (exports, module) 
           if (selector instanceof HTMLElement) return new NodeList(selector);
           if (selector instanceof NodeList) return selector;
           return ctx.querySelectorAll(selector);
+        },
+        closest(element, selector) {
+          while (element) {
+            if (element.matches(selector)) return element;
+            element = element.parentElement;
+          }
+          return null;
         },
         addClass(ele, className) {
           if (!ele) return;
@@ -2161,7 +2158,7 @@ System.register("./__monkey.entry-BchYAXNu.js", [], (function (exports, module) 
         });
         const innerText = document.body.innerText;
         const { rawText, jsonpFun } = Utils.matchJsonp(innerText);
-        if (!Utils.isJSON(rawText)) return __vitePreload(() => module.import('./index-DLZ17pA5-Cq4Fkhm4.js'), void 0 );
+        if (!Utils.isJSON(rawText)) return __vitePreload(() => module.import('./index-B36XzXpX-CcDTbBFA.js'), void 0 );
         _unsafeWindow.RAW_TEXT = rawText;
         _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
         _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
@@ -2179,9 +2176,9 @@ System.register("./__monkey.entry-BchYAXNu.js", [], (function (exports, module) 
           document.body.insertAdjacentHTML("afterbegin", layout);
           const temp = Utils.query('template[data-for="viewFormater"]');
           Utils.query(".toolbar").innerHTML = temp.innerHTML;
-          __vitePreload(() => module.import('./index-BGdPvk5r-DqYMgukj.js'), void 0 ).then(() => {
-            __vitePreload(() => module.import('./index-Dp0sEvxN-Dpx6ZRv0.js'), void 0 );
-            __vitePreload(() => module.import('./index-B8Td95-5-Bw55YpHI.js'), void 0 );
+          __vitePreload(() => module.import('./index-BlaQ9yHs-CPiX1z24.js'), void 0 ).then(() => {
+            __vitePreload(() => module.import('./index-ByHjXhMQ-10ap1WCu.js'), void 0 );
+            __vitePreload(() => module.import('./index-CaQOLM3Q-BnnpNNLV.js'), void 0 );
           });
         });
       })();
@@ -2190,7 +2187,7 @@ System.register("./__monkey.entry-BchYAXNu.js", [], (function (exports, module) 
   };
 }));
 
-System.register("./index-DLZ17pA5-Cq4Fkhm4.js", ['highlight.js', 'beautifier', './__monkey.entry-BchYAXNu.js'], (function (exports, module) {
+System.register("./index-B36XzXpX-CcDTbBFA.js", ['highlight.js', 'beautifier', './__monkey.entry-DWQJ8sLB.js'], (function (exports, module) {
   'use strict';
   var hljs, css_beautify, js_beautify, Utils;
   return {
@@ -2257,7 +2254,7 @@ System.register("./index-DLZ17pA5-Cq4Fkhm4.js", ['highlight.js', 'beautifier', '
   };
 }));
 
-System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-BlaQ9yHs-CPiX1z24.js", ['./__monkey.entry-DWQJ8sLB.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var _GM_setValue, _unsafeWindow, Utils, _GM_getValue, _GM_setClipboard, tippy;
   return {
@@ -2277,31 +2274,39 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
       var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
       const SORTED = { ASC: "ASC", DESC: "DESC" };
       const STYLE = { TABLE: "table", VIEWER: "viewer" };
+      const findChildren = {
+        [STYLE.TABLE]: (node, context) => {
+          const path = Utils.attr(node, "path");
+          const selector = `*[path^='${path}']:not(*[path='${path}']):not(*[class*='hidden'])`;
+          return Utils.queryAll(selector, context);
+        },
+        [STYLE.VIEWER]: (node, context) => {
+          const selector = `*[data-node-pid="${node.dataset.nodeId}"]`;
+          return Utils.queryAll(selector, context);
+        }
+      };
       class JsonFormat {
         constructor(options, tag, clazz) {
+          __publicField(this, "Root", "Root");
           __publicField(this, "DEFAULTS", {
             sort: null,
             json: null,
             style: null,
-            theme: "default",
             container: null,
-            expander: null,
-            onExpand: null,
-            collapser: null,
-            onCollapse: null
+            theme: "default"
           });
           this.options = Object.assign(this.DEFAULTS, options);
           if (!options.container) throw new Error("Container is required");
           if (!options.json) throw new Error("json is required");
           this.render(tag, clazz);
-          this.bindEvent();
           this.setTheme(this.options.theme);
+          this.bindEvent();
         }
         render(tag, clazz) {
           this.$container = Utils.query(this.options.container);
           this.$container.innerHTML = "";
           const box = Utils.createElement(tag, { class: clazz });
-          this.createNode(box, this.options.json, "Root", "Root", 1);
+          this.createNode(box, this.options.json, this.Root, this.Root, 1);
           this.$container.appendChild(box);
         }
         setTheme(theme) {
@@ -2340,8 +2345,8 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
         }
         reload() {
           const box = this.$container.firstChild;
-          box.innerHTML = null;
-          this.createNode(box, this.options.json, "Root", "Root", 1);
+          box.innerHTML = "";
+          this.createNode(box, this.options.json, this.Root, this.Root, 1);
           this.$container.appendChild(box);
           this.bindEvent();
         }
@@ -2367,15 +2372,19 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
           }
           return node;
         }
-        creatOtherNodes(node, value) {
-          if (!this.canIterate(value)) return;
-          const arrow = Utils.createElement("span", { class: "json-formater-arrow" });
-          node.prepend(arrow);
+        creatOtherNodes(node, json) {
+          if (!this.canIterate(json)) return;
+          node.prepend(this.creatArrowElement());
+          node.appendChild(this.creatCopyElement(json));
+          node.appendChild(this.creatPlaceholder(json));
+        }
+        creatArrowElement() {
+          return Utils.createElement("span", { class: "json-formater-arrow" });
+        }
+        creatCopyElement(json) {
           const copy = Utils.createElement("span", { title: "复制", class: "json-formater-copy" });
-          copy.json = value;
-          node.appendChild(copy);
-          const placeholder = this.creatPlaceholder(value);
-          node.appendChild(placeholder);
+          copy.json = json;
+          return copy;
         }
         creatPlaceholder(json) {
           const placeholder = Utils.createElement("span", { class: "json-formater-placeholder" });
@@ -2401,9 +2410,6 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
           return node;
         }
         bindEvent() {
-          const { expander, collapser, onExpand, onCollapse } = this.options;
-          if (expander) this.addEvent(`click`, expander, () => this.expandAll());
-          if (collapser) this.addEvent(`click`, collapser, () => this.collapseAll());
           this.addEvent("click", ".json-formater-copy", (e) => {
             const className = "success";
             const target = e.currentTarget;
@@ -2413,71 +2419,60 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
             setTimeout(() => Utils.removeClass(target, className), 1500);
           });
           this.addEvent("click", ".json-formater-placeholder", (e) => {
-            const node = this.closest(e.currentTarget, ".json-formater-item");
+            const node = Utils.closest(e.currentTarget, ".json-formater-item");
             this.show(node);
           });
           this.addEvent("click", ".json-formater-arrow", (e) => {
-            const node = this.closest(e.currentTarget, ".json-formater-item");
-            if (Utils.hasClass(node, "json-formater-opened")) {
-              this.hide(node);
-              if (onCollapse) onCollapse(node, this);
-            } else {
-              this.show(node);
-              if (onExpand) onExpand(node, this);
-            }
+            const node = Utils.closest(e.currentTarget, ".json-formater-item");
+            const isExpand = Utils.hasClass(node, "json-formater-opened");
+            isExpand ? this.hide(node) : this.show(node);
           });
         }
         expandAll() {
-          this.nodes().forEach((node) => this.show(node));
+          const nodes = this.nodes();
+          for (const node of nodes) {
+            if (Utils.hasClass(node, "json-formater-closed")) this.show(node);
+          }
         }
         collapseAll() {
-          this.nodes().forEach((node) => this.hide(node));
+          const nodes = this.nodes();
+          for (const node of nodes) {
+            if (Utils.hasClass(node, "json-formater-opened")) this.hide(node);
+          }
         }
         show(node) {
+          this.showDescs(node);
+          Utils.hide(this.getPlaceNode(node));
           Utils.addClass(node, "json-formater-opened");
           Utils.removeClass(node, "json-formater-closed");
-          this.showDescs(node);
-          this.showAfter(node);
-        }
-        showDescs(node) {
-          const children = this.findChildren(node);
-          if (children.length === 0) return;
-          children.forEach((child) => {
-            Utils.show(child);
-            const hasClass = Utils.hasClass(child, "json-formater-opened");
-            const isTable = Object.is(STYLE.TABLE, this.options.style);
-            if (isTable && hasClass) this.showDescs(child);
-          });
-        }
-        showAfter(node) {
-          Utils.hide(this.queryPlaceholder(node));
         }
         hide(node) {
+          this.hideDescs(node);
+          Utils.show(this.getPlaceNode(node));
           Utils.addClass(node, "json-formater-closed");
           Utils.removeClass(node, "json-formater-opened");
-          this.hideDescs(node);
-          this.hideAfter(node);
+        }
+        showDescs(node) {
+          const queue = [node];
+          while (queue.length > 0) {
+            const currentNode = queue.shift();
+            const children = this.findChildren(currentNode);
+            for (const child of children) {
+              Utils.removeClass(child, "hidden");
+              const hasClass = Utils.hasClass(child, "json-formater-opened");
+              if (hasClass) queue.push(child);
+            }
+          }
         }
         hideDescs(node) {
-          const children = this.findChildren(node);
-          if (children.length === 0) return;
-          children.forEach((child) => {
-            Utils.hide(child);
-            const isTable = Object.is(STYLE.TABLE, this.options.style);
-            if (isTable) this.hideDescs(child);
-          });
+          const children = findChildren[this.options.style](node, this.$container);
+          for (const child of children) Utils.addClass(child, "hidden");
         }
-        hideAfter(node) {
-          Utils.show(this.queryPlaceholder(node));
-        }
-        queryPlaceholder(node) {
-          const id = node.dataset.nodeId;
-          const selector = `*[data-node-id="${id}"] .json-formater-placeholder`;
-          return Utils.query(selector, node);
+        getPlaceNode(node) {
+          return Utils.query(`*[data-node-id="${node.dataset.nodeId}"] .json-formater-placeholder`, node);
         }
         findChildren(node) {
-          const pid = node.dataset.nodeId;
-          return Utils.queryAll(`*[data-node-pid="${pid}"]`, this.$container);
+          return Utils.queryAll(`*[data-node-pid="${node.dataset.nodeId}"]`, this.$container);
         }
         findByID(id) {
           return Utils.query(`*[data-node-id="${id}"]`, this.$container);
@@ -2490,17 +2485,10 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
         }
         nodes() {
           const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
-          return arrows.map((ele) => this.closest(ele, ".json-formater-item"));
+          return arrows.map((ele) => Utils.closest(ele, ".json-formater-item"));
         }
         addEvent(type, selector, fn) {
           Utils.queryAll(selector).forEach((el) => el.addEventListener(type, fn));
-        }
-        closest(element, selector) {
-          while (element) {
-            if (element.matches(selector)) return element;
-            element = element.parentElement;
-          }
-          return null;
         }
         JSONPath(path, key) {
           if (this.isNumber(key)) return `${path}[${key}]`;
@@ -2510,13 +2498,13 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
         isNumber(str) {
           return /^\d+$/.test(str);
         }
-        isIterate(value) {
-          const type = Utils.getType(value);
+        isIterate(data) {
+          const type = Utils.getType(data);
           return ["array", "object"].includes(type);
         }
-        canIterate(value) {
-          if (!this.isIterate(value)) return false;
-          return Object.keys(value).length > 0;
+        canIterate(data) {
+          if (!this.isIterate(data)) return false;
+          return Object.keys(data).length > 0;
         }
         isUrl(str) {
           const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
@@ -2532,13 +2520,13 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
           return hexCodeRegex.test(str) || rgbRegex.test(str) || rgbaRegex.test(str);
         }
         random() {
-          let randomString = "";
+          let randomStr = "";
           const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
           for (let i = 0; i < 10; i++) {
             const randomIndex = Math.floor(Math.random() * characters.length);
-            randomString += characters.charAt(randomIndex);
+            randomStr += characters.charAt(randomIndex);
           }
-          return randomString;
+          return randomStr;
         }
       }
       __publicField(JsonFormat, "STYLE", STYLE);
@@ -2552,7 +2540,9 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
           const isIterate = this.isIterate(json);
           const canIterate = this.canIterate(json);
           if (canIterate) {
-            this.depthNode(box, type, json, JSONPath, pid);
+            if (this.Root !== pid) box.prepend(this.creatArrowElement());
+            const fragment = this.depthNode(json, JSONPath, pid);
+            box.appendChild(fragment);
           } else if (isIterate) {
             const bracket = this.createBracket(type);
             box.appendChild(bracket);
@@ -2561,10 +2551,14 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
             box.appendChild(valueNode);
           }
         }
-        depthNode(box, type, json, path, pid) {
+        depthNode(json, path, pid) {
           json = this.keySort(json);
-          box.appendChild(this.startBracket(type));
-          this.creatOther(box, json);
+          const fragment = document.createDocumentFragment();
+          fragment.appendChild(this.startBracket(Utils.getType(json)));
+          if (this.Root !== pid) {
+            fragment.appendChild(this.creatCopyElement(json));
+            fragment.appendChild(this.creatPlaceholder(json));
+          }
           let length = Object.keys(json).length;
           for (var key in json) {
             if (Object.prototype.hasOwnProperty.call(json, key)) {
@@ -2573,7 +2567,7 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
               const canComma = --length > 0;
               const JSONPath = this.JSONPath(path, key);
               const node = Utils.createElement("div", {
-                JSONPath,
+                path: JSONPath,
                 "data-node-id": id,
                 "data-node-pid": pid,
                 style: `padding-left: 20px`,
@@ -2587,10 +2581,11 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
                 comma.textContent = ",";
                 node.appendChild(comma);
               }
-              box.appendChild(node);
+              fragment.appendChild(node);
             }
           }
-          box.appendChild(this.endBracket(type));
+          fragment.appendChild(this.endBracket(Utils.getType(json)));
+          return fragment;
         }
         startBracket(type) {
           const span = Utils.createElement("span", { class: `json-${type}-bracket` });
@@ -2623,6 +2618,7 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
         }
         createNode(table, json, path, pid, depth) {
           json = this.keySort(json);
+          const fragment = document.createDocumentFragment();
           for (const key in json) {
             if (Object.prototype.hasOwnProperty.call(json, key)) {
               let value = json[key];
@@ -2630,13 +2626,14 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
               const JSONPath = this.JSONPath(path, key);
               const args = { key, value, type, depth, JSONPath, pid };
               const item = this.createItem(args);
-              table.appendChild(item);
+              fragment.appendChild(item);
               if (this.canIterate(value)) {
                 const nodeId = item.dataset.nodeId;
-                this.createNode(table, value, JSONPath, nodeId, depth + 1);
+                this.createNode(fragment, value, JSONPath, nodeId, depth + 1);
               }
             }
           }
+          table.appendChild(fragment);
         }
         createItem(args) {
           const { key, value, type, depth, JSONPath, pid } = args;
@@ -2644,12 +2641,13 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
           const isIterate = this.isIterate(value);
           const canIterate = this.canIterate(value);
           const node = Utils.createElement("tr", {
+            path: JSONPath,
             "data-type": type,
             "data-node-id": id,
             "data-node-pid": pid,
             class: `json-formater-item${this.canIterate(value) ? " json-formater-opened" : ""}`
           });
-          const keyNode = this.createKeyNode(key, value, depth, JSONPath);
+          const keyNode = this.createKeyNode(key, value, depth);
           node.appendChild(keyNode);
           const td = Utils.createElement("td");
           if (!isIterate) {
@@ -2662,9 +2660,8 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
           }
           return node;
         }
-        createKeyNode(key, value, depth, JSONPath) {
+        createKeyNode(key, value, depth) {
           const node = Utils.createElement("td", {
-            JSONPath,
             colspan: this.canIterate(value) ? 2 : 0,
             style: `padding-left: ${depth * 20}px`
           });
@@ -2712,15 +2709,15 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
         eventPath() {
           Utils.addEvent("click mouseenter", ".json-key", (event) => {
             const target = event.target;
-            const JSONPath = Utils.attr(target.parentElement, "JSONPath");
+            const path = Utils.closest(target, ".json-formater-item").getAttribute("path");
             if (Object.is(event.type, "click") && event.ctrlKey) {
-              return _GM_setClipboard(JSONPath) & layer.msg("复制成功", { time: 1500 });
+              return _GM_setClipboard(path) & layer.msg("复制成功", { time: 1500 });
             }
             tippy(target, {
               duration: 800,
               theme: "layer",
               allowHTML: true,
-              content: `<i>ctrl＋click 复制</i><br/><b>路径：</b>${JSONPath}`
+              content: `<i>ctrl＋click 复制</i><br/><b>路径：</b>${path}`
             }).show();
           });
           return this;
@@ -2817,7 +2814,7 @@ System.register("./index-BGdPvk5r-DqYMgukj.js", ['./__monkey.entry-BchYAXNu.js',
   };
 }));
 
-System.register("./index-Dp0sEvxN-Dpx6ZRv0.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-BchYAXNu.js', 'dom-to-image'], (function (exports, module) {
+System.register("./index-ByHjXhMQ-10ap1WCu.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-DWQJ8sLB.js', 'dom-to-image'], (function (exports, module) {
   'use strict';
   var tippy, require$$0, commonjsGlobal, Utils, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue, require$$1;
   return {
@@ -2951,8 +2948,8 @@ System.register("./index-Dp0sEvxN-Dpx6ZRv0.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
           return children;
         },
         getChain(node) {
-          let chain = node.data.chain;
-          if (!node.parent) return chain;
+          let chain = node?.data?.chain;
+          if (!node?.parent) return chain;
           const parent = node.parent;
           const parentChain = this.getChain(parent);
           if (parent.data.isArray) return `${parentChain}[i].${chain}`;
@@ -2995,6 +2992,7 @@ System.register("./index-Dp0sEvxN-Dpx6ZRv0.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
             const nodeid = Utils.attr(target, "nodeid");
             const node = _unsafeWindow.GLOBAL_JSMIND.get_node(nodeid);
             const chain = this.getChain(node);
+            if (!chain) return;
             if (event.type === "click") {
               if (event.ctrlKey) {
                 _GM_setClipboard(chain);
@@ -3164,10 +3162,10 @@ System.register("./index-Dp0sEvxN-Dpx6ZRv0.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
       window.addEventListener("message", function(event) {
         const { data } = event;
         if (!data?.reload) return;
+        mindBox.innerHTML = "";
         jsonMind.isFirst = true;
         tabs.isBeautify = false;
         tabs.firstFormat = true;
-        mindBox.innerHTML = null;
         _unsafeWindow.GLOBAL_JSMIND = void 0;
         if (Utils.isVisible(rawTextBox)) return tabs.viewRawText();
         if (Utils.isVisible(mindBox)) return jsonMind.init(_unsafeWindow.GLOBAL_JSON);
@@ -3354,7 +3352,7 @@ System.register("./index-Dp0sEvxN-Dpx6ZRv0.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
   };
 }));
 
-System.register("./index-B8Td95-5-Bw55YpHI.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-BchYAXNu.js'], (function (exports, module) {
+System.register("./index-CaQOLM3Q-BnnpNNLV.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-DWQJ8sLB.js'], (function (exports, module) {
   'use strict';
   var tippy, Utils;
   return {
