@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      1.0.7
+// @version      1.0.8
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -25,7 +25,7 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(e=>{window.addEventListener("message",r=>{const{data:n}=r;if(!n?.addStyle)return;if(typeof GM_addStyle=="function")return GM_addStyle(e);const o=document.createElement("style");o.textContent=e,document.head.append(o)})})(` @charset "UTF-8";.monkey-jsonviewer body,.monkey-jsonviewer iframe,.monkey-jsonviewer ul{margin:0;padding:0}.monkey-jsonviewer iframe{border:0}.monkey-jsonviewer input:focus,.monkey-jsonviewer select:focus,.monkey-jsonviewer textarea:focus{outline:0}.monkey-jsonviewer .jsonp{color:#657b83}.monkey-jsonviewer #jsoncrackEmbed{border:0;width:100%;height:100%}.monkey-jsonviewer .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-jsonviewer .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-jsonviewer .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-jsonviewer .rightbox{right:0!important}.monkey-jsonviewer .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-jsonviewer .searchbox{display:none!important}}.monkey-jsonviewer .json-viewer-layout{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column}.monkey-jsonviewer .json-viewer-layout .panel{display:flex;line-height:28px;user-select:none;flex-direction:column;background-color:#ececec}.monkey-jsonviewer .json-viewer-layout .tabs,.monkey-jsonviewer .json-viewer-layout .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-jsonviewer .json-viewer-layout .tabs>div,.monkey-jsonviewer .json-viewer-layout .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .tabs>div:hover,.monkey-jsonviewer .json-viewer-layout .toolbar>div:hover{background-color:#d4d4d4}.monkey-jsonviewer .json-viewer-layout .tabs-item{border-top:3px solid #ececec}.monkey-jsonviewer .json-viewer-layout .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .json-viewer-layout .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-jsonviewer .json-viewer-layout .toolbar{line-height:23px}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox:hover{background-color:transparent}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:14px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAipJREFUWEftljuIE1EUhv8zpJB0FqugItiIdmKnnQ+wjPhq3EILRYt1JTDnDvhgUJG55zY+ELO7hRZupYWCCIK6nXYiNoqlrIUKaxes5siFBGKYSSbJTnaLTDMwl/Ofj8Pc/z+ENX5ojftjfQFYay8AuEFEU2VMRlV/A7hujGm09f+bgIj8APCtjOYdmjuZeWsewCMAZwBcYub7qwkiIjMA7gF4zMxnMwHiOK5Wq9UXAA6r6kljzLPVgLDWniCipwDeNJvNWhzHzUwA/zFJku1BEHiIPUS0PwzDD6NAOOf2qep7AJ/SNK1FUfS9Uy/zFojIXgAeYhsRbQ7D8NcwEM65Tar6E8AygBozf+zWyb2GSZIcCYLgORH9DcNw45AAf1R1Q5qmR6Moep2l0dMHrLWniegJgK/MvHsQCBH5AmCXqk4bYxbzavsakYjMArgD4B0zHyoCISJvARwEcJmZ7/aq6Qvgi0XkJoCrqrpgjDnfS9BaO09E5wDcYuZr/YALAbQgHgLwTpnrER13vcHMF/s19+eFAVoQS/7NzAeyxJ1zS6qaez7wT9hdICITgMkEJhOYTMCq6jEimmXmV90+UboRtdzQ7wZ+aW1UKpUr9Xp9pQ0yFoCuXFhW1agdt2MD8BDOOb83zgPYAWAxCILbqvqg1CzIChMRmQPgI3qFiD773Z+ZTxVJwoHTME9URI4TUV1VtwCYYeaXYwUo2mzkOB6l0dA7YRlNOzX/ATTlNjBwsoHnAAAAAElFTkSuQmCC)}.monkey-jsonviewer .json-viewer-layout .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANZJREFUOE+t0zFKg0EQhuEndbpgIVZ26eIJFK1SeQcPYKuWmlJIb6lHkJRpFFKnE2zTpBAknaUgA/+Q5SfBwGaaZWfne3dmdraj0job9Ae4wwAn+MUcn3jCotS0Aad4RW9LYj+4xkuel4ArPO9Y0RlmEZuAY3ygi/cGct6Clf4V+vhOwCNuG0EEXuAB941v1OzfkOAxbhIwwWVxYwoCEhZrCQzfFMMELHHUSjkhCchsMuwLh3sDVJfwXxOj/ihpaxOrnzEaUzVI2dmqUU5I1Wfa8Susw/4A1fw8ES1B6icAAAAASUVORK5CYII=)}.monkey-jsonviewer .json-viewer-layout .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div{padding:0 5px;margin-top:2px}.monkey-jsonviewer .json-viewer-layout .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:hover{background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li{font-size:12px;padding:5px 20px;list-style-type:none;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-jsonviewer .json-viewer-layout .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-jsonviewer .json-viewer-layout .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-jsonviewer .json-viewer-layout .container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-jsonviewer .json-viewer-layout .container>div{height:100%;display:none}.monkey-jsonviewer .json-viewer-layout .container>div.active{display:block}.monkey-jsonviewer .json-viewer-layout .container #formatBox{padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-jsonviewer .json-viewer-layout .container #rawTextBox pre{margin:0;padding:0;white-space:pre-wrap;overflow-wrap:break-word}.monkey-jsonviewer .json-viewer-layout #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:before{content:"";margin-top:1px;position:absolute;border-radius:50%;top:50%!important;transform:translateY(-50%);background-color:#8149bf80}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-jsonviewer .json-viewer-layout #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-jsonviewer .json-viewer-layout #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-jsonviewer .json-viewer-layout #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-jsonviewer .httpRequest{padding:30px 20px;width:700px}.monkey-jsonviewer .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-jsonviewer .httpRequest input,.monkey-jsonviewer .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest input{flex-grow:1}.monkey-jsonviewer .httpRequest input[name=url],.monkey-jsonviewer .httpRequest input:first-child,.monkey-jsonviewer .httpRequest select{border-right:none}.monkey-jsonviewer .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-jsonviewer .httpRequest button:active{background-color:#cfcfcf}.monkey-jsonviewer .dark-theme .json-viewer-layout li,.monkey-jsonviewer .dark-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-theme .json-viewer-layout td:first-child,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout pre,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout td:first-child{color:#ccc}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel{color:#c4c4c4;background-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel>div,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel>div{border-bottom-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .toolbar-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .toolbar-item:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item{border-top-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-jsonviewer .dark-theme .json-viewer-layout .panel .tabs-item.active,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox input,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-jsonviewer .dark-theme .json-viewer-layout .searchbox .clear,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .searchbox .clear{filter:invert(.8)}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox>div span:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox>div span:hover{background-color:#464646}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-jsonviewer .dark-theme .json-viewer-layout .rightbox .tippy-box li:hover,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-jsonviewer .dark-theme .json-viewer-layout jmnode,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmnode{filter:brightness(2)}.monkey-jsonviewer .dark-theme .json-viewer-layout jmexpander,.monkey-jsonviewer .dark-plus-theme .json-viewer-layout jmexpander{background-color:#dfdfdf}.js-mind-child-node{width:300px;height:300px;margin:10px;overflow-y:scroll;position:relative;padding:5px 20px;background-color:#f8f9fa}.js-mind-child-node div{color:#475872;line-height:25px}.js-mind-copy{top:5px;right:10px;width:20px;height:20px;cursor:pointer;position:absolute;background-size:20px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;user-select:none;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}.format-container{flex-grow:1}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.hidden{display:none!important}div.json-formater-item{border-left:.5px dotted #d9d9d9}.json-formater-copy{width:13px;height:13px;cursor:pointer;margin-left:.15em;display:inline-block;background-size:13px;vertical-align:text-bottom;background-repeat:no-repeat;transition:background-image ease .3s;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.json-formater-copy.success{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAhZJREFUWEftlU1IFGEYx//Pu2R0kLrYwUMg7M5EHjwklNUOLoInxYMg7W6HTkEIgkLMLF6CsllDokN4Vfy4SnSqk+7sRghBFBT7IWKHQATFSxCLM09sabjjO/thLnuZ9zjPx//3/t9n3pfQ5EVN1ocP4DvgO9AwB/RMsJNYjAF4wEwz01rukeyXbwjAZEbttpmXAKhHokQ8bN4prLghzhwgkVHCzLQE8JUyMeblpFa411AAIxXshxCLAC6fFOKbZriw3jAA3VKHiLgk3uoS+UWMqKnlX9c8AwkreA0i0GM7vFu0i2svI1v7ld4M3VLuEmEBwLnjeQTsMyiaDOfeetVLZ8BIhz4CdP2w6CuxM2JqG99kTYz3oftwaE4S23Zsij3vza1Wgj8BYKSDvYBwF0khdEt9SMSzEoHvJETUvJ39UO219XBA2QHQ5iougzAsZRyEFxKBHAJONHlr41M18VLc6wgmAXoqafAHgoUYAuOZJP6Z2Il5HVfNQ1hK1NPKKAGvZBAAOiXf1wGOJcOFzVp2/u+CqpRsZNQ4/t5oVRalAkWOT/Xlf1TLrPseSKRDAw7TIhEuyS3kd2gJxM0b2d16xT1nwN1IT4U0IWiegY6yGPObg4sXYjNdX36eRrxmgMOZ6CLQE4AHGdgTjOXzdvvE48jawWnF6wI4EkmsKlfNSD77P6LHa8/8NawXzAfwHfAdaLoDvwHyYK0h/tY7mwAAAABJRU5ErkJggg==)}.json-formater-arrow{width:0;opacity:.2;display:inline-block}.json-formater-arrow:hover{opacity:.35}.json-formater-arrow:before{width:0;height:0;left:-13px;content:"";cursor:pointer;position:relative;border-style:solid;display:inline-block;vertical-align:middle;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.json-formater-closed .json-formater-arrow:before{transform:rotate(0)}.json-formater-placeholder{display:none;cursor:pointer;font-size:12px;color:#859900;user-select:none;margin-left:.3em}.json-formater-placeholder span{margin:0 .5em}.json-formater-placeholder span:hover{text-decoration:underline}.json-color{width:.7em;height:.7em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.json-comma{margin-left:.15em;font-family:Courier New,monospace}.json-colon{margin:0 .3em 0 .15em}.default-theme{background-color:#fefefe}.default-theme .json-object-bracket{color:#6d9331;font-weight:700}.default-theme .json-array-bracket{color:#8e9331;font-weight:700}.default-theme .json-key{color:#910f93;cursor:pointer}.default-theme .json-string,.default-theme .json-string a{color:#2e7c16}.default-theme .json-bigint,.default-theme .json-number{color:#164ff1}.default-theme .json-boolean{color:#c41a16}.default-theme .json-null{color:#228fec}.light-theme{background-color:#fefefe}.light-theme .json-object-bracket{color:#6d9331;font-weight:700}.light-theme .json-array-bracket{color:#8e9331;font-weight:700}.light-theme .json-key{color:#0040cf;cursor:pointer}.light-theme .json-string,.light-theme .json-string a{color:#a31515}.light-theme .json-bigint,.light-theme .json-number{color:#0b7500}.light-theme .json-boolean{color:#00f}.light-theme .json-null{color:#05f}.dark-theme{background-color:#252526}.dark-theme .json-object-bracket{color:#ce70d6;font-weight:700}.dark-theme .json-array-bracket{color:#f1d700;font-weight:700}.dark-theme .json-key{color:#9cdcfe;cursor:pointer}.dark-theme .json-string,.dark-theme .json-string a{color:#ce9178}.dark-theme .json-bigint,.dark-theme .json-number{color:#b5cea8}.dark-theme .json-boolean{color:#358cd6}.dark-theme .json-null{color:#569cd6}.dark-plus-theme{background-color:#1e1f22}.dark-plus-theme .json-object-bracket{color:#bb9667;font-weight:700}.dark-plus-theme .json-array-bracket{color:#bbbda3;font-weight:700}.dark-plus-theme .json-key{color:#c77dbb;cursor:pointer}.dark-plus-theme .json-string,.dark-plus-theme .json-string a{color:#6aab73}.dark-plus-theme .json-bigint,.dark-plus-theme .json-number{color:#28aab4}.dark-plus-theme .json-boolean{color:#ce8951}.dark-plus-theme .json-null{color:#c78d61}.dark-theme div.json-formater-item,.dark-plus-theme div.json-formater-item{border-left-color:#3a3d40}.dark-theme .json-colon,.dark-theme .json-comma,.dark-plus-theme .json-colon,.dark-plus-theme .json-comma{color:#ccc}.dark-theme .json-formater-arrow,.dark-plus-theme .json-formater-arrow{color:#fff;opacity:.35}.dark-theme .json-formater-arrow:hover,.dark-plus-theme .json-formater-arrow:hover{opacity:.5}.json-tree-table{border-collapse:collapse;width:-webkit-fill-available}.json-tree-table tr.selected *{color:#fff!important;background-color:#3875d7}.json-tree-table tr:hover{background-color:#f0f9fe}.json-tree-table tr td:first-child{width:120px}.dark-theme .json-tree-table tr:hover,.dark-plus-theme .json-tree-table tr:hover{background-color:#353b48}/**
+(o=>{window.addEventListener("message",r=>{const{data:t}=r;if(!t?.addStyle)return;if(typeof GM_addStyle=="function")return GM_addStyle(o);const e=document.createElement("style");e.textContent=o,document.head.append(e)})})(` @charset "UTF-8";.monkey-script body,.monkey-script iframe,.monkey-script ul{margin:0;padding:0}.monkey-script iframe{border:0}.monkey-script input:focus,.monkey-script select:focus,.monkey-script textarea:focus{outline:0}.monkey-script .jsonp{color:#657b83}.monkey-script #jsoncrackEmbed{border:0;width:100%;height:100%}.monkey-script .tippy-box[data-theme~=layer]{color:#fff;padding:5px;font-size:12px;line-height:20px;background-color:#2e59a7}.monkey-script .tippy-box[data-theme~=layer] .tippy-arrow{color:#2e59a7}.monkey-script .tippy-box[data-theme~=imagebox]{background-color:#d9d9d9}.monkey-script .tippy-box[data-theme~=imagebox] .tippy-arrow{color:#d9d9d9}@media screen and (max-width: 640px){.monkey-script .rightbox{right:0!important}.monkey-script .rightbox .tools{display:none!important}}@media screen and (max-width: 400px){.monkey-script .searchbox{display:none!important}}.monkey-script .json-viewer-layout{top:0;left:0;z-index:10;width:100vw;height:100vh;display:flex;position:fixed;flex-direction:column}.monkey-script .json-viewer-layout .panel{display:flex;line-height:28px;user-select:none;flex-direction:column;background-color:#ececec}.monkey-script .json-viewer-layout .tabs,.monkey-script .json-viewer-layout .toolbar{display:flex;border-bottom:1px solid #ccc}.monkey-script .json-viewer-layout .tabs>div,.monkey-script .json-viewer-layout .toolbar>div{cursor:pointer;padding:0 10px;font-size:12px;transition:background-color .2s ease}.monkey-script .json-viewer-layout .tabs>div:hover,.monkey-script .json-viewer-layout .toolbar>div:hover{background-color:#d4d4d4}.monkey-script .json-viewer-layout .tabs-item{border-top:3px solid #ececec}.monkey-script .json-viewer-layout .tabs-item:hover{border-top-color:#c3c3c6}.monkey-script .json-viewer-layout .tabs-item.active{color:#0060df;border-top-color:#0060df;background-color:#f1f1f1}.monkey-script .json-viewer-layout .toolbar{line-height:23px}.monkey-script .json-viewer-layout .toolbar .searchbox{padding:0;display:flex;flex-grow:1}.monkey-script .json-viewer-layout .toolbar .searchbox:hover{background-color:transparent}.monkey-script .json-viewer-layout .toolbar .searchbox input{flex-grow:1;border:none;outline:none;font-size:12px;padding-left:23px;border-left:1.5px solid #ccc;background-size:14px;background-repeat:no-repeat;background-position:7px center;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAipJREFUWEftljuIE1EUhv8zpJB0FqugItiIdmKnnQ+wjPhq3EILRYt1JTDnDvhgUJG55zY+ELO7hRZupYWCCIK6nXYiNoqlrIUKaxes5siFBGKYSSbJTnaLTDMwl/Ofj8Pc/z+ENX5ojftjfQFYay8AuEFEU2VMRlV/A7hujGm09f+bgIj8APCtjOYdmjuZeWsewCMAZwBcYub7qwkiIjMA7gF4zMxnMwHiOK5Wq9UXAA6r6kljzLPVgLDWniCipwDeNJvNWhzHzUwA/zFJku1BEHiIPUS0PwzDD6NAOOf2qep7AJ/SNK1FUfS9Uy/zFojIXgAeYhsRbQ7D8NcwEM65Tar6E8AygBozf+zWyb2GSZIcCYLgORH9DcNw45AAf1R1Q5qmR6Moep2l0dMHrLWniegJgK/MvHsQCBH5AmCXqk4bYxbzavsakYjMArgD4B0zHyoCISJvARwEcJmZ7/aq6Qvgi0XkJoCrqrpgjDnfS9BaO09E5wDcYuZr/YALAbQgHgLwTpnrER13vcHMF/s19+eFAVoQS/7NzAeyxJ1zS6qaez7wT9hdICITgMkEJhOYTMCq6jEimmXmV90+UboRtdzQ7wZ+aW1UKpUr9Xp9pQ0yFoCuXFhW1agdt2MD8BDOOb83zgPYAWAxCILbqvqg1CzIChMRmQPgI3qFiD773Z+ZTxVJwoHTME9URI4TUV1VtwCYYeaXYwUo2mzkOB6l0dA7YRlNOzX/ATTlNjBwsoHnAAAAAElFTkSuQmCC)}.monkey-script .json-viewer-layout .toolbar .searchbox .clear{flex:0 0 auto;align-self:center;margin:0 4px;padding:0;border:0;width:16px;height:16px;background-color:transparent;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANZJREFUOE+t0zFKg0EQhuEndbpgIVZ26eIJFK1SeQcPYKuWmlJIb6lHkJRpFFKnE2zTpBAknaUgA/+Q5SfBwGaaZWfne3dmdraj0job9Ae4wwAn+MUcn3jCotS0Aad4RW9LYj+4xkuel4ArPO9Y0RlmEZuAY3ygi/cGct6Clf4V+vhOwCNuG0EEXuAB941v1OzfkOAxbhIwwWVxYwoCEhZrCQzfFMMELHHUSjkhCchsMuwLh3sDVJfwXxOj/ihpaxOrnzEaUzVI2dmqUU5I1Wfa8Susw/4A1fw8ES1B6icAAAAASUVORK5CYII=)}.monkey-script .json-viewer-layout .rightbox{right:200px;display:flex;font-size:12px;position:absolute}.monkey-script .json-viewer-layout .rightbox>div{padding:0 5px;margin-top:2px}.monkey-script .json-viewer-layout .rightbox>div span{cursor:pointer;display:inline;padding:5px 10px;border-radius:3px;transition:background-color .2s ease}.monkey-script .json-viewer-layout .rightbox>div span:hover{background-color:#ccc}.monkey-script .json-viewer-layout .rightbox>div span:after{content:"";width:0;height:0;right:-5px;position:relative;border-style:solid;display:inline-block;vertical-align:middle;border-width:7px 5px 0 5px;border-color:#999 transparent transparent transparent;transform:rotate(0);transition:transform .3s ease}.monkey-script .json-viewer-layout .rightbox>div span.active:after{transform:rotate(180deg)}.monkey-script .json-viewer-layout .rightbox>div ul{color:#333;cursor:pointer;text-align:center;border-radius:3px}.monkey-script .json-viewer-layout .rightbox>div ul li{font-size:12px;padding:5px 20px;list-style-type:none;background-color:#dfdfdf;transition:background-color .2s ease}.monkey-script .json-viewer-layout .rightbox>div ul li:hover{border-radius:3px;background-color:#ccc}.monkey-script .json-viewer-layout .rightbox>div ul li.active:before{left:15px;content:"\u221A";display:inline;position:absolute}.monkey-script .json-viewer-layout .rightbox>div .tippy-box{background-color:#dfdfdf!important}.monkey-script .json-viewer-layout .rightbox>div .tippy-box .tippy-content{padding:5px}.monkey-script .json-viewer-layout .rightbox>div .tippy-box .tippy-arrow{color:#dfdfdf!important}.monkey-script .json-viewer-layout .container{flex-grow:1;overflow:auto;line-height:1.4;font-size:13.5px;font-family:monospace}.monkey-script .json-viewer-layout .container>div{height:100%;display:none}.monkey-script .json-viewer-layout .container>div.active{display:block}.monkey-script .json-viewer-layout .container #formatBox{padding:5px 8px}.monkey-script .json-viewer-layout .container #rawTextBox{font-size:13px;padding:5px 8px}.monkey-script .json-viewer-layout .container #rawTextBox pre{margin:0;padding:0;white-space:pre-wrap;overflow-wrap:break-word}.monkey-script .json-viewer-layout #mindBox{width:100vw;height:calc(100vh - 57px)}.monkey-script .json-viewer-layout #mindBox jmnode{display:flex;align-items:center;padding:0 7px 0 22px;color:#475872!important;box-shadow:none!important;background-color:transparent!important}.monkey-script .json-viewer-layout #mindBox jmnode.root{padding:0;color:transparent!important}.monkey-script .json-viewer-layout #mindBox jmnode:before{content:"";margin-top:1px;position:absolute;border-radius:50%;top:50%!important;transform:translateY(-50%);background-color:#8149bf80}.monkey-script .json-viewer-layout #mindBox jmnode.root:before{left:50%;width:18px;height:18px;transform:translate(-18px,-50%)}.monkey-script .json-viewer-layout #mindBox jmnode:hover{text-shadow:0px 0px 1px currentColor}.monkey-script .json-viewer-layout #mindBox jmnode:not(.root):before{left:0;width:15px;height:15px}.monkey-script .json-viewer-layout #mindBox jmexpander{margin-top:1px;line-height:9px}.monkey-script .json-viewer-layout #mindBox .datatype{opacity:.6;font-size:12px;margin-top:2px;padding-left:5px}.monkey-script .httpRequest{padding:30px 20px;width:700px}.monkey-script .httpRequest>div{display:flex;height:35px;margin-bottom:20px}.monkey-script .httpRequest input,.monkey-script .httpRequest select{border-radius:0;padding-left:10px;border:1px solid #ccc}.monkey-script .httpRequest input{flex-grow:1}.monkey-script .httpRequest input[name=url],.monkey-script .httpRequest input:first-child,.monkey-script .httpRequest select{border-right:none}.monkey-script .httpRequest button{cursor:pointer;padding:0 15px;border:1px solid #ccc}.monkey-script .httpRequest button:active{background-color:#cfcfcf}.monkey-script .dark-theme .json-viewer-layout li,.monkey-script .dark-theme .json-viewer-layout pre,.monkey-script .dark-theme .json-viewer-layout td:first-child,.monkey-script .dark-plus-theme .json-viewer-layout li,.monkey-script .dark-plus-theme .json-viewer-layout pre,.monkey-script .dark-plus-theme .json-viewer-layout td:first-child{color:#ccc}.monkey-script .dark-theme .json-viewer-layout .panel,.monkey-script .dark-plus-theme .json-viewer-layout .panel{color:#c4c4c4;background-color:#333}.monkey-script .dark-theme .json-viewer-layout .panel>div,.monkey-script .dark-plus-theme .json-viewer-layout .panel>div{border-bottom-color:#464646}.monkey-script .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-script .dark-theme .json-viewer-layout .panel .toolbar-item:hover,.monkey-script .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-script .dark-plus-theme .json-viewer-layout .panel .toolbar-item:hover{background-color:#464646}.monkey-script .dark-theme .json-viewer-layout .panel .tabs-item,.monkey-script .dark-plus-theme .json-viewer-layout .panel .tabs-item{border-top-color:#333}.monkey-script .dark-theme .json-viewer-layout .panel .tabs-item:hover,.monkey-script .dark-plus-theme .json-viewer-layout .panel .tabs-item:hover{border-top-color:#c3c3c6}.monkey-script .dark-theme .json-viewer-layout .panel .tabs-item.active,.monkey-script .dark-plus-theme .json-viewer-layout .panel .tabs-item.active{color:#c4c4c4;border-top-color:#64b7ff;background-color:#464646}.monkey-script .dark-theme .json-viewer-layout .searchbox input,.monkey-script .dark-plus-theme .json-viewer-layout .searchbox input{color:#ccc;background-color:#464646;border-left-color:#333}.monkey-script .dark-theme .json-viewer-layout .searchbox .clear,.monkey-script .dark-plus-theme .json-viewer-layout .searchbox .clear{filter:invert(.8)}.monkey-script .dark-theme .json-viewer-layout .rightbox>div span:hover,.monkey-script .dark-plus-theme .json-viewer-layout .rightbox>div span:hover{background-color:#464646}.monkey-script .dark-theme .json-viewer-layout .rightbox .tippy-box,.monkey-script .dark-plus-theme .json-viewer-layout .rightbox .tippy-box{background-color:#4e4e4e!important}.monkey-script .dark-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow,.monkey-script .dark-plus-theme .json-viewer-layout .rightbox .tippy-box .tippy-arrow{color:#4e4e4e!important}.monkey-script .dark-theme .json-viewer-layout .rightbox .tippy-box li,.monkey-script .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li{background-color:#4e4e4e!important}.monkey-script .dark-theme .json-viewer-layout .rightbox .tippy-box li:hover,.monkey-script .dark-plus-theme .json-viewer-layout .rightbox .tippy-box li:hover{background-color:#464646!important}.monkey-script .dark-theme .json-viewer-layout jmnode,.monkey-script .dark-plus-theme .json-viewer-layout jmnode{filter:brightness(2)}.monkey-script .dark-theme .json-viewer-layout jmexpander,.monkey-script .dark-plus-theme .json-viewer-layout jmexpander{background-color:#dfdfdf}.js-mind-child-node{width:300px;height:300px;margin:10px;overflow-y:scroll;position:relative;padding:5px 20px;background-color:#f8f9fa}.js-mind-child-node div{color:#475872;line-height:25px}.js-mind-copy{top:5px;right:10px;width:20px;height:20px;cursor:pointer;position:absolute;background-size:20px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:"";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}.monkey-js-css-beautify body{padding-top:20px;padding-left:5px}.monkey-js-css-beautify body .beautify_checkbox{top:0;left:0;z-index:999;width:100vw;display:flex;position:fixed;padding:5px 10px;user-select:none;align-items:center;background-color:#f3f3f3;border-bottom:1px solid #ccc}.monkey-js-css-beautify body .beautify_checkbox label{font-size:13px}.monkey-js-css-beautify body .beautify_checkbox input[type=checkbox]{top:1.5px;width:14px;height:14px;margin-right:5px;position:relative}.format-container{flex-grow:1}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#fff;color:#000}.xml .hljs-meta{color:silver}.hljs-comment,.hljs-quote{color:#007400}.hljs-attribute,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-selector-tag,.hljs-tag{color:#aa0d91}.hljs-template-variable,.hljs-variable{color:#3f6e74}.hljs-code,.hljs-meta .hljs-string,.hljs-string{color:#c41a16}.hljs-link,.hljs-regexp{color:#0e0eff}.hljs-bullet,.hljs-number,.hljs-symbol,.hljs-title{color:#1c00cf}.hljs-meta,.hljs-section{color:#643820}.hljs-built_in,.hljs-class .hljs-title,.hljs-params,.hljs-title.class_,.hljs-type{color:#5c2699}.hljs-attr{color:#836c28}.hljs-subst{color:#000}.hljs-formula{background-color:#eee;font-style:italic}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-selector-class,.hljs-selector-id{color:#9b703f}.hljs-doctag,.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}ul,li{list-style-type:none}wrapper{display:contents}.hidden{display:none!important}.json-viewer ul{border-left:.5px dotted #ccc}.json-copy{width:13px;height:13px;cursor:pointer;margin-left:.15em;display:inline-block;background-size:13px;vertical-align:text-bottom;background-repeat:no-repeat;transition:background-image ease .3s;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYRJREFUWEftlzFOw0AQRefbF+EMVJFA1kzcUNGRW8ABkFBASBQgUZAiLSUiHb29W1DTQUFFzxFQvGglO8JW1uuElQIGl8545/n/0eQbtOELG+5PNYA8z28AHIaAMsZMhsPhke+sBYDW+mE+nz9FUaR9D3X5vSgKjuN4m5n32+oXAEopQ0QiIkEAlFJMREpEWm3uP0BD/ndjzAzArFLaq0Appdf2pnWVBdbWLw9vEdEYwJSZL+39VoA8z3cAPHq7Ez3HcTxKkuSlqnXNQJZlp1EU7YnIwAvQobGzxAXQvO+1YF2I/gBYz7qokKZprS6YAhsH6PL2y2qCKfC3AbTWB8aY+y4qABgx88y3iFbeA99dxc1/w5UBurz9/xD2Q4EqEzZX6rozYDfoskzYNoS7RHRORDbLhbhstjwRkVqecAI4fFREdBYqqNoevw7gCsAHMx+H8MSe4YxkDgsGAC6KorgD8BoAogql18w8qWVC1+GlZ+NAw/lWztRt1e9nfZwGkHjlIz4Bw1VmMCtaHCkAAAAASUVORK5CYII=)}.json-copy.success{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAhZJREFUWEftlU1IFGEYx//Pu2R0kLrYwUMg7M5EHjwklNUOLoInxYMg7W6HTkEIgkLMLF6CsllDokN4Vfy4SnSqk+7sRghBFBT7IWKHQATFSxCLM09sabjjO/thLnuZ9zjPx//3/t9n3pfQ5EVN1ocP4DvgO9AwB/RMsJNYjAF4wEwz01rukeyXbwjAZEbttpmXAKhHokQ8bN4prLghzhwgkVHCzLQE8JUyMeblpFa411AAIxXshxCLAC6fFOKbZriw3jAA3VKHiLgk3uoS+UWMqKnlX9c8AwkreA0i0GM7vFu0i2svI1v7ld4M3VLuEmEBwLnjeQTsMyiaDOfeetVLZ8BIhz4CdP2w6CuxM2JqG99kTYz3oftwaE4S23Zsij3vza1Wgj8BYKSDvYBwF0khdEt9SMSzEoHvJETUvJ39UO219XBA2QHQ5iougzAsZRyEFxKBHAJONHlr41M18VLc6wgmAXoqafAHgoUYAuOZJP6Z2Il5HVfNQ1hK1NPKKAGvZBAAOiXf1wGOJcOFzVp2/u+CqpRsZNQ4/t5oVRalAkWOT/Xlf1TLrPseSKRDAw7TIhEuyS3kd2gJxM0b2d16xT1nwN1IT4U0IWiegY6yGPObg4sXYjNdX36eRrxmgMOZ6CLQE4AHGdgTjOXzdvvE48jawWnF6wI4EkmsKlfNSD77P6LHa8/8NawXzAfwHfAdaLoDvwHyYK0h/tY7mwAAAABJRU5ErkJggg==)}.json-arrow{width:0;opacity:.2;display:inline-block}.json-arrow:hover{opacity:.35}.json-arrow:before{width:0;height:0;left:-13px;content:"";cursor:pointer;position:relative;border-style:solid;display:inline-block;vertical-align:middle;transform:rotate(90deg);border-width:5px 0 5px 8px;transition:transform .3s ease;border-color:transparent transparent transparent currentColor}.collapsed .json-arrow:before{transform:rotate(0)}.json-placeholder{display:none;cursor:pointer;font-size:12px;color:#859900;user-select:none;margin-left:.3em}.json-placeholder span{margin:0 .5em}.json-placeholder span:hover{text-decoration:underline}.json-color{width:.7em;height:.7em;margin-right:.3em;display:inline-block;vertical-align:middle;border:1px solid #ccc}.json-comma{margin-left:.15em;font-family:Courier New,monospace}.json-colon{margin:0 .3em 0 .15em}.default-theme{background-color:#fefefe}.default-theme .json-object-bracket{color:#6d9331;font-weight:700}.default-theme .json-array-bracket{color:#8e9331;font-weight:700}.default-theme .json-key{color:#910f93;cursor:pointer}.default-theme .json-string,.default-theme .json-string a{color:#2e7c16}.default-theme .json-bigint,.default-theme .json-number{color:#164ff1}.default-theme .json-boolean{color:#c41a16}.default-theme .json-null{color:#228fec}.light-theme{background-color:#fefefe}.light-theme .json-object-bracket{color:#6d9331;font-weight:700}.light-theme .json-array-bracket{color:#8e9331;font-weight:700}.light-theme .json-key{color:#0040cf;cursor:pointer}.light-theme .json-string,.light-theme .json-string a{color:#a31515}.light-theme .json-bigint,.light-theme .json-number{color:#0b7500}.light-theme .json-boolean{color:#00f}.light-theme .json-null{color:#05f}.dark-theme{background-color:#252526}.dark-theme .json-object-bracket{color:#ce70d6;font-weight:700}.dark-theme .json-array-bracket{color:#f1d700;font-weight:700}.dark-theme .json-key{color:#9cdcfe;cursor:pointer}.dark-theme .json-string,.dark-theme .json-string a{color:#ce9178}.dark-theme .json-bigint,.dark-theme .json-number{color:#b5cea8}.dark-theme .json-boolean{color:#358cd6}.dark-theme .json-null{color:#569cd6}.dark-plus-theme{background-color:#1e1f22}.dark-plus-theme .json-object-bracket{color:#bb9667;font-weight:700}.dark-plus-theme .json-array-bracket{color:#bbbda3;font-weight:700}.dark-plus-theme .json-key{color:#c77dbb;cursor:pointer}.dark-plus-theme .json-string,.dark-plus-theme .json-string a{color:#6aab73}.dark-plus-theme .json-bigint,.dark-plus-theme .json-number{color:#28aab4}.dark-plus-theme .json-boolean{color:#ce8951}.dark-plus-theme .json-null{color:#c78d61}.dark-theme .json-view ul,.dark-plus-theme .json-view ul{border-left:.5px dotted #5e5e5e}.dark-theme .json-colon,.dark-theme .json-comma,.dark-plus-theme .json-colon,.dark-plus-theme .json-comma{color:#ccc}.dark-theme .json-arrow,.dark-plus-theme .json-arrow{color:#fff;opacity:.35}.dark-theme .json-arrow:hover,.dark-plus-theme .json-arrow:hover{opacity:.5}.json-tree-table{border-collapse:collapse;width:-webkit-fill-available}.json-tree-table tr.selected *{color:#fff!important;background-color:#3875d7}.json-tree-table tr:hover{background-color:#f0f9fe}.json-tree-table tr td:first-child{width:120px}.dark-theme .json-tree-table tr:hover,.dark-plus-theme .json-tree-table tr:hover{background-color:#353b48}/**
 * @license BSD
 * @copyright 2014-2023 hizzgdev@163.com
 * 
@@ -42,7 +42,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:dom-to-image", (()=>{const _=domtoimage;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-LVLlcffZ.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-D38Pz7Rd.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -54,7 +54,7 @@ System.register("./__entry.js", ['./__monkey.entry-LVLlcffZ.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-LVLlcffZ.js", [], (function (exports, module) {
+System.register("./__monkey.entry-D38Pz7Rd.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -2183,12 +2183,12 @@ System.register("./__monkey.entry-LVLlcffZ.js", [], (function (exports, module) 
         });
         const innerText = document.body.innerText;
         const { rawText, jsonpFun } = Utils.matchJsonp(innerText);
-        if (!Utils.isJSON(rawText)) return __vitePreload(() => module.import('./index-BUNdA_n5-CUq2Fl1P.js'), void 0 );
+        if (!Utils.isJSON(rawText)) return __vitePreload(() => module.import('./index-CW-bKdx7-B-0jv6sj.js'), void 0 );
         _unsafeWindow.RAW_TEXT = rawText;
         _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
         _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
         Utils.hide(Utils.query("pre"));
-        Utils.addClass(Utils.query("html"), "monkey-jsonviewer");
+        Utils.addClass(Utils.query("html"), "monkey-script");
         window.postMessage({ addStyle: true });
         const meta = Utils.createElement("meta", {
           name: "viewport",
@@ -2201,9 +2201,9 @@ System.register("./__monkey.entry-LVLlcffZ.js", [], (function (exports, module) 
           document.body.insertAdjacentHTML("afterbegin", layout);
           const temp = Utils.query('template[data-for="viewFormater"]');
           Utils.query(".toolbar").innerHTML = temp.innerHTML;
-          __vitePreload(() => module.import('./index-DMFHLBGy-C0qJciXJ.js'), void 0 ).then(() => {
-            __vitePreload(() => module.import('./index-DRUNfhKZ-CCG_zrOh.js'), void 0 );
-            __vitePreload(() => module.import('./index-Dvh_s8PC-Du0f02Ru.js'), void 0 );
+          __vitePreload(() => module.import('./index-CEkM4Nbd-BIf2ryV4.js'), void 0 ).then(() => {
+            __vitePreload(() => module.import('./index-D5Od81As-JI_oA2jj.js'), void 0 );
+            __vitePreload(() => module.import('./index-CwrJ66RK-Dv5nmPjd.js'), void 0 );
           });
         });
       })();
@@ -2212,7 +2212,7 @@ System.register("./__monkey.entry-LVLlcffZ.js", [], (function (exports, module) 
   };
 }));
 
-System.register("./index-BUNdA_n5-CUq2Fl1P.js", ['highlight.js', 'beautifier', './__monkey.entry-LVLlcffZ.js'], (function (exports, module) {
+System.register("./index-CW-bKdx7-B-0jv6sj.js", ['highlight.js', 'beautifier', './__monkey.entry-D38Pz7Rd.js'], (function (exports, module) {
   'use strict';
   var hljs, css_beautify, js_beautify, Utils;
   return {
@@ -2279,7 +2279,7 @@ System.register("./index-BUNdA_n5-CUq2Fl1P.js", ['highlight.js', 'beautifier', '
   };
 }));
 
-System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-CEkM4Nbd-BIf2ryV4.js", ['./__monkey.entry-D38Pz7Rd.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var _GM_setValue, _unsafeWindow, Utils, _GM_getValue, _GM_setClipboard, tippy;
   return {
@@ -2393,15 +2393,15 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
           node.appendChild(this.creatPlaceholder(json));
         }
         creatArrowElement() {
-          return Utils.createElement("span", { class: "json-formater-arrow" });
+          return Utils.createElement("span", { class: "json-arrow" });
         }
         creatCopyElement(json) {
-          const copy = Utils.createElement("span", { title: "复制", class: "json-formater-copy" });
+          const copy = Utils.createElement("span", { title: "复制", class: "json-copy" });
           copy.json = json;
           return copy;
         }
         creatPlaceholder(json) {
-          const placeholder = Utils.createElement("span", { class: "json-formater-placeholder" });
+          const placeholder = Utils.createElement("span", { class: "json-placeholder" });
           const type = Utils.getType(json);
           const length = Object.keys(json).length;
           const span = Utils.createElement("span");
@@ -2424,70 +2424,48 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
           return node;
         }
         bindEvent() {
-          this.addEvent("click", ".json-formater-copy", (e) => {
+          this.addEvent("click", ".json-copy", (e) => {
             const className = "success";
             const target = e.currentTarget;
             if (!target.json || Utils.hasClass(target, className)) return;
-            Utils.setClipboard(Utils.stringify(target.json, null, 2));
             Utils.addClass(target, className);
+            Utils.setClipboard(Utils.stringify(target.json, null, 2));
             setTimeout(() => Utils.removeClass(target, className), 1500);
           });
-          this.addEvent("click", ".json-formater-placeholder", (e) => {
-            const node = Utils.closest(e.currentTarget, ".json-formater-item");
-            this.show(node);
+          this.addEvent("click", ".json-placeholder", (e) => {
+            const node = Utils.closest(e.currentTarget, ".json-item");
+            this.expand(node);
           });
-          this.addEvent("click", ".json-formater-arrow", (e) => {
-            const node = Utils.closest(e.currentTarget, ".json-formater-item");
-            const isExpand = Utils.hasClass(node, "json-formater-opened");
-            isExpand ? this.hide(node) : this.show(node);
+          this.addEvent("click", ".json-arrow", (e) => {
+            const node = Utils.closest(e.currentTarget, ".json-item");
+            const expanded = Utils.hasClass(node, "expanded");
+            expanded ? this.collapse(node) : this.expand(node);
           });
         }
         expandAll() {
-          const nodes = this.nodes();
-          for (const node of nodes) {
-            if (Utils.hasClass(node, "json-formater-closed")) this.show(node);
-          }
+          this.nodes().forEach((node) => this.expand(node));
         }
         collapseAll() {
-          const nodes = this.nodes();
-          for (const node of nodes) {
-            if (Utils.hasClass(node, "json-formater-opened")) this.hide(node);
-          }
+          this.nodes().forEach((node) => this.collapse(node));
         }
-        show(node) {
-          this.showDescs(node);
+        expand(node) {
+          this.toggleDescs(node, false);
           Utils.hide(this.getPlaceNode(node));
-          Utils.addClass(node, "json-formater-opened");
-          Utils.removeClass(node, "json-formater-closed");
+          Utils.addClass(node, "expanded");
+          Utils.removeClass(node, "collapsed");
         }
-        hide(node) {
-          this.hideDescs(node);
+        collapse(node) {
+          this.toggleDescs(node, true);
           Utils.show(this.getPlaceNode(node));
-          Utils.addClass(node, "json-formater-closed");
-          Utils.removeClass(node, "json-formater-opened");
+          Utils.addClass(node, "collapsed");
+          Utils.removeClass(node, "expanded");
         }
-        showDescs(node) {
-          const queue = [node];
-          while (queue.length > 0) {
-            const currentNode = queue.shift();
-            const children = this.findChildren(currentNode);
-            if (children.length === 0) continue;
-            for (const child of children) {
-              Utils.removeClass(child, "hidden");
-              const hasClass = Utils.hasClass(child, "json-formater-opened");
-              if (hasClass) queue.push(child);
-            }
-          }
-        }
-        hideDescs(node) {
-          const path = Utils.attr(node, "path");
-          const selector = `*[path^='${path}']:not(*[path='${path}']):not(*[class*='hidden'])`;
-          const children = Utils.queryAll(selector, this.$container);
-          if (children.length === 0) return;
-          for (const child of children) Utils.addClass(child, "hidden");
+        toggleDescs(node, hidden) {
+          const target = Utils.query(`#${node.dataset.nodeId}`);
+          hidden ? Utils.addClass(target, "hidden") : Utils.removeClass(target, "hidden");
         }
         getPlaceNode(node) {
-          return Utils.query(`*[data-node-id="${node.dataset.nodeId}"] .json-formater-placeholder`, node);
+          return Utils.query(`*[data-node-id="${node.dataset.nodeId}"] .json-placeholder`, node);
         }
         findChildren(node) {
           return Utils.queryAll(`*[data-node-pid="${node.dataset.nodeId}"]`, this.$container);
@@ -2495,15 +2473,14 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
         findByID(id) {
           return Utils.query(`*[data-node-id="${id}"]`, this.$container);
         }
-        openByID(id) {
-          this.show(this.findByID(id));
+        expandByID(id) {
+          this.expand(this.findByID(id));
         }
-        closeByID(id) {
-          this.hide(this.findByID(id));
+        collapseByID(id) {
+          this.collapse(this.findByID(id));
         }
         nodes() {
-          const arrows = Utils.queryAll(".json-formater-arrow", this.$container);
-          return arrows.map((ele) => Utils.closest(ele, ".json-formater-item"));
+          return Utils.queryAll(".collapsible", this.$container);
         }
         addEvent(type, selector, fn) {
           Utils.queryAll(selector).forEach((el) => el.addEventListener(type, fn));
@@ -2551,7 +2528,7 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
       class JsonViewer extends JsonFormat {
         constructor(options) {
           options.style = JsonFormat.STYLE.VIEWER;
-          super(options, "div", "json-view-formater");
+          super(options, "div", "json-viewer");
         }
         createNode(box, json, JSONPath, pid) {
           const type = Utils.getType(json);
@@ -2577,29 +2554,33 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
             fragment.appendChild(this.creatCopyElement(json));
             fragment.appendChild(this.creatPlaceholder(json));
           }
+          const ul = Utils.createElement("ul", { id: pid });
+          fragment.appendChild(ul);
           let length = Object.keys(json).length;
           for (var key in json) {
             if (Object.prototype.hasOwnProperty.call(json, key)) {
               const value = json[key];
               const id = this.random();
-              const canComma = --length > 0;
+              const needComma = --length > 0;
               const JSONPath = this.JSONPath(path, key);
-              const node = Utils.createElement("div", {
+              const canIterate = this.canIterate(value);
+              const node = Utils.createElement("li", {
                 path: JSONPath,
                 "data-node-id": id,
                 "data-node-pid": pid,
                 style: `padding-left: 20px`,
                 "data-type": Utils.getType(value),
-                class: `json-formater-item${this.canIterate(value) ? " json-formater-opened" : ""}`
+                class: `json-item${canIterate ? " collapsible expanded" : ""}`
               });
               this.createKeyNode(node, key);
               this.createNode(node, value, JSONPath, id);
-              if (canComma) {
+              if (needComma) {
                 const comma = Utils.createElement("span", { class: "json-comma" });
                 comma.textContent = ",";
                 node.appendChild(comma);
               }
-              fragment.appendChild(node);
+              ul.appendChild(node);
+              fragment.appendChild(ul);
             }
           }
           fragment.appendChild(this.endBracket(Utils.getType(json)));
@@ -2637,6 +2618,7 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
         createNode(table, json, path, pid, depth) {
           json = this.keySort(json);
           const fragment = document.createDocumentFragment();
+          const customElement = Utils.createElement("wrapper", { id: pid });
           for (const key in json) {
             if (Object.prototype.hasOwnProperty.call(json, key)) {
               let value = json[key];
@@ -2651,7 +2633,8 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
               }
             }
           }
-          table.appendChild(fragment);
+          customElement.appendChild(fragment);
+          table.appendChild(customElement);
         }
         createItem(args) {
           const { key, value, type, depth, JSONPath, pid } = args;
@@ -2663,7 +2646,7 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
             "data-type": type,
             "data-node-id": id,
             "data-node-pid": pid,
-            class: `json-formater-item${this.canIterate(value) ? " json-formater-opened" : ""}`
+            class: `json-item${canIterate ? " collapsible expanded" : ""}`
           });
           const keyNode = this.createKeyNode(key, value, depth);
           node.appendChild(keyNode);
@@ -2727,7 +2710,7 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
         eventPath() {
           Utils.addEvent("click mouseenter", ".json-key", (event) => {
             const target = event.target;
-            const path = Utils.closest(target, ".json-formater-item").getAttribute("path");
+            const path = Utils.closest(target, ".json-item").getAttribute("path");
             if (Object.is(event.type, "click") && event.ctrlKey) {
               return _GM_setClipboard(path) & layer.msg("复制成功", { time: 1500 });
             }
@@ -2832,7 +2815,7 @@ System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js',
   };
 }));
 
-System.register("./index-DRUNfhKZ-CCG_zrOh.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-LVLlcffZ.js', 'dom-to-image'], (function (exports, module) {
+System.register("./index-D5Od81As-JI_oA2jj.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-D38Pz7Rd.js', 'dom-to-image'], (function (exports, module) {
   'use strict';
   var tippy, require$$0, commonjsGlobal, Utils, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue, require$$1;
   return {
@@ -2981,7 +2964,7 @@ System.register("./index-DRUNfhKZ-CCG_zrOh.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
               layer.msg("无法生成脑图", { time: 1e3 });
               return this;
             }
-            json = Utils.findMaxKeysObject(json);
+            json = Utils.getMaxKeysAndDepthObject(json);
           }
           if (!this.isFirst) return this;
           _unsafeWindow.GLOBAL_JSMIND.show({
@@ -3370,7 +3353,7 @@ System.register("./index-DRUNfhKZ-CCG_zrOh.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
   };
 }));
 
-System.register("./index-Dvh_s8PC-Du0f02Ru.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-LVLlcffZ.js'], (function (exports, module) {
+System.register("./index-CwrJ66RK-Dv5nmPjd.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-D38Pz7Rd.js'], (function (exports, module) {
   'use strict';
   var tippy, Utils;
   return {
