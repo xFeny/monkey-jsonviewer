@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JSON Viewer
 // @namespace    http://tampermonkey.net/
-// @version      1.0.6
+// @version      1.0.7
 // @author       Feny
 // @description  格式化显示 JSON 使数据看起来更加漂亮。支持 JSON 主题色切换。支持 JSON 脑图，清晰明了的查看 JSON 层级。支持通过 JSON Crack 查看 JSON。支持手动输入 JSON，HTTP 请求获取 JSON
 // @license      MIT
@@ -42,7 +42,7 @@ System.set("user:beautifier", (()=>{const _=beautifier;('default' in _)||(_.defa
 System.set("user:jsmind", (()=>{const _=jsmind;('default' in _)||(_.default=_);return _})());
 System.set("user:dom-to-image", (()=>{const _=domtoimage;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-DWQJ8sLB.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-LVLlcffZ.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -54,7 +54,7 @@ System.register("./__entry.js", ['./__monkey.entry-DWQJ8sLB.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-DWQJ8sLB.js", [], (function (exports, module) {
+System.register("./__monkey.entry-LVLlcffZ.js", [], (function (exports, module) {
   'use strict';
   return {
     execute: (function () {
@@ -1886,7 +1886,44 @@ System.register("./__monkey.entry-DWQJ8sLB.js", [], (function (exports, module) 
         ele.defaultDisplay = display;
         return display;
       }
+      function getMaxKeysAndDepthObject(list) {
+        function getObjectDepth(obj) {
+          if (typeof obj !== "object" || obj === null) return 0;
+          let maxDepth2 = 0;
+          for (let key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+              const depth = getObjectDepth(obj[key]);
+              maxDepth2 = Math.max(maxDepth2, depth);
+            }
+          }
+          return maxDepth2 + 1;
+        }
+        function countKeys(obj) {
+          if (typeof obj !== "object" || obj === null) return 0;
+          let keyCount = Object.keys(obj).length;
+          for (let key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+              keyCount += countKeys(obj[key]);
+            }
+          }
+          return keyCount;
+        }
+        let maxKeys = 0;
+        let maxDepth = 0;
+        let result = null;
+        for (let item of list) {
+          const keys = countKeys(item);
+          const depth = getObjectDepth(item);
+          if (keys > maxKeys || keys === maxKeys && depth > maxDepth) {
+            maxKeys = keys;
+            maxDepth = depth;
+            result = item;
+          }
+        }
+        return result;
+      }
       const Utils = exports("U", {
+        getMaxKeysAndDepthObject,
         isImg(str) {
           const regexp = /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
           return regexp.test(str);
@@ -1913,18 +1950,6 @@ System.register("./__monkey.entry-DWQJ8sLB.js", [], (function (exports, module) 
         },
         getPropType(o) {
           return Object.prototype.toString.call(o).match(/\s(.+)]/)[1];
-        },
-        findMaxKeysObject(arr) {
-          let maxKeysCount = 0;
-          let maxKeysObject;
-          for (const obj of arr) {
-            const keysCount = Object.keys(obj).length;
-            if (keysCount > maxKeysCount) {
-              maxKeysCount = keysCount;
-              maxKeysObject = obj;
-            }
-          }
-          return maxKeysObject;
         },
         downloadText(content, filename) {
           const blob = new Blob([content], { type: "application/json;charset=utf-8" });
@@ -2158,7 +2183,7 @@ System.register("./__monkey.entry-DWQJ8sLB.js", [], (function (exports, module) 
         });
         const innerText = document.body.innerText;
         const { rawText, jsonpFun } = Utils.matchJsonp(innerText);
-        if (!Utils.isJSON(rawText)) return __vitePreload(() => module.import('./index-B36XzXpX-CcDTbBFA.js'), void 0 );
+        if (!Utils.isJSON(rawText)) return __vitePreload(() => module.import('./index-BUNdA_n5-CUq2Fl1P.js'), void 0 );
         _unsafeWindow.RAW_TEXT = rawText;
         _unsafeWindow.GLOBAL_JSONP_FUN = jsonpFun;
         _unsafeWindow.GLOBAL_JSON = Utils.parse(_unsafeWindow.RAW_TEXT);
@@ -2176,9 +2201,9 @@ System.register("./__monkey.entry-DWQJ8sLB.js", [], (function (exports, module) 
           document.body.insertAdjacentHTML("afterbegin", layout);
           const temp = Utils.query('template[data-for="viewFormater"]');
           Utils.query(".toolbar").innerHTML = temp.innerHTML;
-          __vitePreload(() => module.import('./index-BlaQ9yHs-CPiX1z24.js'), void 0 ).then(() => {
-            __vitePreload(() => module.import('./index-ByHjXhMQ-10ap1WCu.js'), void 0 );
-            __vitePreload(() => module.import('./index-CaQOLM3Q-BnnpNNLV.js'), void 0 );
+          __vitePreload(() => module.import('./index-DMFHLBGy-C0qJciXJ.js'), void 0 ).then(() => {
+            __vitePreload(() => module.import('./index-DRUNfhKZ-CCG_zrOh.js'), void 0 );
+            __vitePreload(() => module.import('./index-Dvh_s8PC-Du0f02Ru.js'), void 0 );
           });
         });
       })();
@@ -2187,7 +2212,7 @@ System.register("./__monkey.entry-DWQJ8sLB.js", [], (function (exports, module) 
   };
 }));
 
-System.register("./index-B36XzXpX-CcDTbBFA.js", ['highlight.js', 'beautifier', './__monkey.entry-DWQJ8sLB.js'], (function (exports, module) {
+System.register("./index-BUNdA_n5-CUq2Fl1P.js", ['highlight.js', 'beautifier', './__monkey.entry-LVLlcffZ.js'], (function (exports, module) {
   'use strict';
   var hljs, css_beautify, js_beautify, Utils;
   return {
@@ -2254,7 +2279,7 @@ System.register("./index-B36XzXpX-CcDTbBFA.js", ['highlight.js', 'beautifier', '
   };
 }));
 
-System.register("./index-BlaQ9yHs-CPiX1z24.js", ['./__monkey.entry-DWQJ8sLB.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
+System.register("./index-DMFHLBGy-C0qJciXJ.js", ['./__monkey.entry-LVLlcffZ.js', './tippy.esm-Ot9MORvr-DNGa7Opj.js'], (function (exports, module) {
   'use strict';
   var _GM_setValue, _unsafeWindow, Utils, _GM_getValue, _GM_setClipboard, tippy;
   return {
@@ -2274,17 +2299,6 @@ System.register("./index-BlaQ9yHs-CPiX1z24.js", ['./__monkey.entry-DWQJ8sLB.js',
       var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
       const SORTED = { ASC: "ASC", DESC: "DESC" };
       const STYLE = { TABLE: "table", VIEWER: "viewer" };
-      const findChildren = {
-        [STYLE.TABLE]: (node, context) => {
-          const path = Utils.attr(node, "path");
-          const selector = `*[path^='${path}']:not(*[path='${path}']):not(*[class*='hidden'])`;
-          return Utils.queryAll(selector, context);
-        },
-        [STYLE.VIEWER]: (node, context) => {
-          const selector = `*[data-node-pid="${node.dataset.nodeId}"]`;
-          return Utils.queryAll(selector, context);
-        }
-      };
       class JsonFormat {
         constructor(options, tag, clazz) {
           __publicField(this, "Root", "Root");
@@ -2457,6 +2471,7 @@ System.register("./index-BlaQ9yHs-CPiX1z24.js", ['./__monkey.entry-DWQJ8sLB.js',
           while (queue.length > 0) {
             const currentNode = queue.shift();
             const children = this.findChildren(currentNode);
+            if (children.length === 0) continue;
             for (const child of children) {
               Utils.removeClass(child, "hidden");
               const hasClass = Utils.hasClass(child, "json-formater-opened");
@@ -2465,7 +2480,10 @@ System.register("./index-BlaQ9yHs-CPiX1z24.js", ['./__monkey.entry-DWQJ8sLB.js',
           }
         }
         hideDescs(node) {
-          const children = findChildren[this.options.style](node, this.$container);
+          const path = Utils.attr(node, "path");
+          const selector = `*[path^='${path}']:not(*[path='${path}']):not(*[class*='hidden'])`;
+          const children = Utils.queryAll(selector, this.$container);
+          if (children.length === 0) return;
           for (const child of children) Utils.addClass(child, "hidden");
         }
         getPlaceNode(node) {
@@ -2814,7 +2832,7 @@ System.register("./index-BlaQ9yHs-CPiX1z24.js", ['./__monkey.entry-DWQJ8sLB.js',
   };
 }));
 
-System.register("./index-ByHjXhMQ-10ap1WCu.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-DWQJ8sLB.js', 'dom-to-image'], (function (exports, module) {
+System.register("./index-DRUNfhKZ-CCG_zrOh.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', 'jsmind', './__monkey.entry-LVLlcffZ.js', 'dom-to-image'], (function (exports, module) {
   'use strict';
   var tippy, require$$0, commonjsGlobal, Utils, _unsafeWindow, _GM_setClipboard, _GM_getValue, URL$1, _GM_setValue, require$$1;
   return {
@@ -2932,7 +2950,7 @@ System.register("./index-ByHjXhMQ-10ap1WCu.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
               let val = json[key];
               const isArray = Array.isArray(val);
               const type = Utils.getPropType(val);
-              if (isArray && val.length > 0) val = Utils.findMaxKeysObject(val);
+              if (isArray && val.length > 0) val = Utils.getMaxKeysAndDepthObject(val);
               const isObject = Object.is(Utils.getType(val), "object");
               const keys = isObject ? Object.keys(val) : null;
               children.push({
@@ -3352,7 +3370,7 @@ System.register("./index-ByHjXhMQ-10ap1WCu.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.
   };
 }));
 
-System.register("./index-CaQOLM3Q-BnnpNNLV.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-DWQJ8sLB.js'], (function (exports, module) {
+System.register("./index-Dvh_s8PC-Du0f02Ru.js", ['./tippy.esm-Ot9MORvr-DNGa7Opj.js', './__monkey.entry-LVLlcffZ.js'], (function (exports, module) {
   'use strict';
   var tippy, Utils;
   return {
