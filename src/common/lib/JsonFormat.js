@@ -2,17 +2,6 @@ import Utils from "../Utils";
 
 const SORTED = { ASC: "ASC", DESC: "DESC" };
 const STYLE = { TABLE: "table", VIEWER: "viewer" };
-const findChildren = {
-  [STYLE.TABLE]: (node, context) => {
-    const path = Utils.attr(node, "path");
-    const selector = `*[path^='${path}']:not(*[path='${path}']):not(*[class*='hidden'])`;
-    return Utils.queryAll(selector, context);
-  },
-  [STYLE.VIEWER]: (node, context) => {
-    const selector = `*[data-node-pid="${node.dataset.nodeId}"]`;
-    return Utils.queryAll(selector, context);
-  },
-};
 class JsonFormat {
   static STYLE = STYLE;
   Root = "Root";
@@ -211,6 +200,7 @@ class JsonFormat {
     while (queue.length > 0) {
       const currentNode = queue.shift();
       const children = this.findChildren(currentNode);
+      if (children.length === 0) continue;
       for (const child of children) {
         Utils.removeClass(child, "hidden");
         const hasClass = Utils.hasClass(child, "json-formater-opened");
@@ -220,7 +210,10 @@ class JsonFormat {
   }
 
   hideDescs(node) {
-    const children = findChildren[this.options.style](node, this.$container);
+    const path = Utils.attr(node, "path");
+    const selector = `*[path^='${path}']:not(*[path='${path}']):not(*[class*='hidden'])`;
+    const children = Utils.queryAll(selector, this.$container);
+    if (children.length === 0) return;
     for (const child of children) Utils.addClass(child, "hidden");
   }
 

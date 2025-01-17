@@ -18,7 +18,55 @@ function getDefaultDisplay(ele) {
   return display;
 }
 
+// 获取JSON数组中key最多的且深度最多的JSON
+function getMaxKeysAndDepthObject(list) {
+  // 辅助函数：计算对象的深度
+  function getObjectDepth(obj) {
+    if (typeof obj !== "object" || obj === null) return 0;
+    let maxDepth = 0;
+    for (let key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const depth = getObjectDepth(obj[key]);
+        maxDepth = Math.max(maxDepth, depth);
+      }
+    }
+    return maxDepth + 1;
+  }
+
+  // 辅助函数：计算对象的键的数量
+  function countKeys(obj) {
+    if (typeof obj !== "object" || obj === null) return 0;
+    let keyCount = Object.keys(obj).length;
+    for (let key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        keyCount += countKeys(obj[key]);
+      }
+    }
+    return keyCount;
+  }
+
+  let maxKeys = 0;
+  let maxDepth = 0;
+  let result = null;
+
+  // 遍历数组
+  for (let item of list) {
+    const keys = countKeys(item);
+    const depth = getObjectDepth(item);
+
+    // 如果当前对象的键数更多或者键数相同但深度更深，则更新结果
+    if (keys > maxKeys || (keys === maxKeys && depth > maxDepth)) {
+      maxKeys = keys;
+      maxDepth = depth;
+      result = item;
+    }
+  }
+
+  return result;
+}
+
 export default {
+  getMaxKeysAndDepthObject,
   isImg(str) {
     const regexp = /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
     return regexp.test(str);
@@ -45,18 +93,6 @@ export default {
   },
   getPropType(o) {
     return Object.prototype.toString.call(o).match(/\s(.+)]/)[1];
-  },
-  findMaxKeysObject(arr) {
-    let maxKeysCount = 0;
-    let maxKeysObject;
-    for (const obj of arr) {
-      const keysCount = Object.keys(obj).length;
-      if (keysCount > maxKeysCount) {
-        maxKeysCount = keysCount;
-        maxKeysObject = obj;
-      }
-    }
-    return maxKeysObject;
   },
   downloadText(content, filename) {
     const blob = new Blob([content], { type: "application/json;charset=utf-8" });

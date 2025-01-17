@@ -13,7 +13,7 @@ export default {
         let val = json[key];
         const isArray = Array.isArray(val);
         const type = Utils.getPropType(val);
-        if (isArray && val.length > 0) val = Utils.findMaxKeysObject(val);
+        if (isArray && val.length > 0) val = Utils.getMaxKeysAndDepthObject(val);
         const isObject = Object.is(Utils.getType(val), "object");
         const keys = isObject ? Object.keys(val) : null;
         children.push({
