@@ -11,6 +11,7 @@ class JsonToTable extends JsonFormat {
     json = this.keySort(json);
     // 创建文档片段
     const fragment = document.createDocumentFragment();
+    const customElement = Utils.createElement("wrapper", { id: pid });
     for (const key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
         let value = json[key];
@@ -29,7 +30,8 @@ class JsonToTable extends JsonFormat {
       }
     }
     // 最后将文档片段添加到 table 元素中
-    table.appendChild(fragment);
+    customElement.appendChild(fragment);
+    table.appendChild(customElement);
   }
 
   createItem(args) {
@@ -43,7 +45,7 @@ class JsonToTable extends JsonFormat {
       "data-type": type,
       "data-node-id": id,
       "data-node-pid": pid,
-      class: `json-formater-item${this.canIterate(value) ? " json-formater-opened" : ""}`,
+      class: `json-item${canIterate ? " collapsible expanded" : ""}`,
     });
 
     // JSON key

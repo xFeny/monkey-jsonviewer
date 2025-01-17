@@ -4,7 +4,7 @@ import JsonFormat from "./JsonFormat";
 class JsonViewer extends JsonFormat {
   constructor(options) {
     options.style = JsonFormat.STYLE.VIEWER;
-    super(options, "div", "json-view-formater");
+    super(options, "div", "json-viewer");
   }
 
   createNode(box, json, JSONPath, pid) {
@@ -33,33 +33,37 @@ class JsonViewer extends JsonFormat {
       fragment.appendChild(this.creatCopyElement(json));
       fragment.appendChild(this.creatPlaceholder(json));
     }
+    const ul = Utils.createElement("ul", { id: pid });
+    fragment.appendChild(ul);
     let length = Object.keys(json).length;
     for (var key in json) {
       if (Object.prototype.hasOwnProperty.call(json, key)) {
         const value = json[key];
         const id = this.random();
-        const canComma = --length > 0;
+        const needComma = --length > 0;
         const JSONPath = this.JSONPath(path, key);
+        const canIterate = this.canIterate(value);
 
-        const node = Utils.createElement("div", {
+        const node = Utils.createElement("li", {
           path: JSONPath,
           "data-node-id": id,
           "data-node-pid": pid,
           style: `padding-left: 20px`,
           "data-type": Utils.getType(value),
-          class: `json-formater-item${this.canIterate(value) ? " json-formater-opened" : ""}`,
+          class: `json-item${canIterate ? " collapsible expanded" : ""}`,
         });
 
         this.createKeyNode(node, key);
         this.createNode(node, value, JSONPath, id);
 
-        if (canComma) {
+        if (needComma) {
           const comma = Utils.createElement("span", { class: "json-comma" });
           comma.textContent = ",";
           node.appendChild(comma);
         }
+        ul.appendChild(node);
         // 将节点添加到文档片段
-        fragment.appendChild(node);
+        fragment.appendChild(ul);
       }
     }
     fragment.appendChild(this.endBracket(Utils.getType(json)));

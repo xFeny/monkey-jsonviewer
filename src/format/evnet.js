@@ -18,7 +18,7 @@ export default {
   eventPath() {
     Utils.addEvent("click mouseenter", ".json-key", (event) => {
       const target = event.target;
-      const path = Utils.closest(target, ".json-formater-item").getAttribute("path");
+      const path = Utils.closest(target, ".json-item").getAttribute("path");
       if (Object.is(event.type, "click") && event.ctrlKey) {
         return GM_setClipboard(path) & layer.msg("复制成功", { time: 1500 });
       }

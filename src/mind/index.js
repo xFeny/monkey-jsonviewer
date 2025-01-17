@@ -44,7 +44,7 @@ export default {
         layer.msg("无法生成脑图", { time: 1000 });
         return this;
       }
-      json = Utils.findMaxKeysObject(json);
+      json = Utils.getMaxKeysAndDepthObject(json);
     }
 
     if (!this.isFirst) return this;
