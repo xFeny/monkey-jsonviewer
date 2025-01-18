@@ -90,8 +90,9 @@ export default {
         tippy(target, {
           content,
           duration: 800,
-          allowHTML: true,
           theme: "layer",
+          allowHTML: true,
+          maxWidth: "none",
         }).show();
       }
     });

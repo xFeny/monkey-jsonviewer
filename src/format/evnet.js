@@ -7,10 +7,11 @@ export default {
       const href = Utils.attr(this, "href");
       if (!Utils.isImg(href)) return;
       tippy(this, {
+        maxWidth: 500,
         duration: 800,
         allowHTML: true,
         theme: "imagebox",
-        content: `<img style="max-width: 500px;" src="${href}" />`,
+        content: `<img style="width:100%" src="${href}" />`,
       }).show();
     });
     return this;
@@ -27,6 +28,7 @@ export default {
         duration: 800,
         theme: "layer",
         allowHTML: true,
+        maxWidth: "none",
         content: `<i>ctrl＋click 复制</i><br/><b>路径：</b>${path}`,
       }).show();
     });

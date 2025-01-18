@@ -35,23 +35,21 @@ const format = {
     text = text.toLowerCase();
     function match(json, text) {
       const newJson = Array.isArray(json) ? new Array() : new Object();
-      for (const key in json) {
-        if (Object.prototype.hasOwnProperty.call(json, key)) {
-          const value = json[key];
-          const type = Utils.getType(value);
-          const _key = key.toLowerCase();
-          const _value = Utils.stringify(value).toLowerCase();
+      const entries = Object.entries(json);
+      for (const [key, value] of entries) {
+        const type = Utils.getType(value);
+        const _key = key.toLowerCase();
+        const _value = Utils.stringify(value).toLowerCase();
 
-          if (!_key.includes(text) && !_value.includes(text)) continue;
-          if (["array", "object"].includes(type)) {
-            const result = match(value, text);
-            const _result = Utils.stringify(result).toLowerCase();
-            if (_key.includes(text) || _result.includes(text)) {
-              newJson[key] = result;
-            }
-          } else {
-            newJson[key] = value;
+        if (!_key.includes(text) && !_value.includes(text)) continue;
+        if (["array", "object"].includes(type)) {
+          const result = match(value, text);
+          const _result = Utils.stringify(result).toLowerCase();
+          if (_key.includes(text) || _result.includes(text)) {
+            newJson[key] = result;
           }
+        } else {
+          newJson[key] = value;
         }
       }
       return newJson;

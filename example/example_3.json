@@ -1,8 +1,9 @@
 {
   "user": {
     "id": 9223372036854775807,
-	"color":"#e1957c",
-	"color_1":"rgb(167, 225, 128)",
-	"color_2":"rgba(0, 0, 0, 0.5)"
+	"color": "#e1957c",
+	"color_1": "rgb(167, 225, 128)",
+	"color_2": "rgba(0, 0, 0, 0.5)",
+	"img": "https://img2.baidu.com/it/u=1173410877,141239837&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800"
   }
 }

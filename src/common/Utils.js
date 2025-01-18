@@ -68,7 +68,7 @@ function getMaxKeysAndDepthObject(list) {
 export default {
   getMaxKeysAndDepthObject,
   isImg(str) {
-    const regexp = /\.(ico|bmp|gif|jpg|jpeg|png|svg|webp|GIF|JPG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
+    const regexp = /(ico|bmp|gif|jpg|jpeg|png|svg|webp|ICO|BMP|GIF|JPG|JPEG|PNG|WEBP|SVG)([\w#!:.?+=&%@!\-\/])?/i;
     return regexp.test(str);
   },
   isJSON(str) {
@@ -158,8 +158,9 @@ export default {
   isVisible(ele) {
     return !!(ele.offsetWidth || ele.offsetHeight || ele.getClientRects().length);
   },
-  createElement(name, attrs) {
+  createElement(name, attrs, text) {
     const element = document.createElement(name);
+    if (text) element.textContent = text;
     if (attrs) this.attr(element, attrs);
     return element;
   },

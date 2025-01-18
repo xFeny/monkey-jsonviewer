@@ -7,65 +7,59 @@ class JsonViewer extends JsonFormat {
     super(options, "div", "json-viewer");
   }
 
-  createNode(box, json, JSONPath, pid) {
+  createNode(wrapper, json, path, pid) {
     const type = Utils.getType(json);
-    const isIterate = this.isIterate(json);
-    const canIterate = this.canIterate(json);
-    if (canIterate) {
-      if (this.Root !== pid) box.prepend(this.creatArrowElement());
-      const fragment = this.depthNode(json, JSONPath, pid);
-      box.appendChild(fragment);
-    } else if (isIterate) {
-      const bracket = this.createBracket(type);
-      box.appendChild(bracket);
-    } else {
-      const valueNode = this.creatValueNode(type, json);
-      box.appendChild(valueNode);
-    }
+    const isIterator = this.isIterator(json);
+    const hasNext = this.hasNext(json);
+    const node = hasNext
+      ? this.depthNode(json, path, pid)
+      : isIterator
+      ? this.createBracket(type)
+      : this.creatValueNode(type, json);
+    wrapper.appendChild(node);
+    // 添加折叠箭头
+    if (hasNext && this.Root !== pid) wrapper.prepend(this.creatArrowNode());
   }
 
   depthNode(json, path, pid) {
     json = this.keySort(json);
     // 创建文档片段
     const fragment = document.createDocumentFragment();
+
     fragment.appendChild(this.startBracket(Utils.getType(json)));
     if (this.Root !== pid) {
-      fragment.appendChild(this.creatCopyElement(json));
-      fragment.appendChild(this.creatPlaceholder(json));
+      fragment.appendChild(this.creatCopyNode(json));
+      fragment.appendChild(this.creatDescNode(json));
     }
+
     const ul = Utils.createElement("ul", { id: pid });
-    fragment.appendChild(ul);
-    let length = Object.keys(json).length;
-    for (var key in json) {
-      if (Object.prototype.hasOwnProperty.call(json, key)) {
-        const value = json[key];
-        const id = this.random();
-        const needComma = --length > 0;
-        const JSONPath = this.JSONPath(path, key);
-        const canIterate = this.canIterate(value);
 
-        const node = Utils.createElement("li", {
-          path: JSONPath,
-          "data-node-id": id,
-          "data-node-pid": pid,
-          style: `padding-left: 20px`,
-          "data-type": Utils.getType(value),
-          class: `json-item${canIterate ? " collapsible expanded" : ""}`,
-        });
+    const entries = Object.entries(json);
+    const length = entries.length;
+    const last = length - 1;
+    for (let i = 0; i < length; i++) {
+      const id = this.random();
+      const [key, value] = entries[i];
+      const hasNext = this.hasNext(value);
+      const JSONPath = this.JSONPath(path, key);
 
-        this.createKeyNode(node, key);
-        this.createNode(node, value, JSONPath, id);
+      const node = Utils.createElement("li", {
+        path: JSONPath,
+        "data-node-id": id,
+        "data-node-pid": pid,
+        style: `padding-left: 20px`,
+        "data-type": Utils.getType(value),
+        class: `json-item${hasNext ? " collapsible expanded" : ""}`,
+      });
 
-        if (needComma) {
-          const comma = Utils.createElement("span", { class: "json-comma" });
-          comma.textContent = ",";
-          node.appendChild(comma);
-        }
-        ul.appendChild(node);
-        // 将节点添加到文档片段
-        fragment.appendChild(ul);
-      }
+      this.createKeyNode(node, key);
+      this.createNode(node, value, JSONPath, id);
+      // 添加逗号
+      if (i !== last) node.appendChild(Utils.createElement("span", { class: "json-comma" }, ","));
+      ul.appendChild(node);
     }
+
+    fragment.appendChild(ul);
     fragment.appendChild(this.endBracket(Utils.getType(json)));
     return fragment;
   }
@@ -84,12 +78,10 @@ class JsonViewer extends JsonFormat {
 
   createKeyNode(node, key) {
     if (this.isNumber(key)) return;
-    const span = Utils.createElement("span", { class: "json-key" });
-    span.textContent = `"${key}"`;
+    const span = Utils.createElement("span", { class: "json-key" }, `"${key}"`);
     node.appendChild(span);
 
-    const colon = Utils.createElement("span", { class: "json-colon" });
-    colon.textContent = ":";
+    const colon = Utils.createElement("span", { class: "json-colon" }, ":");
     node.appendChild(colon);
   }
 

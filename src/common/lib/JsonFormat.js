@@ -1,33 +1,43 @@
 import Utils from "../Utils";
 
-const SORTED = { ASC: "ASC", DESC: "DESC" };
+const SORTED = { NONE: "none", ASC: "ASC", DESC: "DESC" };
 const STYLE = { TABLE: "table", VIEWER: "viewer" };
 class JsonFormat {
   static STYLE = STYLE;
   Root = "Root";
   DEFAULTS = {
-    sort: null,
     json: null,
     style: null,
     container: null,
     theme: "default",
+    sort: SORTED.NONE,
+  };
+
+  sortEnum = {
+    [SORTED.NONE]: { value: SORTED.ASC, text: "升序" },
+    [SORTED.ASC]: { value: SORTED.DESC, text: "降序" },
+    [SORTED.DESC]: { value: SORTED.NONE, text: "排序" },
   };
 
   constructor(options, tag, clazz) {
+    this.tag = tag;
+    this.clazz = clazz;
     this.options = Object.assign(this.DEFAULTS, options);
     if (!options.container) throw new Error("Container is required");
     if (!options.json) throw new Error("json is required");
-    this.render(tag, clazz);
     this.setTheme(this.options.theme);
-    this.bindEvent();
+    this.render(tag, clazz);
   }
 
   render(tag, clazz) {
     this.$container = Utils.query(this.options.container);
     this.$container.innerHTML = "";
-    const box = Utils.createElement(tag, { class: clazz });
-    this.createNode(box, this.options.json, this.Root, this.Root, 1);
-    this.$container.appendChild(box);
+    const wrapper = Utils.createElement(tag, { class: clazz });
+    const fragment = document.createDocumentFragment();
+    this.createNode(fragment, this.options.json, this.Root, this.Root, 1);
+    wrapper.appendChild(fragment);
+    this.$container.appendChild(wrapper);
+    this.bindEvent();
   }
 
   setTheme(theme) {
@@ -40,8 +50,8 @@ class JsonFormat {
 
   keySort(json) {
     const { sort } = this.options;
-    if (sort === null) return json;
     if (Array.isArray(json)) return json;
+    if (sort === SORTED.NONE) return json;
     const entries = Object.entries(json);
     const asc = ([prev], [next]) => prev.localeCompare(next);
     const desc = ([prev], [next]) => next.localeCompare(prev);
@@ -50,34 +60,14 @@ class JsonFormat {
   }
 
   sorted() {
-    if (this.options.sort === null) {
-      this.options.sort = SORTED.ASC;
-      this.reload();
-      return "升序";
-    }
-    if (SORTED.ASC === this.options.sort) {
-      this.options.sort = SORTED.DESC;
-      this.reload();
-      return "降序";
-    }
-    if (SORTED.DESC === this.options.sort) {
-      this.options.sort = null;
-      this.reload();
-      return "排序";
-    }
-  }
-
-  reload() {
-    const box = this.$container.firstChild;
-    box.innerHTML = "";
-    this.createNode(box, this.options.json, this.Root, this.Root, 1);
-    this.$container.appendChild(box);
-    this.bindEvent();
+    const sort = this.sortEnum[this.options.sort];
+    this.options.sort = sort.value;
+    this.render(this.tag, this.clazz);
+    return sort.text;
   }
 
   creatValueNode(type, value) {
-    const node = Utils.createElement("span", { class: `json-${type}` });
-    node.textContent = `${value}`;
+    const node = Utils.createElement("span", { class: `json-${type}` }, `${value}`);
 
     if (Object.is("string", type)) {
       value = this.escape(value);
@@ -86,8 +76,7 @@ class JsonFormat {
 
     if (this.isUrl(value)) {
       node.textContent = "";
-      const a = Utils.createElement("a", { target: "_blank", href: value });
-      a.textContent = `"${value}"`;
+      const a = Utils.createElement("a", { target: "_blank", href: value }, `"${value}"`);
       node.appendChild(a);
     }
 
@@ -102,24 +91,24 @@ class JsonFormat {
   }
 
   creatOtherNodes(node, json) {
-    if (!this.canIterate(json)) return;
-    node.prepend(this.creatArrowElement());
-    node.appendChild(this.creatCopyElement(json));
-    node.appendChild(this.creatPlaceholder(json));
+    if (!this.hasNext(json)) return;
+    node.prepend(this.creatArrowNode());
+    node.appendChild(this.creatCopyNode(json));
+    node.appendChild(this.creatDescNode(json));
   }
 
-  creatArrowElement() {
+  creatArrowNode() {
     return Utils.createElement("span", { class: "json-arrow" });
   }
 
-  creatCopyElement(json) {
+  creatCopyNode(json) {
     const copy = Utils.createElement("span", { title: "复制", class: "json-copy" });
     copy.json = json;
     return copy;
   }
 
-  creatPlaceholder(json) {
-    const placeholder = Utils.createElement("span", { class: "json-placeholder" });
+  creatDescNode(json) {
+    const desc = Utils.createElement("span", { class: "json-desc" });
 
     const type = Utils.getType(json);
     const length = Object.keys(json).length;
@@ -128,15 +117,15 @@ class JsonFormat {
     if (Object.is(type, "object")) {
       span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
     }
-    placeholder.appendChild(span);
+    desc.appendChild(span);
 
     if (STYLE.TABLE === this.options.style) {
       let text = document.createTextNode(Object.is(type, "object") ? "{" : "[");
-      placeholder.prepend(text);
+      desc.prepend(text);
       text = document.createTextNode(Object.is(type, "object") ? "}" : "]");
-      placeholder.appendChild(text);
+      desc.appendChild(text);
     }
-    return placeholder;
+    return desc;
   }
 
   createBracket(type) {
@@ -147,24 +136,21 @@ class JsonFormat {
 
   bindEvent() {
     this.addEvent("click", ".json-copy", (e) => {
+      const target = e.target;
       const className = "success";
-      const target = e.currentTarget;
       if (!target.json || Utils.hasClass(target, className)) return;
       Utils.addClass(target, className);
       Utils.setClipboard(Utils.stringify(target.json, null, 2));
       setTimeout(() => Utils.removeClass(target, className), 1500);
     });
 
-    this.addEvent("click", ".json-placeholder", (e) => {
-      const node = Utils.closest(e.currentTarget, ".json-item");
-      this.expand(node);
-    });
-
     this.addEvent("click", ".json-arrow", (e) => {
-      const node = Utils.closest(e.currentTarget, ".json-item");
+      const node = Utils.closest(e.target, ".json-item");
       const expanded = Utils.hasClass(node, "expanded");
       expanded ? this.collapse(node) : this.expand(node);
     });
+
+    this.addEvent("click", ".json-desc", (e) => this.expand(Utils.closest(e.target, ".json-item")));
   }
 
   expandAll() {
@@ -177,14 +163,14 @@ class JsonFormat {
 
   expand(node) {
     this.toggleDescs(node, false);
-    Utils.hide(this.getPlaceNode(node));
+    Utils.hide(this.descNode(node));
     Utils.addClass(node, "expanded");
     Utils.removeClass(node, "collapsed");
   }
 
   collapse(node) {
     this.toggleDescs(node, true);
-    Utils.show(this.getPlaceNode(node));
+    Utils.show(this.descNode(node));
     Utils.addClass(node, "collapsed");
     Utils.removeClass(node, "expanded");
   }
@@ -194,8 +180,8 @@ class JsonFormat {
     hidden ? Utils.addClass(target, "hidden") : Utils.removeClass(target, "hidden");
   }
 
-  getPlaceNode(node) {
-    return Utils.query(`*[data-node-id="${node.dataset.nodeId}"] .json-placeholder`, node);
+  descNode(node) {
+    return Utils.query(`*[data-node-id="${node.dataset.nodeId}"] .json-desc`, node);
   }
 
   findChildren(node) {
@@ -232,13 +218,13 @@ class JsonFormat {
     return /^\d+$/.test(str);
   }
 
-  isIterate(data) {
+  isIterator(data) {
     const type = Utils.getType(data);
     return ["array", "object"].includes(type);
   }
 
-  canIterate(data) {
-    if (!this.isIterate(data)) return false;
+  hasNext(data) {
+    if (!this.isIterator(data)) return false;
     return Object.keys(data).length > 0;
   }
 
