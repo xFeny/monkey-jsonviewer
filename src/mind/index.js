@@ -7,26 +7,21 @@ import Utils from "../common/Utils";
 export default {
   isFirst: true,
   transform(json) {
-    const children = [];
+    const result = [];
     if (Utils.isObject(json)) {
       for (const key in json) {
-        let val = json[key];
-        const isArray = Array.isArray(val);
-        const type = Utils.getPropType(val);
-        if (isArray && val.length > 0) val = Utils.getMaxKeysAndDepthObject(val);
-        const isObject = Object.is(Utils.getType(val), "object");
-        const keys = isObject ? Object.keys(val) : null;
-        children.push({
-          keys,
-          isArray,
-          chain: key,
-          id: key + "_" + Math.random(),
-          topic: `${key}<span class="datatype">${type}</span>`,
-          children: this.transform(val),
-        });
+        let value = json[key];
+        const isArray = Array.isArray(value);
+        const type = Utils.getPropType(value);
+        if (isArray && value.length > 0) value = Utils.getMaxKeysAndDepthObject(value);
+        const isObject = Object.is(Utils.getType(value), "object");
+        const keys = isObject ? Object.keys(value) : null;
+        const children = this.transform(value);
+        const topic = `${key}<span class="datatype">${type}</span>`;
+        result.push({ keys, topic, isArray, children, chain: key, id: Utils.random() });
       }
     }
-    return children;
+    return result;
   },
   getChain(node) {
     let chain = node?.data?.chain;
@@ -48,22 +43,11 @@ export default {
     }
 
     if (!this.isFirst) return this;
+    const children = this.transform(json);
     unsafeWindow.GLOBAL_JSMIND.show({
-      meta: {
-        version: "1.0",
-        name: "JSON脑图",
-        author: "1220301855@qq.com",
-      },
       format: "node_tree",
-      data: {
-        isArray,
-        id: "root",
-        chain: "Root",
-        topic: "Root",
-        direction: "left",
-        keys: Object.keys(json),
-        children: this.transform(json),
-      },
+      meta: { version: "1.0", name: "JSON脑图", author: "1220301855@qq.com" },
+      data: { isArray, children, id: "root", chain: "Root", topic: "Root", direction: "left", keys: Object.keys(json) },
     });
     this.isFirst = false;
     return this;
@@ -87,13 +71,7 @@ export default {
         this.popup(chain, keys);
       } else {
         const content = `<i>ctrl＋click 复制</i><br/><b>路径：</b>${chain}`;
-        tippy(target, {
-          content,
-          duration: 800,
-          theme: "layer",
-          allowHTML: true,
-          maxWidth: "none",
-        }).show();
+        tippy(target, { content, duration: 800, theme: "layer", allowHTML: true, maxWidth: "none" }).show();
       }
     });
     return this;
@@ -132,18 +110,8 @@ export default {
       mode: "side",
       editable: false,
       container: "mindBox",
-      view: {
-        hmargin: 50,
-        vmargin: 50,
-        engine: "svg",
-        draggable: true,
-        support_html: false,
-        line_color: "#C4C9D0",
-      },
-      layout: {
-        vspace: 5,
-        hspace: 130,
-      },
+      view: { hmargin: 50, vmargin: 50, engine: "svg", draggable: true, support_html: false, line_color: "#C4C9D0" },
+      layout: { vspace: 5, hspace: 130 },
     });
     this.show(json).event();
   },

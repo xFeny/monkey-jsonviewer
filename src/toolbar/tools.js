@@ -65,6 +65,7 @@ export default {
     try {
       layer.load();
       const response = await fetch(URL.ONLINE_REQUEST, {
+        timeout: 5000,
         method: "POST",
         body: Utils.stringify(submitData),
         headers: { "Content-Type": "application/json" },

@@ -1,7 +1,7 @@
 export default {
   name: "JSON Viewer",
   author: "Feny",
-  version: "1.0.9",
+  version: "1.1.0",
   match: ["*://*/*"],
   license: "GPL-3.0-only",
   homepage: "https://github.com/xFeny/monkey-jsonviewer",

@@ -1,14 +1,12 @@
-@mixin theme($bg, $ob, $ab, $key, $str, $num, $bool, $null) {
-  background-color: $bg;
+@mixin theme($background, $object, $array, $key, $string, $number, $boolean, $null) {
+  background-color: $background;
 
-  .json-object-bracket {
-    color: $ob;
-    font-weight: 700;
+  .json-bracket[type="object"] {
+    color: $object;
   }
 
-  .json-array-bracket {
-    color: $ab;
-    font-weight: 700;
+  .json-bracket[type="array"] {
+    color: $array;
   }
 
   .json-key {
@@ -18,16 +16,16 @@
 
   .json-string,
   .json-string a {
-    color: $str;
+    color: $string;
   }
 
   .json-bigint,
   .json-number {
-    color: $num;
+    color: $number;
   }
 
   .json-boolean {
-    color: $bool;
+    color: $boolean;
   }
 
   .json-null {
@@ -50,6 +48,14 @@ wrapper {
 
 .json-viewer ul {
   border-left: 0.5px dotted #ccc;
+
+  li {
+    padding-left: 20px;
+  }
+}
+
+.json-bracket {
+  font-weight: 700;
 }
 
 .json-copy {
@@ -103,12 +109,14 @@ wrapper {
   display: none;
   cursor: pointer;
   font-size: 12px;
-  color: #859900;
+  font-weight: 700;
+  color: #9aa160;
   user-select: none;
   margin-left: 0.3em;
 
   span {
     margin: 0 0.5em;
+    font-weight: normal;
 
     &:hover {
       text-decoration: underline;
@@ -148,13 +156,13 @@ wrapper {
 /** 浅色主题 END **/
 /** 暗黑主题色 START **/
 .dark-theme {
-  @include theme(#252526, #ce70d6, #f1d700, #9cdcfe, #ce9178, #b5cea8, #358cd6, #569cd6);
+  @include theme(#252526, #9bba43, #c4af00, #9cdcfe, #ce9178, #b5cea8, #358cd6, #569cd6);
 }
 /** 暗黑主题色 END **/
 
 /** 暗黑+主题色 START **/
 .dark-plus-theme {
-  @include theme(#1e1f22, #bb9667, #bbbda3, #c77dbb, #6aab73, #28aab4, #ce8951, #c78d61);
+  @include theme(#1e1f22, #bb9667, #a1a84e, #c77dbb, #6aab73, #28aab4, #ce8951, #c78d61);
 }
 /** 暗黑+主题色 END **/
 .dark-theme,

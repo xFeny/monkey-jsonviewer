@@ -33,23 +33,15 @@ import Utils from "../common/Utils";
 
 function beautifyCode(contentType, element, rawText) {
   const language = contentType.substring(contentType.indexOf("/") + 1);
-  if (!["css", "javascript", "x-javascript"].includes(language)) {
-    return;
-  }
+  if (!["css", "javascript", "x-javascript"].includes(language)) return;
 
   let beautifyCode;
   if ("css" === language) {
     const cssBeautify = css_beautify ? css_beautify : window.css_beautify;
-    beautifyCode = cssBeautify(rawText);
-    beautifyCode = hljs.highlight(beautifyCode, {
-      language,
-    }).value;
+    beautifyCode = hljs.highlight(cssBeautify(rawText), { language }).value;
   } else {
     const jsBeautify = js_beautify ? js_beautify : window.js_beautify;
-    beautifyCode = jsBeautify(rawText);
-    beautifyCode = hljs.highlight(beautifyCode, {
-      language: "javascript",
-    }).value;
+    beautifyCode = hljs.highlight(jsBeautify(rawText), { language: "javascript" }).value;
   }
 
   element.innerHTML = `<code>${beautifyCode}</code>`;

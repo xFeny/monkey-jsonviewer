@@ -9,7 +9,7 @@ const { EXAMPLE_JSON, LAYUI_JS } = URL;
   "use strict";
 
   const openInTab = () => GM_openInTab(EXAMPLE_JSON);
-  GM_registerMenuCommand("测试JSON( Alt + j )", openInTab);
+  GM_registerMenuCommand("测试JSON( Alt + J )", openInTab);
   window.addEventListener("keydown", function (event) {
     const { key, altKey } = event;
     if (altKey && key.toLowerCase() === "j") openInTab();
@@ -24,7 +24,6 @@ const { EXAMPLE_JSON, LAYUI_JS } = URL;
   unsafeWindow.GLOBAL_JSON = Utils.parse(unsafeWindow.RAW_TEXT);
 
   Utils.hide(Utils.query("pre"));
-  Utils.addClass(Utils.query("html"), "monkey-script");
   window.postMessage({ addStyle: true });
 
   const meta = Utils.createElement("meta", {

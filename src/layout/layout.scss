@@ -8,473 +8,471 @@ $tab-hover-color: #c3c3c6;
 $tip_color: #dfdfdf;
 $dark_tip_color: #4e4e4e;
 
-.monkey-script {
-  body,
-  iframe,
-  ul {
-    margin: 0;
-    padding: 0;
-  }
+body,
+iframe,
+ul {
+  margin: 0;
+  padding: 0;
+}
 
-  iframe {
-    border: 0;
-  }
+iframe {
+  border: 0;
+}
 
-  input:focus,
-  select:focus,
-  textarea:focus {
-    outline: 0;
-  }
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 0;
+}
 
-  .jsonp {
-    color: #657b83;
-  }
+.jsonp {
+  color: #657b83;
+}
 
-  #jsoncrackEmbed {
-    border: 0;
-    width: 100%;
-    height: 100%;
-  }
+#jsoncrackEmbed {
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
 
-  .tippy-box[data-theme~="layer"] {
-    color: #fff;
-    padding: 5px;
-    font-size: $fz12;
-    line-height: 20px;
-    background-color: #2e59a7;
-    .tippy-arrow {
-      color: #2e59a7;
-    }
+.tippy-box[data-theme~="layer"] {
+  color: #fff;
+  padding: 5px;
+  font-size: $fz12;
+  line-height: 20px;
+  background-color: #2e59a7;
+  .tippy-arrow {
+    color: #2e59a7;
   }
+}
 
-  .tippy-box[data-theme~="imagebox"] {
-    background-color: #d9d9d9;
-    .tippy-arrow {
-      color: #d9d9d9;
-    }
+.tippy-box[data-theme~="imagebox"] {
+  background-color: #d9d9d9;
+  .tippy-arrow {
+    color: #d9d9d9;
   }
+}
 
-  /** 移动端 START **/
-  @media screen and (max-width: 640px) {
-    .rightbox {
-      right: 0 !important;
-      .tools {
-        display: none !important;
-      }
-    }
-  }
-
-  @media screen and (max-width: 400px) {
-    .searchbox {
+/** 移动端 START **/
+@media screen and (max-width: 640px) {
+  .rightbox {
+    right: 0 !important;
+    .tools {
       display: none !important;
     }
   }
-  /** 移动端 END **/
+}
 
-  .json-viewer-layout {
-    top: 0;
-    left: 0;
-    z-index: 10;
-    width: 100vw;
-    height: 100vh;
+@media screen and (max-width: 400px) {
+  .searchbox {
+    display: none !important;
+  }
+}
+/** 移动端 END **/
+
+.json-viewer-layout {
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+
+  /** 工具栏样式 START **/
+  .panel {
     display: flex;
-    position: fixed;
+    line-height: 28px;
+    user-select: none;
     flex-direction: column;
+    background-color: $tab-color;
+  }
 
-    /** 工具栏样式 START **/
-    .panel {
-      display: flex;
-      line-height: 28px;
-      user-select: none;
-      flex-direction: column;
-      background-color: $tab-color;
+  .tabs,
+  .toolbar {
+    display: flex;
+    border-bottom: 1px solid $color-gray;
+
+    > div {
+      cursor: pointer;
+      padding: 0 10px;
+      font-size: $fz12;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #d4d4d4;
+      }
+    }
+  }
+
+  .tabs-item {
+    border-top: 3px solid $tab-color;
+
+    &:hover {
+      border-top-color: $tab-hover-color;
     }
 
-    .tabs,
-    .toolbar {
-      display: flex;
-      border-bottom: 1px solid $color-gray;
+    &.active {
+      color: #0060df;
+      border-top-color: #0060df;
+      background-color: #f1f1f1;
+    }
+  }
 
-      > div {
-        cursor: pointer;
-        padding: 0 10px;
+  .toolbar {
+    line-height: 23px;
+
+    .searchbox {
+      padding: 0;
+      display: flex;
+      flex-grow: 1;
+
+      &:hover {
+        background-color: transparent;
+      }
+
+      input {
+        flex-grow: 1;
+        border: none;
+        outline: none;
         font-size: $fz12;
+        padding-left: 23px;
+        border-left: 1.5px solid $color-gray;
+        background-size: 14px;
+        background-repeat: no-repeat;
+        background-position: 7px center;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAipJREFUWEftljuIE1EUhv8zpJB0FqugItiIdmKnnQ+wjPhq3EILRYt1JTDnDvhgUJG55zY+ELO7hRZupYWCCIK6nXYiNoqlrIUKaxes5siFBGKYSSbJTnaLTDMwl/Ofj8Pc/z+ENX5ojftjfQFYay8AuEFEU2VMRlV/A7hujGm09f+bgIj8APCtjOYdmjuZeWsewCMAZwBcYub7qwkiIjMA7gF4zMxnMwHiOK5Wq9UXAA6r6kljzLPVgLDWniCipwDeNJvNWhzHzUwA/zFJku1BEHiIPUS0PwzDD6NAOOf2qep7AJ/SNK1FUfS9Uy/zFojIXgAeYhsRbQ7D8NcwEM65Tar6E8AygBozf+zWyb2GSZIcCYLgORH9DcNw45AAf1R1Q5qmR6Moep2l0dMHrLWniegJgK/MvHsQCBH5AmCXqk4bYxbzavsakYjMArgD4B0zHyoCISJvARwEcJmZ7/aq6Qvgi0XkJoCrqrpgjDnfS9BaO09E5wDcYuZr/YALAbQgHgLwTpnrER13vcHMF/s19+eFAVoQS/7NzAeyxJ1zS6qaez7wT9hdICITgMkEJhOYTMCq6jEimmXmV90+UboRtdzQ7wZ+aW1UKpUr9Xp9pQ0yFoCuXFhW1agdt2MD8BDOOb83zgPYAWAxCILbqvqg1CzIChMRmQPgI3qFiD773Z+ZTxVJwoHTME9URI4TUV1VtwCYYeaXYwUo2mzkOB6l0dA7YRlNOzX/ATTlNjBwsoHnAAAAAElFTkSuQmCC);
+      }
+
+      .clear {
+        flex: 0 0 auto;
+        align-self: center;
+        margin: 0 4px;
+        padding: 0;
+        border: 0;
+        width: 16px;
+        height: 16px;
+        background-color: transparent;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANZJREFUOE+t0zFKg0EQhuEndbpgIVZ26eIJFK1SeQcPYKuWmlJIb6lHkJRpFFKnE2zTpBAknaUgA/+Q5SfBwGaaZWfne3dmdraj0job9Ae4wwAn+MUcn3jCotS0Aad4RW9LYj+4xkuel4ArPO9Y0RlmEZuAY3ygi/cGct6Clf4V+vhOwCNuG0EEXuAB941v1OzfkOAxbhIwwWVxYwoCEhZrCQzfFMMELHHUSjkhCchsMuwLh3sDVJfwXxOj/ihpaxOrnzEaUzVI2dmqUU5I1Wfa8Susw/4A1fw8ES1B6icAAAAASUVORK5CYII=);
+      }
+    }
+  }
+  /** 工具栏样式 END **/
+
+  /** 右侧选项样式 START **/
+  .rightbox {
+    right: 200px;
+    display: flex;
+    font-size: $fz12;
+    position: absolute;
+
+    > div {
+      padding: 0 5px;
+      margin-top: 2px;
+
+      span {
+        cursor: pointer;
+        display: inline;
+        padding: 5px 10px;
+        border-radius: 3px;
         transition: background-color 0.2s ease;
 
         &:hover {
-          background-color: #d4d4d4;
-        }
-      }
-    }
-
-    .tabs-item {
-      border-top: 3px solid $tab-color;
-
-      &:hover {
-        border-top-color: $tab-hover-color;
-      }
-
-      &.active {
-        color: #0060df;
-        border-top-color: #0060df;
-        background-color: #f1f1f1;
-      }
-    }
-
-    .toolbar {
-      line-height: 23px;
-
-      .searchbox {
-        padding: 0;
-        display: flex;
-        flex-grow: 1;
-
-        &:hover {
-          background-color: transparent;
+          background-color: $color-gray;
         }
 
-        input {
-          flex-grow: 1;
-          border: none;
-          outline: none;
+        &::after {
+          content: "";
+          width: 0;
+          height: 0;
+          right: -5px;
+          position: relative;
+          border-style: solid;
+          display: inline-block;
+          vertical-align: middle;
+          border-width: 7px 5px 0 5px;
+          border-color: #999 transparent transparent transparent;
+          transform: rotate(0deg);
+          transition: transform 0.3s ease;
+        }
+
+        &.active {
+          &::after {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      ul {
+        color: #333;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 3px;
+
+        li {
           font-size: $fz12;
-          padding-left: 23px;
-          border-left: 1.5px solid $color-gray;
-          background-size: 14px;
-          background-repeat: no-repeat;
-          background-position: 7px center;
-          background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAipJREFUWEftljuIE1EUhv8zpJB0FqugItiIdmKnnQ+wjPhq3EILRYt1JTDnDvhgUJG55zY+ELO7hRZupYWCCIK6nXYiNoqlrIUKaxes5siFBGKYSSbJTnaLTDMwl/Ofj8Pc/z+ENX5ojftjfQFYay8AuEFEU2VMRlV/A7hujGm09f+bgIj8APCtjOYdmjuZeWsewCMAZwBcYub7qwkiIjMA7gF4zMxnMwHiOK5Wq9UXAA6r6kljzLPVgLDWniCipwDeNJvNWhzHzUwA/zFJku1BEHiIPUS0PwzDD6NAOOf2qep7AJ/SNK1FUfS9Uy/zFojIXgAeYhsRbQ7D8NcwEM65Tar6E8AygBozf+zWyb2GSZIcCYLgORH9DcNw45AAf1R1Q5qmR6Moep2l0dMHrLWniegJgK/MvHsQCBH5AmCXqk4bYxbzavsakYjMArgD4B0zHyoCISJvARwEcJmZ7/aq6Qvgi0XkJoCrqrpgjDnfS9BaO09E5wDcYuZr/YALAbQgHgLwTpnrER13vcHMF/s19+eFAVoQS/7NzAeyxJ1zS6qaez7wT9hdICITgMkEJhOYTMCq6jEimmXmV90+UboRtdzQ7wZ+aW1UKpUr9Xp9pQ0yFoCuXFhW1agdt2MD8BDOOb83zgPYAWAxCILbqvqg1CzIChMRmQPgI3qFiD773Z+ZTxVJwoHTME9URI4TUV1VtwCYYeaXYwUo2mzkOB6l0dA7YRlNOzX/ATTlNjBwsoHnAAAAAElFTkSuQmCC);
-        }
-
-        .clear {
-          flex: 0 0 auto;
-          align-self: center;
-          margin: 0 4px;
-          padding: 0;
-          border: 0;
-          width: 16px;
-          height: 16px;
-          background-color: transparent;
-          background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANZJREFUOE+t0zFKg0EQhuEndbpgIVZ26eIJFK1SeQcPYKuWmlJIb6lHkJRpFFKnE2zTpBAknaUgA/+Q5SfBwGaaZWfne3dmdraj0job9Ae4wwAn+MUcn3jCotS0Aad4RW9LYj+4xkuel4ArPO9Y0RlmEZuAY3ygi/cGct6Clf4V+vhOwCNuG0EEXuAB941v1OzfkOAxbhIwwWVxYwoCEhZrCQzfFMMELHHUSjkhCchsMuwLh3sDVJfwXxOj/ihpaxOrnzEaUzVI2dmqUU5I1Wfa8Susw/4A1fw8ES1B6icAAAAASUVORK5CYII=);
-        }
-      }
-    }
-    /** 工具栏样式 END **/
-
-    /** 右侧选项样式 START **/
-    .rightbox {
-      right: 200px;
-      display: flex;
-      font-size: $fz12;
-      position: absolute;
-
-      > div {
-        padding: 0 5px;
-        margin-top: 2px;
-
-        span {
-          cursor: pointer;
-          display: inline;
-          padding: 5px 10px;
-          border-radius: 3px;
+          padding: 5px 20px;
+          list-style-type: none;
+          background-color: $tip_color;
           transition: background-color 0.2s ease;
 
           &:hover {
+            border-radius: 3px;
             background-color: $color-gray;
           }
 
-          &::after {
-            content: "";
-            width: 0;
-            height: 0;
-            right: -5px;
-            position: relative;
-            border-style: solid;
-            display: inline-block;
-            vertical-align: middle;
-            border-width: 7px 5px 0 5px;
-            border-color: #999 transparent transparent transparent;
-            transform: rotate(0deg);
-            transition: transform 0.3s ease;
-          }
-
-          &.active {
-            &::after {
-              transform: rotate(180deg);
-            }
+          &.active::before {
+            left: 15px;
+            content: "√";
+            display: inline;
+            position: absolute;
           }
         }
+      }
 
-        ul {
-          color: #333;
-          cursor: pointer;
-          text-align: center;
-          border-radius: 3px;
+      .tippy-box {
+        background-color: $tip_color !important;
 
-          li {
-            font-size: $fz12;
-            padding: 5px 20px;
-            list-style-type: none;
-            background-color: $tip_color;
-            transition: background-color 0.2s ease;
-
-            &:hover {
-              border-radius: 3px;
-              background-color: $color-gray;
-            }
-
-            &.active::before {
-              left: 15px;
-              content: "√";
-              display: inline;
-              position: absolute;
-            }
-          }
+        .tippy-content {
+          padding: 5px;
         }
 
-        .tippy-box {
-          background-color: $tip_color !important;
-
-          .tippy-content {
-            padding: 5px;
-          }
-
-          .tippy-arrow {
-            color: $tip_color !important;
-          }
+        .tippy-arrow {
+          color: $tip_color !important;
         }
       }
     }
-    /** 右侧选项样式 END **/
-
-    /** 容器样式 START **/
-    .container {
-      flex-grow: 1;
-      overflow: auto;
-      line-height: 1.4;
-      font-size: 13.5px;
-      font-family: monospace;
-
-      > div {
-        height: 100%;
-        display: none;
-
-        &.active {
-          display: block;
-        }
-      }
-
-      #formatBox {
-        padding: 5px 8px;
-      }
-
-      #rawTextBox {
-        font-size: $fz13;
-        padding: 5px 8px;
-
-        pre {
-          margin: 0;
-          padding: 0;
-          white-space: pre-wrap;
-          overflow-wrap: break-word;
-        }
-      }
-    }
-    /** 容器样式 END **/
-
-    /** 脑图样式 START **/
-    #mindBox {
-      width: 100vw;
-      height: calc(100vh - 57px);
-
-      jmnode {
-        display: flex;
-        align-items: center;
-        padding: 0 7px 0 22px;
-        color: #475872 !important;
-        box-shadow: none !important;
-        background-color: transparent !important;
-
-        &.root {
-          padding: 0;
-          color: transparent !important;
-        }
-
-        &::before {
-          content: "";
-          margin-top: 1px;
-          position: absolute;
-          border-radius: 50%;
-          top: 50% !important;
-          transform: translateY(-50%);
-          background-color: rgba(129, 73, 191, 0.5);
-        }
-
-        &.root::before {
-          left: 50%;
-          width: 18px;
-          height: 18px;
-          transform: translate(-18px, -50%);
-        }
-
-        &:hover {
-          text-shadow: 0px 0px 1px currentColor;
-        }
-
-        &:not(.root)::before {
-          left: 0;
-          width: 15px;
-          height: 15px;
-        }
-      }
-
-      jmexpander {
-        margin-top: 1px;
-        line-height: 9px;
-      }
-
-      .datatype {
-        opacity: 0.6;
-        font-size: $fz12;
-        margin-top: 2px;
-        padding-left: 5px;
-      }
-    }
-    /** 脑图样式 END **/
   }
+  /** 右侧选项样式 END **/
 
-  /** HTTP 请求弹窗样式 START **/
-  .httpRequest {
-    padding: 30px 20px;
-    width: 700px;
+  /** 容器样式 START **/
+  .container {
+    flex-grow: 1;
+    overflow: auto;
+    line-height: 1.4;
+    font-size: 13.5px;
+    font-family: monospace;
 
     > div {
-      display: flex;
-      height: 35px;
-      margin-bottom: 20px;
-    }
+      height: 100%;
+      display: none;
 
-    input,
-    select {
-      border-radius: 0;
-      padding-left: 10px;
-      border: 1px solid $color-gray;
-    }
-
-    input {
-      flex-grow: 1;
-
-      &[name="url"],
-      &:first-child {
-        border-right: none;
+      &.active {
+        display: block;
       }
     }
 
-    select {
+    #formatBox {
+      padding: 5px 8px;
+    }
+
+    #rawTextBox {
+      font-size: $fz13;
+      padding: 5px 8px;
+
+      pre {
+        margin: 0;
+        padding: 0;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+      }
+    }
+  }
+  /** 容器样式 END **/
+
+  /** 脑图样式 START **/
+  #mindBox {
+    width: 100vw;
+    height: calc(100vh - 57px);
+
+    jmnode {
+      display: flex;
+      align-items: center;
+      padding: 0 7px 0 22px;
+      color: #475872 !important;
+      box-shadow: none !important;
+      background-color: transparent !important;
+
+      &.root {
+        padding: 0;
+        color: transparent !important;
+      }
+
+      &::before {
+        content: "";
+        margin-top: 1px;
+        position: absolute;
+        border-radius: 50%;
+        top: 50% !important;
+        transform: translateY(-50%);
+        background-color: rgba(129, 73, 191, 0.5);
+      }
+
+      &.root::before {
+        left: 50%;
+        width: 18px;
+        height: 18px;
+        transform: translate(-18px, -50%);
+      }
+
+      &:hover {
+        text-shadow: 0px 0px 1px currentColor;
+      }
+
+      &:not(.root)::before {
+        left: 0;
+        width: 15px;
+        height: 15px;
+      }
+    }
+
+    jmexpander {
+      margin-top: 1px;
+      line-height: 9px;
+    }
+
+    .datatype {
+      opacity: 0.6;
+      font-size: $fz12;
+      margin-top: 2px;
+      padding-left: 5px;
+    }
+  }
+  /** 脑图样式 END **/
+}
+
+/** HTTP 请求弹窗样式 START **/
+.httpRequest {
+  padding: 30px 20px;
+  width: 700px;
+
+  > div {
+    display: flex;
+    height: 35px;
+    margin-bottom: 20px;
+  }
+
+  input,
+  select {
+    border-radius: 0;
+    padding-left: 10px;
+    border: 1px solid $color-gray;
+  }
+
+  input {
+    flex-grow: 1;
+
+    &[name="url"],
+    &:first-child {
       border-right: none;
     }
+  }
 
-    button {
-      cursor: pointer;
-      padding: 0 15px;
-      border: 1px solid $color-gray;
+  select {
+    border-right: none;
+  }
 
-      &:active {
-        background-color: #cfcfcf;
-      }
+  button {
+    cursor: pointer;
+    padding: 0 15px;
+    border: 1px solid $color-gray;
+
+    &:active {
+      background-color: #cfcfcf;
     }
   }
-  /** HTTP 请求弹窗样式 END **/
-
-  /** 暗黑主题 START **/
-  .dark-theme,
-  .dark-plus-theme {
-    $color: #464646;
-    $color_333: #333333;
-    $color_c4: #c4c4c4;
-    $bd_color: #64b7ff;
-
-    .json-viewer-layout {
-      li,
-      pre,
-      td:first-child {
-        color: $color-gray;
-      }
-
-      .panel {
-        color: $color_c4;
-        background-color: $color_333;
-
-        > div {
-          border-bottom-color: $color;
-        }
-
-        .tabs-item,
-        .toolbar-item {
-          &:hover {
-            background-color: $color;
-          }
-        }
-
-        .tabs-item {
-          border-top-color: $color_333;
-
-          &:hover {
-            border-top-color: $tab-hover-color;
-          }
-
-          &.active {
-            color: $color_c4;
-            border-top-color: $bd_color;
-            background-color: $color;
-          }
-        }
-      }
-
-      .searchbox {
-        input {
-          color: $color-gray;
-          background-color: $color;
-          border-left-color: $color_333;
-        }
-
-        .clear {
-          filter: invert(0.8);
-        }
-      }
-
-      .rightbox {
-        > div span:hover {
-          background-color: $color;
-        }
-
-        .tippy-box {
-          background-color: $dark_tip_color !important;
-
-          .tippy-arrow {
-            color: $dark_tip_color !important;
-          }
-
-          li {
-            background-color: $dark_tip_color !important;
-            &:hover {
-              background-color: $color !important;
-            }
-          }
-        }
-      }
-
-      jmnode {
-        filter: brightness(2);
-      }
-
-      jmexpander {
-        background-color: #dfdfdf;
-      }
-    }
-  }
-  /** 暗黑主题 END **/
 }
+/** HTTP 请求弹窗样式 END **/
+
+/** 暗黑主题 START **/
+.dark-theme,
+.dark-plus-theme {
+  $color: #464646;
+  $color_333: #333333;
+  $color_c4: #c4c4c4;
+  $bd_color: #64b7ff;
+
+  .json-viewer-layout {
+    li,
+    pre,
+    td:first-child {
+      color: $color-gray;
+    }
+
+    .panel {
+      color: $color_c4;
+      background-color: $color_333;
+
+      > div {
+        border-bottom-color: $color;
+      }
+
+      .tabs-item,
+      .toolbar-item {
+        &:hover {
+          background-color: $color;
+        }
+      }
+
+      .tabs-item {
+        border-top-color: $color_333;
+
+        &:hover {
+          border-top-color: $tab-hover-color;
+        }
+
+        &.active {
+          color: $color_c4;
+          border-top-color: $bd_color;
+          background-color: $color;
+        }
+      }
+    }
+
+    .searchbox {
+      input {
+        color: $color-gray;
+        background-color: $color;
+        border-left-color: $color_333;
+      }
+
+      .clear {
+        filter: invert(0.8);
+      }
+    }
+
+    .rightbox {
+      > div span:hover {
+        background-color: $color;
+      }
+
+      .tippy-box {
+        background-color: $dark_tip_color !important;
+
+        .tippy-arrow {
+          color: $dark_tip_color !important;
+        }
+
+        li {
+          background-color: $dark_tip_color !important;
+          &:hover {
+            background-color: $color !important;
+          }
+        }
+      }
+    }
+
+    jmnode {
+      filter: brightness(2);
+    }
+
+    jmexpander {
+      background-color: #dfdfdf;
+    }
+  }
+}
+/** 暗黑主题 END **/
 
 .js-mind-child-node {
   width: 300px;

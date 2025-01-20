@@ -1,5 +1,4 @@
-import JSONbig from "json-bigint";
-const JSON = JSONbig({ useNativeBigInt: true });
+import JSONbig from "json-bigint-native";
 
 NodeList.prototype.filter = Array.prototype.filter;
 NodeList.prototype.some = Array.prototype.some;
@@ -73,17 +72,17 @@ export default {
   },
   isJSON(str) {
     try {
-      JSON.parse(str);
+      JSONbig.parse(str);
       return true;
     } catch (e) {
       return false;
     }
   },
   parse(text, reviver) {
-    return JSON.parse(text, reviver);
+    return JSONbig.parse(text, reviver);
   },
   stringify(value, replacer, space) {
-    return JSON.stringify(value, replacer, space);
+    return JSONbig.stringify(value, replacer, space);
   },
   isObject(o) {
     return Object.is(typeof o, "object");
@@ -93,6 +92,17 @@ export default {
   },
   getPropType(o) {
     return Object.prototype.toString.call(o).match(/\s(.+)]/)[1];
+  },
+  random(len = 10) {
+    let array = new Uint8Array(len);
+    window.crypto.getRandomValues(array);
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const count = characters.length;
+    let randomStr = "";
+    for (let i = 0; i < len; i++) {
+      randomStr += characters[array[i] % count];
+    }
+    return randomStr;
   },
   downloadText(content, filename) {
     const blob = new Blob([content], { type: "application/json;charset=utf-8" });

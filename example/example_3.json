@@ -1,9 +1,1 @@
-{
-  "user": {
-    "id": 9223372036854775807,
-	"color": "#e1957c",
-	"color_1": "rgb(167, 225, 128)",
-	"color_2": "rgba(0, 0, 0, 0.5)",
-	"img": "https://img2.baidu.com/it/u=1173410877,141239837&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800"
-  }
-}
+{"user":{"id":9223372036854775807,"color":"#CCC","color_1":"#e1957c","color_2":"#13a228e6","color_3":"rgb(167, 225, 128)","color_4":"rgba(0, 0, 0, 0.5)","img":"https://img2.baidu.com/it/u=1173410877,141239837&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800","html":["<li><a href=\"/2/\">动作片</a></li>","<li><a href=\"\/15\/\">犯罪片</a></li>"],"bool":true,"sex":null,"album":[],"like":{}}}

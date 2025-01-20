@@ -1,23 +1,22 @@
 import Utils from "../Utils";
 
-const SORTED = { NONE: "none", ASC: "ASC", DESC: "DESC" };
-const STYLE = { TABLE: "table", VIEWER: "viewer" };
+const STYLE = Object.freeze({ TABLE: "table", VIEWER: "viewer" });
+const SORTED = Object.freeze({ NONE: "none", ASC: "ASC", DESC: "DESC" });
 class JsonFormat {
   static STYLE = STYLE;
   Root = "Root";
-  DEFAULTS = {
-    json: null,
-    style: null,
-    container: null,
-    theme: "default",
-    sort: SORTED.NONE,
-  };
-
-  sortEnum = {
+  DEFAULTS = { json: null, style: null, container: null, theme: "default", sort: SORTED.NONE };
+  // 排序枚举
+  SORT_ENUM = Object.freeze({
     [SORTED.NONE]: { value: SORTED.ASC, text: "升序" },
     [SORTED.ASC]: { value: SORTED.DESC, text: "降序" },
     [SORTED.DESC]: { value: SORTED.NONE, text: "排序" },
-  };
+  });
+  // 括号
+  BRACKET = Object.freeze({
+    array: { START: "[", END: "]", FULL: "[]" },
+    object: { START: "{", END: "}", FULL: "{}" },
+  });
 
   constructor(options, tag, clazz) {
     this.tag = tag;
@@ -25,19 +24,23 @@ class JsonFormat {
     this.options = Object.assign(this.DEFAULTS, options);
     if (!options.container) throw new Error("Container is required");
     if (!options.json) throw new Error("json is required");
+    this.container = Utils.query(options.container);
     this.setTheme(this.options.theme);
     this.render(tag, clazz);
   }
 
   render(tag, clazz) {
-    this.$container = Utils.query(this.options.container);
-    this.$container.innerHTML = "";
+    this.container.innerHTML = "";
     const wrapper = Utils.createElement(tag, { class: clazz });
     const fragment = document.createDocumentFragment();
-    this.createNode(fragment, this.options.json, this.Root, this.Root, 1);
+    this.buildNode(fragment, this.options.json);
     wrapper.appendChild(fragment);
-    this.$container.appendChild(wrapper);
+    this.container.appendChild(wrapper);
     this.bindEvent();
+  }
+
+  buildNode() {
+    throw new Error("此方法必须由子类实现具体功能");
   }
 
   setTheme(theme) {
@@ -60,37 +63,50 @@ class JsonFormat {
   }
 
   sorted() {
-    const sort = this.sortEnum[this.options.sort];
+    const sort = this.SORT_ENUM[this.options.sort];
     this.options.sort = sort.value;
     this.render(this.tag, this.clazz);
     return sort.text;
   }
 
+  iterateJson(json, parentId, parentPath, tagName, callback) {
+    const entries = Object.entries(this.keySort(json));
+    const entryCount = entries.length;
+    const lastIndex = entryCount - 1;
+    for (let index = 0; index < entryCount; index++) {
+      const id = Utils.random();
+      const [key, value] = entries[index];
+      const type = Utils.getType(value);
+      const hasNext = this.hasNext(value);
+      const notLast = !Object.is(index, lastIndex);
+      const path = this.spliceJsonPath(parentPath, key);
+      // JSON Item Element
+      const element = Utils.createElement(tagName, { path, "data-node-id": id, "data-node-pid": parentId });
+      if (hasNext) element.setAttribute("class", "collapsible expanded");
+      // 回调函数
+      callback.call(this, { id, key, value, type, path, hasNext, element, notLast });
+    }
+  }
+
   creatValueNode(type, value) {
-    const node = Utils.createElement("span", { class: `json-${type}` }, `${value}`);
-
-    if (Object.is("string", type)) {
-      value = this.escape(value);
-      node.textContent = `"${value}"`;
-    }
-
+    if (this.isIterator(value)) return this.createBracket(type);
+    // create value element
+    const node = Utils.createElement("span", { class: `json-${type}` });
     if (this.isUrl(value)) {
-      node.textContent = "";
-      const a = Utils.createElement("a", { target: "_blank", href: value }, `"${value}"`);
-      node.appendChild(a);
+      const link = Utils.createElement("a", { target: "_blank", href: value }, `"${value}"`);
+      node.appendChild(link);
+      return node;
     }
-
+    // 基本数据类型
+    node.textContent = Object.is("string", type) ? Utils.stringify(value) : `${value}`;
     if (this.isColor(value)) {
-      const span = Utils.createElement("span", {
-        class: "json-color",
-        style: `background-color: ${value}`,
-      });
+      const span = Utils.createElement("span", { class: "json-color", style: `background-color: ${value}` });
       node.prepend(span);
     }
     return node;
   }
 
-  creatOtherNodes(node, json) {
+  creatExtraNodes(node, json) {
     if (!this.hasNext(json)) return;
     node.prepend(this.creatArrowNode());
     node.appendChild(this.creatCopyNode(json));
@@ -108,30 +124,23 @@ class JsonFormat {
   }
 
   creatDescNode(json) {
+    const type = Utils.getType(json);
     const desc = Utils.createElement("span", { class: "json-desc" });
 
-    const type = Utils.getType(json);
-    const length = Object.keys(json).length;
+    const count = Object.keys(json).length;
     const span = Utils.createElement("span");
-    span.textContent = `${length}${length > 1 ? " items" : " item"}`;
-    if (Object.is(type, "object")) {
-      span.textContent = `${length}${length > 1 ? " keys" : " key"}`;
-    }
+    span.textContent = `${count} ${type === "object" ? (count > 1 ? "keys" : "key") : count > 1 ? "items" : "item"}`;
     desc.appendChild(span);
 
     if (STYLE.TABLE === this.options.style) {
-      let text = document.createTextNode(Object.is(type, "object") ? "{" : "[");
-      desc.prepend(text);
-      text = document.createTextNode(Object.is(type, "object") ? "}" : "]");
-      desc.appendChild(text);
+      desc.insertAdjacentText("afterbegin", this.BRACKET[type].START);
+      desc.insertAdjacentText("beforeend", this.BRACKET[type].END);
     }
     return desc;
   }
 
   createBracket(type) {
-    const node = Utils.createElement("span", { class: `json-${type}-bracket` });
-    node.textContent = Object.is(type, "array") ? "[]" : "{}";
-    return node;
+    return Utils.createElement("span", { type, class: `json-bracket` }, this.BRACKET[type].FULL);
   }
 
   bindEvent() {
@@ -139,18 +148,18 @@ class JsonFormat {
       const target = e.target;
       const className = "success";
       if (!target.json || Utils.hasClass(target, className)) return;
-      Utils.addClass(target, className);
       Utils.setClipboard(Utils.stringify(target.json, null, 2));
       setTimeout(() => Utils.removeClass(target, className), 1500);
+      Utils.addClass(target, className);
     });
 
     this.addEvent("click", ".json-arrow", (e) => {
-      const node = Utils.closest(e.target, ".json-item");
+      const node = Utils.closest(e.target, ".collapsible");
       const expanded = Utils.hasClass(node, "expanded");
       expanded ? this.collapse(node) : this.expand(node);
     });
 
-    this.addEvent("click", ".json-desc", (e) => this.expand(Utils.closest(e.target, ".json-item")));
+    this.addEvent("click", ".json-desc", (e) => this.expand(Utils.closest(e.target, ".collapsible")));
   }
 
   expandAll() {
@@ -185,11 +194,11 @@ class JsonFormat {
   }
 
   findChildren(node) {
-    return Utils.queryAll(`*[data-node-pid="${node.dataset.nodeId}"]`, this.$container);
+    return Utils.queryAll(`*[data-node-pid="${node.dataset.nodeId}"]`, this.container);
   }
 
   findByID(id) {
-    return Utils.query(`*[data-node-id="${id}"]`, this.$container);
+    return Utils.query(`*[data-node-id="${id}"]`, this.container);
   }
 
   expandByID(id) {
@@ -201,14 +210,14 @@ class JsonFormat {
   }
 
   nodes() {
-    return Utils.queryAll(".collapsible", this.$container);
+    return Utils.queryAll(".collapsible", this.container);
   }
 
   addEvent(type, selector, fn) {
     Utils.queryAll(selector).forEach((el) => el.addEventListener(type, fn));
   }
 
-  JSONPath(path, key) {
+  spliceJsonPath(path, key) {
     if (this.isNumber(key)) return `${path}[${key}]`;
     if (key.includes(".")) return `${path}["${key}"]`;
     return `${path}.${key}`;
@@ -219,13 +228,11 @@ class JsonFormat {
   }
 
   isIterator(data) {
-    const type = Utils.getType(data);
-    return ["array", "object"].includes(type);
+    return ["array", "object"].includes(Utils.getType(data));
   }
 
   hasNext(data) {
-    if (!this.isIterator(data)) return false;
-    return Object.keys(data).length > 0;
+    return this.isIterator(data) ? Object.keys(data).length > 0 : false;
   }
 
   isUrl(str) {
@@ -233,30 +240,11 @@ class JsonFormat {
     return regexp.test(str);
   }
 
-  escape(str) {
-    return str
-      .replace(/\t/g, "\\t")
-      .replace(/\n/g, "\\n")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
-
   isColor(str) {
-    const hexCodeRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
     const rgbRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/;
+    const hexRegex = /^#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
     const rgbaRegex = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0|1|0\.\d+)\s*\)$/;
-    return hexCodeRegex.test(str) || rgbRegex.test(str) || rgbaRegex.test(str);
-  }
-
-  random() {
-    let randomStr = "";
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      randomStr += characters.charAt(randomIndex);
-    }
-    return randomStr;
+    return hexRegex.test(str) || rgbRegex.test(str) || rgbaRegex.test(str);
   }
 }
 

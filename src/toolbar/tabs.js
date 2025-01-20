@@ -19,13 +19,11 @@ const tabs = {
     Utils.downloadText(content, filename);
   },
   copyJson() {
-    const content = rawTextPre.textContent || unsafeWindow.RAW_TEXT;
-    GM_setClipboard(content);
+    GM_setClipboard(rawTextPre.textContent || unsafeWindow.RAW_TEXT);
     layer.msg("复制成功", { time: 1500 });
   },
   sorted(el) {
-    const text = unsafeWindow.JSON_FORMATER.sorted();
-    el.textContent = text;
+    el.textContent = unsafeWindow.JSON_FORMATER.sorted();
   },
   collapseAll() {
     Utils.isVisible(formatBox) ? unsafeWindow.JSON_FORMATER.collapseAll() : unsafeWindow.GLOBAL_JSMIND.collapse_all();
